@@ -22,15 +22,17 @@ public class ILoginAdapter implements LoginAdapter {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "Login succesful");
-                    loginFinishedCallback.onLoginFinished(response.body());
+                    loginFinishedCallback.onLoginSucceeded(response.body());
                 }
                 else {
+                    loginFinishedCallback.onLoginFailed(new Throwable(response.message()));
                     Log.e(TAG, "Login error");
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
+                loginFinishedCallback.onLoginFailed(t);
                 Log.d(TAG, t.getMessage());
             }
         });
