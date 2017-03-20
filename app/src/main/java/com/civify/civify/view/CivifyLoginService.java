@@ -5,6 +5,6 @@ import retrofit2.Call;
 import retrofit2.http.POST;
 
 public interface CivifyLoginService {
-    @POST("login.php?login")
+    @POST("/login")
     Call<User> basicLogin();
 }
