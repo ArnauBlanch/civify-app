@@ -1,4 +1,4 @@
-package com.civify.civify.view;
+package com.civify.civify.Controller;
 
 import java.io.IOException;
 

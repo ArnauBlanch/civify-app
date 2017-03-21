@@ -1,6 +1,8 @@
-package com.civify.civify.view;
+package com.civify.civify.Controller;
 
 import android.util.Log;
+
+import com.civify.civify.Model.User;
 
 import retrofit2.Call;
 import retrofit2.Callback;
