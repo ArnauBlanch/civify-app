@@ -1,6 +1,7 @@
-package com.civify.civify.view;
+package com.civify.civify.Controller;
 
 
+import com.civify.civify.Model.User;
 
 public interface LoginFinishedCallback {
 
