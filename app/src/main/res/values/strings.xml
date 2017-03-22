@@ -1,16 +1,45 @@
 <resources>
-    <string name="app_name">Civify</string>
+  <string name="app_name">Civify</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+  <!-- Strings related to login -->
+  <string name="prompt_email">Email</string>
+  <string name="prompt_password">Password (optional)</string>
+  <string name="action_sign_in">Sign in or register</string>
+  <string name="action_sign_in_short">Sign in</string>
+  <string name="error_invalid_email">This email address is invalid</string>
+  <string name="error_invalid_password">This password is too short</string>
+  <string name="error_incorrect_password">This password is incorrect</string>
+  <string name="error_field_required">This field is required</string>
+  <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+  <string name="title_activity_registration">RegistrationActivity</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="valid_unused_username">The username is valid and unused</string>
+  <string name="invalid_username">The username is invalid (Should have 8-20 characters. Special characters allowed: .,)</string>
+  <string name="used_username">The username is already used</string>
+  <string name="valid_unused_email">The e-mail is valid and unused</string>
+  <string name="invalid_email">The e-mail is invalid</string>
+  <string name="used_email">The e-mail is already used</string>
+  <string name="valid_password">The password is valid</string>
+  <string name="invalid_password">The password is invalid (Should have 8-40 characters, including at least 1 uppercase and 1 lowercase letter, 1 digit. Special characters allowed: @&amp;#$%)</string>
+  <string name="matching_passwords">Both passwords match</string>
+  <string name="not_matching_passwords">The passwords do not match</string>
+  <string name="registration">Registration</string>
+  <string name="name_caps">NAME</string>
+  <string name="surname_caps">SURNAME</string>
+  <string name="username_caps">USERNAME</string>
+  <string name="email_caps">E-MAIL</string>
+  <string name="password_caps">PASSWORD</string>
+  <string name="validate_password_caps">VALIDATE PASSWORD</string>
+  <string name="choose_username">Choose a username</string>
+  <string name="whats_your_name">What\'s your name?</string>
+  <string name="continue_button">Continue</string>
+  <string name="finish">Finish</string>
+  <string name="choose_password">Choose a password</string>
+  <string name="choose_email">What\'s your email?</string>
+  <string name="enter_name">Please, enter your name</string>
+  <string name="enter_surname">Please, enter your surname</string>
 </resources>

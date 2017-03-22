@@ -10,13 +10,6 @@ android {
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    jackOptions {
-      enabled true
-    }
-  }
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
   }
   buildTypes {
     release {
@@ -34,6 +27,7 @@ android {
 
 repositories {
   jcenter()
+  maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -41,9 +35,13 @@ dependencies {
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
+
   compile 'com.android.support:appcompat-v7:25.2.0'
   compile 'com.android.support:design:25.2.0'
-  compile 'com.android.support.constraint:constraint-layout:+'
+  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  compile 'com.github.TechFreak:WizardPager:1.0.3'
+  compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+  compile 'com.android.support:support-v4:25.3.0'
   testCompile 'junit:junit:4.12'
   testCompile 'org.robolectric:robolectric:3.3.1'
   testCompile 'org.mockito:mockito-core:1.9.5'
