@@ -51,11 +51,35 @@ public class UserControllerTest {
     when(User.checkValidUsername("ValidUnusedUser")).thenReturn(true);
     when(mUserService.checkUnusedUsername("ValidUnusedUser")).thenReturn(true);
 
-    assertEquals(true, mUserController.checkValidUnusedUsername("ValidUnusedUser"));
+    assertEquals(UserController.VALID_UNUSED, mUserController.checkValidUnusedUsername("ValidUnusedUser"));
 
     PowerMockito.verifyStatic();
     User.checkValidUsername("ValidUnusedUser");
     verify(mUserService).checkUnusedUsername("ValidUnusedUser");
+  }
+
+  @Test
+  public void testCheckInvalidUsername() {
+    PowerMockito.mockStatic(User.class);
+    when(User.checkValidUsername("[]ValidUnusedUser")).thenReturn(false);
+
+    assertEquals(UserController.INVALID, mUserController.checkValidUnusedUsername("[]ValidUnusedUser"));
+
+    PowerMockito.verifyStatic();
+    User.checkValidUsername("[]ValidUnusedUser");
+  }
+
+  @Test
+  public void testCheckUsedUsername() {
+    PowerMockito.mockStatic(User.class);
+    when(User.checkValidUsername("ValidUsedUser")).thenReturn(true);
+    when(mUserService.checkUnusedUsername("ValidUsedUser")).thenReturn(false);
+
+    assertEquals(UserController.USED, mUserController.checkValidUnusedUsername("ValidUsedUser"));
+
+    PowerMockito.verifyStatic();
+    User.checkValidUsername("ValidUsedUser");
+    verify(mUserService).checkUnusedUsername("ValidUsedUser");
   }
 
   @Test
@@ -64,11 +88,35 @@ public class UserControllerTest {
     when(User.checkValidEmail("validunused@email.com")).thenReturn(true);
     when(mUserService.checkUnusedEmail("validunused@email.com")).thenReturn(true);
 
-    assertEquals(true, mUserController.checkValidUnusedEmail("validunused@email.com"));
+    assertEquals(UserController.VALID_UNUSED, mUserController.checkValidUnusedEmail("validunused@email.com"));
 
     PowerMockito.verifyStatic();
     User.checkValidEmail("validunused@email.com");
     verify(mUserService).checkUnusedEmail("validunused@email.com");
+  }
+
+  @Test
+  public void testCheckInvalidEmail() {
+    PowerMockito.mockStatic(User.class);
+    when(User.checkValidEmail("invalidunusedemail.com")).thenReturn(false);
+
+    assertEquals(UserController.INVALID, mUserController.checkValidUnusedEmail("invalidunusedemail.com"));
+
+    PowerMockito.verifyStatic();
+    User.checkValidEmail("invalidunusedemail.com");
+  }
+
+  @Test
+  public void testCheckUsedEmail() {
+    PowerMockito.mockStatic(User.class);
+    when(User.checkValidEmail("validused@email.com")).thenReturn(true);
+    when(mUserService.checkUnusedEmail("validused@email.com")).thenReturn(false);
+
+    assertEquals(UserController.USED, mUserController.checkValidUnusedEmail("validused@email.com"));
+
+    PowerMockito.verifyStatic();
+    User.checkValidEmail("validused@email.com");
+    verify(mUserService).checkUnusedEmail("validused@email.com");
   }
 
   @Test
