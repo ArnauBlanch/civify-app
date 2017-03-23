@@ -16,8 +16,9 @@ public class ILoginAdapter implements LoginAdapter {
 
     @Override
     public void login(String email, String password, LoginFinishedCallback loginFinishedCallback) {
-        CivifyLoginService civifyLoginService =
-                ServiceGenerator.createService(CivifyLoginService.class, email, password);
+        CivifyLoginService civifyLoginService = ServiceGenerator
+                .getInstance()
+                .createService(CivifyLoginService.class, email, password);
         Call<User> call = civifyLoginService.basicLogin();
         call.enqueue(new Callback<User>() {
             @Override

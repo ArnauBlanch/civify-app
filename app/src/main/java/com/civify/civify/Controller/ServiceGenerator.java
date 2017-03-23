@@ -1,6 +1,7 @@
 package com.civify.civify.Controller;
 
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import okhttp3.Credentials;
@@ -10,40 +11,57 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
+
     private static final String BASE_URL = "http://10.0.2.2:8080/test/";
+    private static ServiceGenerator serviceGeneratorInstance;
 
-    private static Retrofit.Builder builder =
-            new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create());
+    private Retrofit.Builder builder;
+    private Retrofit retrofit;
+    private OkHttpClient.Builder httpClient;
+    private HttpLoggingInterceptor logging;
 
-    private static HttpLoggingInterceptor logging =
-            new HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    private static Retrofit retrofit = builder.build();
-
-    private static OkHttpClient.Builder httpClient =
-            new OkHttpClient.Builder();
-
-    public static <S> S createService(Class<S> serviceClass) {
-        return createService(serviceClass, null, null);
+    protected ServiceGenerator() {
+        builder = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+        retrofit = builder.build();
+        httpClient = new OkHttpClient.Builder();
+        logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     }
 
-    public static <S> S createService(
+    public static ServiceGenerator getInstance() {
+        if (serviceGeneratorInstance == null) {
+            serviceGeneratorInstance =  new ServiceGenerator();
+
+        }
+        return serviceGeneratorInstance;
+    }
+    private boolean isEmpty(CharSequence str) {
+        if (str == null || str.length() == 0)
+            return true;
+        else
+            return false;
+    }
+
+    public <S> S createService(Class<S> serviceClass) {
+        return createService(serviceClass, null);
+    }
+
+    public <S> S createService(
             Class<S> serviceClass, String username, String password) {
-        if (!TextUtils.isEmpty(username)
-                && !TextUtils.isEmpty(password)) {
+        if (!isEmpty(username)
+                && !isEmpty(password)) {
             String authToken = Credentials.basic(username, password);
             return createService(serviceClass, authToken);
         }
 
-        return createService(serviceClass, null, null);
+        return createService(serviceClass, null);
     }
 
-    public static <S> S createService(
+    private <S> S createService(
             Class<S> serviceClass, final String authToken) {
-        if (!TextUtils.isEmpty(authToken)) {
+        if (!isEmpty(authToken)) {
             AuthenticationInterceptor interceptor =
                     new AuthenticationInterceptor(authToken);
 
@@ -53,13 +71,13 @@ public class ServiceGenerator {
                 builder.client(httpClient.build());
                 retrofit = builder.build();
             }
+        }
 
-            if (!httpClient.interceptors().contains(logging)) {
-                httpClient.addInterceptor(logging);
+        if (!httpClient.interceptors().contains(logging)) {
+            httpClient.addInterceptor(logging);
 
-                builder.client(httpClient.build());
-                retrofit = builder.build();
-            }
+            builder.client(httpClient.build());
+            retrofit = builder.build();
         }
 
         return retrofit.create(serviceClass);
