@@ -1,23 +1,12 @@
 package com.civify.civify.ControllerTest;
 
 
-import com.civify.civify.Controller.CivifyLoginService;
-import com.civify.civify.Controller.ServiceGenerator;
+import com.civify.civify.controller.CivifyLoginService;
+import com.civify.civify.controller.ServiceGenerator;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.mock.MockRetrofit;
 
 import static junit.framework.Assert.assertNotNull;
 

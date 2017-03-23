@@ -1,8 +1,4 @@
-package com.civify.civify.Controller;
-
-
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
+package com.civify.civify.controller;
 
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
@@ -13,35 +9,32 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceGenerator {
 
     private static final String BASE_URL = "http://10.0.2.2:8080/test/";
-    private static ServiceGenerator serviceGeneratorInstance;
+    private static ServiceGenerator sServiceGeneratorInstance;
 
-    private Retrofit.Builder builder;
-    private Retrofit retrofit;
-    private OkHttpClient.Builder httpClient;
-    private HttpLoggingInterceptor logging;
+    private Retrofit.Builder mBuilder;
+    private Retrofit mRetrofit;
+    private OkHttpClient.Builder mHttpClient;
+    private HttpLoggingInterceptor mLogging;
 
 
     protected ServiceGenerator() {
-        builder = new Retrofit.Builder()
+        mBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
-        retrofit = builder.build();
-        httpClient = new OkHttpClient.Builder();
-        logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+        mRetrofit = mBuilder.build();
+        mHttpClient = new OkHttpClient.Builder();
+        mLogging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     }
 
     public static ServiceGenerator getInstance() {
-        if (serviceGeneratorInstance == null) {
-            serviceGeneratorInstance =  new ServiceGenerator();
-
+        if (sServiceGeneratorInstance == null) {
+            sServiceGeneratorInstance = new ServiceGenerator();
         }
-        return serviceGeneratorInstance;
+        return sServiceGeneratorInstance;
     }
+
     private boolean isEmpty(CharSequence str) {
-        if (str == null || str.length() == 0)
-            return true;
-        else
-            return false;
+        return str == null || str.length() == 0;
     }
 
     public <S> S createService(Class<S> serviceClass) {
@@ -65,21 +58,21 @@ public class ServiceGenerator {
             AuthenticationInterceptor interceptor =
                     new AuthenticationInterceptor(authToken);
 
-            if (!httpClient.interceptors().contains(interceptor)) {
-                httpClient.addInterceptor(interceptor);
+            if (!mHttpClient.interceptors().contains(interceptor)) {
+                mHttpClient.addInterceptor(interceptor);
 
-                builder.client(httpClient.build());
-                retrofit = builder.build();
+                mBuilder.client(mHttpClient.build());
+                mRetrofit = mBuilder.build();
             }
         }
 
-        if (!httpClient.interceptors().contains(logging)) {
-            httpClient.addInterceptor(logging);
+        if (!mHttpClient.interceptors().contains(mLogging)) {
+            mHttpClient.addInterceptor(mLogging);
 
-            builder.client(httpClient.build());
-            retrofit = builder.build();
+            mBuilder.client(mHttpClient.build());
+            mRetrofit = mBuilder.build();
         }
 
-        return retrofit.create(serviceClass);
+        return mRetrofit.create(serviceClass);
     }
 }
