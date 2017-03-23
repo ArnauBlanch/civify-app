@@ -24,6 +24,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.civify.civify.Controller.ILoginAdapter;
+import com.civify.civify.Controller.LoginFinishedCallback;
+import com.civify.civify.Model.User;
 import com.civify.civify.R;
 import com.civify.civify.Controller.LoginAdapter;
 
@@ -84,6 +87,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        LoginAdapter loginAdapter = new ILoginAdapter();
+        loginAdapter.login("email", "pasword", new LoginFinishedCallback() {
+            @Override
+            public void onLoginSucceeded(User u) {
+
+            }
+
+            @Override
+            public void onLoginFailed(Throwable t) {
+
+            }
+        });
 
     }
 
