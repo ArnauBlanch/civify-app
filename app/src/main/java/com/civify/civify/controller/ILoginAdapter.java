@@ -1,8 +1,8 @@
-package com.civify.civify.Controller;
+package com.civify.civify.controller;
 
 import android.util.Log;
 
-import com.civify.civify.Model.User;
+import com.civify.civify.model.User;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,8 +26,7 @@ public class ILoginAdapter implements LoginAdapter {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "Login succesful");
                     loginFinishedCallback.onLoginSucceeded(response.body());
-                }
-                else {
+                } else {
                     loginFinishedCallback.onLoginFailed(new Throwable(response.message()));
                     Log.e(TAG, "Login error");
                 }

@@ -1,6 +1,6 @@
 package com.civify.civify.ControllerTest;
 
-import com.civify.civify.Controller.AuthenticationInterceptor;
+import com.civify.civify.controller.AuthenticationInterceptor;
 
 import org.junit.After;
 import org.junit.Before;

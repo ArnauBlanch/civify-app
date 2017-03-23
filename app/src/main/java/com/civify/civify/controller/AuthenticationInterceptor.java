@@ -1,4 +1,4 @@
-package com.civify.civify.Controller;
+package com.civify.civify.controller;
 
 import java.io.IOException;
 
@@ -8,10 +8,10 @@ import okhttp3.Response;
 
 public class AuthenticationInterceptor implements Interceptor {
 
-    private String authToken;
+    private String mAuthToken;
 
     public AuthenticationInterceptor(String token) {
-        this.authToken = token;
+        this.mAuthToken = token;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class AuthenticationInterceptor implements Interceptor {
         Request original = chain.request();
 
         Request.Builder builder = original.newBuilder()
-                .header("Authorization", authToken)
+                .header("Authorization", mAuthToken)
                 .header("Accept", "application/json");
 
         Request request = builder.build();

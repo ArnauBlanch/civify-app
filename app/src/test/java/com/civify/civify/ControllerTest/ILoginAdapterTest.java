@@ -3,11 +3,11 @@ package com.civify.civify.ControllerTest;
 
 import android.util.Log;
 
-import com.civify.civify.Controller.CivifyLoginService;
-import com.civify.civify.Controller.ILoginAdapter;
-import com.civify.civify.Controller.LoginFinishedCallback;
-import com.civify.civify.Controller.ServiceGenerator;
-import com.civify.civify.Model.User;
+import com.civify.civify.controller.CivifyLoginService;
+import com.civify.civify.controller.ILoginAdapter;
+import com.civify.civify.controller.LoginFinishedCallback;
+import com.civify.civify.controller.ServiceGenerator;
+import com.civify.civify.model.User;
 
 import org.junit.After;
 import org.junit.Before;
