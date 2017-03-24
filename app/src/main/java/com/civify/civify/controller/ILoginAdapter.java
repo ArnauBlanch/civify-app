@@ -1,6 +1,8 @@
-package com.civify.civify.view;
+package com.civify.civify.controller;
 
 import android.util.Log;
+
+import com.civify.civify.model.User;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,8 +16,9 @@ public class ILoginAdapter implements LoginAdapter {
 
     @Override
     public void login(String email, String password, LoginFinishedCallback loginFinishedCallback) {
-        CivifyLoginService civifyLoginService =
-                ServiceGenerator.createService(CivifyLoginService.class, email, password);
+        CivifyLoginService civifyLoginService = ServiceGenerator
+                .getInstance()
+                .createService(CivifyLoginService.class, email, password);
         Call<User> call = civifyLoginService.basicLogin();
         call.enqueue(new Callback<User>() {
             @Override
@@ -23,8 +26,7 @@ public class ILoginAdapter implements LoginAdapter {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "Login succesful");
                     loginFinishedCallback.onLoginSucceeded(response.body());
-                }
-                else {
+                } else {
                     loginFinishedCallback.onLoginFailed(new Throwable(response.message()));
                     Log.e(TAG, "Login error");
                 }

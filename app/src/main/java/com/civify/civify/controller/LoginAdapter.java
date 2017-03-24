@@ -1,5 +1,4 @@
-package com.civify.civify.view;
-
+package com.civify.civify.controller;
 
 
 public interface LoginAdapter {
