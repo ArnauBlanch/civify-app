@@ -15,59 +15,59 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-@PowerMockIgnore({ "org.mockito.*", "org.robolectric.*", "android.*" })
+@PowerMockIgnore({"org.mockito.*", "org.robolectric.*", "android.*"})
 @PrepareForTest(User.class)
 public class UserTest {
-  private User mUser;
+    private User mUser;
 
-  @Before
-  public void setUp() throws Exception {
-    mUser = new User("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd");
-  }
-
-  @After
-  public void tearDown() {
-    mUser = null;
-  }
-
-  @Test
-  public void testConstructor() throws Exception {
-    mUser = new User("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd");
-
-    assertEquals("validUsername", mUser.getUsername());
-    assertEquals("validName", mUser.getName());
-    assertEquals("validSurname", mUser.getSurname());
-    assertEquals("valid@email.com", mUser.getEmail());
-    assertEquals("validPassw0rd", mUser.getPassword());
-  }
-
-  @Test
-  public void testConstructorWithInvalidUsername() throws Exception {
-    try {
-      mUser = new User("Invalid[]Username", "validName", "validSurname", "valid@email.com",
-          "validPassw0rd");
-    } catch (Exception e) {
-      assertEquals("Invalid username", e.getMessage());
+    @Before
+    public void setUp() throws Exception {
+        mUser = new User("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd");
     }
-  }
 
-  @Test
-  public void testConstructorWithInvalidEmail() throws Exception {
-    try {
-      mUser = new User("validUsername", "validName", "validSurname", "invalidemail.com", "validPassw0rd");
-    } catch (Exception e) {
-      assertEquals("Invalid e-mail format", e.getMessage());
+    @After
+    public void tearDown() {
+        mUser = null;
     }
-  }
 
-  @Test
-  public void testConstructorWithInvalidPassword() throws Exception {
-    try {
-      mUser = new User("validUsername", "validName", "validSurname", "valid@email.com", "invalidPassword");
-    } catch (Exception e) {
-      assertEquals("Invalid password", e.getMessage());
+    @Test
+    public void testConstructor() throws Exception {
+        mUser = new User("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd");
+
+        assertEquals("validUsername", mUser.getUsername());
+        assertEquals("validName", mUser.getName());
+        assertEquals("validSurname", mUser.getSurname());
+        assertEquals("valid@email.com", mUser.getEmail());
+        assertEquals("validPassw0rd", mUser.getPassword());
     }
-  }
+
+    @Test
+    public void testConstructorWithInvalidUsername() throws Exception {
+        try {
+            mUser = new User("Invalid[]Username", "validName", "validSurname", "valid@email.com",
+                    "validPassw0rd");
+        } catch (Exception e) {
+            assertEquals("Invalid username", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testConstructorWithInvalidEmail() throws Exception {
+        try {
+            mUser = new User("validUsername", "validName", "validSurname", "invalidemail.com", "validPassw0rd");
+        } catch (Exception e) {
+            assertEquals("Invalid e-mail format", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testConstructorWithInvalidPassword() throws Exception {
+        try {
+            mUser = new User("validUsername", "validName", "validSurname", "valid@email.com", "invalidPassword");
+        } catch (Exception e) {
+            assertEquals("Invalid password", e.getMessage());
+        }
+    }
 /*
   // Username
   @Test
