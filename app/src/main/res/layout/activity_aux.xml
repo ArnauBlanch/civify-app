@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/intro_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_sign_in"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:textColor="#000000"
+        android:layout_marginTop="30dp"
+        android:id="@+id/title"
+        fontPath="fonts/Nunito-ExtraBold.ttf"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:id="@+id/edit_text_layout"
+        >
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/login_email_layout"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/grey">
+            <EditText
+                android:id="@+id/login_email_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username_or_e_mail"
+                android:textSize="22sp"
+                android:textColor="#000"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/logi_password_layout"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/grey">
+            <EditText
+                android:id="@+id/login_password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_password"
+                android:textSize="22sp"
+                android:textColor="#000"
+                android:inputType="textPassword"
+                android:maxLines="1"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/login_forgot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Have you forgotten your password?"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+
+        android:textColor="@color/green"
+        />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/button2"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_round"
+        android:text="@string/login_sign_in"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        fontPath="fonts/Nunito-Bold.ttf"
+        android:elevation="0dp"
+        />
+
+</LinearLayout>
