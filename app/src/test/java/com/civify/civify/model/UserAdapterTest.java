@@ -19,29 +19,29 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({User.class, UserAdapter.class})
 public class UserAdapterTest {
-  private UserService mUserService;
-  private UserAdapter mUserAdapter;
+    private UserService mUserService;
+    private UserAdapter mUserAdapter;
 
-  @Before
-  public void setUp() {
-    mUserService = mock(UserService.class);
-    mUserAdapter = new UserAdapter();
-  }
+    @Before
+    public void setUp() {
+        mUserService = mock(UserService.class);
+        mUserAdapter = new UserAdapter();
+    }
 
-  @After
-  public void tearDown() {
-    mUserAdapter = null;
-  }
+    @After
+    public void tearDown() {
+        mUserAdapter = null;
+    }
 
-  @Test
-  public void testRegisterUser() throws Exception {
-    User mockUser = PowerMockito.mock(User.class);
-    whenNew(User.class).withArguments("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd").thenReturn(mockUser);
-    mUserAdapter.registerUser(new User("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd"));
+    @Test
+    public void testRegisterUser() throws Exception {
+        User mockUser = PowerMockito.mock(User.class);
+        whenNew(User.class).withArguments("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd").thenReturn(mockUser);
+        mUserAdapter.registerUser(new User("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd"));
 
-    verify(mUserService).registerUser(new User("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd"));
-    verifyNew(User.class).withArguments("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd");
-  }
+        verify(mUserService).registerUser(new User("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd"));
+        verifyNew(User.class).withArguments("validUsername", "validName", "validSurname", "valid@email.com", "validPassw0rd");
+    }
 /*
   @Test
   public void testCheckValidUnusedUsername() {
