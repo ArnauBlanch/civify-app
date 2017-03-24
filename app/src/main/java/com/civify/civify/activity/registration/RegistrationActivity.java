@@ -16,7 +16,7 @@ import com.civify.civify.utils.AdapterFactory;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
     private UserAdapter mUserAdapter;
     private ViewPager mViewPager;
 
