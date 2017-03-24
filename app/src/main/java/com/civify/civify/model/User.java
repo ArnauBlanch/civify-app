@@ -2,7 +2,6 @@ package com.civify.civify.model;
 
 import android.support.annotation.NonNull;
 
-@SuppressWarnings("ALL")
 public class User {
 
     private String mUsername;
@@ -12,7 +11,8 @@ public class User {
     private String mPassword;
 
     public User(@NonNull String username, @NonNull String name,
-                @NonNull String surname, @NonNull String email, @NonNull String password) throws Exception {
+                @NonNull String surname, @NonNull String email,
+                @NonNull String password) {
         mUsername = username;
         mName = name;
         mSurname = surname;
@@ -56,7 +56,7 @@ public class User {
         return mPassword;
     }
 
-    public void setPassword(@NonNull String password) throws Exception {
+    public void setPassword(@NonNull String password) {
         mPassword = password;
     }
 }

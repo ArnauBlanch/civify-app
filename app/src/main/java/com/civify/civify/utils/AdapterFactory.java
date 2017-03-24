@@ -3,14 +3,14 @@ package com.civify.civify.utils;
 import com.civify.civify.adapter.UserAdapter;
 
 public class AdapterFactory {
-    private static AdapterFactory mInstance;
+    private static AdapterFactory sInstance;
     private UserAdapter mUserAdapter;
 
     public static AdapterFactory getInstance() {
-        if (mInstance == null) {
-            mInstance = new AdapterFactory();
+        if (sInstance == null) {
+            sInstance = new AdapterFactory();
         }
-        return mInstance;
+        return sInstance;
     }
 
     public UserAdapter getUserController() {
