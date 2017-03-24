@@ -13,8 +13,9 @@
     To completely disable a check, just comment it out or delete it from the file.
 
     Checkstyle Authors: Max Vetrenko, Ruslan Diachenko, Roman Ivanov.
- -->
+, XmlHighlighting -->
 
+<!--suppress ALL, XmlHighlighting -->
 <module name = "Checker">
     <property name="charset" value="UTF-8"/>
 
