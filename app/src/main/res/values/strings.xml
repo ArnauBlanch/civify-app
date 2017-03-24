@@ -1,5 +1,4 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="valid_unused_username">The username is valid and unused</string>
     <string name="invalid_username">The username is invalid (Should have 8–20 characters. Special characters allowed: .,)</string>
     <string name="used_username">The username is already used</string>

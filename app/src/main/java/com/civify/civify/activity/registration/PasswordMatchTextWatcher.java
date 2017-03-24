@@ -14,12 +14,13 @@ import com.civify.civify.R;
 class PasswordMatchTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
-    private final Context context;
+    private final Context mContext;
     private final EditText mPasswordInput;
 
-    public PasswordMatchTextWatcher(Context context, View view, int iconResource, int messageResource, int passwordInput) {
+    public PasswordMatchTextWatcher(
+            Context context, View view, int iconResource, int messageResource, int passwordInput) {
         super();
-        this.context = context;
+        this.mContext = context;
         this.mIcon = (ImageView) view.findViewById(iconResource);
         this.mMessageView = (TextView) view.findViewById(messageResource);
         this.mPasswordInput = (EditText) view.findViewById(passwordInput);
@@ -36,16 +37,17 @@ class PasswordMatchTextWatcher implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         String password = mPasswordInput.getText().toString();
-        if (s.toString().equals(password))
+        if (s.toString().equals(password)) {
             setIconAndMessage(R.drawable.ic_checked, R.string.matching_passwords, R.color.green);
-        else
+        } else {
             setIconAndMessage(R.drawable.ic_cancel, R.string.not_matching_passwords, R.color.red);
+        }
     }
 
     private void setIconAndMessage(int iconDrawable, int message, int messageColor) {
         mIcon.setImageResource(iconDrawable);
-        mMessageView.setText(context.getString(message));
+        mMessageView.setText(mContext.getString(message));
         //noinspection deprecation
-        mMessageView.setTextColor(context.getResources().getColor(messageColor));
+        mMessageView.setTextColor(mContext.getResources().getColor(messageColor));
     }
 }

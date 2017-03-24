@@ -2,11 +2,9 @@ package com.civify.civify.activity.registration;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 
@@ -27,7 +25,8 @@ class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mUserAdapter = AdapterFactory.getInstance().getUserController();
         CalligraphyConfig.initDefault(
-                new CalligraphyConfig.Builder().setDefaultFontPath("fonts/Nunito-Regular.ttf").setFontAttrId(R.attr.fontPath).build()
+                new CalligraphyConfig.Builder().setDefaultFontPath("fonts/Nunito-Regular.ttf")
+                        .setFontAttrId(R.attr.fontPath).build()
         );
         setContentView(R.layout.registration_layout);
 
@@ -38,8 +37,7 @@ class RegistrationActivity extends AppCompatActivity {
         mViewPager.setCurrentItem(0);
         mViewPager.setOffscreenPageLimit(mViewPager.getAdapter().getCount() - 1);
 
-        Toolbar toolbar = ((Toolbar) findViewById(R.id.registration_toolbar));
-        Log.e("toolbar", String.valueOf(findViewById(R.id.registration_toolbar) == null));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.registration_toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,10 +76,11 @@ class RegistrationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mViewPager.getCurrentItem() == 0)
+        if (mViewPager.getCurrentItem() == 0) {
             super.onBackPressed();
-        else
+        } else {
             previousPage();
+        }
     }
 
     public void register() {
@@ -90,12 +89,8 @@ class RegistrationActivity extends AppCompatActivity {
         String surname = ((EditText) findViewById(R.id.surname_input)).getText().toString();
         String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
         String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
-        try {
-            mUserAdapter.registerUser(
+        mUserAdapter.registerUser(
                 new User(username, name, surname, email, password)
-            );
-        } catch (Exception e) {
-            Snackbar.make(findViewById(R.id.registration_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
-        }
+        );
     }
 }

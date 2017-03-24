@@ -9,6 +9,7 @@ import com.civify.civify.service.UserService;
 
 public class UserAdapter {
     public static final int INVALID = 0;
+    @SuppressWarnings("WeakerAccess")
     public static final int USED = 1;
     public static final int VALID_UNUSED = 2;
 
@@ -18,27 +19,28 @@ public class UserAdapter {
         mUserService = new IUserService();
     }
 
-
     public void registerUser(User user) {
         mUserService.registerUser(user);
     }
 
     public int checkValidUnusedEmail(String email) {
-        if (!checkValidEmail(email))
+        if (!checkValidEmail(email)) {
             return INVALID;
-        else if (checkUnusedEmail(email))
+        } else if (checkUnusedEmail(email)) {
             return USED;
-        else
+        } else {
             return VALID_UNUSED;
+        }
     }
 
     public int checkValidUnusedUsername(String username) {
-        if (!checkValidUsername(username))
+        if (!checkValidUsername(username)) {
             return INVALID;
-        else if (checkUnusedUsername(username))
+        } else if (checkUnusedUsername(username)) {
             return USED;
-        else
+        } else {
             return VALID_UNUSED;
+        }
     }
 
     private boolean checkUnusedUsername(String username) {

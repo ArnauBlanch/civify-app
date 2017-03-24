@@ -14,9 +14,9 @@ class RegistrationPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position < 0 || position >= NUM_PAGES)
+        if (position < 0 || position >= NUM_PAGES) {
             return null;
-        else {
+        } else {
             Fragment pageFragment = new RegistrationFragment();
             Bundle args = new Bundle();
             args.putInt("page", position);

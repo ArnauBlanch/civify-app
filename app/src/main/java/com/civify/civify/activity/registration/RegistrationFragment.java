@@ -30,7 +30,7 @@ public class RegistrationFragment extends Fragment {
     }
 
     private int getLayoutResource(int pageId) {
-        switch(pageId) {
+        switch (pageId) {
             case 0:
                 return R.layout.registration_page_name;
             case 1:
@@ -62,9 +62,11 @@ public class RegistrationFragment extends Fragment {
         final EditText nameEditText = (EditText) mView.findViewById(R.id.name_input);
         final EditText surnameEditText = (EditText) mView.findViewById(R.id.surname_input);
         mView.findViewById(R.id.button0).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                if (nameEditText.getText().length() > 0 && surnameEditText.getText().length() > 0)
+            @Override
+            public void onClick(View v) {
+                if (nameEditText.getText().length() > 0 && surnameEditText.getText().length() > 0) {
                     mActivity.nextPage();
+                }
             }
         });
     }
@@ -72,14 +74,19 @@ public class RegistrationFragment extends Fragment {
     private void setupUsernameListener() {
         EditText usernameEditText = (EditText) mView.findViewById(R.id.username_input);
         usernameEditText.addTextChangedListener(
-                new UsernameTextWatcher(getContext(), mView, R.id.username_validation_icon, R.id.username_validation_text)
+                new UsernameTextWatcher(
+                        getContext(), mView,
+                        R.id.username_validation_icon, R.id.username_validation_text
+                )
         );
         mView.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText usernameField = (EditText) mView.findViewById(R.id.username_input);
-                if (mUserAdapter.checkValidUnusedUsername(usernameField.getText().toString()) == UserAdapter.VALID_UNUSED)
+                if (mUserAdapter.checkValidUnusedUsername(usernameField.getText().toString())
+                        == UserAdapter.VALID_UNUSED) {
                     mActivity.nextPage();
+                }
             }
         });
     }
@@ -87,14 +94,19 @@ public class RegistrationFragment extends Fragment {
     private void setupEmailListeners() {
         EditText emailEditText = (EditText) mView.findViewById(R.id.email_input);
         emailEditText.addTextChangedListener(
-                new EmailTextWatcher(getContext(), mView, R.id.email_validation_icon, R.id.email_validation_text)
+                new EmailTextWatcher(
+                        getContext(), mView,
+                        R.id.email_validation_icon, R.id.email_validation_text
+                )
         );
         mView.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText emailField = (EditText) mView.findViewById(R.id.email_input);
-                if (mUserAdapter.checkValidUnusedEmail(emailField.getText().toString()) == UserAdapter.VALID_UNUSED)
+                if (mUserAdapter.checkValidUnusedEmail(emailField.getText().toString())
+                        == UserAdapter.VALID_UNUSED) {
                     mActivity.nextPage();
+                }
             }
         });
     }
@@ -104,16 +116,25 @@ public class RegistrationFragment extends Fragment {
         final EditText matchingPassword = (EditText) mView.findViewById(R.id.password2_input);
 
         password.addTextChangedListener(
-                new PasswordTextWatcher(getContext(), mView, R.id.password_validation_icon, R.id.password_validation_text));
+                new PasswordTextWatcher(
+                        getContext(), mView,
+                        R.id.password_validation_icon, R.id.password_validation_text
+                ));
         matchingPassword.addTextChangedListener(
-                new PasswordMatchTextWatcher(getContext(), mView, R.id.username_validation_icon, R.id.username_validation_text, R.id.password_input));
+                new PasswordMatchTextWatcher(
+                        getContext(), mView,
+                        R.id.username_validation_icon, R.id.username_validation_text,
+                        R.id.password_input
+                ));
 
         mView.findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mUserAdapter.checkValidPassword(password.getText().toString())
-                        && (password.getText().toString().equals(matchingPassword.getText().toString())))
+                        && (password.getText().toString()
+                        .equals(matchingPassword.getText().toString()))) {
                     mActivity.register();
+                }
             }
         });
     }
