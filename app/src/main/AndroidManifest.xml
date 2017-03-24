@@ -17,7 +17,6 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name="com.civify.civify.view.LoginActivity"
-            android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
