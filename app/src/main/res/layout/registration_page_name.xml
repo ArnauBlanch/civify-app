@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/intro_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:ignore="MissingPrefix">
+    android:background="#ffffff"
+    tools:ignore="MissingPrefix,Overdraw">
 
   <TextView
       android:layout_width="match_parent"
@@ -14,7 +14,6 @@
       android:textAlignment="center"
       android:textSize="28sp"
       android:textColor="#000000"
-      android:id="@+id/title"
       fontPath="fonts/Nunito-ExtraBold.ttf"
       />
 
@@ -22,11 +21,8 @@
       android:orientation="vertical"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:id="@+id/edit_text_layout"
-      >
+      android:layout_gravity="center_horizontal">
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/name_layout"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -44,25 +40,24 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:orientation="horizontal"
-          >
+          tools:ignore="UseCompoundDrawables">
         <ImageView
-            android:id="@+id/name_validation_icon"
+            android:contentDescription="@string/name_validation_icon"
             android:layout_width="15dp"
             android:layout_height="15dp"/>
 
         <TextView
-            android:id="@+id/name_validation_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             fontPath="fonts/Nunito-SemiBold.ttf"
             />
       </LinearLayout>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/surname_layout"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -80,18 +75,18 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:orientation="horizontal"
-          >
+          tools:ignore="UseCompoundDrawables">
         <ImageView
-            android:id="@+id/surname_validation_icon"
+            android:contentDescription="@string/surname_validation_icon"
             android:layout_width="15dp"
             android:layout_height="15dp"/>
 
         <TextView
-            android:id="@+id/surname_validation_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             fontPath="fonts/Nunito-SemiBold.ttf"
             />
       </LinearLayout>
@@ -110,7 +105,6 @@
       android:textColor="#ffffff"
       android:textSize="24sp"
       fontPath="fonts/Nunito-Bold.ttf"
-      android:elevation="0dp"
       />
 
 </LinearLayout>
