@@ -22,7 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.civify.civify.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[] {
+    private static final String[] DUMMY_CREDENTIALS = {
             "foo@example.com:hello", "bar@example.com:world"
     };
 
@@ -57,7 +59,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
@@ -112,7 +115,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Callback received when a permissions request has been completed.
      */
-    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
         if (requestCode == REQUEST_READ_CONTACTS) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -127,19 +131,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
+        if (mAuthTask == null) {
+            // Reset errors.
+            mEmailView.setError(null);
+            mPasswordView.setError(null);
+
+            // Store values at the time of the login attempt.
+            String email = mEmailView.getText().toString();
+            String password = mPasswordView.getText().toString();
+
+            validatePasswordAndEmail(email, password);
         }
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        validatePasswordAndEmail(email, password);
     }
 
     private void validatePasswordAndEmail(String email, String password) {
@@ -203,7 +205,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .setDuration(shortAnimTime)
                 .alpha(show ? 0 : 1)
                 .setListener(new AnimatorListenerAdapter() {
-                    @Override public void onAnimationEnd(Animator animation) {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
                         mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                     }
                 });
@@ -213,13 +216,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .setDuration(shortAnimTime)
                 .alpha(show ? 1 : 0)
                 .setListener(new AnimatorListenerAdapter() {
-                    @Override public void onAnimationEnd(Animator animation) {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
                         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
                     }
                 });
     }
 
-    @Override public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
                 // Retrieve data rows for the device user's 'profile' contact.
                 Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
@@ -235,7 +240,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
-    @Override public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -246,14 +252,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         addEmailsToAutoComplete(emails);
     }
 
-    @Override public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_dropdown_item_1line,
+                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,
                         emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -272,7 +279,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    private class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
@@ -282,7 +289,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPassword = password;
         }
 
-        @Override protected Boolean doInBackground(Void... params) {
+        @Override
+        protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
             /*try {
@@ -304,7 +312,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
 
-        @Override protected void onPostExecute(final Boolean success) {
+        @Override
+        protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
 
@@ -316,7 +325,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
 
-        @Override protected void onCancelled() {
+        @Override
+        protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
         }
