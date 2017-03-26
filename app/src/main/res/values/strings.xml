@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Civify</string>
-    <string name="title_activity_basic">BasicActivity</string>
+  <string name="app_name">Civify</string>
+  <string name="title_activity_basic">BasicActivity</string>
+  <string name="title_activity_event_details">EventDetailsActivity</string>
+  <string name="share">share</string>
+  <string name="category">Category:</string>
+  <string name="questionRisk">Poses a risk?</string>
 </resources>
