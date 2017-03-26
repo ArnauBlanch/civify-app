@@ -10,7 +10,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/logo_planeta"
+        android:icon="@drawable/ic_logo_planeta"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
@@ -18,7 +18,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <!--suppress AndroidDomInspection -->
         <activity
-            android:name=".activity.RegistrationActivity" >
+            android:name=".activity.HomeActivity" >
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name=".activity.registration.RegistrationActivity"/>-->
+        <activity android:name=".activity.registration.RegistrationActivity"/>
     </application>
 
 </manifest>
