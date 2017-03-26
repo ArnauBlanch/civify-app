@@ -11,9 +11,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        jackOptions {
-            enabled false
-        }
     }
     buildTypes {
         release {
@@ -22,7 +19,7 @@ android {
         }
     }
     lintOptions {
-        abortOnError false
+        abortOnError true
     }
 }
 
@@ -40,7 +37,7 @@ task checkstyle(dependsOn:['clean'], type: Checkstyle) {
 
 tasks.withType(Checkstyle) {
     showViolations true
-    ignoreFailures true
+    ignoreFailures false
 
     reports {
         xml.enabled false
@@ -54,7 +51,7 @@ check.dependsOn('checkstyle')
 assemble.dependsOn('lint')
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

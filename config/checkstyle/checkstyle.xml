@@ -90,7 +90,6 @@
              value="WhitespaceAround: ''{0}'' is not preceded with whitespace."/>
         </module>
         <module name="OneStatementPerLine"/>
-        <module name="MultipleVariableDeclarations"/>
         <module name="ArrayTypeStyle"/>
         <module name="MissingSwitchDefault"/>
         <module name="FallThrough"/>
@@ -196,7 +195,7 @@
         <module name="CustomImportOrder">
             <property name="sortImportsInGroupAlphabetically" value="true"/>
             <property name="separateLineBetweenGroups" value="true"/>
-            <property name="customImportOrderRules" value="THIRD_PARTY_PACKAGE###STATIC"/>
+            <property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>
         </module>
         <module name="MethodParamPad"/>
         <module name="ParenPad"/>
@@ -208,6 +207,7 @@
         <module name="AnnotationLocation">
             <property name="id" value="AnnotationLocationMostCases"/>
             <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF"/>
+            <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
         </module>
         <module name="AnnotationLocation">
             <property name="id" value="AnnotationLocationVariables"/>
@@ -246,7 +246,9 @@
         </module>
         <module name="IllegalToken"/>
         <module name="InnerAssignment"/>
-        <module name="MagicNumber"/>
+        <module name="MagicNumber">
+            <property name="ignoreNumbers" value="-1,0,1,2,4,8"/>
+        </module>
         <module name="ModifiedControlVariable"/>
         <module name="MultipleStringLiterals">
             <property name="ignoreStringsRegexp" value='^(("")|(", "))$'/>
@@ -273,6 +275,7 @@
         <module name="VisibilityModifier"/>
         <module name="MissingDeprecated"/>
         <module name="MissingOverride"/>
+        <module name="CovariantEquals"/>
         <module name="SuppressWarnings">
             <property name="format" value="^unused$"/>
         </module>
