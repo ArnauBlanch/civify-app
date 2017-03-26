@@ -37,4 +37,5 @@
     <string name="enter_surname">Please, enter your surname</string>
     <string name="signInWith">Sign in with:</string>
     <string name="sign_in">Sign in</string>
+    <string name="title_activity_basic">BasicActivity</string>
 </resources>
