@@ -11,8 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.civify.civify.R;
+import com.civify.civify.activity.model.UserFake;
 
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +49,9 @@ public class DrawerActivity extends BaseActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         
         mNavigationView.getMenu().getItem(0).setChecked(true);
+        
+        // sets up user
+        UserFake user = new UserFake();
     }
     
     @Override
