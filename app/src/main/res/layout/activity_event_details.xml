@@ -17,7 +17,6 @@
         android:id="@+id/eventView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/btn_dialog"
         android:layout_weight="40"
         />
     <LinearLayout
@@ -25,6 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="20"
         >
       <TextView
@@ -34,6 +35,7 @@
           android:layout_weight="2"
           android:layout_gravity="center_vertical"
           android:text="Name"
+          android:textSize="30sp"
           />
       <LinearLayout
           android:id="@+id/likesShareLayout"
@@ -54,8 +56,9 @@
               android:id="@+id/shareView"
               android:layout_width="19dp"
               android:layout_height="16dp"
+              android:layout_marginLeft="20sp"
               android:layout_gravity="center_vertical"
-              app:srcCompat="@mipmap/ic_launcher"
+              android:background="@drawable/ic_share"
               />
           <TextView
               android:id="@+id/shareText"
@@ -73,6 +76,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="10"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         >
       <TextView
           android:id="@+id/categoryText"
@@ -80,6 +85,8 @@
           android:layout_height="wrap_content"
           android:layout_gravity="center_vertical"
           android:text="@string/category"
+          android:textSize="18sp"
+
           />
       <ImageView
           android:id="@+id/categoryView"
@@ -87,7 +94,7 @@
           android:layout_height="21dp"
           android:layout_marginLeft="40dp"
           android:layout_gravity="center_vertical"
-          app:srcCompat="@mipmap/ic_launcher_round"
+          android:background="@drawable/ic_semaphore"
           />
       <TextView
           android:id="@+id/nameCategoryText"
@@ -96,6 +103,7 @@
           android:layout_weight="1"
           android:layout_gravity="center_vertical"
           android:text="Name Category"
+          android:textSize="18sp"
           />
     </LinearLayout>
     <LinearLayout
@@ -104,6 +112,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="5"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         >
       <TextView
           android:id="@+id/riskQuestion"
@@ -119,6 +129,7 @@
           android:layout_gravity="center_vertical"
           android:layout_marginLeft="20dp"
           android:text="Yes/No"
+          android:textColor="#27AE60"
           />
     </LinearLayout>
     <TextView
@@ -128,6 +139,8 @@
         android:text="Description"
         android:gravity="center_vertical"
         android:layout_weight="20"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         />
     <LinearLayout
         android:id="@+id/dataLayout"
@@ -141,19 +154,23 @@
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
           android:gravity="bottom"
+          android:layout_marginLeft="10dp"
           android:text="Street"
+          android:textColor="#959595"
           />
       <LinearLayout
           android:id="@+id/timeDistanceLayout"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:gravity="right"
+          android:layout_marginRight="10dp"
           android:orientation="vertical"
           >
         <TextView
             android:id="@+id/sinceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#959595"
             android:text="Since"
             />
         <TextView
@@ -167,17 +184,21 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/buttonsLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="15"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp"
         ></LinearLayout>
     <LinearLayout
         android:id="@+id/userLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="25"
         android:orientation="vertical"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp"
         >
       <ImageView
           android:id="@+id/fakeImageUser"
