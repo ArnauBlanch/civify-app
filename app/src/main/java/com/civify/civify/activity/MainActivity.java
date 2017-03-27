@@ -11,9 +11,7 @@ import com.civify.civify.R;
 import com.civify.civify.activity.registration.RegistrationActivity;
 
 public class MainActivity extends BaseActivity {
-    private static final String LOGIN = "login";
-    private static final String GOOGLE = "google";
-    private static final String TWITTER = "twitter";
+    private static final String MSG_NOT_IMPLEMENTED = "Feature not implemented yet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,37 +19,37 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         Button buttonRegister = (Button) findViewById(R.id.registerButton);
-        buttonRegister.setOnClickListener(mListener);
-        Button buttonLogin = (Button) findViewById(R.id.signInButton);
-        buttonLogin.setOnClickListener(mListener);
-        Button buttonGoogle = (Button) findViewById(R.id.buttonGoogle);
-        buttonGoogle.setOnClickListener(mListener);
-        Button buttonTwitter = (Button) findViewById(R.id.buttonTwitter);
-        buttonTwitter.setOnClickListener(mListener);
-    }
-
-    private OnClickListener mListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.registerButton:
-                    Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.signInButton:
-                    Toast.makeText(getApplicationContext(), LOGIN, Toast.LENGTH_LONG).show();
-                    break;
-                case R.id.buttonGoogle:
-                    Toast.makeText(getApplicationContext(), GOOGLE, Toast.LENGTH_LONG).show();
-                    break;
-                case R.id.buttonTwitter:
-                    Toast.makeText(getApplicationContext(), TWITTER, Toast.LENGTH_LONG).show();
-                    break;
-                default:
-                    break;
+        buttonRegister.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getApplicationContext(), RegistrationActivity.class);
+                startActivity(intent);
             }
-        }
-    };
-
-
+        });
+        Button buttonLogin = (Button) findViewById(R.id.signInButton);
+        buttonLogin.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),
+                        MSG_NOT_IMPLEMENTED, Toast.LENGTH_LONG).show();
+            }
+        });
+        Button buttonGoogle = (Button) findViewById(R.id.buttonGoogle);
+        buttonGoogle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),
+                        MSG_NOT_IMPLEMENTED, Toast.LENGTH_LONG).show();
+            }
+        });
+        Button buttonTwitter = (Button) findViewById(R.id.buttonTwitter);
+        buttonTwitter.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),
+                        MSG_NOT_IMPLEMENTED, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
