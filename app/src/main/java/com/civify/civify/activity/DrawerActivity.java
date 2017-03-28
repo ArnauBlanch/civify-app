@@ -21,6 +21,7 @@ public class DrawerActivity extends BaseActivity
     
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private int mCurrentFragment;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +50,7 @@ public class DrawerActivity extends BaseActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         
         mNavigationView.getMenu().getItem(0).setChecked(true);
-        
-        // sets up user
-        UserFake user = new UserFake();
+        mCurrentFragment = 0;
     }
     
     @Override
@@ -92,19 +91,19 @@ public class DrawerActivity extends BaseActivity
         int id = item.getItemId();
         
         if (id == R.id.nav_navigate) {
-            // Handle action
+            mCurrentFragment = 0;
         } else if (id == R.id.nav_wall) {
-            // Handle action
+            mCurrentFragment = 1;
         } else if (id == R.id.nav_profile) {
-            // Handle action
+            mCurrentFragment = 2;
         } else if (id == R.id.nav_rewards) {
-            // Handle action
+            mCurrentFragment = 3;
         } else if (id == R.id.nav_achievements) {
-            // Handle action
+            mCurrentFragment = 4;
         } else if (id == R.id.nav_events) {
-            // Handle action
+            mCurrentFragment = 5;
         } else if (id == R.id.nav_settings) {
-            // Handle action
+            mCurrentFragment = 6;
         }
         
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
