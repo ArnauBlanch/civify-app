@@ -11,27 +11,33 @@ import com.civify.civify.R;
 import com.civify.civify.adapter.UserAdapter;
 import com.civify.civify.utils.AdapterFactory;
 
-@SuppressWarnings("SameParameterValue")
+@SuppressWarnings({ "SameParameterValue", "ElementOnlyUsedFromTestCode", "LawOfDemeter" })
 class EmailTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
     private final Context mContext;
     private final UserAdapter mUserAdapter;
 
-    EmailTextWatcher(Context context, View view, int iconResource, int messageResource) {
-        super();
-        this.mContext = context;
+    EmailTextWatcher(View view, int iconResource, int messageResource) {
+        this(AdapterFactory.getInstance().getUserAdapter(),
+                view, iconResource, messageResource);
+    }
+
+    EmailTextWatcher(UserAdapter userAdapter, View view, int iconResource, int messageResource) {
+        this.mUserAdapter = userAdapter;
+        this.mContext = view.getContext();
         this.mIcon = (ImageView) view.findViewById(iconResource);
         this.mMessageView = (TextView) view.findViewById(messageResource);
-        this.mUserAdapter = AdapterFactory.getInstance().getUserController();
     }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+
     }
 
     @Override

@@ -8,6 +8,7 @@
     tools:ignore="MissingPrefix,Overdraw">
 
     <TextView
+        android:id="@+id/title1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/choose_username"
@@ -34,8 +35,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
+                android:singleLine="true"
                 android:textSize="22sp"
-                android:hint="@string/username_caps" />
+                android:hint="@string/username"
+                android:imeOptions="actionDone"
+                tools:ignore="Deprecated"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -72,6 +77,7 @@
         android:textAllCaps="false"
         android:textColor="#ffffff"
         android:textSize="24sp"
+        android:onClick="usernameButtonListener"
         fontPath="fonts/Nunito-Bold.ttf" />
 
 </LinearLayout>

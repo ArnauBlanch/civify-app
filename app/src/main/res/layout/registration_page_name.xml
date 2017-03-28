@@ -8,6 +8,7 @@
     tools:ignore="MissingPrefix,Overdraw">
 
     <TextView
+        android:id="@+id/title0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/whats_your_name"
@@ -35,22 +36,32 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000"
                 android:textSize="22sp"
-                android:hint="@string/name_caps" />
+                android:singleLine="true"
+                android:hint="@string/name"
+                tools:ignore="Deprecated"
+                />
 
             <LinearLayout
+                android:id="@+id/name_validation"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
+                    android:id="@+id/name_validation_icon"
                     android:contentDescription="@string/name_validation_icon"
+                    android:src="@drawable/ic_cancel"
                     android:layout_width="15dp"
                     android:layout_height="15dp" />
 
                 <TextView
+                    android:id="@+id/name_validation_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/name_not_validated"
+                    android:textColor="@color/red"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
@@ -71,20 +82,31 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000"
                 android:textSize="22sp"
-                android:hint="@string/surname_caps" />
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:hint="@string/surname"
+                tools:ignore="Deprecated"
+                />
 
             <LinearLayout
+                android:id="@+id/surname_validation"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
+                    android:id="@+id/surname_validation_icon"
                     android:contentDescription="@string/surname_validation_icon"
+                    android:src="@drawable/ic_cancel"
                     android:layout_width="15dp"
                     android:layout_height="15dp" />
 
                 <TextView
+                    android:id="@+id/surname_validation_text"
+                    android:text="@string/surname_not_validated"
+                    android:textColor="@color/red"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -106,6 +128,7 @@
         android:textAllCaps="false"
         android:textColor="#ffffff"
         android:textSize="24sp"
+        android:onClick="nameAndSurnameButtonListener"
         fontPath="fonts/Nunito-Bold.ttf" />
 
 </LinearLayout>

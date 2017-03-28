@@ -11,19 +11,23 @@ import com.civify.civify.R;
 import com.civify.civify.adapter.UserAdapter;
 import com.civify.civify.utils.AdapterFactory;
 
-@SuppressWarnings("SameParameterValue")
+@SuppressWarnings({ "ElementOnlyUsedFromTestCode", "LawOfDemeter" })
 class PasswordTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
     private final Context mContext;
     private final UserAdapter mUserAdapter;
 
-    PasswordTextWatcher(Context context, View view, int iconResource, int messageResource) {
-        super();
-        this.mContext = context;
+    PasswordTextWatcher(View view, int iconResource, int messageResource) {
+        this(AdapterFactory.getInstance().getUserAdapter(),
+                view, iconResource, messageResource);
+    }
+
+    PasswordTextWatcher(UserAdapter userAdapter, View view, int iconResource, int messageResource) {
+        this.mUserAdapter = userAdapter;
+        this.mContext = view.getContext();
         this.mIcon = (ImageView) view.findViewById(iconResource);
         this.mMessageView = (TextView) view.findViewById(messageResource);
-        this.mUserAdapter = AdapterFactory.getInstance().getUserController();
     }
 
     @Override
