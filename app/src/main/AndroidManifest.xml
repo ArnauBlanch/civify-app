@@ -3,27 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.civify.civify">
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/logo_planeta"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:fullBackupContent="@xml/backup_descriptor"
-        tools:ignore="GoogleAppIndexingWarning">
-        <!--suppress AndroidDomInspection -->
-        <activity
-            android:name=".activity.registration.RegistrationActivity" >
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+  <application
+      android:allowBackup="true"
+      android:fullBackupContent="@xml/backup_descriptor"
+      android:icon="@drawable/logo_planeta"
+      android:label="@string/app_name"
+      android:roundIcon="@drawable/logo_planeta"
+      android:supportsRtl="true"
+      android:theme="@style/AppTheme.NoActionBar"
+      tools:ignore="GoogleAppIndexingWarning">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.BaseActivity" />
+    <!-- suppress AndroidDomInspection -->
+    <activity android:name=".activity.MainActivity">
+      android:label="@string/app_name"
+      android:windowSoftInputMode="adjustPan">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-    </application>
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:name=".activity.BaseActivity" />
+    <activity android:name=".activity.registration.RegistrationActivity" />
+  </application>
 
 </manifest>
