@@ -1,11 +1,13 @@
 package com.civify.civify.controller;
 
-import com.civify.civify.model.User;
-
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface CivifyLoginService {
     @POST("/login")
-    Call<User> basicLogin();
+    Call<String> loginWithEmail(@Body CivifyEmailCredentials credentials);
+
+    @POST("/login")
+    Call<String> loginWithUsername(@Body CivifyUsernameCredentials credentials);
 }

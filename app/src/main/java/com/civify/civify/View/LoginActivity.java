@@ -12,10 +12,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
@@ -24,6 +26,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.civify.civify.R;
+import com.civify.civify.controller.LoginAdapterImpl;
+import com.civify.civify.controller.LoginError;
+import com.civify.civify.controller.LoginFinishedCallback;
+import com.civify.civify.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +40,7 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
 
+    private static final String TAG = LoginActivity.class.getSimpleName();
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -81,6 +88,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        LoginAdapterImpl loginAdapterImpl = new LoginAdapterImpl(PreferenceManager.getDefaultSharedPreferences(this));
+        loginAdapterImpl.login("keko", "1234", new LoginFinishedCallback() {
+            @Override
+            public void onLoginSucceeded(User u) {
+                Log.d(TAG, "biene" + u.toString());
+            }
+
+            @Override
+            public void onLoginFailed(LoginError e) {
+               Log.d(TAG, e.getType().toString());
+            }
+
+        });
 
     }
 
