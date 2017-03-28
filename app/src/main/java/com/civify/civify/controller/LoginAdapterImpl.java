@@ -4,14 +4,15 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.civify.civify.model.User;
+import java.io.UnsupportedEncodingException;
+
+import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +25,9 @@ public class LoginAdapterImpl implements LoginAdapter {
     private static final String TAG = LoginAdapterImpl.class.getSimpleName();
     private static final String AUTH_TOKEN = "authToken";
     private static final String AUTH_TOKEN_JSON = "auth_token";
+    private static final String NEEDS_LOGIN_MESSAGE = "Needs login";
+    private static final String USER_NOT_EXISTS_MESSAGE = "User not exists";
+    private static final String INVALID_CREDENTIALS_MESSAGE = "Invalid credentials";
     private LoginFinishedCallback mLoginFinishedCallback;
     private SharedPreferences mSharedPreferences;
     private String mFirstCredential;
@@ -53,16 +57,18 @@ public class LoginAdapterImpl implements LoginAdapter {
         return !mAuthToken.isEmpty();
     }
 
-
     private LoginError generateException(int statusCode) {
         switch (statusCode) {
-            case 404:
-                return new LoginError(LoginError.ErrorType.USER_NOT_EXISTS, "User not exists");
-            case 401:
+            case HttpURLConnection.HTTP_NOT_FOUND:
+                return new LoginError(LoginError.ErrorType.USER_NOT_EXISTS,
+                        USER_NOT_EXISTS_MESSAGE);
+            case HttpURLConnection.HTTP_UNAUTHORIZED:
                 return new LoginError(
-                        LoginError.ErrorType.INVALID_CREDENTIALS, "Invalid credentials");
+                        LoginError.ErrorType.INVALID_CREDENTIALS,
+                        INVALID_CREDENTIALS_MESSAGE);
+            default:
+                return null;
         }
-        return null;
     }
 
     private void callLoginService() {
@@ -91,6 +97,7 @@ public class LoginAdapterImpl implements LoginAdapter {
                     mLoginFinishedCallback.onLoginFailed(generateException(response.code()));
                 }
             }
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Log.d(TAG, "Not_sent: Login error using login service" + t.getMessage());
@@ -117,11 +124,12 @@ public class LoginAdapterImpl implements LoginAdapter {
                         Log.d(TAG, "User obtained using Me Service");
                         mLoginFinishedCallback.onLoginSucceeded(response.body());
                     } else {
-                        Log.e(TAG, "Not_sent: Me error" + response.code() + response.message());
-                        if (response.code() == 401) {
+                        Log.e(TAG, "Not_sent: Me error on response" + response.code()
+                                + response.message());
+                        if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                             mLoginFinishedCallback.onLoginFailed(
                                     new LoginError(LoginError.ErrorType.NOT_LOGGED_IN,
-                                            "Needs login"));
+                                            NEEDS_LOGIN_MESSAGE));
                         }
                     }
                 }
@@ -131,10 +139,9 @@ public class LoginAdapterImpl implements LoginAdapter {
                     Log.e(TAG, "Not_sent: Me error" + t.getMessage());
                 }
             });
-        }
-        else {
+        } else {
             mLoginFinishedCallback.onLoginFailed(
-                    new LoginError(LoginError.ErrorType.NOT_LOGGED_IN, "Needs login"));
+                    new LoginError(LoginError.ErrorType.NOT_LOGGED_IN, NEEDS_LOGIN_MESSAGE));
         }
     }
 
@@ -145,10 +152,10 @@ public class LoginAdapterImpl implements LoginAdapter {
     }
 
     private void fetchToken(String body) {
-        JSONObject tokenAsJSON = null;
+        JSONObject tokenAsJson = null;
         try {
-            tokenAsJSON = new JSONObject(body);
-            mAuthToken = tokenAsJSON.get(AUTH_TOKEN_JSON).toString();
+            tokenAsJson = new JSONObject(body);
+            mAuthToken = tokenAsJson.get(AUTH_TOKEN_JSON).toString();
             storeToken();
         } catch (JSONException e) {
             e.printStackTrace();
