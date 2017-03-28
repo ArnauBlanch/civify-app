@@ -6,161 +6,223 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 public class Issue {
-
-    @Expose()
+    @Expose
     @SerializedName("title")
     private String mTitle;
 
-    @Expose()
+    @Expose
     @SerializedName("description")
     private String mDescription;
 
-    @Expose()
+    @Expose
     @SerializedName("category")
     private String mCategory;
 
-    @Expose()
+    @Expose
     @SerializedName("risk")
     private boolean mRisk;
 
-    @Expose()
+    @Expose
     @SerializedName("longitude")
     private float mLongitude;
 
-    @Expose()
+    @Expose
     @SerializedName("latitude")
     private float mLatitude;
 
-    @Expose()
-    @SerializedName("username")
-    private String mUsername;
-
-    @Expose(serialize = false)          // deserialize = true
+    @Expose(serialize = false)
     @SerializedName("confirm_votes")
     private int mConfirmVotes;
 
-    @Expose(serialize = false)          // deserialize = true
+    @Expose(serialize = false)
     @SerializedName("resolved_votes")
     private int mResolvedVotes;
 
-    @Expose(serialize = false)          // deserialize = true
+    @Expose(serialize = false)
     @SerializedName("resolved")
     private boolean mResolved;
 
-    @Expose(serialize = false)          // deserialize = true
+    @Expose(serialize = false)
     @SerializedName("reports")
     private int mReports;
 
-    @Expose(serialize = false)          // deserialize = true
+    @Expose(serialize = false)
     @SerializedName("created_at")
     private Date mCreatedAt;
 
-    public Issue(String title, String description, String category, boolean risk, float longitude,
-                 float latitude, String username) {
-        this.mTitle = title;
-        this.mDescription = description;
-        this.mCategory = category;
-        this.mRisk = risk;
-        this.mLongitude = longitude;
-        this.mLatitude = latitude;
-        this.mUsername = username;
-        mConfirmVotes = mResolvedVotes = mReports = 0;
-        mResolved = false;
+    @Expose(serialize = false)
+    @SerializedName("updated_at")
+    private Date mUpdatedAt;
+
+    @Expose(serialize = false)
+    @SerializedName("issue_auth_token")
+    private String mIssueAuthToken;
+
+    @Expose(serialize = false)
+    @SerializedName("user_auth_token")
+    private String mUserAuthToken;
+
+    @Expose
+    @SerializedName("picture")
+    private Picture mPicture;
+
+    public Issue() {
+
     }
 
-    public String getmTitle() {
+    public Issue(String title, String description, String category, boolean risk, float longitude,
+            float latitude, Picture picture) {
+        mTitle = title;
+        mDescription = description;
+        mCategory = category;
+        mRisk = risk;
+        mLongitude = longitude;
+        mLatitude = latitude;
+        mPicture = picture;
+        mResolved = false;
+        mResolvedVotes = 0;
+        mConfirmVotes = 0;
+        mReports = 0;
+    }
+
+    public Issue(String title, String description, String category, boolean risk, float longitude,
+            float latitude, int confirmVotes, int resolvedVotes, boolean resolved, int reports,
+            Date createdAt, Date updatedAt, String issueAuthToken, String userAuthToken,
+            Picture picture) {
+        mTitle = title;
+        mDescription = description;
+        mCategory = category;
+        mRisk = risk;
+        mLongitude = longitude;
+        mLatitude = latitude;
+        mConfirmVotes = confirmVotes;
+        mResolvedVotes = resolvedVotes;
+        mResolved = resolved;
+        mReports = reports;
+        mCreatedAt = createdAt;
+        mUpdatedAt = updatedAt;
+        mIssueAuthToken = issueAuthToken;
+        mUserAuthToken = userAuthToken;
+        mPicture = picture;
+    }
+
+    public String getTitle() {
         return mTitle;
     }
 
-    public void setmTitle(String mTitle) {
-        this.mTitle = mTitle;
+    public void setTitle(String title) {
+        this.mTitle = title;
     }
 
-    public String getmDescription() {
+    public String getDescription() {
         return mDescription;
     }
 
-    public void setmDescription(String mDescription) {
-        this.mDescription = mDescription;
+    public void setDescription(String description) {
+        this.mDescription = description;
     }
 
-    public String getmCategory() {
+    public String getCategory() {
         return mCategory;
     }
 
-    public void setmCategory(String mCategory) {
-        this.mCategory = mCategory;
+    public void setCategory(String category) {
+        this.mCategory = category;
     }
 
-    public boolean ismRisk() {
+    public boolean isRisk() {
         return mRisk;
     }
 
-    public void setmRisk(boolean mRisk) {
-        this.mRisk = mRisk;
+    public void setRisk(boolean risk) {
+        this.mRisk = risk;
     }
 
-    public float getmLongitude() {
+    public float getLongitude() {
         return mLongitude;
     }
 
-    public void setmLongitude(float mLongitude) {
-        this.mLongitude = mLongitude;
+    public void setLongitude(float longitude) {
+        this.mLongitude = longitude;
     }
 
-    public float getmLatitude() {
+    public float getLatitude() {
         return mLatitude;
     }
 
-    public void setmLatitude(float mLatitude) {
-        this.mLatitude = mLatitude;
+    public void setLatitude(float latitude) {
+        this.mLatitude = latitude;
     }
 
-    public String getmUsername() {
-        return mUsername;
-    }
-
-    public void setmUsername(String mUsername) {
-        this.mUsername = mUsername;
-    }
-
-    public int getmConfirmVotes() {
+    public int getConfirmVotes() {
         return mConfirmVotes;
     }
 
-    public void setmConfirmVotes(int mConfirmVotes) {
-        this.mConfirmVotes = mConfirmVotes;
+    public void setConfirmVotes(int confirmVotes) {
+        this.mConfirmVotes = confirmVotes;
     }
 
-    public int getmResolvedVotes() {
+    public int getResolvedVotes() {
         return mResolvedVotes;
     }
 
-    public void setmResolvedVotes(int mResolvedVotes) {
-        this.mResolvedVotes = mResolvedVotes;
+    public void setResolvedVotes(int resolvedVotes) {
+        this.mResolvedVotes = resolvedVotes;
     }
 
-    public boolean ismResolved() {
+    public boolean isResolved() {
         return mResolved;
     }
 
-    public void setmResolved(boolean mResolved) {
-        this.mResolved = mResolved;
+    public void setResolved(boolean resolved) {
+        this.mResolved = resolved;
     }
 
-    public int getmReports() {
+    public int getReports() {
         return mReports;
     }
 
-    public void setmReports(int mReports) {
-        this.mReports = mReports;
+    public void setReports(int reports) {
+        this.mReports = reports;
     }
 
-    public Date getmCreatedAt() {
+    public Date getCreatedAt() {
         return mCreatedAt;
     }
 
-    public void setmCreatedAt(Date mCreatedAt) {
-        this.mCreatedAt = mCreatedAt;
+    public void setCreatedAt(Date createdAt) {
+        this.mCreatedAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return mUpdatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        mUpdatedAt = updatedAt;
+    }
+
+    public String getIssueAuthToken() {
+        return mIssueAuthToken;
+    }
+
+    public void setIssueAuthToken(String issueAuthToken) {
+        mIssueAuthToken = issueAuthToken;
+    }
+
+    public String getUserAuthToken() {
+        return mUserAuthToken;
+    }
+
+    public void setUserAuthToken(String userAuthToken) {
+        mUserAuthToken = userAuthToken;
+    }
+
+    public Picture getPicture() {
+        return mPicture;
+    }
+
+    public void setPicture(Picture picture) {
+        mPicture = picture;
     }
 }
