@@ -45,9 +45,7 @@ public class RegistrationActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            if (mViewPager.getCurrentItem() > 0) {
-                previousPage();
-            }
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
