@@ -10,17 +10,16 @@ import android.widget.TextView;
 
 import com.civify.civify.R;
 
-@SuppressWarnings("SameParameterValue")
+@SuppressWarnings({ "SameParameterValue", "ElementOnlyUsedFromTestCode" })
 class PasswordMatchTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
     private final Context mContext;
     private final EditText mPasswordInput;
 
-    public PasswordMatchTextWatcher(
-            Context context, View view, int iconResource, int messageResource, int passwordInput) {
-        super();
-        this.mContext = context;
+    PasswordMatchTextWatcher(View view, int iconResource,
+            int messageResource, int passwordInput) {
+        this.mContext = view.getContext();
         this.mIcon = (ImageView) view.findViewById(iconResource);
         this.mMessageView = (TextView) view.findViewById(messageResource);
         this.mPasswordInput = (EditText) view.findViewById(passwordInput);

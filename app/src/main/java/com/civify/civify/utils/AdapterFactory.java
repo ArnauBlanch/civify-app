@@ -13,7 +13,7 @@ public class AdapterFactory {
         return sInstance;
     }
 
-    public UserAdapter getUserController() {
+    public UserAdapter getUserAdapter() {
         if (mUserAdapter == null) {
             mUserAdapter = new UserAdapter();
         }

@@ -11,19 +11,22 @@ import com.civify.civify.R;
 import com.civify.civify.adapter.UserAdapter;
 import com.civify.civify.utils.AdapterFactory;
 
-@SuppressWarnings("SameParameterValue")
+@SuppressWarnings({ "SameParameterValue", "ElementOnlyUsedFromTestCode", "LawOfDemeter" })
 class UsernameTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
     private final Context mContext;
     private final UserAdapter mUserAdapter;
 
-    UsernameTextWatcher(Context context, View view, int iconResource, int messageResource) {
-        super();
-        this.mContext = context;
+    UsernameTextWatcher(View view, int iconResource, int messageResource) {
+        this(AdapterFactory.getInstance().getUserAdapter(), view, iconResource, messageResource);
+    }
+
+    UsernameTextWatcher(UserAdapter userAdapter, View view, int iconResource, int messageResource) {
+        this.mUserAdapter = userAdapter;
+        this.mContext = view.getContext();
         this.mIcon = (ImageView) view.findViewById(iconResource);
         this.mMessageView = (TextView) view.findViewById(messageResource);
-        this.mUserAdapter = AdapterFactory.getInstance().getUserController();
     }
 
     @Override
