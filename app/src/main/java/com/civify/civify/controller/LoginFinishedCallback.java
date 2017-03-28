@@ -6,5 +6,5 @@ public interface LoginFinishedCallback {
 
     void onLoginSucceeded(User u);
 
-    void onLoginFailed(Throwable t);
+    void onLoginFailed(LoginError t);
 }

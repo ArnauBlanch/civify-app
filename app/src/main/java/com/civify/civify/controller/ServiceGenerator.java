@@ -1,29 +1,42 @@
 package com.civify.civify.controller;
 
-import okhttp3.Credentials;
+import android.support.annotation.Nullable;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.Headers;
+
+/*
+diferenciar entre /login o lo demas
+ */
 
 public class ServiceGenerator {
 
-    private static final String BASE_URL = "http://10.0.2.2:8080/test/";
+    private static final String BASE_URL = "http://10.0.2.2:3000/";
     private static ServiceGenerator sServiceGeneratorInstance;
 
     private Retrofit.Builder mBuilder;
     private Retrofit mRetrofit;
     private OkHttpClient.Builder mHttpClient;
     private HttpLoggingInterceptor mLogging;
+    private HeaderInterceptor mHeaderInterceptor;
 
 
-    protected ServiceGenerator() {
+    private ServiceGenerator() {
         mBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create());
         mRetrofit = mBuilder.build();
         mHttpClient = new OkHttpClient.Builder();
         mLogging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+        mHeaderInterceptor = new HeaderInterceptor();
+    }
+
+    private void init() {
     }
 
     public static ServiceGenerator getInstance() {
@@ -42,37 +55,21 @@ public class ServiceGenerator {
     }
 
     public <S> S createService(
-            Class<S> serviceClass, String username, String password) {
-        if (!isEmpty(username)
-                && !isEmpty(password)) {
-            String authToken = Credentials.basic(username, password);
-            return createService(serviceClass, authToken);
-        }
+            Class<S> serviceClass, @Nullable String authToken) {
 
-        return createService(serviceClass, null);
-    }
-
-    private <S> S createService(
-            Class<S> serviceClass, final String authToken) {
-        if (!isEmpty(authToken)) {
-            AuthenticationInterceptor interceptor =
-                    new AuthenticationInterceptor(authToken);
-
-            if (!mHttpClient.interceptors().contains(interceptor)) {
-                mHttpClient.addInterceptor(interceptor);
-
-                mBuilder.client(mHttpClient.build());
-                mRetrofit = mBuilder.build();
-            }
-        }
-
+        if (authToken != null) setHeader("Authorization", authToken);
         if (!mHttpClient.interceptors().contains(mLogging)) {
             mHttpClient.addInterceptor(mLogging);
-
-            mBuilder.client(mHttpClient.build());
-            mRetrofit = mBuilder.build();
         }
-
+        if (!mHttpClient.interceptors().contains(mHeaderInterceptor)) {
+            mHttpClient.addInterceptor(mHeaderInterceptor);
+        }
+        mBuilder.client(mHttpClient.build());
+        mRetrofit = mBuilder.build();
         return mRetrofit.create(serviceClass);
+    }
+
+    private void setHeader(String headerName, String headerValue) {
+        mHeaderInterceptor.setHeader(headerName, headerValue);
     }
 }
