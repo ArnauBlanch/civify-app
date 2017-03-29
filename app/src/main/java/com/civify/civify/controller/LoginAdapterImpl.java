@@ -34,7 +34,7 @@ public class LoginAdapterImpl implements LoginAdapter {
     private String mPassword;
     private String mAuthToken;
 
-    public LoginAdapterImpl(SharedPreferences mSharedPreferences) {
+    public LoginAdapterImpl(SharedPreferences sharedPreferences) {
         this.mSharedPreferences = mSharedPreferences;
     }
 
