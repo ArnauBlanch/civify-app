@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,7 @@ import com.civify.civify.model.User;
 
 
 public class LoginActivity extends AppCompatActivity {
-    Button blogin;
+    AppCompatButton blogin;
     EditText usr;
     EditText pasw;
     LoginAdapterImpl loginadapterimpl;
@@ -29,11 +30,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        blogin.findViewById(R.id.bsignin);
+        blogin = (AppCompatButton) findViewById(R.id.bsignin);
         blogin.setOnClickListener(lis);
-        usr.findViewById(R.id.login_email_input);
-        pasw.findViewById(R.id.login_password_input);
-        passforgot.findViewById(R.id.login_forgot);
+        usr= (EditText) findViewById(R.id.login_email_input);
+        pasw = (EditText) findViewById(R.id.login_password_input);
+        passforgot = (TextView) findViewById(R.id.login_forgot);
         passforgot.setOnClickListener(lis);
         SharedPreferences userpreferences = getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         loginadapterimpl = new LoginAdapterImpl(userpreferences);
