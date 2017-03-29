@@ -28,7 +28,7 @@ checkstyle {
     toolVersion '7.6'
 }
 
-task checkstyle(dependsOn:['clean'], type: Checkstyle) {
+task checkstyle(dependsOn: ['clean'], type: Checkstyle) {
     source 'src/main/java'
     include '**/*.java'
 
@@ -55,6 +55,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support:design:25.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -68,5 +70,4 @@ dependencies {
     testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.1'
     testCompile 'org.powermock:powermock-module-junit4-rule:1.6.1'
     testCompile 'org.powermock:powermock-module-junit4:1.6.1'
-
 }
