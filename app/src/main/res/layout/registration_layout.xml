@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     style="@style/AppTheme.NoActionBar"
+    android:id="@+id/registration_linearlayout"
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix,Overdraw">
 

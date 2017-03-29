@@ -23,19 +23,41 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.civify.civify.R;
+import com.civify.civify.adapter.UserAdapter;
+import com.civify.civify.service.UserService;
+import com.civify.civify.utils.AdapterFactory;
+import com.google.gson.JsonObject;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.net.HttpURLConnection;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 @LargeTest @RunWith(AndroidJUnit4.class) public class RegistrationActivityTest {
+    private MockWebServer mMockServer;
 
     @Rule public ActivityTestRule<RegistrationActivity> mActivityTestRule =
             new ActivityTestRule<>(RegistrationActivity.class);
+
+    @Before
+    public void setUp() throws Exception {
+        mMockServer = new MockWebServer();
+        mMockServer.start();
+        Retrofit retrofit = (new Retrofit.Builder().baseUrl(mMockServer.url("").toString())
+                .addConverterFactory(GsonConverterFactory.create())).build();
+        AdapterFactory.getInstance().getUserAdapter()
+                .setService(retrofit.create(UserService.class));
+    }
 
     @Test public void registrationActivityTest() {
         ViewInteraction textView = onView(allOf(withId(R.id.title0), withText(R.string.whats_your_name),
@@ -124,6 +146,9 @@ import org.junit.runner.RunWith;
                         isDisplayed()));
         appCompatEditText11.perform(click());
 
+        // MOCK SERVER RESPONSE (username)
+        mockRequest(5, HttpURLConnection.HTTP_NOT_FOUND, UserAdapter.USER_DOESNT_EXIST);
+
         ViewInteraction appCompatEditText12 =
                 onView(allOf(withId(R.id.username_input),
                         isDisplayed()));
@@ -138,6 +163,9 @@ import org.junit.runner.RunWith;
         ViewInteraction appCompatEditText13 =
                 onView(allOf(withId(R.id.username_input), withText("testUsername"), isDisplayed()));
         appCompatEditText13.perform(pressImeActionButton());
+
+        // MOCK SERVER RESPONSE
+        mockRequest(1, HttpURLConnection.HTTP_NOT_FOUND, UserAdapter.USER_DOESNT_EXIST);
 
         ViewInteraction appCompatButton4 =
                 onView(allOf(withId(R.id.button1), withText(R.string.continue_button), isDisplayed()));
@@ -172,12 +200,14 @@ import org.junit.runner.RunWith;
                 onView(allOf(withId(R.id.button2), withText(R.string.continue_button), isDisplayed()));
         appCompatButton5.perform(click());
 
+        // MOCK SERVER RESPONSE (email)
+        mockRequest(3, HttpURLConnection.HTTP_NOT_FOUND, UserAdapter.USER_DOESNT_EXIST);
+
         ViewInteraction appCompatEditText16 =
                 onView(allOf(withId(R.id.email_input), isDisplayed()));
         appCompatEditText16.perform(replaceText("test@email.com"), closeSoftKeyboard());
 
-        ViewInteraction textView9 = onView(allOf(withId(R.id.email_validation_text),
-                withText(R.string.valid_unused_email), childAtPosition(
+        ViewInteraction textView9 = onView(allOf(withId(R.id.email_validation_text), childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
         textView9.check(matches(withText(R.string.valid_unused_email)));
@@ -185,6 +215,9 @@ import org.junit.runner.RunWith;
         ViewInteraction appCompatEditText17 =
                 onView(allOf(withId(R.id.email_input), withText("test@email.com"), isDisplayed()));
         appCompatEditText17.perform(pressImeActionButton());
+
+        // MOCK SERVER RESPONSE
+        mockRequest(1, HttpURLConnection.HTTP_NOT_FOUND, UserAdapter.USER_DOESNT_EXIST);
 
         ViewInteraction appCompatButton6 =
                 onView(allOf(withId(R.id.button2), withText(R.string.continue_button), isDisplayed()));
@@ -258,6 +291,9 @@ import org.junit.runner.RunWith;
                         1), isDisplayed()));
         textView16.check(matches(withText(R.string.matching_passwords)));
 
+        // MOCK SERVER RESPONSE
+        mockRequest(1, HttpURLConnection.HTTP_CREATED, UserAdapter.USER_CREATED);
+
         ViewInteraction appCompatButton8 =
                 onView(allOf(withId(R.id.button3), withText(R.string.finish), isDisplayed()));
         appCompatButton8.perform(click());
@@ -278,5 +314,15 @@ import org.junit.runner.RunWith;
                         ((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+    private void mockRequest(int times, int code, String message) {
+        for (int i = 0; i < times; ++i) {
+            JsonObject body = new JsonObject();
+            body.addProperty("message", message);
+            mMockServer.enqueue(new MockResponse()
+                    .setResponseCode(code)
+                    .setBody(body.toString()));
+        }
     }
 }
