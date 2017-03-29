@@ -58,12 +58,12 @@ public class EventDetailsActivity extends AppCompatActivity {
         mDistance = mIssueAdapter.getDistance();
         mDate = mIssueAdapter.getDate();
 
-        mTextViewTitle = (TextView)findViewById(R.id.nameText);
-        mTextViewCategory = (TextView)findViewById(R.id.nameCategoryText);
-        mTextViewRisk = (TextView)findViewById(R.id.riskAnswer);
-        mTextViewDescription = (TextView)findViewById(R.id.descriptionText);
-        mTextViewStreet = (TextView)findViewById(R.id.streetText);
-        mTextViewDistance = (TextView)findViewById(R.id.distanceText);
-        mTextViewDate = (TextView)findViewById(R.id.sinceText);
+        mTextViewTitle = (TextView) findViewById(R.id.nameText);
+        mTextViewCategory = (TextView) findViewById(R.id.nameCategoryText);
+        mTextViewRisk = (TextView) findViewById(R.id.riskAnswer);
+        mTextViewDescription = (TextView) findViewById(R.id.descriptionText);
+        mTextViewStreet = (TextView) findViewById(R.id.streetText);
+        mTextViewDistance = (TextView) findViewById(R.id.distanceText);
+        mTextViewDate = (TextView) findViewById(R.id.sinceText);
     }
 }

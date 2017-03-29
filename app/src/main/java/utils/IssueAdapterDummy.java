@@ -1,7 +1,5 @@
 package utils;
 
-import model.Issue;
-import service.IIssueService;
 
 /**
  * Created by MSI on 27/03/2017.
@@ -9,11 +7,11 @@ import service.IIssueService;
 
 public class IssueAdapterDummy {
 
-    private final String mTitle = "Cables del semafor al descobert";
+    private final String mTitle = "Semafor trencat al carrer";
     private final String mCategory = "Senyalització";
     private final String mRisk = "Si";
-    private final String mDescription = "El semafor no te cap tapa per amagar els cables, "
-            + "que estan completament al descobert";
+    private final String mDescription = "El semafor no te cap tapa per amagar els cables, que "
+            + "estan completament al descobert.";
     private final String mStreet = "Carrer de la Diputacio, 13, Barcelona";
     private final String mDistance = "1 km";
     private final String mDate = "fa 3 dies";
