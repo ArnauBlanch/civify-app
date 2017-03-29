@@ -68,7 +68,6 @@ public class UserAdapterTest {
         assertEquals("POST", request.getMethod());
         assertEquals("/users", request.getPath());
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
-        assertEquals(UserService.AUTHORIZATION, request.getHeader("Authorization"));
         assertEquals("username", requestJson.get("username").getAsString());
         assertEquals("name", requestJson.get("first_name").getAsString());
         assertEquals("surname", requestJson.get("last_name").getAsString());
@@ -99,7 +98,6 @@ public class UserAdapterTest {
         assertEquals("POST", request.getMethod());
         assertEquals("/users", request.getPath());
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
-        assertEquals(UserService.AUTHORIZATION, request.getHeader("Authorization"));
         assertEquals("username", requestJson.get("username").getAsString());
         assertEquals("name", requestJson.get("first_name").getAsString());
         assertEquals("surname", requestJson.get("last_name").getAsString());
@@ -130,7 +128,6 @@ public class UserAdapterTest {
         assertEquals("POST", request.getMethod());
         assertEquals("/users/search", request.getPath());
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
-        assertEquals(UserService.AUTHORIZATION, request.getHeader("Authorization"));
         assertEquals("valid@email.com", requestJson.get("email").getAsString());
 
         verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.VALID_UNUSED);
@@ -163,7 +160,6 @@ public class UserAdapterTest {
         assertEquals("POST", request.getMethod());
         assertEquals("/users/search", request.getPath());
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
-        assertEquals(UserService.AUTHORIZATION, request.getHeader("Authorization"));
         assertEquals("used@email.com", requestJson.get("email").getAsString());
 
         verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.USED);
@@ -185,7 +181,6 @@ public class UserAdapterTest {
         assertEquals("POST", request.getMethod());
         assertEquals("/users/search", request.getPath());
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
-        assertEquals(UserService.AUTHORIZATION, request.getHeader("Authorization"));
         assertEquals("validUsername", requestJson.get("username").getAsString());
         verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.VALID_UNUSED);
     }
@@ -214,7 +209,6 @@ public class UserAdapterTest {
         assertEquals("POST", request.getMethod());
         assertEquals("/users/search", request.getPath());
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
-        assertEquals(UserService.AUTHORIZATION, request.getHeader("Authorization"));
         assertEquals("usedUsername", requestJson.get("username").getAsString());
         verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.USED);
     }
