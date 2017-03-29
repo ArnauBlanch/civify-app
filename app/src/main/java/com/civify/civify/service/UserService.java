@@ -1,13 +1,21 @@
 package com.civify.civify.service;
 
+import com.civify.civify.model.MessageResponse;
 import com.civify.civify.model.User;
+import com.google.gson.JsonObject;
 
-@SuppressWarnings("ALL")
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+
 public interface UserService {
 
-    void registerUser(User user);
+    @POST("users")
+    Call<MessageResponse> registerUser(@Body User user);
 
-    boolean checkUnusedUsername(String username);
+    @POST("users/search")
+    Call<MessageResponse> checkUnusedUsername(@Body JsonObject username);
 
-    boolean checkUnusedEmail(String email);
+    @POST("users/search")
+    Call<MessageResponse> checkUnusedEmail(@Body JsonObject email);
 }

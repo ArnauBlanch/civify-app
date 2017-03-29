@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.civify.civify.R;
 import com.civify.civify.adapter.UserAdapter;
+import com.civify.civify.adapter.ValidationCallback;
 import com.civify.civify.utils.AdapterFactory;
 
 @SuppressWarnings({ "SameParameterValue", "ElementOnlyUsedFromTestCode", "LawOfDemeter" })
@@ -39,19 +40,25 @@ class UsernameTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        switch (mUserAdapter.checkValidUnusedUsername(s.toString())) {
-            case UserAdapter.VALID_UNUSED:
-                setIconAndMessage(
-                        R.drawable.ic_checked, R.string.valid_unused_username, R.color.green);
-                break;
-            case UserAdapter.INVALID:
-                setIconAndMessage(
-                        R.drawable.ic_cancel, R.string.invalid_username, R.color.red);
-                break;
-            default:
-                setIconAndMessage(
-                        R.drawable.ic_cancel, R.string.used_username, R.color.red);
-        }
+        mUserAdapter.checkValidUnusedUsername(s.toString(), new ValidationCallback() {
+            @Override
+            public void onValidationResponse(int response) {
+                switch (response) {
+                    case UserAdapter.VALID_UNUSED:
+                        setIconAndMessage(
+                                R.drawable.ic_checked,
+                                R.string.valid_unused_username, R.color.green);
+                        break;
+                    case UserAdapter.INVALID:
+                        setIconAndMessage(
+                                R.drawable.ic_cancel, R.string.invalid_username, R.color.red);
+                        break;
+                    default:
+                        setIconAndMessage(
+                                R.drawable.ic_cancel, R.string.used_username, R.color.red);
+                }
+            }
+        });
     }
 
     private void setIconAndMessage(int iconDrawable, int message, int messageColor) {

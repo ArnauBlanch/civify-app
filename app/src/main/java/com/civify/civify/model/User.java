@@ -2,22 +2,38 @@ package com.civify.civify.model;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
+@SuppressWarnings("ElementOnlyUsedFromTestCode")
 public class User {
 
+    @SerializedName("username")
     private String mUsername;
-    private String mName;
-    private String mSurname;
+
+    @SerializedName("email")
     private String mEmail;
+
+    @SerializedName("first_name")
+    private String mName;
+
+    @SerializedName("last_name")
+    private String mSurname;
+
+    @SerializedName("password")
     private String mPassword;
+
+    @SerializedName("password_confirmation")
+    private String mPasswordConfirmation;
 
     public User(@NonNull String username, @NonNull String name,
                 @NonNull String surname, @NonNull String email,
-                @NonNull String password) {
+                @NonNull String password, @NonNull String passwordConfirmation) {
         mUsername = username;
         mName = name;
         mSurname = surname;
         mEmail = email;
         mPassword = password;
+        mPasswordConfirmation = passwordConfirmation;
     }
 
     public String getUsername() {
@@ -58,5 +74,13 @@ public class User {
 
     public void setPassword(@NonNull String password) {
         mPassword = password;
+    }
+
+    public String getPasswordConfirmation() {
+        return mPasswordConfirmation;
+    }
+
+    public void setPasswordConfirmation(@NonNull String passwordConfirmation) {
+        mPasswordConfirmation = passwordConfirmation;
     }
 }

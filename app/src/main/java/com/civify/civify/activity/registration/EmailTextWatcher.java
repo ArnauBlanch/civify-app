@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.civify.civify.R;
 import com.civify.civify.adapter.UserAdapter;
+import com.civify.civify.adapter.ValidationCallback;
 import com.civify.civify.utils.AdapterFactory;
 
 @SuppressWarnings({ "SameParameterValue", "ElementOnlyUsedFromTestCode", "LawOfDemeter" })
@@ -42,19 +43,24 @@ class EmailTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        switch (mUserAdapter.checkValidUnusedEmail(s.toString())) {
-            case UserAdapter.VALID_UNUSED:
-                setIconAndMessage(
-                        R.drawable.ic_checked, R.string.valid_unused_email, R.color.green);
-                break;
-            case UserAdapter.INVALID:
-                setIconAndMessage(
-                        R.drawable.ic_cancel, R.string.invalid_email, R.color.red);
-                break;
-            default:
-                setIconAndMessage(
-                        R.drawable.ic_cancel, R.string.used_email, R.color.red);
-        }
+        mUserAdapter.checkValidUnusedEmail(s.toString(), new ValidationCallback() {
+            @Override
+            public void onValidationResponse(int response) {
+                switch (response) {
+                    case UserAdapter.VALID_UNUSED:
+                        setIconAndMessage(
+                                R.drawable.ic_checked, R.string.valid_unused_email, R.color.green);
+                        break;
+                    case UserAdapter.INVALID:
+                        setIconAndMessage(
+                                R.drawable.ic_cancel, R.string.invalid_email, R.color.red);
+                        break;
+                    default:
+                        setIconAndMessage(
+                                R.drawable.ic_cancel, R.string.used_email, R.color.red);
+                }
+            }
+        });
     }
 
     private void setIconAndMessage(int iconDrawable, int message, int messageColor) {

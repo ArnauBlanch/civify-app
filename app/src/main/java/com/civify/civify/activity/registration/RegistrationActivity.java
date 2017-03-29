@@ -1,15 +1,19 @@
 package com.civify.civify.activity.registration;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
 import com.civify.civify.R;
 import com.civify.civify.activity.BaseActivity;
+import com.civify.civify.adapter.SimpleCallback;
 import com.civify.civify.adapter.UserAdapter;
+import com.civify.civify.adapter.ValidationCallback;
 import com.civify.civify.model.User;
 import com.civify.civify.utils.AdapterFactory;
 
@@ -78,7 +82,22 @@ public class RegistrationActivity
         String surname = ((EditText) findViewById(R.id.surname_input)).getText().toString();
         String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
         String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
-        mUserAdapter.registerUser(new User(username, name, surname, email, password));
+        String password2 = ((EditText) findViewById(R.id.password2_input)).getText().toString();
+
+        User newUser = new User(username, name, surname, email, password, password2);
+        mUserAdapter.registerUser(newUser, new SimpleCallback() {
+            @Override
+            public void onSuccess() {
+                // Call to map
+                Log.v("RegistrationActivity", "User registered!");
+            }
+
+            @Override
+            public void onFailure() {
+                Snackbar.make(findViewById(R.id.registration_linearlayout),
+                        "There was an error when registering", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -108,11 +127,16 @@ public class RegistrationActivity
         if (((EditText) findViewById(R.id.username_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.username_input)).setText("");
         }
-        if (mUserAdapter.checkValidUnusedUsername(
-                ((EditText) findViewById(R.id.username_input)).getText().toString())
-                == UserAdapter.VALID_UNUSED) {
-            nextPage();
-        }
+        mUserAdapter.checkValidUnusedUsername(
+                ((EditText) findViewById(R.id.username_input)).getText().toString(),
+                new ValidationCallback() {
+                    @Override
+                    public void onValidationResponse(int response) {
+                        if (response == UserAdapter.VALID_UNUSED) {
+                            nextPage();
+                        }
+                    }
+                });
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -120,11 +144,16 @@ public class RegistrationActivity
         if (((EditText) findViewById(R.id.email_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.email_input)).setText("");
         }
-        if (mUserAdapter.checkValidUnusedEmail(
-                ((EditText) findViewById(R.id.email_input)).getText().toString())
-                == UserAdapter.VALID_UNUSED) {
-            nextPage();
-        }
+        mUserAdapter.checkValidUnusedEmail(
+                ((EditText) findViewById(R.id.email_input)).getText().toString(),
+                new ValidationCallback() {
+                    @Override
+                    public void onValidationResponse(int response) {
+                        if (response == UserAdapter.VALID_UNUSED) {
+                            nextPage();
+                        }
+                    }
+                });
     }
 
     @SuppressWarnings("UnusedParameters")
