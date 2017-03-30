@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import com.civify.civify.model.Issue.Category;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,10 +17,10 @@ import java.util.Date;
 import java.util.Locale;
 
 public class IssueTest {
-    private static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+    private static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     private static final String TITLE = "test-issue-title";
     private static final String DESCRIPTION = "test-issue-description";
-    private static final String CATEGORY = "test-issue-category";
+    private static final Category CATEGORY = Category.LIGHT_SIGNALS;
     private static final boolean RISK = true;
     private static final float LONGITUDE = 45.0f;
     private static final float LATITUDE = 44.0f;
@@ -35,8 +37,8 @@ public class IssueTest {
     @Before
     public void setUp() {
         mIssue = new Issue();
-        String stringDate1 = "2017-03-28T23:53:20+0100";
-        String stringDate2 = "2016-04-24T23:53:20+0100";
+        String stringDate1 = "2017-03-28T23:53:20.000Z";
+        String stringDate2 = "2016-04-24T23:53:20.000Z";
         DateFormat dateFormat = new SimpleDateFormat(RAILS_DATE_FORMAT, Locale.FRANCE);
         try {
             mUpdatedAt = dateFormat.parse(stringDate1);
@@ -145,7 +147,8 @@ public class IssueTest {
     @Test
     public void testFirstConstructor() {
         Picture picture = mock(Picture.class);
-        mIssue = new Issue(TITLE, DESCRIPTION, CATEGORY, RISK, LONGITUDE, LATITUDE, picture);
+        mIssue = new Issue(TITLE, DESCRIPTION, CATEGORY, RISK, LONGITUDE, LATITUDE, picture,
+                USER_AUTH_TOKEN);
         assertEquals(TITLE, mIssue.getTitle());
         assertEquals(DESCRIPTION, mIssue.getDescription());
         assertEquals(CATEGORY, mIssue.getCategory());
@@ -157,6 +160,7 @@ public class IssueTest {
         assertEquals(false, mIssue.isResolved());
         assertEquals(0, mIssue.getReports());
         assertEquals(picture, mIssue.getPicture());
+        assertEquals(USER_AUTH_TOKEN, mIssue.getUserAuthToken());
     }
 
     @Test

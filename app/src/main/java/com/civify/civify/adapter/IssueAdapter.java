@@ -1,68 +1,106 @@
 package com.civify.civify.adapter;
 
-import android.support.annotation.NonNull;
+import android.content.SharedPreferences;
 
 import com.civify.civify.model.Issue;
 import com.civify.civify.service.IssueService;
-import com.civify.civify.service.ResponseCallback;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.civify.civify.service.IssueSimpleCallback;
+import com.civify.civify.service.ListIssuesSimpleCallback;
+import com.civify.civify.utils.ServiceGenerator;
+import com.google.gson.JsonParser;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.List;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class IssueAdapter {
-    private static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    private static final String ISSUE_NOT_CREATED = "Issue not created";
     private IssueService mIssueService;
+    private String mAuthToken;
 
-    public IssueAdapter() {
-        this(getRetrofit().create(IssueService.class));
+    public IssueAdapter(SharedPreferences sharedPreferences) {
+        this(ServiceGenerator.createService(IssueService.class), sharedPreferences);
     }
 
-    public IssueAdapter(IssueService service) {
+    public IssueAdapter(IssueService service, SharedPreferences sharedPreferences) {
         this.mIssueService = service;
+        this.mAuthToken = sharedPreferences.getString("AUTH_TOKEN", "");
     }
 
-    @NonNull
-    private static Retrofit getRetrofit() {
-        Gson gson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
-                .setDateFormat(RAILS_DATE_FORMAT)
-                .create();
+    public void createIssue(Issue issue, final IssueSimpleCallback callback) {
 
-        return new Retrofit.Builder()
-                .baseUrl(IssueService.ENDPOINT)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
+        Call<Issue> call = mIssueService.createIssue(mAuthToken, issue, issue.getUserAuthToken());
+        call.enqueue(new Callback<Issue>() {
+
+            @Override
+            public void onResponse(Call<Issue> call, Response<Issue> response) {
+                if (response.code() == HttpURLConnection.HTTP_CREATED) {
+                    callback.onSuccess(response.body());
+                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST
+                        && getMessageFromError(response.errorBody()).equals(ISSUE_NOT_CREATED)) {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Issue> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
-    public boolean createIssue(String authToken, Issue issue) {
-        Call<Issue> call = mIssueService.createIssue(authToken, issue, issue.getUserAuthToken());
-        ResponseCallback<Issue> issueResponseCallback = new ResponseCallback<>();
-        call.enqueue(issueResponseCallback);
+    public void getIssues(final ListIssuesSimpleCallback callback) {
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken);
+        call.enqueue(new Callback<List<Issue>>() {
 
-        Response<Issue> response = issueResponseCallback.getResponse();
-        return response.isSuccessful();
+            @Override
+            public void onResponse(Call<List<Issue>> call, Response<List<Issue>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Issue>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
-    public List<Issue> getIssues(String authToken) {
-        Call<List<Issue>> call = mIssueService.getIssues(authToken);
-        ResponseCallback<List<Issue>> issueResponseCallback = new ResponseCallback<>();
-        call.enqueue(issueResponseCallback);
+    public void getIssue(String issueAuthToken, final IssueSimpleCallback
+            callback) {
+        Call<Issue> call = mIssueService.getIssue(mAuthToken, issueAuthToken);
+        call.enqueue(new Callback<Issue>() {
 
-        Response<List<Issue>> response = issueResponseCallback.getResponse();
-        return response.body();
+            @Override
+            public void onResponse(Call<Issue> call, Response<Issue> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Issue> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
-    public Issue getIssue(String authToken, String issueAuthToken) {
-        Call<Issue> call = mIssueService.getIssue(authToken, issueAuthToken);
-        ResponseCallback<Issue> issueResponseCallback = new ResponseCallback<>();
-        call.enqueue(issueResponseCallback);
-
-        Response<Issue> response = issueResponseCallback.getResponse();
-        return response.body();
+    private String getMessageFromError(ResponseBody errorBody) {
+        try {
+            return (new JsonParser().parse(errorBody.string()).getAsJsonObject()).get("message")
+                    .getAsString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }
