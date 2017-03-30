@@ -2,48 +2,49 @@ apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
-    defaultConfig {
-        applicationId "com.civify.civify"
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  compileSdkVersion 25
+  buildToolsVersion "25.0.2"
+  defaultConfig {
+    applicationId "com.civify"
+    minSdkVersion 15
+    targetSdkVersion 25
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    lintOptions {
-        abortOnError true
-    }
+  }
+  lintOptions {
+    abortOnError true
+    warning 'InvalidPackage'
+  }
 }
 
 checkstyle {
-    configFile rootProject.file('config/checkstyle/checkstyle.xml')
-    toolVersion '7.6'
+  configFile rootProject.file('config/checkstyle/checkstyle.xml')
+  toolVersion '7.6'
 }
 
-task checkstyle(dependsOn:['clean'], type: Checkstyle) {
-    source 'src/main/java'
-    include '**/*.java'
+task checkstyle(dependsOn: ['clean'], type: Checkstyle) {
+  source 'src/main/java'
+  include '**/*.java'
 
-    classpath = files()
+  classpath = files()
 }
 
 tasks.withType(Checkstyle) {
-    showViolations true
-    ignoreFailures false
+  showViolations true
+  ignoreFailures false
 
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('../config/xsl/checkstyle.xsl')
-    }
+  reports {
+    xml.enabled false
+    html.enabled true
+    html.stylesheet resources.text.fromFile('../config/xsl/checkstyle.xsl')
+  }
 }
 
 preBuild.dependsOn('checkstyle')
@@ -51,20 +52,25 @@ check.dependsOn('checkstyle')
 assemble.dependsOn('lint')
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:design:25.3.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
-    compile 'com.android.support:support-v4:25.3.0'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.3.1'
-    testCompile 'org.mockito:mockito-core:1.9.5'
-    testCompile 'org.powermock:powermock-api-mockito:1.6.1'
-    testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.1'
-    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.1'
-    testCompile 'org.powermock:powermock-module-junit4:1.6.1'
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+  compile 'com.android.support:appcompat-v7:25.3.0'
+  compile 'com.android.support:design:25.3.0'
+  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+  compile 'com.android.support:support-v4:25.3.0'
+  compile 'com.google.android.gms:play-services-location:10.2.0'
+  compile 'com.google.android.gms:play-services-maps:10.2.0'
+  compile 'com.squareup.okhttp3:okhttp:3.6.0'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.robolectric:robolectric:3.3.1'
+  testCompile 'org.mockito:mockito-core:1.9.5'
+  testCompile 'org.powermock:powermock-api-mockito:1.6.1'
+  testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.1'
+  testCompile 'org.powermock:powermock-module-junit4-rule:1.6.1'
+  testCompile 'org.powermock:powermock-module-junit4:1.6.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Civify</string>
-    <string name="title_activity_basic">BasicActivity</string>
+  <string name="app_name">Civify</string>
+  <string name="title_activity_basic">BasicActivity</string>
+  <string name="user_location_settings_agreed">User agreed to make required location settings changes.</string>
+  <string name="user_location_settings_canceled">User chose not to make required location settings changes.</string>
+  <string name="location_connection_failed">Location services connection failed.</string>
 </resources>
