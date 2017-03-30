@@ -69,7 +69,7 @@
         android:id="@+id/login_forgot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Have you forgotten your password?"
+        android:text="@string/have_you_forgotten_your_password"
         android:gravity="center"
         android:layout_marginTop="5dp"
 
