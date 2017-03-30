@@ -22,8 +22,8 @@ import retrofit2.Response;
 
 public class LoginAdapterImpl implements LoginAdapter {
 
+    public static final String AUTH_TOKEN = "authToken";
     private static final String TAG = LoginAdapterImpl.class.getSimpleName();
-    private static final String AUTH_TOKEN = "authToken";
     private static final String AUTH_TOKEN_JSON = "auth_token";
     private static final String NEEDS_LOGIN_MESSAGE = "Needs login";
     private static final String USER_NOT_EXISTS_MESSAGE = "User not exists";
@@ -35,7 +35,7 @@ public class LoginAdapterImpl implements LoginAdapter {
     private String mAuthToken;
 
     public LoginAdapterImpl(SharedPreferences sharedPreferences) {
-        this.mSharedPreferences = mSharedPreferences;
+        this.mSharedPreferences = sharedPreferences;
     }
 
     @Override
@@ -113,9 +113,9 @@ public class LoginAdapterImpl implements LoginAdapter {
     private void callMeService() {
         if (hasToken()) {
             CivifyMeService civifyMeService =
-                    ServiceGenerator.getInstance().createService(CivifyMeService.class, mAuthToken);
+                    ServiceGenerator.getInstance().createService(CivifyMeService.class);
             Call<User> call =
-                    civifyMeService.getUser();
+                    civifyMeService.getUser(mAuthToken);
 
             call.enqueue(new Callback<User>() {
                 @Override
