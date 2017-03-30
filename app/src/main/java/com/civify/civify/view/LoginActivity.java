@@ -64,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case R.id.login_forgot:
                     Log.d("login", "change pass");
+                    Toast toast = Toast.makeText(getApplicationContext(), "Aquest botó portará a la activity de recuperar password", Toast.LENGTH_SHORT);
+                    toast.show();
                     break;
             }
         }
