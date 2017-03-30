@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.civify.R;
-import com.civify.model.CivifyMap;
+import com.civify.model.map.CivifyMap;
 
 public class BasicActivity extends BaseActivity {
 

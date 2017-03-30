@@ -1,22 +1,29 @@
-package com.civify.model;
+package com.civify.model.map;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.model.Marker;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class CivifyMarkers implements Iterable<CivifyMarker<?>> {
+public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickListener {
 
     public static final String TAG = CivifyMarkers.class.getSimpleName();
 
     private HashMap<String, CivifyMarker<?>> mMarkers = new HashMap<>();
 
+    CivifyMarkers(@NonNull CivifyMap map) {
+        map.getGoogleMap().setOnMarkerClickListener(this);
+    }
+
     @Nullable
-    public CivifyMarker<?> get(@NonNull String id) {
-        String key = idify(id);
+    public CivifyMarker<?> get(@NonNull String tag) {
+        String key = idify(tag);
         CivifyMarker<?> marker = mMarkers.get(key);
         if (marker != null) {
             if (marker.isPresent()) {
@@ -28,15 +35,15 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>> {
     }
 
     public void add(@NonNull CivifyMarker<?> civifyMarker) {
-        String authToken = civifyMarker.getId();
-        mMarkers.put(idify(authToken), civifyMarker);
-        Log.v(TAG, "Added marker " + authToken);
+        String tag = civifyMarker.getTag();
+        mMarkers.put(idify(tag), civifyMarker);
+        Log.v(TAG, "Added marker " + tag);
     }
 
-    public void remove(@NonNull String id) {
-        CivifyMarker<?> civifyMarker = mMarkers.remove(idify(id));
+    public void remove(@NonNull String tag) {
+        CivifyMarker<?> civifyMarker = mMarkers.remove(idify(tag));
         if (civifyMarker != null) civifyMarker.remove();
-        else Log.v(TAG, id + " not found.");
+        else Log.v(TAG, tag + " not found.");
     }
 
     public void clear() {
@@ -49,6 +56,21 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>> {
 
     public int size() {
         return mMarkers.size();
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        Object markerTag = marker.getTag();
+        if (markerTag != null) {
+            String tag = markerTag.toString();
+            CivifyMarker<?> civifyMarker = mMarkers.get(idify(tag));
+            if (civifyMarker != null) {
+                Log.v(TAG, "Marker " + tag + " clicked.");
+                // TODO: Intent to Details
+                return true;
+            }
+        }
+        return false;
     }
 
     @NonNull

@@ -142,13 +142,11 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
             if (mErrorMessage != null) {
                 if (mError != null) Log.e(TAG, mErrorMessage, mError);
                 else Log.e(TAG, mErrorMessage);
-            }
-            else {
+            } else {
                 Log.w(TAG, "No matches found or service unavailable.");
             }
             mCallback.onLocalityError();
-        }
-        else mCallback.onLocalityResponse(formatAddress(address));
+        } else mCallback.onLocalityResponse(formatAddress(address));
     }
 
     @NonNull

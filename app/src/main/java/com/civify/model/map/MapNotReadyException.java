@@ -1,4 +1,4 @@
-package com.civify.model;
+package com.civify.model.map;
 
 public class MapNotReadyException extends Exception {
 
