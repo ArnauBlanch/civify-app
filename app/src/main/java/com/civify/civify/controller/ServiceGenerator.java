@@ -1,7 +1,5 @@
 package com.civify.civify.controller;
 
-import android.support.annotation.Nullable;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -18,7 +16,6 @@ public final class ServiceGenerator {
     private Retrofit mRetrofit;
     private OkHttpClient.Builder mHttpClient;
     private HttpLoggingInterceptor mLogging;
-    private HeaderInterceptor mHeaderInterceptor;
 
 
     private ServiceGenerator() {
@@ -29,10 +26,6 @@ public final class ServiceGenerator {
         mRetrofit = mBuilder.build();
         mHttpClient = new OkHttpClient.Builder();
         mLogging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-        mHeaderInterceptor = new HeaderInterceptor();
-    }
-
-    private void init() {
     }
 
     public static ServiceGenerator getInstance() {
@@ -42,30 +35,14 @@ public final class ServiceGenerator {
         return sServiceGeneratorInstance;
     }
 
-    private boolean isEmpty(CharSequence str) {
-        return str == null || str.length() == 0;
-    }
-
-    public <S> S createService(Class<S> serviceClass) {
-        return createService(serviceClass, null);
-    }
-
     public <S> S createService(
-            Class<S> serviceClass, @Nullable String authToken) {
+            Class<S> serviceClass) {
 
-        if (authToken != null) setHeader("Authorization", authToken);
         if (!mHttpClient.interceptors().contains(mLogging)) {
             mHttpClient.addInterceptor(mLogging);
-        }
-        if (!mHttpClient.interceptors().contains(mHeaderInterceptor)) {
-            mHttpClient.addInterceptor(mHeaderInterceptor);
         }
         mBuilder.client(mHttpClient.build());
         mRetrofit = mBuilder.build();
         return mRetrofit.create(serviceClass);
-    }
-
-    private void setHeader(String headerName, String headerValue) {
-        mHeaderInterceptor.setHeader(headerName, headerValue);
     }
 }

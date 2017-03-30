@@ -1,12 +1,32 @@
 package com.civify.civify.controller;
 
+import com.google.gson.annotations.SerializedName;
+
 class CivifyEmailCredentials {
 
-    final String email;
-    final String password;
+    @SerializedName("email")
+    private String mEmail;
+    @SerializedName("password")
+    private String mPassword;
 
     public CivifyEmailCredentials(String emailCredential, String hashedPassword) {
-        email = emailCredential;
-        password = hashedPassword;
+        mEmail = emailCredential;
+        mPassword = hashedPassword;
+    }
+
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public String getPassword() {
+        return mPassword;
+    }
+
+    public void setEmail(String email) {
+        this.mEmail = email;
+    }
+
+    public void setPassword(String password) {
+        this.mPassword = password;
     }
 }
