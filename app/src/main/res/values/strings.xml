@@ -17,4 +17,5 @@
     <string name="username_or_e_mail">Username or E-mail</string>
     <string name="login_password">Password</string>
     <string name="have_you_forgotten_your_password">Have you forgotten your password?</string>
+    <string name="title_activity_basic">BasicActivity</string>
 </resources>
