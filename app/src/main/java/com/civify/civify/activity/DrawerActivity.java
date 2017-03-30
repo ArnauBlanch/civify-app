@@ -28,7 +28,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    
+
     private static final int NAVIGATE_ID = 0;
     private static final int WALL_ID = 1;
     private static final int PROFILE_ID = 2;
@@ -36,25 +36,24 @@ public class DrawerActivity extends BaseActivity
     private static final int ACHIEVEMENTS_ID = 4;
     private static final int EVENTS_ID = 5;
     private static final int SETTINGS_ID = 6;
-    
-    public DrawerLayout getDrawerLayout() {
-        return mDrawerLayout;
-    }
-    
-    public NavigationView getNavigationView() {
-        return mNavigationView;
-    }
-    
-    public int getCurrentFragment() {
-        return mCurrentFragment;
-    }
-    
+
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     //private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
-    
-    
+
+    public DrawerLayout getDrawerLayout() {
+        return mDrawerLayout;
+    }
+
+    public NavigationView getNavigationView() {
+        return mNavigationView;
+    }
+
+    public int getCurrentFragment() {
+        return mCurrentFragment;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,24 +62,24 @@ public class DrawerActivity extends BaseActivity
         setSupportActionBar(toolbar);
         //mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        
+
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-        
+
         NavigateFragment navigateFragment = NavigateFragment.newInstance();
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
-        
+
         User fakeUser = new User();
         setUserHeader(fakeUser);
     }
-    
+
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -93,21 +92,22 @@ public class DrawerActivity extends BaseActivity
     /*
      * These functions will be used eventually
      */
-    
+
     //    private void hideToolbar() {
     //        mAppBarLayout.animate().translationY(-mToolbar.getHeight()).setInterpolator(
     //                new AccelerateInterpolator(2));
     //    }
-    
+
     //    private void showToolbar() {
-    //        mAppBarLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+    //        mAppBarLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator
+    // (2));
     //    }
-    
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        
+
         if (id == R.id.nav_navigate) {
             NavigateFragment navigateFragment = NavigateFragment.newInstance();
             setFragment(navigateFragment, NAVIGATE_ID);
@@ -131,42 +131,46 @@ public class DrawerActivity extends BaseActivity
             SettingsFragment settingsFragment = SettingsFragment.newInstance();
             setFragment(settingsFragment, SETTINGS_ID);
         }
-        
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    
+
     private void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).commit();
         mCurrentFragment = fragmentId;
     }
-    
+
     private void setUserHeader(User user) {
         View headerView = mNavigationView.getHeaderView(0);
+        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
+
         ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
+
         TextView name = (TextView) headerView.findViewById(R.id.header_name);
-        TextView username = (TextView) headerView.findViewById(R.id.header_username);
-        TextView level = (TextView) headerView.findViewById(R.id.header_level);
-        TextView xp = (TextView) headerView.findViewById(R.id.header_xp);
-        TextView coins = (TextView) headerView.findViewById(R.id.header_coins);
-        CircularImageView profileImage =
-                (CircularImageView) headerView.findViewById(R.id.header_image);
-        
-        String userLevel = Integer.toString(user.getLevel());
-        String userExperience = Integer.toString(user.getExperience());
-        String userCoins = Integer.toString(user.getCoins());
         name.setText(user.getName());
+
+        TextView username = (TextView) headerView.findViewById(R.id.header_username);
         username.setText(user.getUsername());
+
+        TextView level = (TextView) headerView.findViewById(R.id.header_level);
+        String userLevel = Integer.toString(user.getLevel());
         String showLevel = getString(R.string.level) + ' ' + userLevel;
         level.setText(showLevel);
+
+        TextView xp = (TextView) headerView.findViewById(R.id.header_xp);
+        String userExperience = Integer.toString(user.getExperience());
         //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
+
+        TextView coins = (TextView) headerView.findViewById(R.id.header_coins);
+        String userCoins = Integer.toString(user.getCoins());
         coins.setText(userCoins);
+
+        CircularImageView profileImage =
+                (CircularImageView) headerView.findViewById(R.id.header_image);
         //profileImage.setImageBitmap(img); // bitmap
         //profileImage.setImageIcon(img); // icon
-        
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
-        
     }
 }

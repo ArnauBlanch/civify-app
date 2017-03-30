@@ -2,6 +2,12 @@ package com.civify.civify.model;
 
 
 public class User {
+
+    private static final int LEVEL = 3;
+    private static final int EXPERIENCE = 50;
+    private static final int COINS = 432;
+
+
     private String mName;
     private String mUsername;
     private int mLevel;
@@ -11,9 +17,9 @@ public class User {
     public User() {
         mName = "David Segovia";
         mUsername = "dsegoviat";
-        mLevel = 3;
-        mExperience = 50;
-        mCoins = 432;
+        mLevel = LEVEL;
+        mExperience = EXPERIENCE;
+        mCoins = COINS;
     }
     
     public String getName() {
