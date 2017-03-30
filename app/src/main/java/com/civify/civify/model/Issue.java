@@ -16,7 +16,7 @@ public class Issue {
 
     @Expose
     @SerializedName("category")
-    private String mCategory;
+    private Category mCategory;
 
     @Expose
     @SerializedName("risk")
@@ -70,8 +70,8 @@ public class Issue {
 
     }
 
-    public Issue(String title, String description, String category, boolean risk, float longitude,
-            float latitude, Picture picture) {
+    public Issue(String title, String description, Category category, boolean risk, float longitude,
+            float latitude, Picture picture, String userAuthToken) {
         mTitle = title;
         mDescription = description;
         mCategory = category;
@@ -83,9 +83,10 @@ public class Issue {
         mResolvedVotes = 0;
         mConfirmVotes = 0;
         mReports = 0;
+        mUserAuthToken = userAuthToken;
     }
 
-    public Issue(String title, String description, String category, boolean risk, float longitude,
+    public Issue(String title, String description, Category category, boolean risk, float longitude,
             float latitude, int confirmVotes, int resolvedVotes, boolean resolved, int reports,
             Date createdAt, Date updatedAt, String issueAuthToken, String userAuthToken,
             Picture picture) {
@@ -122,11 +123,11 @@ public class Issue {
         this.mDescription = description;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return mCategory;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.mCategory = category;
     }
 
@@ -224,5 +225,27 @@ public class Issue {
 
     public void setPicture(Picture picture) {
         mPicture = picture;
+    }
+
+    public enum Category {
+        // Senyalitació vial
+        @SerializedName("road_signs")
+        ROAD_SIGNS,
+
+        // Senyalització luminosa
+        @SerializedName("light_signals")
+        LIGHT_SIGNALS,
+
+        // Il·lumincació
+        @SerializedName("illumination")
+        ILLUMINATION,
+
+        // Arbolada
+        @SerializedName("grove")
+        GROVE,
+
+        // Mobiliari urbà
+        @SerializedName("street_furniture")
+        STREET_FURNITURE,
     }
 }
