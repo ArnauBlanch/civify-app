@@ -1,4 +1,4 @@
-package com.civify.model;
+package com.civify.adapter;
 
 import android.location.Location;
 import android.support.annotation.NonNull;

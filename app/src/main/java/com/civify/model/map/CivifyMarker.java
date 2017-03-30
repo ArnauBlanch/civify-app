@@ -1,14 +1,15 @@
-package com.civify.model;
+package com.civify.model.map;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.civify.adapter.LocalityCallback;
+import com.civify.model.Issue;
 import com.google.android.gms.maps.model.LatLng;
 
 public interface CivifyMarker<E extends Issue> {
     @NonNull
-    String getId();
+    String getTag();
 
     @NonNull
     E getIssue();

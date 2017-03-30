@@ -14,8 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.civify.R;
-import com.civify.model.CivifyMap;
-import com.civify.model.UpdateLocationListener;
+import com.civify.model.map.CivifyMap;
 import com.civify.utils.ConfirmDialog;
 import com.civify.utils.NetworkController;
 import com.civify.utils.Timeout;
@@ -37,10 +36,11 @@ public final class LocationAdapter implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    private static final String TAG = LocationAdapter.class.getSimpleName();
-
     public static final LatLng ZERO = new LatLng(0, 0);
+
     public static final int PERMISSION_ACCESS_LOCATION = 700;
+
+    private static final String TAG = LocationAdapter.class.getSimpleName();
 
     private static final int REQUEST_CHECK_SETTINGS = 800;
     private static final int CONNECTION_FAILURE_RESOLUTION = 900;
@@ -51,9 +51,9 @@ public final class LocationAdapter implements
 
     private static final double EARTH_RADIUS = 6366198;
 
-    private Activity mContext;
-    private CivifyMap mCivifyMap;
-    private GoogleApiClient mGoogleApiClient;
+    private final Activity mContext;
+    private final CivifyMap mCivifyMap;
+    private final GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
     private UpdateLocationListener mUpdateLocationListener;
@@ -368,7 +368,7 @@ public final class LocationAdapter implements
                                             + "or GPS may be slow or unavailable.",
                                     new OnClickListener() {
                                         @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        public void onClick(DialogInterface d, int w) {
                                             checkForPermissions();
                                             mLowConnectionWarning = false;
                                         }

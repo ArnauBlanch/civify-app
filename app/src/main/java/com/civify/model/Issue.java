@@ -3,7 +3,7 @@ package com.civify.model;
 // Fake Issue
 public class Issue {
 
-    private String mAuthToken;
+    private String mAuthToken, mTitle;
     private double mLatitude, mLongitude;
 
     public String getAuthToken() {
@@ -28,5 +28,13 @@ public class Issue {
 
     public void setLongitude(double longitude) {
         mLongitude = longitude;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
     }
 }

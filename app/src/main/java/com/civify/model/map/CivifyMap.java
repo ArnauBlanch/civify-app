@@ -1,4 +1,4 @@
-package com.civify.model;
+package com.civify.model.map;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -6,8 +6,9 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
+import com.civify.adapter.UpdateLocationListener;
+import com.civify.model.Issue;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -82,7 +83,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         settings.setRotateGesturesEnabled(true);
         settings.setTiltGesturesEnabled(false);
         settings.setCompassEnabled(true);
-        mMarkers = new CivifyMarkers();
+        mMarkers = new CivifyMarkers(this);
     }
 
     public void addIssueMarker(@NonNull Issue issue) throws MapNotReadyException {
@@ -100,14 +101,6 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     Activity getContext() {
         return mContext;
-    }
-
-    public void getAddressFromCurrentPosition(@NonNull LocalityCallback callback) {
-        mLocationAdapter.getLocalityFromCurrentPosition(callback);
-    }
-
-    public void getAddress(@NonNull Location location, @NonNull LocalityCallback callback) {
-        mLocationAdapter.getLocality(location, callback);
     }
 
     public void enableLocationButton() {

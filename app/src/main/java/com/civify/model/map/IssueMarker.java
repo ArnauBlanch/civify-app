@@ -1,4 +1,4 @@
-package com.civify.model;
+package com.civify.model.map;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,8 +6,10 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
+import com.civify.model.Issue;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -27,16 +29,21 @@ public class IssueMarker implements CivifyMarker<Issue> {
         mMap = map;
         mMarker = mMap.getGoogleMap().addMarker(new MarkerOptions()
                 .position(LocationAdapter.getLatLng(issue.getLatitude(), issue.getLongitude()))
+                .title(issue.getTitle())
                 .draggable(false)
                 .flat(false)
         );
+        mMarker.setTag(issue.getAuthToken());
         mPresent = true;
     }
 
     @NonNull
     @Override
-    public String getId() {
-       return mIssue.getAuthToken();
+    public String getTag() {
+        Object tag = mMarker.getTag();
+        if (tag != null) return tag.toString();
+        Log.wtf(TAG, "Marker without tag cannot be referenced!");
+        return "";
     }
 
     @NonNull
@@ -47,7 +54,9 @@ public class IssueMarker implements CivifyMarker<Issue> {
 
     @Override
     public void getAddress(@NonNull LocalityCallback callback) {
-        mMap.getAddress(LocationAdapter.getLocation(getMarkerPosition()), callback);
+        GeocoderAdapter.getLocality(mMap.getContext(),
+                LocationAdapter.getLocation(getMarkerPosition()),
+                callback);
     }
 
     /** @return distance in meters between the current geolocated position and this marker. */
@@ -122,8 +131,8 @@ public class IssueMarker implements CivifyMarker<Issue> {
         if (isPresent()) {
             mMarker.remove();
             mPresent = false;
-            Log.v(TAG, "Removed marker " + getId());
-        } else Log.v(TAG, getId() + " already removed.");
+            Log.v(TAG, "Removed marker " + getTag());
+        } else Log.v(TAG, getTag() + " already removed.");
     }
 
     @Override
