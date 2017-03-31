@@ -3,7 +3,7 @@ apply plugin: 'checkstyle'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.civify.civify"
         minSdkVersion 15
@@ -11,13 +11,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        jackOptions {
-            enabled true
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -44,7 +37,7 @@ task checkstyle(dependsOn:['clean'], type: Checkstyle) {
 
 tasks.withType(Checkstyle) {
     showViolations true
-    ignoreFailures true
+    ignoreFailures false
 
     reports {
         xml.enabled false
@@ -70,6 +63,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'com.mikhaellopez:circularimageview:3.0.2'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.1.0'
     testCompile 'org.powermock:powermock-api-mockito:1.6.1'
@@ -77,6 +71,8 @@ dependencies {
     testCompile 'org.powermock:powermock-module-junit4-rule:1.6.1'
     testCompile 'org.powermock:powermock-module-junit4:1.6.1'
     testCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
+    testCompile "org.robolectric:robolectric:3.3.1"
+    testCompile "org.robolectric:shadows-support-v4:3.3.1"
 
   compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

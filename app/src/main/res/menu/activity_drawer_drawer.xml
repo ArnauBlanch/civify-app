@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_navigate"
+        android:icon="@drawable/ic_menu_navigate"
+        android:title="@string/navigate" />
+    <item
+        android:id="@+id/nav_wall"
+        android:icon="@drawable/ic_menu_wall"
+        android:title="@string/wall" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_menu_profile"
+        android:title="@string/profile" />
+    <item
+        android:id="@+id/nav_rewards"
+        android:icon="@drawable/ic_menu_rewards"
+        android:title="@string/rewards" />
+    <item
+        android:id="@+id/nav_achievements"
+        android:icon="@drawable/ic_menu_achievements"
+        android:title="@string/achievements" />
+    <item
+        android:id="@+id/nav_events"
+        android:icon="@drawable/ic_menu_events"
+        android:title="@string/events" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_menu_settings"
+        android:title="@string/settings" />
+  </group>
+
+</menu>

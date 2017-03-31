@@ -14,6 +14,21 @@ public class User {
     private String mCreatedat;
     @SerializedName("updated_at")
     private String mUpdatedat;
+    private String mName;
+    private int mLevel;
+    private int mExperience;
+    private int mCoins;
+    private static final int LEVEL = 3;
+    private static final int EXPERIENCE = 50;
+    private static final int COINS = 432;
+
+    public User() {
+        mName = "David Segovia";
+        mUsername = "dsegoviat";
+        mLevel = LEVEL;
+        mExperience = EXPERIENCE;
+        mCoins = COINS;
+    }
 
     public String getUsername() {
         return mUsername;
@@ -22,6 +37,16 @@ public class User {
     public void setUsername(String username) {
         this.mUsername = username;
     }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+
 
     public String getEmail() {
         return mEmail;
@@ -53,5 +78,29 @@ public class User {
 
     public void setUpdated_at(String updatedat) {
         this.mUpdatedat = updatedat;
+    }
+
+    public int getLevel() {
+        return mLevel;
+    }
+
+    public void setLevel(int level) {
+        mLevel = level;
+    }
+
+    public int getExperience() {
+        return mExperience;
+    }
+
+    public void setExperience(int experience) {
+        mExperience = experience;
+    }
+
+    public int getCoins() {
+        return mCoins;
+    }
+
+    public void setCoins(int coins) {
+        mCoins = coins;
     }
 }
