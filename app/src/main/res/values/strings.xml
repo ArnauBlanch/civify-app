@@ -5,4 +5,8 @@
   <string name="share">share</string>
   <string name="category">Category:</string>
   <string name="questionRisk">Poses a risk?</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name='daysAgo'>days ago</string>
+  <string name='today'>today</string>
 </resources>
