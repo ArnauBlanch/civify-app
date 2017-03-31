@@ -42,7 +42,7 @@ android {
     }
   }
   lintOptions {
-    abortOnError false
+    abortOnError true
   }
   testOptions {
     unitTests.all {
@@ -50,37 +50,29 @@ android {
         includeNoLocationClasses = true
       }
     }
-  }
-  /*sourceSets {
-    main {
-      manifest.srcFile 'src/main/AndroidManifest.xml'
-      java.srcDirs = ['src/main/java']
-      res.srcDirs = ['src/main/res']
-    }
-  }*/
 }
 
 checkstyle {
-  configFile rootProject.file('config/checkstyle/checkstyle.xml')
-  toolVersion '7.6'
+    configFile rootProject.file('config/checkstyle/checkstyle.xml')
+    toolVersion '7.6'
 }
 
-task checkstyle(dependsOn: ['clean'], type: Checkstyle) {
-  source 'src/main/java'
-  include '**/*.java'
+task checkstyle(dependsOn:['clean'], type: Checkstyle) {
+    source 'src/main/java'
+    include '**/*.java'
 
-  classpath = files()
+    classpath = files()
 }
 
 tasks.withType(Checkstyle) {
-  showViolations true
-  ignoreFailures false
+    showViolations true
+    ignoreFailures false
 
-  reports {
-    xml.enabled false
-    html.enabled true
-    html.stylesheet resources.text.fromFile('../config/xsl/checkstyle.xsl')
-  }
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet resources.text.fromFile('../config/xsl/checkstyle.xsl')
+    }
 }
 
 preBuild.dependsOn('checkstyle')
@@ -101,14 +93,25 @@ dependencies {
   compile 'uk.co.chrisjenx:calligraphy:2.2.0'
   compile 'com.android.support:support-v4:25.3.0'
   testCompile 'junit:junit:4.12'
-  testCompile "org.robolectric:robolectric:3.3.1"
-  testCompile "org.robolectric:shadows-support-v4:3.3.1"
-  testCompile 'org.mockito:mockito-core:1.9.5'
-  testCompile "org.powermock:powermock-module-junit4:1.6.4"
-  testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"
-  testCompile "org.powermock:powermock-api-mockito:1.6.4"
-  testCompile "org.powermock:powermock-classloading-xstream:1.6.4"
   compile 'com.squareup.retrofit2:retrofit:2.2.0'
   compile 'com.squareup.retrofit2:converter-gson:2.2.0'
   compile 'com.squareup.okhttp3:mockwebserver:3.6.0'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.squareup.retrofit2:retrofit-mock:2.2.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'com.mikhaellopez:circularimageview:3.0.2'
+    testCompile 'org.mockito:mockito-core:2.1.0'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.1'
+    testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.1'
+    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.1'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.1'
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
+    testCompile "org.robolectric:robolectric:3.3.1"
+    testCompile "org.robolectric:shadows-support-v4:3.3.1"
+
+  compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

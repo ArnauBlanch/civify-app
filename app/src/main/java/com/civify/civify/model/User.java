@@ -25,6 +25,19 @@ public class User {
     @SerializedName("password_confirmation")
     private String mPasswordConfirmation;
 
+    @SerializedName("password_digest")
+    private String mPassworddigest;
+
+    @SerializedName("created_at")
+    private String mCreatedat;
+
+    @SerializedName("updated_at")
+    private String mUpdatedat;
+
+    private int mLevel;
+    private int mExperience;
+    private int mCoins;
+
     public User(@NonNull String username, @NonNull String name,
                 @NonNull String surname, @NonNull String email,
                 @NonNull String password, @NonNull String passwordConfirmation) {
@@ -82,5 +95,52 @@ public class User {
 
     public void setPasswordConfirmation(@NonNull String passwordConfirmation) {
         mPasswordConfirmation = passwordConfirmation;
+
+    public String getPassword_digest() {
+        return mPassworddigest;
+    }
+
+    public void setPassword_digest(String passworddigest) {
+        this.mPassworddigest = passworddigest;
+    }
+
+    public String getCreated_at() {
+        return mCreatedat;
+    }
+
+    public void setCreated_at(String createdat) {
+        this.mCreatedat = createdat;
+    }
+
+    public String getUpdatedat() {
+        return mUpdatedat;
+    }
+
+    public void setUpdated_at(String updatedat) {
+        this.mUpdatedat = updatedat;
+    }
+
+    public int getLevel() {
+        return mLevel;
+    }
+
+    public void setLevel(int level) {
+        mLevel = level;
+    }
+
+    public int getExperience() {
+        return mExperience;
+    }
+
+    public void setExperience(int experience) {
+        mExperience = experience;
+    }
+
+    public int getCoins() {
+        return mCoins;
+    }
+
+    public void setCoins(int coins) {
+        mCoins = coins;
     }
 }
