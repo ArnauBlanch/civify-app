@@ -1,9 +1,9 @@
-package com.civify.civify.controller;
+package com.civify.controller;
 
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.civify.civify.model.User;
+import com.civify.model.User;
 import java.io.UnsupportedEncodingException;
 
 import java.math.BigInteger;

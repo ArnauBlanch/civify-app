@@ -1,9 +1,9 @@
-package com.civify.civify.controller;
+package com.civify.controller;
 
 
 import android.content.SharedPreferences;
 
-import com.civify.civify.model.User;
+import com.civify.model.User;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,17 +11,12 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 import java.io.IOException;
 
 import okhttp3.mockwebserver.MockWebServer;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.mock.Calls;
@@ -47,8 +42,6 @@ public class LoginAdapterImplTest {
         MockitoAnnotations.initMocks(this);
         mMockWebServer = new MockWebServer();
         mMockWebServer.start();
-
-
 
         when(serviceGenerator.createService(CivifyMeService.class))
                 .thenReturn(authToken -> null);

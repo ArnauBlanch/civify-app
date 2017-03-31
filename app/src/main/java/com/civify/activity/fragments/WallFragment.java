@@ -1,4 +1,4 @@
-package com.civify.civify.activity.fragments;
+package com.civify.activity.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,16 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.civify.civify.R;
+import com.civify.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EventsFragment#newInstance} factory method to
+ * Use the {@link WallFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventsFragment extends Fragment {
+public class WallFragment extends Fragment {
 
-    public EventsFragment() {
+    public WallFragment() {
         // Required empty public constructor
     }
 
@@ -25,8 +25,8 @@ public class EventsFragment extends Fragment {
      *
      * @return A new instance of fragment NavigateFragment.
      */
-    public static EventsFragment newInstance() {
-        EventsFragment fragment = new EventsFragment();
+    public static WallFragment newInstance() {
+        WallFragment fragment = new WallFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -41,6 +41,6 @@ public class EventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events, container, false);
+        return inflater.inflate(R.layout.fragment_wall, container, false);
     }
 }

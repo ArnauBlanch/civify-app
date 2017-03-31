@@ -1,4 +1,4 @@
-package com.civify.civify.controller;
+package com.civify.controller;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

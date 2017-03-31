@@ -1,4 +1,4 @@
-package com.civify.civify.controller;
+package com.civify.controller;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -14,16 +14,16 @@ import com.civify.R;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotReadyException;
 
-public class MapFragment extends Fragment {
+public class NavigateFragment extends Fragment {
 
     private CivifyMap mCivifyMap;
 
-    public MapFragment() {
+    public NavigateFragment() {
         // Required empty public constructor
     }
 
-    public static MapFragment newInstance() {
-        return new MapFragment();
+    public static NavigateFragment newInstance() {
+        return new NavigateFragment();
     }
 
     @Override

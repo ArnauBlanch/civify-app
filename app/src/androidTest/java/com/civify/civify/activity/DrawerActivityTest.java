@@ -15,8 +15,8 @@ import static org.junit.Assert.assertEquals;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
+import com.civify.activity.DrawerActivity;
 import com.civify.civify.R;
 
 import org.junit.Rule;
