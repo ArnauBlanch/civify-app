@@ -40,6 +40,10 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
         Log.v(TAG, "Added marker " + tag);
     }
 
+    public void addAll(@NonNull Collection<? extends CivifyMarker<?>> civifyMarkers) {
+        for (CivifyMarker<?> marker : civifyMarkers) add(marker);
+    }
+
     public void remove(@NonNull String tag) {
         CivifyMarker<?> civifyMarker = mMarkers.remove(idify(tag));
         if (civifyMarker != null) civifyMarker.remove();
@@ -66,8 +70,8 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
             CivifyMarker<?> civifyMarker = mMarkers.get(idify(tag));
             if (civifyMarker != null) {
                 Log.v(TAG, "Marker " + tag + " clicked.");
-                // TODO: Intent to Details
-                return true;
+                // TODO: Intent to Details and return true
+                // return true;
             }
         }
         return false;
