@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
@@ -13,19 +12,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.civify.R;
-import com.civify.controller.LoginAdapterImpl;
-import com.civify.controller.LoginError;
-import com.civify.controller.LoginFinishedCallback;
+import com.civify.adapter.LoginAdapter;
+import com.civify.adapter.LoginError;
+import com.civify.adapter.LoginFinishedCallback;
 import com.civify.model.User;
+import com.civify.utils.AdapterFactory;
 
-public class LoginActivity extends AppCompatActivity {
-
+public class LoginActivity extends BaseActivity {
     private AppCompatButton mBlogin;
     private EditText mUser;
     private EditText mPassw;
-    private LoginAdapterImpl mLoginadapterimpl;
+    private LoginAdapter mLoginAdapter;
     private TextView mPassforgot;
-
     private View.OnClickListener mListen = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -34,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
                 case R.id.bsignin:
                     String password = mPassw.getText().toString();
                     String user = mUser.getText().toString();
-                    mLoginadapterimpl.login(user, password, new LoginFinishedCallback() {
+                    mLoginAdapter.login(user, password, new LoginFinishedCallback() {
                         @Override
                         public void onLoginSucceeded(User u) {
                             Log.d(tag, "login succeed");
@@ -74,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         mPassforgot = (TextView) findViewById(R.id.login_forgot);
         mPassforgot.setOnClickListener(mListen);
         SharedPreferences userpreferences = getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        mLoginadapterimpl = new LoginAdapterImpl(userpreferences);
+        mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(userpreferences);
     }
 
 }

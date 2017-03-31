@@ -17,6 +17,9 @@ public class BaseActivity extends AppCompatActivity {
                 new CalligraphyConfig.Builder().setDefaultFontPath("fonts/Nunito-Regular.ttf")
                         .setFontAttrId(R.attr.fontPath).build()
         );
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll()
+        // .build();
+        //StrictMode.setThreadPolicy(policy);
     }
 
     @Override

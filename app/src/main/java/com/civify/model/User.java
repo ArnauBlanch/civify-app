@@ -1,58 +1,100 @@
 package com.civify.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("ElementOnlyUsedFromTestCode")
 public class User {
 
-    private static final int COINS = 432;
-    private static final int EXPERIENCE = 50;
-    private static final int LEVEL = 3;
     @SerializedName("username")
     private String mUsername;
+
     @SerializedName("email")
     private String mEmail;
+
+    @SerializedName("first_name")
+    private String mName;
+
+    @SerializedName("last_name")
+    private String mSurname;
+
+    @SerializedName("password")
+    private String mPassword;
+
+    @SerializedName("password_confirmation")
+    private String mPasswordConfirmation;
+
     @SerializedName("password_digest")
     private String mPassworddigest;
+
     @SerializedName("created_at")
     private String mCreatedat;
+
     @SerializedName("updated_at")
     private String mUpdatedat;
-    private String mName;
+
     private int mLevel;
     private int mExperience;
     private int mCoins;
 
-
-    public User() {
-        mName = "David Segovia";
-        mUsername = "dsegoviat";
-        mLevel = LEVEL;
-        mExperience = EXPERIENCE;
-        mCoins = COINS;
+    public User(@NonNull String username, @NonNull String name,
+                @NonNull String surname, @NonNull String email,
+                @NonNull String password, @NonNull String passwordConfirmation) {
+        mUsername = username;
+        mName = name;
+        mSurname = surname;
+        mEmail = email;
+        mPassword = password;
+        mPasswordConfirmation = passwordConfirmation;
     }
 
     public String getUsername() {
         return mUsername;
     }
 
-    public void setUsername(String username) {
-        this.mUsername = username;
+    public void setUsername(@NonNull String username) {
+        mUsername = username;
     }
 
     public String getName() {
         return mName;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         mName = name;
+    }
+
+    public String getSurname() {
+        return mSurname;
+    }
+
+    public void setSurname(@NonNull String surname) {
+        mSurname = surname;
     }
 
     public String getEmail() {
         return mEmail;
     }
 
-    public void setEmail(String email) {
-        this.mEmail = email;
+    public void setEmail(@NonNull String email) {
+        mEmail = email;
+    }
+
+    public String getPassword() {
+        return mPassword;
+    }
+
+    public void setPassword(@NonNull String password) {
+        mPassword = password;
+    }
+
+    public String getPasswordConfirmation() {
+        return mPasswordConfirmation;
+    }
+
+    public void setPasswordConfirmation(@NonNull String passwordConfirmation) {
+        mPasswordConfirmation = passwordConfirmation;
     }
 
     public String getPassword_digest() {
