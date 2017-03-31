@@ -1,0 +1,83 @@
+<resources>
+
+    <string name="email_validation_icon">Validation icon for e-mail</string>
+    <string name="name_validation_icon">Validation icon for name</string>
+    <string name="surname_validation_icon">Validation icon for surname</string>
+    <string name="username_validation_icon">Validation icon for username</string>
+    <string name="password_validation_icon">Validation icon for password</string>
+    <string name="app_name">Civify</string>
+
+  <string name="valid_unused_username">The username is valid and unused</string>
+  <string name="invalid_username">The username is invalid (Should have 8–20 characters. Special characters allowed: .,)</string>
+  <string name="used_username">The username is already used</string>
+  <string name="valid_unused_email">The e-mail is valid and unused</string>
+  <string name="invalid_email">The e-mail is invalid</string>
+  <string name="used_email">The e-mail is already used</string>
+  <string name="valid_password">The password is valid</string>
+  <string name="invalid_password"><![CDATA[The password is invalid (Should have 8–40 characters, including at least 1 uppercase and 1 lowercase letter, 1 digit. Special characters allowed: @&#$%)]]></string>
+  <string name="matching_passwords">Both passwords match</string>
+  <string name="not_matching_passwords">The passwords do not match</string>
+  <string name="name">Name</string>
+  <string name="surname">Surname</string>
+  <string name="username">Username</string>
+  <string name="email">Email</string>
+  <string name="password">Password</string>
+  <string name="validate_password">Validate password</string>
+  <string name="choose_username">Choose a username</string>
+  <string name="whats_your_name">What\'s your name?</string>
+  <string name="continue_button">Continue</string>
+  <string name="finish">Finish</string>
+  <string name="choose_password">Choose a password</string>
+  <string name="choose_email">What\'s your email?</string>
+  <string name="surname_not_validated">You must enter your surname</string>
+  <string name="name_not_validated">You must enter your name</string>
+  <string name="signInWith">Sign in with:</string>
+  <string name="sign_in">Sign in</string>
+  <string name="registration">Register</string>
+
+  <!-- Strings related to login -->
+  <string name="prompt_email">Email</string>
+  <string name="prompt_password">Password (optional)</string>
+  <string name="action_sign_in">Sign in or register</string>
+  <string name="action_sign_in_short">Sign in</string>
+  <string name="error_invalid_email">This email address is invalid</string>
+  <string name="error_invalid_password">This password is too short</string>
+  <string name="error_incorrect_password">This password is incorrect</string>
+  <string name="error_field_required">This field is required</string>
+  <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+  <string name="title_activity_basic">BasicActivity</string>
+  <string name="title_activity_drawer">DrawerActivity</string>
+
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+
+  <string name="action_settings">Settings</string>
+  <string name="achievements">Achievements</string>
+  <string name="rewards">Rewards</string>
+  <string name="wall">Wall</string>
+  <string name="navigate">Navigate</string>
+  <string name="about">About</string>
+  <string name="settings">Settings</string>
+  <string name="profile">Profile</string>
+  <string name="events">Events</string>
+
+  <string name="login_sign_in">Sign in</string>
+  <string name="username_or_e_mail">Username or E-mail</string>
+  <string name="login_password">Password</string>
+  <string name="have_you_forgotten_your_password">Have you forgotten your password?</string>
+
+  <string name="user_location_settings_agreed">User agreed to make required location settings changes.</string>
+  <string name="user_location_settings_canceled">User chose not to make required location settings changes.</string>
+  <string name="location_connection_failed">Location services connection failed.</string>
+  <string name="not_implemented_yet">Not implemented yet</string>
+  <string name="action">Action</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="level">Level</string>
+
+
+</resources>
