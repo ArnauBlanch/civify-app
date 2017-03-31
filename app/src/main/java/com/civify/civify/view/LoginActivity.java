@@ -1,6 +1,7 @@
 package com.civify.civify.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.civify.civify.R;
+import com.civify.civify.activity.DrawerActivity;
 import com.civify.civify.controller.LoginAdapterImpl;
 import com.civify.civify.controller.LoginError;
 import com.civify.civify.controller.LoginFinishedCallback;
@@ -39,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private View.OnClickListener mListen = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String tag = "loginLog";
+            final String tag = "loginLog";
             switch (v.getId()) {
                 case R.id.bsignin:
                     String password = mPassw.getText().toString();
@@ -48,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onLoginSucceeded(User u) {
                             Log.d(tag, "login succeed");
-                            //anar a la pantalla de mapa
+                            startActivity(new Intent(getApplicationContext(), DrawerActivity.class));
                         }
 
                         @Override
