@@ -1,4 +1,7 @@
-package com.civify.civify.controller;
+package com.civify.civify.service;
+
+import com.civify.civify.model.CivifyEmailCredentials;
+import com.civify.civify.model.CivifyUsernameCredentials;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

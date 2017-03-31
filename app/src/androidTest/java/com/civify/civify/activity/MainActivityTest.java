@@ -113,9 +113,7 @@ import org.junit.runner.RunWith;
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        ViewInteraction appCompatButton3 =
-                onView(allOf(withId(android.R.id.button1), withText("Close")));
-        appCompatButton3.perform(scrollTo(), click());
+        pressBack();
 
         ViewInteraction appCompatButton4 = onView(allOf(withId(R.id.buttonGoogle), withParent(
                 allOf(withId(R.id.networkButtonsLayout), withParent(withId(R.id.networksLayout)))),

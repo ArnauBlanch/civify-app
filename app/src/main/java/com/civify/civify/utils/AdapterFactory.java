@@ -1,10 +1,15 @@
 package com.civify.civify.utils;
 
+import android.content.SharedPreferences;
+
+import com.civify.civify.adapter.LoginAdapter;
+import com.civify.civify.adapter.LoginAdapterImpl;
 import com.civify.civify.adapter.UserAdapter;
 
 public class AdapterFactory {
     private static AdapterFactory sInstance;
     private UserAdapter mUserAdapter;
+    private LoginAdapter mLoginAdapter;
 
     public static AdapterFactory getInstance() {
         if (sInstance == null) {
@@ -18,5 +23,12 @@ public class AdapterFactory {
             mUserAdapter = new UserAdapter();
         }
         return mUserAdapter;
+    }
+
+    public LoginAdapter getLoginAdapter(SharedPreferences sharedPreferences) {
+        if (mLoginAdapter == null) {
+            mLoginAdapter = new LoginAdapterImpl(sharedPreferences);
+        }
+        return mLoginAdapter;
     }
 }

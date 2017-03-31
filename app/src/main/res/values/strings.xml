@@ -34,7 +34,6 @@
   <string name="signInWith">Sign in with:</string>
   <string name="sign_in">Sign in</string>
   <string name="registration">Register</string>
-  <string name="app_name">Civify</string>
 
   <!-- Strings related to login -->
   <string name="prompt_email">Email</string>

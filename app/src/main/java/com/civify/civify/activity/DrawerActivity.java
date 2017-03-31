@@ -37,6 +37,10 @@ public class DrawerActivity extends BaseActivity
     private static final int EVENTS_ID = 5;
     private static final int SETTINGS_ID = 6;
 
+    private static final int COINS = 432;
+    private static final int EXPERIENCE = 50;
+    private static final int LEVEL = 3;
+
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     //private AppBarLayout mAppBarLayout;
@@ -76,7 +80,11 @@ public class DrawerActivity extends BaseActivity
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
-        User fakeUser = new User();
+        User fakeUser = new User("dsegoviat", "David", "Segovia", "david@civify.app", "password",
+                "password2");
+        fakeUser.setLevel(LEVEL);
+        fakeUser.setCoins(COINS);
+        fakeUser.setExperience(EXPERIENCE);
         setUserHeader(fakeUser);
     }
 
@@ -150,7 +158,7 @@ public class DrawerActivity extends BaseActivity
         ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
 
         TextView name = (TextView) headerView.findViewById(R.id.header_name);
-        name.setText(user.getName());
+        name.setText(user.getName() + " " + user.getSurname());
 
         TextView username = (TextView) headerView.findViewById(R.id.header_username);
         username.setText(user.getUsername());

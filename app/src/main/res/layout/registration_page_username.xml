@@ -38,6 +38,7 @@
                 android:singleLine="true"
                 android:textSize="22sp"
                 android:hint="@string/username"
+                android:inputType="textNoSuggestions"
                 android:imeOptions="actionDone"
                 tools:ignore="Deprecated"
                 />

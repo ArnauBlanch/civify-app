@@ -95,6 +95,7 @@ public class User {
 
     public void setPasswordConfirmation(@NonNull String passwordConfirmation) {
         mPasswordConfirmation = passwordConfirmation;
+    }
 
     public String getPassword_digest() {
         return mPassworddigest;

@@ -1,4 +1,4 @@
-package com.civify.civify.controller;
+package com.civify.civify.adapter;
 
 import com.civify.civify.model.User;
 

@@ -1,4 +1,4 @@
-package com.civify.civify.view;
+package com.civify.civify.activity;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.civify.civify.R;
+import com.civify.civify.activity.LoginActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

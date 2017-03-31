@@ -1,4 +1,4 @@
-package com.civify.civify.controller;
+package com.civify.civify.adapter;
 
 public class LoginError {
 
