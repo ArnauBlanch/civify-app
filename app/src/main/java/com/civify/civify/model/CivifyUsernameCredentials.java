@@ -1,8 +1,8 @@
-package com.civify.civify.controller;
+package com.civify.civify.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class CivifyUsernameCredentials {
+public class CivifyUsernameCredentials {
 
     @SerializedName("username")
     private String mUsername;

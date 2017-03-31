@@ -39,7 +39,8 @@ public class MainActivity extends BaseActivity {
         buttonLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialog.show();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
         Button buttonGoogle = (Button) findViewById(R.id.buttonGoogle);

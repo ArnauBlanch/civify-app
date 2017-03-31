@@ -1,9 +1,15 @@
-package com.civify.civify.controller;
+package com.civify.civify.adapter;
 
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.civify.civify.model.CivifyEmailCredentials;
+import com.civify.civify.model.CivifyUsernameCredentials;
 import com.civify.civify.model.User;
+import com.civify.civify.service.CivifyLoginService;
+import com.civify.civify.service.CivifyMeService;
+import com.civify.civify.utils.ServiceGenerator;
+
 import java.io.UnsupportedEncodingException;
 
 import java.math.BigInteger;
@@ -20,6 +26,7 @@ import retrofit2.Response;
 
 
 
+@SuppressWarnings("LawOfDemeter")
 public class LoginAdapterImpl implements LoginAdapter {
 
     public static final String AUTH_TOKEN = "authToken";
@@ -74,7 +81,7 @@ public class LoginAdapterImpl implements LoginAdapter {
     private void callLoginService() {
 
         CivifyLoginService civifyLoginService =
-                ServiceGenerator.getInstance().createService(CivifyLoginService.class);
+                ServiceGenerator.getInstance().createLoginService();
         Call<String> call;
         if (isEmail()) {
             call = civifyLoginService

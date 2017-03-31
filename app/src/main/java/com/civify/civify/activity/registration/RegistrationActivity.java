@@ -1,16 +1,23 @@
 package com.civify.civify.activity.registration;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.civify.civify.R;
 import com.civify.civify.activity.BaseActivity;
+import com.civify.civify.activity.DrawerActivity;
+import com.civify.civify.adapter.LoginAdapter;
+import com.civify.civify.adapter.LoginError;
+import com.civify.civify.adapter.LoginFinishedCallback;
 import com.civify.civify.adapter.SimpleCallback;
 import com.civify.civify.adapter.UserAdapter;
 import com.civify.civify.adapter.ValidationCallback;
@@ -23,11 +30,15 @@ public class RegistrationActivity
 
     private UserAdapter mUserAdapter;
     private ViewPager mViewPager;
+    private LoginAdapter mLoginAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUserAdapter = AdapterFactory.getInstance().getUserAdapter();
+        SharedPreferences userpreferences =
+                getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
+        mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(userpreferences);
         setContentView(R.layout.registration_layout);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -77,19 +88,32 @@ public class RegistrationActivity
     }
 
     private void register() {
-        String username = ((EditText) findViewById(R.id.username_input)).getText().toString();
+        final String username = ((EditText) findViewById(R.id.username_input)).getText().toString();
         String name = ((EditText) findViewById(R.id.name_input)).getText().toString();
         String surname = ((EditText) findViewById(R.id.surname_input)).getText().toString();
         String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
-        String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
+        final String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
         String password2 = ((EditText) findViewById(R.id.password2_input)).getText().toString();
 
         User newUser = new User(username, name, surname, email, password, password2);
         mUserAdapter.registerUser(newUser, new SimpleCallback() {
             @Override
             public void onSuccess() {
-                // Call to map
-                Log.v("RegistrationActivity", "User registered!");
+                mLoginAdapter.login(username, password, new LoginFinishedCallback() {
+                    @Override
+                    public void onLoginSucceeded(User u) {
+                        startActivity(new Intent(getApplicationContext(),
+                                DrawerActivity.class));
+                    }
+
+                    @Override
+                    public void onLoginFailed(LoginError e) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                e.getType().toString(), Toast.LENGTH_SHORT);
+                        toast.show();
+                        //Mostrar l'error per pantalla corresponent
+                    }
+                });
             }
 
             @Override
