@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
 
+    private static final int COINS = 432;
+    private static final int EXPERIENCE = 50;
+    private static final int LEVEL = 3;
     @SerializedName("username")
     private String mUsername;
     @SerializedName("email")
@@ -18,9 +21,7 @@ public class User {
     private int mLevel;
     private int mExperience;
     private int mCoins;
-    private static final int LEVEL = 3;
-    private static final int EXPERIENCE = 50;
-    private static final int COINS = 432;
+
 
     public User() {
         mName = "David Segovia";
@@ -45,8 +46,6 @@ public class User {
     public void setName(String name) {
         mName = name;
     }
-
-
 
     public String getEmail() {
         return mEmail;

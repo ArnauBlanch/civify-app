@@ -25,19 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPassw;
     private LoginAdapterImpl mLoginadapterimpl;
     private TextView mPassforgot;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        mBlogin = (AppCompatButton) findViewById(R.id.bsignin);
-        mBlogin.setOnClickListener(mListen);
-        mUser = (EditText) findViewById(R.id.login_email_input);
-        mPassw = (EditText) findViewById(R.id.login_password_input);
-        mPassforgot = (TextView) findViewById(R.id.login_forgot);
-        mPassforgot.setOnClickListener(mListen);
-        SharedPreferences userpreferences = getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        mLoginadapterimpl = new LoginAdapterImpl(userpreferences);
-    }
     private View.OnClickListener mListen = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -50,7 +37,8 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onLoginSucceeded(User u) {
                             Log.d(tag, "login succeed");
-                            startActivity(new Intent(getApplicationContext(), DrawerActivity.class));
+                            startActivity(new Intent(getApplicationContext(),
+                                    DrawerActivity.class));
                         }
 
                         @Override
@@ -74,4 +62,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        mBlogin = (AppCompatButton) findViewById(R.id.bsignin);
+        mBlogin.setOnClickListener(mListen);
+        mUser = (EditText) findViewById(R.id.login_email_input);
+        mPassw = (EditText) findViewById(R.id.login_password_input);
+        mPassforgot = (TextView) findViewById(R.id.login_forgot);
+        mPassforgot.setOnClickListener(mListen);
+        SharedPreferences userpreferences = getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
+        mLoginadapterimpl = new LoginAdapterImpl(userpreferences);
+    }
+
 }
