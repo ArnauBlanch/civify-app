@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.civify.civify.R;
+import com.civify.R;
 
 import org.junit.After;
 import org.junit.Before;

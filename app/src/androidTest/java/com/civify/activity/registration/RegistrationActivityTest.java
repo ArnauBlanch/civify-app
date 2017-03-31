@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.civify.civify.R;
+import com.civify.R;
 import com.civify.adapter.UserAdapter;
 import com.civify.service.UserService;
 import com.civify.utils.AdapterFactory;

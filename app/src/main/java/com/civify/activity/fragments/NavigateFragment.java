@@ -69,7 +69,7 @@ public class NavigateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View mapView = inflater.inflate(R.layout.fragment_map, container, false);
+        View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
         FloatingActionButton fabAdd = (FloatingActionButton) mapView.findViewById(R.id.fab_add);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override

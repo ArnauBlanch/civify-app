@@ -3,7 +3,7 @@ package com.civify.adapter;
 import android.support.annotation.NonNull;
 
 import com.civify.model.MessageResponse;
-import com.civify.civify.model.User;
+import com.civify.model.User;
 import com.civify.service.UserService;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.JsonObject;

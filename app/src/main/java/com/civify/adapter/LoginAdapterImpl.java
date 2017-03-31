@@ -5,13 +5,12 @@ import android.util.Log;
 
 import com.civify.model.CivifyEmailCredentials;
 import com.civify.model.CivifyUsernameCredentials;
-import com.civify.civify.model.User;
+import com.civify.model.User;
 import com.civify.service.CivifyLoginService;
 import com.civify.service.CivifyMeService;
 import com.civify.utils.ServiceGenerator;
 
 import java.io.UnsupportedEncodingException;
-
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.security.MessageDigest;
@@ -23,7 +22,6 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 
 @SuppressWarnings("LawOfDemeter")

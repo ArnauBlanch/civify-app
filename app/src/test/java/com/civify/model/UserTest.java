@@ -1,4 +1,4 @@
-package com.civify.civify.model;
+package com.civify.model;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;

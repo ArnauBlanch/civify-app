@@ -1,9 +1,7 @@
-package com.civify.civify.model;
+package com.civify.model;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-
-import com.civify.model.MessageResponse;
 
 import org.junit.After;
 import org.junit.Before;
