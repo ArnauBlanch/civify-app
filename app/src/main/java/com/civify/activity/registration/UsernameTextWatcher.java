@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.civify.civify.R;
+import com.civify.R;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
 import com.civify.utils.AdapterFactory;

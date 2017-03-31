@@ -6,22 +6,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.civify.civify.R;
-import com.civify.civify.activity.BaseActivity;
-import com.civify.civify.activity.DrawerActivity;
+import com.civify.R;
+import com.civify.activity.BaseActivity;
+import com.civify.activity.DrawerActivity;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
 import com.civify.adapter.LoginFinishedCallback;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
-import com.civify.civify.model.User;
+import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
 @SuppressWarnings({ "CyclicClassDependency", "LawOfDemeter" })
@@ -48,8 +47,6 @@ public class RegistrationActivity
         mViewPager.setCurrentItem(0);
         mViewPager.setOffscreenPageLimit(mViewPager.getAdapter().getCount() - 1);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.registration_toolbar);
-        setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

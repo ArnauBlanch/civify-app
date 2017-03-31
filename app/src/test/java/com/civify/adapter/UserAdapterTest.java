@@ -1,14 +1,11 @@
-package com.civify.civify.adapter;
+package com.civify.adapter;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
-import com.civify.adapter.SimpleCallback;
-import com.civify.adapter.UserAdapter;
-import com.civify.adapter.ValidationCallback;
-import com.civify.civify.model.User;
+import com.civify.model.User;
 import com.civify.service.UserService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

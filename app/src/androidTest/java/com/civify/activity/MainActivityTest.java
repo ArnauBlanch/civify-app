@@ -1,4 +1,4 @@
-package com.civify.civify.activity;
+package com.civify.activity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -19,8 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.civify.activity.MainActivity;
-import com.civify.civify.R;
+import com.civify.R;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

@@ -1,4 +1,4 @@
-package com.civify.civify.activity;
+package com.civify.activity;
 
 
 import static android.support.test.espresso.Espresso.onView;
@@ -16,8 +16,7 @@ import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.civify.activity.DrawerActivity;
-import com.civify.civify.R;
+import com.civify.R;
 
 import org.junit.Rule;
 import org.junit.Test;
