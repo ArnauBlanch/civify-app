@@ -2,16 +2,6 @@
 .gradle
 /local.properties
 /.idea
-.DS_Store
 /build
-/captures
-.externalNativeBuild
-.navigation/
-*.class
-*.log
-bin/
-gen/
-out/
-
 # Keystore files
-*.jks
+/coverage/
