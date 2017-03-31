@@ -1,4 +1,4 @@
-package com.civify.civify.view;
+package com.civify.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,20 +11,21 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.civify.civify.R;
-import com.civify.civify.activity.DrawerActivity;
-import com.civify.civify.controller.LoginAdapterImpl;
-import com.civify.civify.controller.LoginError;
-import com.civify.civify.controller.LoginFinishedCallback;
-import com.civify.civify.model.User;
 
+import com.civify.R;
+import com.civify.controller.LoginAdapterImpl;
+import com.civify.controller.LoginError;
+import com.civify.controller.LoginFinishedCallback;
+import com.civify.model.User;
 
 public class LoginActivity extends AppCompatActivity {
+
     private AppCompatButton mBlogin;
     private EditText mUser;
     private EditText mPassw;
     private LoginAdapterImpl mLoginadapterimpl;
     private TextView mPassforgot;
+
     private View.OnClickListener mListen = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

@@ -1,4 +1,4 @@
-package com.civify.civify.activity;
+package com.civify.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,15 +15,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.civify.civify.R;
-import com.civify.civify.activity.fragments.AchievementsFragment;
-import com.civify.civify.activity.fragments.EventsFragment;
-import com.civify.civify.activity.fragments.NavigateFragment;
-import com.civify.civify.activity.fragments.ProfileFragment;
-import com.civify.civify.activity.fragments.RewardsFragment;
-import com.civify.civify.activity.fragments.SettingsFragment;
-import com.civify.civify.activity.fragments.WallFragment;
-import com.civify.civify.model.User;
+import com.civify.R;
+import com.civify.activity.fragments.AchievementsFragment;
+import com.civify.activity.fragments.EventsFragment;
+import com.civify.activity.fragments.NavigateFragment;
+import com.civify.activity.fragments.ProfileFragment;
+import com.civify.activity.fragments.RewardsFragment;
+import com.civify.activity.fragments.SettingsFragment;
+import com.civify.activity.fragments.WallFragment;
+import com.civify.model.User;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class DrawerActivity extends BaseActivity

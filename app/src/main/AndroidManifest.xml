@@ -19,22 +19,20 @@
       <meta-data
           android:name="com.google.android.geo.API_KEY"
           android:value="AIzaSyDjpm9TrHNHNcLWkvMRZh_QihtrDhzFuUU"/>
-      <activity
-            android:name=".activity.BasicActivity"
-            android:label="@string/title_activity_basic"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
+    <activity android:name=".activity.BaseActivity" />
+
+    <activity android:name=".activity.LoginActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name=".activity.BaseActivity" />
+
     <activity
         android:name=".activity.DrawerActivity"
         android:label="@string/title_activity_drawer"
-        android:theme="@style/AppTheme.NoActionBar"></activity>
-      <activity android:name=".view.LoginActivity" />
+        android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

@@ -1,6 +1,6 @@
-package com.civify.civify.controller;
+package com.civify.controller;
 
-import com.civify.civify.model.User;
+import com.civify.model.User;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
