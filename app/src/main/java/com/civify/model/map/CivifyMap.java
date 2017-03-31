@@ -17,13 +17,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     private static final String TAG = CivifyMap.class.getSimpleName();
 
     private static final int DEFAULT_ZOOM = 18;
 
-    private final Activity mContext;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
     private CivifyMarkers mMarkers;
@@ -31,8 +33,11 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private final LocationAdapter mLocationAdapter;
 
     public CivifyMap(@NonNull Activity context) {
-        mContext = context;
-        mLocationAdapter = new LocationAdapter(context, this);
+        this(new LocationAdapter(context));
+    }
+
+    CivifyMap(@NonNull LocationAdapter locationAdapter) {
+        mLocationAdapter = locationAdapter;
         setRefreshMillis(LocationAdapter.Priority.HIGH_ACCURACY,
                 LocationAdapter.Priority.HIGH_ACCURACY.getPeriodMillis(), 0L);
         setRefreshLocations(true);
@@ -40,7 +45,10 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     @NonNull
     public SupportMapFragment getMapFragment() {
-        return isMapFragmentSet() && isMapReady() ? mMapFragment : setNewMapFragment(this);
+        if (isMapFragmentSet() && isMapReady()) return mMapFragment;
+        SupportMapFragment mapFragment = newMapFragment();
+        setMapFragment(mapFragment);
+        return mapFragment;
     }
 
     public boolean isMapReady() {
@@ -51,15 +59,18 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mMapFragment != null;
     }
 
-    public SupportMapFragment setNewMapFragment(@NonNull OnMapReadyCallback onMapReadyCallback) {
-        mMapFragment = SupportMapFragment.newInstance(new GoogleMapOptions()
+    private static SupportMapFragment newMapFragment() {
+        return SupportMapFragment.newInstance(new GoogleMapOptions()
                 .camera(new CameraPosition.Builder()
-                    .target(LocationAdapter.ZERO)
-                    .zoom(DEFAULT_ZOOM)
-                    .build()));
-        mMapFragment.getMapAsync(onMapReadyCallback);
+                        .target(LocationAdapter.ZERO)
+                        .zoom(DEFAULT_ZOOM)
+                        .build()));
+    }
+
+    public void setMapFragment(@NonNull SupportMapFragment mapFragment) {
+        mMapFragment = mapFragment;
+        mMapFragment.getMapAsync(this);
         Log.d(TAG, "Map fragment created. Requesting Google Map...");
-        return mMapFragment;
     }
 
     @Override
@@ -67,6 +78,12 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         Log.d(TAG, "Map received. Loading Civify Map...");
         mGoogleMap = googleMap;
         setMapSettings();
+        mLocationAdapter.setOnPermissionsRequestedListener(new Runnable() {
+            @Override
+            public void run() {
+                enableLocation();
+            }
+        });
         mLocationAdapter.setOnUpdateLocationListener(this);
         Log.d(TAG, "Civify Map loaded.");
     }
@@ -78,11 +95,12 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private void setMapSettings() {
         UiSettings settings = getUiSettings();
         settings.setScrollGesturesEnabled(true);
-        settings.setMapToolbarEnabled(true);
-        settings.setZoomControlsEnabled(false);
         settings.setRotateGesturesEnabled(true);
-        settings.setTiltGesturesEnabled(false);
         settings.setCompassEnabled(true);
+        settings.setZoomControlsEnabled(false);
+        settings.setTiltGesturesEnabled(false);
+        settings.setMapToolbarEnabled(false);
+        settings.setMyLocationButtonEnabled(false);
         mMarkers = new CivifyMarkers(this);
     }
 
@@ -100,13 +118,12 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     Activity getContext() {
-        return mContext;
+        return mLocationAdapter.getContext();
     }
 
-    public void enableLocationButton() {
+    public void enableLocation() {
         try {
             mGoogleMap.setMyLocationEnabled(true);
-            getUiSettings().setMyLocationButtonEnabled(true);
         } catch (SecurityException e) {
             Log.wtf(TAG, "Permissions should be checked before call enableLocationMarker()", e);
         }
@@ -116,13 +133,31 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mLocationAdapter.getLastLocation();
     }
 
+    public void center() throws MapNotReadyException {
+        if (isMapReady()) {
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(
+                    LocationAdapter.getLatLng(mLocationAdapter.getLastLocation())));
+        } else throw new MapNotReadyException();
+    }
+
     @Override
     public void onUpdateLocation(@NonNull Location location) {
         if (!mPlayerSet) {
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(
-                    LocationAdapter.getLatLng(mLocationAdapter.getLastLocation())));
             mPlayerSet = true;
+            try {
+                center();
+                addExampleIssues();
+            } catch (MapNotReadyException e) {
+                Log.wtf(TAG, e);
+            }
         }
+    }
+
+    private void addExampleIssues() {
+        List<Issue> issues = Issue.getExamples(LocationAdapter.getLatLng(getCurrentLocation()));
+        List<IssueMarker> markers = new ArrayList<>(issues.size());
+        for (Issue issue : issues) markers.add(new IssueMarker(issue, this));
+        mMarkers.addAll(markers);
     }
 
     public final void setRefreshLocations(boolean refreshLocations) {

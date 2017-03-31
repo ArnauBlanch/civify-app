@@ -14,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.civify.R;
-import com.civify.model.map.CivifyMap;
 import com.civify.utils.ConfirmDialog;
 import com.civify.utils.NetworkController;
 import com.civify.utils.Timeout;
@@ -31,7 +30,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
 
-public final class LocationAdapter implements
+public class LocationAdapter implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -52,20 +51,18 @@ public final class LocationAdapter implements
     private static final double EARTH_RADIUS = 6366198;
 
     private final Activity mContext;
-    private final CivifyMap mCivifyMap;
     private final GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
     private UpdateLocationListener mUpdateLocationListener;
     private Timeout mOnUpdateTimeout;
-    private Runnable mOnConnectedUpdateCallback;
+    private Runnable mOnConnectedUpdateCallback, mOnPermissionsRequested;
 
     private boolean mHasPermissions, mAutoRefresh, mRequestingPermissions, mLowConnectionWarning;
     private long mIntervalRefresh, mFastIntervalRefresh;
 
-    public LocationAdapter(@NonNull Activity context, @NonNull CivifyMap map) {
+    public LocationAdapter(@NonNull Activity context) {
         mContext = context;
-        mCivifyMap = map;
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -75,6 +72,11 @@ public final class LocationAdapter implements
         setAutoRefresh(false);
         setRequestingPermissions(false);
         checkForPermissions();
+    }
+
+    public void setOnPermissionsRequestedListener(@Nullable Runnable onPermissions) {
+        mOnPermissionsRequested = onPermissions;
+        if (!isRequestingPermissions() && hasPermissions()) mOnPermissionsRequested.run();
     }
 
     public void connect() {
@@ -104,6 +106,10 @@ public final class LocationAdapter implements
         Log.i(TAG, "Location services disconnected.");
     }
 
+    public Activity getContext() {
+        return mContext;
+    }
+
     private void removeUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         Log.d(TAG, "Removed location udpates.");
@@ -125,11 +131,17 @@ public final class LocationAdapter implements
                 rescheduleLocationUpdateTimeout(
                         getLocationUpdateTimeoutTime(LOCATION_UPDATE_TIMEOUT_MULTIPLIER)
                                 - mOnUpdateTimeout.getLapsedMillisFromSchedule());
-            }
+            } else rescheduleLocationUpdateTimeout();
             if (connected) updateLocation();
-        } else if (connected) {
-            removeUpdates();
-            mLocationRequest = null;
+        } else {
+            if (connected) {
+                removeUpdates();
+                mLocationRequest = null;
+            }
+            if (isLocationUpdateTimeoutSet()) {
+                mOnUpdateTimeout.cancel();
+                mOnUpdateTimeout = null;
+            }
         }
     }
 
@@ -327,10 +339,10 @@ public final class LocationAdapter implements
 
     public void setOnUpdateLocationListener(@NonNull UpdateLocationListener listener) {
         mUpdateLocationListener = listener;
-        tryToExecuteUpdateLocationListener();
+        executeUpdateLocationListener();
     }
 
-    private void tryToExecuteUpdateLocationListener() {
+    private void executeUpdateLocationListener() {
         if (mLastLocation != null && mUpdateLocationListener != null) {
             mUpdateLocationListener.onUpdateLocation(mLastLocation);
         }
@@ -339,7 +351,7 @@ public final class LocationAdapter implements
     private void handleNewLocation(@NonNull Location location) {
         mLastLocation = location;
         Log.d(TAG, "Location updated: " + mLastLocation);
-        tryToExecuteUpdateLocationListener();
+        executeUpdateLocationListener();
         if (location.getAccuracy() < ACCURACY_THRESHOLD) rescheduleLocationUpdateTimeout();
         if (!isAutoRefresh()) setAutoRefresh(false);
     }
@@ -370,7 +382,8 @@ public final class LocationAdapter implements
                                         @Override
                                         public void onClick(DialogInterface d, int w) {
                                             checkForPermissions();
-                                            mLowConnectionWarning = false;
+                                            // Uncomment to repeat message
+                                            // mLowConnectionWarning = false;
                                         }
                                     }, null);
                         }
@@ -469,7 +482,7 @@ public final class LocationAdapter implements
                 LocationServices.FusedLocationApi.requestLocationUpdates(
                         mGoogleApiClient, getLocationRequest(),
                         LocationAdapter.this);
-                mCivifyMap.enableLocationButton();
+                if (mOnPermissionsRequested != null) mOnPermissionsRequested.run();
             } catch (SecurityException e) {
                 mHasPermissions = false;
                 Log.e(TAG, "Permissions restricted due to SecurityException", e);

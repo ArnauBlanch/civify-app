@@ -14,8 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.civify.activity.BasicActivity;
-
 public final class NetworkController {
 
     private static final String TAG = NetworkController.class.getSimpleName();
@@ -28,14 +26,14 @@ public final class NetworkController {
 
     private NetworkController() { }
 
-    private static NetworkInfo getNetworkInfo() {
+    private static NetworkInfo getNetworkInfo(@NonNull Activity context) {
         ConnectivityManager manager = (ConnectivityManager)
-                BasicActivity.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return manager.getActiveNetworkInfo();
     }
 
-    public static boolean isNetworkAvailable() {
-        NetworkInfo networkInfo = getNetworkInfo();
+    public static boolean isNetworkAvailable(@NonNull Activity context) {
+        NetworkInfo networkInfo = getNetworkInfo(context);
         return networkInfo != null && networkInfo.isConnected();
     }
 
@@ -54,7 +52,7 @@ public final class NetworkController {
                                        @Nullable Runnable onDonePressedListener,
                                        @Nullable Runnable onAfterSettingsListener,
                                        @Nullable Runnable onDismissListener) {
-        return checkNetwork(isNetworkAvailable(), context,
+        return checkNetwork(isNetworkAvailable(context), context,
                 noNetworkPreDialogListener,
                 onDonePressedListener,
                 onAfterSettingsListener,
@@ -76,7 +74,7 @@ public final class NetworkController {
             if (!sDisplayingDialog) {
                 sDisplayingDialog = true;
 
-                boolean airplaneMode = isAirplaneModeEnabled();
+                boolean airplaneMode = isAirplaneModeEnabled(context);
                 String additionalInfo = airplaneMode
                         ? "Disable Airplane Mode and enableLocationUpdates the network."
                         : "Enable the network.";
@@ -119,11 +117,11 @@ public final class NetworkController {
     }
 
     @SuppressWarnings("deprecation")
-    private static boolean isAirplaneModeEnabled() {
+    private static boolean isAirplaneModeEnabled(@NonNull Activity context) {
         return (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1
-                ? Settings.System.getInt(BasicActivity.getInstance().getContentResolver(),
+                ? Settings.System.getInt(context.getContentResolver(),
                 Settings.System.AIRPLANE_MODE_ON, 0)
-                : Settings.Global.getInt(BasicActivity.getInstance().getContentResolver(),
+                : Settings.Global.getInt(context.getContentResolver(),
                         Settings.Global.AIRPLANE_MODE_ON, 0)) != 0;
     }
 }
