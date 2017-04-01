@@ -69,6 +69,12 @@
   <string name="login_password">Password</string>
   <string name="have_you_forgotten_your_password">Have you forgotten your password?</string>
 
+  <string name="user_location_settings_agreed">User agreed to make required location settings changes.</string>
+  <string name="user_location_settings_canceled">User chose not to make required location settings changes.</string>
+  <string name="location_connection_failed">Location services connection failed.</string>
+  <string name="not_implemented_yet">Not implemented yet</string>
+  <string name="action">Action</string>
+
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="level">Level</string>

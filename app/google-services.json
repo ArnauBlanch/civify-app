@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "513811887687",
+    "project_id": "firebase-civify"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513811887687:android:b1f898588281d1de",
+        "android_client_info": {
+          "package_name": "com.civify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513811887687-rqk2pb98hbve71s4snms98d1nn795807.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.civify",
+            "certificate_hash": "8ca099eec5f5e84a5db3a9a3524090737ac49a34"
+          }
+        },
+        {
+          "client_id": "513811887687-p3ds61u8668nv3e9v2cbco50j250f8ra.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRr7jpwxzzYcotuoClliCmKTTXCF34Guc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
