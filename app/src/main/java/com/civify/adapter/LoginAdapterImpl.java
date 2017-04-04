@@ -44,12 +44,18 @@ public class LoginAdapterImpl implements LoginAdapter {
     }
 
     @Override
-    public void login(String firtsCredential, String password,
-                      LoginFinishedCallback loginFinishedCallback) {
-        this.mFirstCredential = firtsCredential;
+    public void login(String firstCredential, String password,
+            LoginFinishedCallback loginFinishedCallback) {
+        this.mFirstCredential = firstCredential;
         this.mPassword = password;
         this.mLoginFinishedCallback = loginFinishedCallback;
         callLoginService();
+    }
+
+    public void logout() {
+        mSharedPreferences.edit()
+                .remove(AUTH_TOKEN)
+                .apply();
     }
 
     public void isLogged(LoginFinishedCallback loginFinishedCallback) {
