@@ -12,7 +12,6 @@ import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
 import com.civify.utils.AdapterFactory;
 
-@SuppressWarnings({ "SameParameterValue", "ElementOnlyUsedFromTestCode", "LawOfDemeter" })
 class UsernameTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;

@@ -11,7 +11,6 @@ import com.civify.R;
 import com.civify.adapter.UserAdapter;
 import com.civify.utils.AdapterFactory;
 
-@SuppressWarnings({ "ElementOnlyUsedFromTestCode", "LawOfDemeter" })
 class PasswordTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;

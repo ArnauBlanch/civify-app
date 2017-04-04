@@ -9,7 +9,6 @@ import android.widget.EditText;
 
 import com.civify.R;
 
-@SuppressWarnings("CyclicClassDependency")
 public class RegistrationFragment extends Fragment {
 
     private View mView;

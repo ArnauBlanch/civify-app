@@ -84,6 +84,4 @@ public class DrawerActivityTest {
         openDrawerAndClickItem("Settings");
         assertEquals(6, mActivityTestRule.getActivity().getCurrentFragment());
     }
-
-
 }
