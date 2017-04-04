@@ -23,8 +23,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-@SuppressWarnings("LawOfDemeter")
 public class LoginAdapterImpl implements LoginAdapter {
 
     public static final String AUTH_TOKEN = "authToken";

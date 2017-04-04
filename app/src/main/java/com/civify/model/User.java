@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("ElementOnlyUsedFromTestCode")
 public class User {
 
     @SerializedName("username")

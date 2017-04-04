@@ -23,7 +23,6 @@ import com.civify.adapter.ValidationCallback;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
-@SuppressWarnings({ "CyclicClassDependency", "LawOfDemeter" })
 public class RegistrationActivity
         extends BaseActivity {
 
@@ -121,7 +120,6 @@ public class RegistrationActivity
         });
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void nameAndSurnameButtonListener(View v) {
         boolean valid = true;
         if (((EditText) findViewById(R.id.name_input)).getText().length() == 0) {
@@ -143,7 +141,6 @@ public class RegistrationActivity
         }
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void usernameButtonListener(View v) {
         if (((EditText) findViewById(R.id.username_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.username_input)).setText("");
@@ -160,7 +157,6 @@ public class RegistrationActivity
                 });
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void emailButtonListener(View v) {
         if (((EditText) findViewById(R.id.email_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.email_input)).setText("");
@@ -177,7 +173,6 @@ public class RegistrationActivity
                 });
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void passwordButtonListener(View v) {
         if (((EditText) findViewById(R.id.password_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.password_input)).setText("");

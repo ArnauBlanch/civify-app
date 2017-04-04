@@ -6,7 +6,7 @@ public class MessageResponse {
     @SerializedName("message")
     private String mMessage;
 
-    public void setMessage(@SuppressWarnings("SameParameterValue") String message) {
+    public void setMessage(String message) {
         mMessage = message;
     }
 
