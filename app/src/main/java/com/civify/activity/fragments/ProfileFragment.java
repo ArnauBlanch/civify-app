@@ -1,12 +1,19 @@
 package com.civify.activity.fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.civify.R;
+import com.civify.activity.MainActivity;
+import com.civify.adapter.LoginAdapter;
+import com.civify.utils.AdapterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +21,8 @@ import com.civify.R;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
+
+    private LoginAdapter mLoginAdapter;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -35,12 +44,26 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AdapterFactory adapterFactory = AdapterFactory.getInstance();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USERPREFS",
+                Context.MODE_PRIVATE);
+        mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        Button signoutButton = (Button) view.findViewById(R.id.button_signout);
+        signoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLoginAdapter.logout();
+                Context applicationContext = getActivity().getApplicationContext();
+                startActivity(new Intent(applicationContext, MainActivity.class));
+            }
+        });
+        return view;
     }
 }
