@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import com.civify.civify.model.Issue.Category;
+import com.civify.civify.utils.ServiceGenerator;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,10 +17,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class IssueTest {
-    private static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     private static final String TITLE = "test-issue-title";
     private static final String DESCRIPTION = "test-issue-description";
-    private static final Category CATEGORY = Category.LIGHT_SIGNALS;
+    private static final Category CATEGORY = Category.ROAD_SIGNS;
     private static final boolean RISK = true;
     private static final float LONGITUDE = 45.0f;
     private static final float LATITUDE = 44.0f;
@@ -39,7 +38,8 @@ public class IssueTest {
         mIssue = new Issue();
         String stringDate1 = "2017-03-28T23:53:20.000Z";
         String stringDate2 = "2016-04-24T23:53:20.000Z";
-        DateFormat dateFormat = new SimpleDateFormat(RAILS_DATE_FORMAT, Locale.FRANCE);
+        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT, Locale
+                .FRANCE);
         try {
             mUpdatedAt = dateFormat.parse(stringDate1);
             mCreatedAt = dateFormat.parse(stringDate2);

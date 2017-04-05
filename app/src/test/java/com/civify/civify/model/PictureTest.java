@@ -2,6 +2,8 @@ package com.civify.civify.model;
 
 import static org.junit.Assert.assertEquals;
 
+import com.civify.civify.utils.ServiceGenerator;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +15,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class PictureTest {
-    private static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
     private static final String FILE_NAME = "test-file-name";
     private static final String CONTENT_TYPE = "test-content-type";
     private static final int FILE_SIZE = 1234;
@@ -21,14 +22,16 @@ public class PictureTest {
     private static final String SMALL_URL = "test-small-url";
     private static final String MED_URL = "test-med-url";
     private static final String LARGE_URL = "test-large-url";
+    private static final String CONTENT = "test-content";
 
     private Picture mPicture;
 
     @Before
     public void setUp() {
         mPicture = new Picture();
-        String stringDate = "2017-03-28T23:53:20+0100";
-        DateFormat dateFormat = new SimpleDateFormat(RAILS_DATE_FORMAT, Locale.FRANCE);
+        String stringDate = "2017-03-28T23:53:20.000Z";
+        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT, Locale
+                .getDefault());
         try {
             mUpdatedAt = dateFormat.parse(stringDate);
         } catch (ParseException e) {
@@ -43,56 +46,63 @@ public class PictureTest {
 
     @Test
     public void testPictureFileName() {
-        mPicture.setPictureFileName(FILE_NAME);
-        assertEquals(FILE_NAME, mPicture.getPictureFileName());
+        mPicture.setFileName(FILE_NAME);
+        assertEquals(FILE_NAME, mPicture.getFileName());
     }
 
     @Test
     public void testPictureContentType() {
-        mPicture.setPictureContentType(CONTENT_TYPE);
-        assertEquals(CONTENT_TYPE, mPicture.getPictureContentType());
+        mPicture.setContentType(CONTENT_TYPE);
+        assertEquals(CONTENT_TYPE, mPicture.getContentType());
     }
 
     @Test
     public void testPictureFileSize() {
-        mPicture.setPictureFileSize(FILE_SIZE);
-        assertEquals(FILE_SIZE, mPicture.getPictureFileSize());
+        mPicture.setFileSize(FILE_SIZE);
+        assertEquals(FILE_SIZE, mPicture.getFileSize());
     }
 
     @Test
     public void testPictureUpdatedAt() {
-        mPicture.setPictureUpdatedAt(mUpdatedAt);
-        assertEquals(mUpdatedAt, mPicture.getPictureUpdatedAt());
+        mPicture.setUpdatedAt(mUpdatedAt);
+        assertEquals(mUpdatedAt, mPicture.getUpdatedAt());
     }
 
     @Test
     public void testPictureSmallUrl() {
-        mPicture.setPictureSmallUrl(SMALL_URL);
-        assertEquals(SMALL_URL, mPicture.getPictureSmallUrl());
+        mPicture.setSmallUrl(SMALL_URL);
+        assertEquals(SMALL_URL, mPicture.getSmallUrl());
     }
 
     @Test
     public void testPictureMedUrl() {
-        mPicture.setPictureMedUrl(MED_URL);
-        assertEquals(MED_URL, mPicture.getPictureMedUrl());
+        mPicture.setMedUrl(MED_URL);
+        assertEquals(MED_URL, mPicture.getMedUrl());
     }
 
     @Test
     public void testPictureLargeUrl() {
-        mPicture.setPictureLargeUrl(LARGE_URL);
-        assertEquals(LARGE_URL, mPicture.getPictureLargeUrl());
+        mPicture.setLargeUrl(LARGE_URL);
+        assertEquals(LARGE_URL, mPicture.getLargeUrl());
+    }
+
+    @Test
+    public void testPictureContent() {
+        mPicture.setContent(CONTENT);
+        assertEquals(CONTENT, mPicture.getContent());
     }
 
     @Test
     public void testConstructor() {
-        mPicture = new Picture(FILE_NAME, CONTENT_TYPE, FILE_SIZE, mUpdatedAt, SMALL_URL,
+        mPicture = new Picture(FILE_NAME, CONTENT_TYPE, CONTENT, FILE_SIZE, mUpdatedAt, SMALL_URL,
                 MED_URL, LARGE_URL);
-        assertEquals(FILE_NAME, mPicture.getPictureFileName());
-        assertEquals(CONTENT_TYPE, mPicture.getPictureContentType());
-        assertEquals(FILE_SIZE, mPicture.getPictureFileSize());
-        assertEquals(mUpdatedAt, mPicture.getPictureUpdatedAt());
-        assertEquals(SMALL_URL, mPicture.getPictureSmallUrl());
-        assertEquals(MED_URL, mPicture.getPictureMedUrl());
-        assertEquals(LARGE_URL, mPicture.getPictureLargeUrl());
+        assertEquals(FILE_NAME, mPicture.getFileName());
+        assertEquals(CONTENT_TYPE, mPicture.getContentType());
+        assertEquals(FILE_SIZE, mPicture.getFileSize());
+        assertEquals(mUpdatedAt, mPicture.getUpdatedAt());
+        assertEquals(SMALL_URL, mPicture.getSmallUrl());
+        assertEquals(MED_URL, mPicture.getMedUrl());
+        assertEquals(LARGE_URL, mPicture.getLargeUrl());
+        assertEquals(CONTENT, mPicture.getContent());
     }
 }

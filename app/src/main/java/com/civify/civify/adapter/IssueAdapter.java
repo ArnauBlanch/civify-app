@@ -18,7 +18,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IssueAdapter {
-    private static final String ISSUE_NOT_CREATED = "Issue not created";
+    public static final String ISSUE_NOT_CREATED = "Issue not created";
+    public static final String ISSUE_NOT_FOUND = "Issue not found";
+    public static final String NO_ISSUES_FOUND = "No issues found";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -32,7 +34,6 @@ public class IssueAdapter {
     }
 
     public void createIssue(Issue issue, final IssueSimpleCallback callback) {
-
         Call<Issue> call = mIssueService.createIssue(mAuthToken, issue, issue.getUserAuthToken());
         call.enqueue(new Callback<Issue>() {
 
@@ -41,7 +42,8 @@ public class IssueAdapter {
                 if (response.code() == HttpURLConnection.HTTP_CREATED) {
                     callback.onSuccess(response.body());
                 } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST
-                        && getMessageFromError(response.errorBody()).equals(ISSUE_NOT_CREATED)) {
+                        && getMessageFromError(response.errorBody())
+                        .equals(ISSUE_NOT_CREATED)) {
                     callback.onFailure();
                 }
             }
@@ -61,7 +63,8 @@ public class IssueAdapter {
             public void onResponse(Call<List<Issue>> call, Response<List<Issue>> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
-                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
+                        && getMessageFromError(response.errorBody()).equals(NO_ISSUES_FOUND)) {
                     callback.onFailure();
                 }
             }
@@ -73,8 +76,7 @@ public class IssueAdapter {
         });
     }
 
-    public void getIssue(String issueAuthToken, final IssueSimpleCallback
-            callback) {
+    public void getIssue(String issueAuthToken, final IssueSimpleCallback callback) {
         Call<Issue> call = mIssueService.getIssue(mAuthToken, issueAuthToken);
         call.enqueue(new Callback<Issue>() {
 
@@ -82,7 +84,8 @@ public class IssueAdapter {
             public void onResponse(Call<Issue> call, Response<Issue> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
-                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
+                        && getMessageFromError(response.errorBody()).equals(ISSUE_NOT_FOUND)) {
                     callback.onFailure();
                 }
             }
