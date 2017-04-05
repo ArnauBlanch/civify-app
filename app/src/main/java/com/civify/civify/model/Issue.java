@@ -30,19 +30,19 @@ public class Issue {
     @SerializedName("latitude")
     private float mLatitude;
 
-    @Expose(serialize = false)
+    @Expose
     @SerializedName("confirm_votes")
     private int mConfirmVotes;
 
-    @Expose(serialize = false)
+    @Expose
     @SerializedName("resolved_votes")
     private int mResolvedVotes;
 
-    @Expose(serialize = false)
+    @Expose
     @SerializedName("resolved")
     private boolean mResolved;
 
-    @Expose(serialize = false)
+    @Expose
     @SerializedName("reports")
     private int mReports;
 
@@ -58,7 +58,7 @@ public class Issue {
     @SerializedName("issue_auth_token")
     private String mIssueAuthToken;
 
-    @Expose(serialize = false)
+    @Expose
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
@@ -225,27 +225,5 @@ public class Issue {
 
     public void setPicture(Picture picture) {
         mPicture = picture;
-    }
-
-    public enum Category {
-        // Senyalitació vial
-        @SerializedName("road_signs")
-        ROAD_SIGNS,
-
-        // Senyalització luminosa
-        @SerializedName("light_signals")
-        LIGHT_SIGNALS,
-
-        // Il·lumincació
-        @SerializedName("illumination")
-        ILLUMINATION,
-
-        // Arbolada
-        @SerializedName("grove")
-        GROVE,
-
-        // Mobiliari urbà
-        @SerializedName("street_furniture")
-        STREET_FURNITURE,
     }
 }

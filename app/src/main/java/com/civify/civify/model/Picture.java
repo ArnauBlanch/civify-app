@@ -7,102 +7,114 @@ import java.util.Date;
 
 public class Picture {
     @Expose
-    @SerializedName("picture_file_name")
-    private String mPictureFileName;
+    @SerializedName("file_name")
+    private String mFileName;
 
     @Expose
-    @SerializedName("picture_content_type")
-    private String mPictureContentType;
+    @SerializedName("content_type")
+    private String mContentType;
 
     @Expose
-    @SerializedName("picture_file_size")
-    private int mPictureFileSize;
+    @SerializedName("content")
+    private String mContent;
 
-    @Expose
+    @Expose(serialize = false)
+    @SerializedName("file_size")
+    private int mFileSize;
+
+    @Expose(serialize = false)
     @SerializedName("picture_updated_at")
-    private Date mPictureUpdatedAt;
+    private Date mUpdatedAt;
 
-    @Expose
-    @SerializedName("picture_small_url")
-    private String mPictureSmallUrl;
+    @Expose(serialize = false)
+    @SerializedName("small_url")
+    private String mSmallUrl;
 
-    @Expose
-    @SerializedName("picture_med_url")
-    private String mPictureMedUrl;
+    @Expose(serialize = false)
+    @SerializedName("med_url")
+    private String mMedUrl;
 
-    @Expose
-    @SerializedName("picture_large_url")
-    private String mPictureLargeUrl;
+    @Expose(serialize = false)
+    @SerializedName("large_url")
+    private String mLargeUrl;
 
     public Picture() {
 
     }
 
-    public Picture(String pictureFileName, String pictureContentType, int pictureFileSize,
-            Date pictureUpdatedAt, String pictureSmallUrl, String pictureMedUrl,
-            String pictureLargeUrl) {
-        mPictureFileName = pictureFileName;
-        mPictureContentType = pictureContentType;
-        mPictureFileSize = pictureFileSize;
-        mPictureUpdatedAt = pictureUpdatedAt;
-        mPictureSmallUrl = pictureSmallUrl;
-        mPictureMedUrl = pictureMedUrl;
-        mPictureLargeUrl = pictureLargeUrl;
+    public Picture(String fileName, String contentType, String content, int fileSize, Date
+            updatedAt, String smallUrl, String medUrl, String largeUrl) {
+        mFileName = fileName;
+        mContentType = contentType;
+        mFileSize = fileSize;
+        mUpdatedAt = updatedAt;
+        mSmallUrl = smallUrl;
+        mMedUrl = medUrl;
+        mLargeUrl = largeUrl;
+        mContent = content;
     }
 
-    public String getPictureFileName() {
-        return mPictureFileName;
+    public String getFileName() {
+        return mFileName;
     }
 
-    public void setPictureFileName(String pictureFileName) {
-        mPictureFileName = pictureFileName;
+    public void setFileName(String fileName) {
+        mFileName = fileName;
     }
 
-    public String getPictureContentType() {
-        return mPictureContentType;
+    public String getContentType() {
+        return mContentType;
     }
 
-    public void setPictureContentType(String pictureContentType) {
-        mPictureContentType = pictureContentType;
+    public void setContentType(String contentType) {
+        mContentType = contentType;
     }
 
-    public int getPictureFileSize() {
-        return mPictureFileSize;
+    public int getFileSize() {
+        return mFileSize;
     }
 
-    public void setPictureFileSize(int pictureFileSize) {
-        mPictureFileSize = pictureFileSize;
+    public void setFileSize(int fileSize) {
+        mFileSize = fileSize;
     }
 
-    public Date getPictureUpdatedAt() {
-        return mPictureUpdatedAt;
+    public Date getUpdatedAt() {
+        return mUpdatedAt;
     }
 
-    public void setPictureUpdatedAt(Date pictureUpdatedAt) {
-        mPictureUpdatedAt = pictureUpdatedAt;
+    public void setUpdatedAt(Date updatedAt) {
+        mUpdatedAt = updatedAt;
     }
 
-    public String getPictureSmallUrl() {
-        return mPictureSmallUrl;
+    public String getSmallUrl() {
+        return mSmallUrl;
     }
 
-    public void setPictureSmallUrl(String pictureSmallUrl) {
-        mPictureSmallUrl = pictureSmallUrl;
+    public void setSmallUrl(String smallUrl) {
+        mSmallUrl = smallUrl;
     }
 
-    public String getPictureMedUrl() {
-        return mPictureMedUrl;
+    public String getMedUrl() {
+        return mMedUrl;
     }
 
-    public void setPictureMedUrl(String pictureMedUrl) {
-        mPictureMedUrl = pictureMedUrl;
+    public void setMedUrl(String medUrl) {
+        mMedUrl = medUrl;
     }
 
-    public String getPictureLargeUrl() {
-        return mPictureLargeUrl;
+    public String getLargeUrl() {
+        return mLargeUrl;
     }
 
-    public void setPictureLargeUrl(String pictureLargeUrl) {
-        mPictureLargeUrl = pictureLargeUrl;
+    public void setLargeUrl(String largeUrl) {
+        mLargeUrl = largeUrl;
+    }
+
+    public String getContent() {
+        return mContent;
+    }
+
+    public void setContent(String content) {
+        mContent = content;
     }
 }
