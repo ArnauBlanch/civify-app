@@ -33,7 +33,7 @@ public class UserAdapter {
 
 
     public UserAdapter() {
-        this(ServiceGenerator.createService(UserService.class));
+        this(ServiceGenerator.getInstance().createService(UserService.class));
     }
 
     UserAdapter(UserService userService) {
