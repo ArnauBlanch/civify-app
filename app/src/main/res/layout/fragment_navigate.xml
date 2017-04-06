@@ -1,15 +1,50 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.civify.civify.activity.fragments.NavigateFragment"
-    >
+    tools:theme="@style/AppTheme.NoActionBar"
+    tools:context="com.civify.activity.fragments.NavigateFragment"
+    tools:ignore="MissingPrefix">
 
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
+  <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:text="Navigate Fragment"
-      />
+      android:layout_height="match_parent">
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/map_fragment_placeholder"
+        android:name="com.civify.civify.BasicActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+  </RelativeLayout>
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/colorPrimary"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_add"
+        android:layout_alignLeft="@+id/fab_add"
+        android:layout_alignStart="@+id/fab_add"
+        android:src="@drawable/ic_my_location"
+        app:backgroundTint="@android:color/white"/>
+  </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
