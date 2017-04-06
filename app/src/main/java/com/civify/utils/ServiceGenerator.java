@@ -1,10 +1,5 @@
 package com.civify.utils;
 
-<<<<<<< HEAD:app/src/main/java/com/civify/civify/utils/ServiceGenerator.java
-=======
-import com.civify.service.CivifyLoginService;
-
->>>>>>> develop:app/src/main/java/com/civify/utils/ServiceGenerator.java
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

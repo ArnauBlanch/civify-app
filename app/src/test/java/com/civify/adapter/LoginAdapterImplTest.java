@@ -3,9 +3,9 @@ package com.civify.adapter;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
-import com.civify.civify.model.User;
-import com.civify.civify.service.CivifyLoginService;
-import com.civify.civify.service.CivifyMeService;
+import com.civify.model.User;
+import com.civify.service.CivifyLoginService;
+import com.civify.service.CivifyMeService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
