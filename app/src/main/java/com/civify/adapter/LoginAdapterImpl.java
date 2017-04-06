@@ -22,10 +22,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-<<<<<<< HEAD:app/src/main/java/com/civify/civify/adapter/LoginAdapterImpl.java
-
-=======
->>>>>>> develop:app/src/main/java/com/civify/adapter/LoginAdapterImpl.java
 public class LoginAdapterImpl implements LoginAdapter {
 
     public static final String NEEDS_LOGIN_MESSAGE = "Needs login";
