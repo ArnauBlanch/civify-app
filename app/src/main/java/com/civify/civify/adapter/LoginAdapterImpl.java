@@ -1,7 +1,6 @@
 package com.civify.civify.adapter;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.civify.civify.model.CivifyEmailCredentials;
 import com.civify.civify.model.CivifyUsernameCredentials;
@@ -25,24 +24,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-
-@SuppressWarnings("LawOfDemeter")
 public class LoginAdapterImpl implements LoginAdapter {
 
-    public static final String AUTH_TOKEN = "authToken";
-    private static final String TAG = LoginAdapterImpl.class.getSimpleName();
+    public static final String NEEDS_LOGIN_MESSAGE = "Needs login";
+    public static final String USER_NOT_EXISTS_MESSAGE = "User not exists";
+    public static final String INVALID_CREDENTIALS_MESSAGE = "Invalid credentials";
+    private static final String AUTH_TOKEN = "authToken";
     private static final String AUTH_TOKEN_JSON = "auth_token";
-    private static final String NEEDS_LOGIN_MESSAGE = "Needs login";
-    private static final String USER_NOT_EXISTS_MESSAGE = "User not exists";
-    private static final String INVALID_CREDENTIALS_MESSAGE = "Invalid credentials";
+    private static final String TAG = LoginAdapterImpl.class.getSimpleName();
     private LoginFinishedCallback mLoginFinishedCallback;
     private SharedPreferences mSharedPreferences;
+    private CivifyLoginService mCivifyLoginService;
+    private CivifyMeService mCivifyMeService;
     private String mFirstCredential;
     private String mPassword;
     private String mAuthToken;
 
     public LoginAdapterImpl(SharedPreferences sharedPreferences) {
-        this.mSharedPreferences = sharedPreferences;
+        mSharedPreferences = sharedPreferences;
+    }
+
+    LoginAdapterImpl(CivifyLoginService civifyLoginService, CivifyMeService civifyMeService,
+                      SharedPreferences sharedPreferences) {
+        mCivifyLoginService = civifyLoginService;
+        mCivifyMeService = civifyMeService;
+        mSharedPreferences = sharedPreferences;
     }
 
     @Override
@@ -54,6 +60,7 @@ public class LoginAdapterImpl implements LoginAdapter {
         callLoginService();
     }
 
+    @Override
     public void isLogged(LoginFinishedCallback loginFinishedCallback) {
         this.mLoginFinishedCallback = loginFinishedCallback;
         callMeService();
@@ -78,17 +85,23 @@ public class LoginAdapterImpl implements LoginAdapter {
         }
     }
 
+    private boolean isEmail() {
+        return mFirstCredential.contains("@");
+    }
+
     private void callLoginService() {
 
-        CivifyLoginService civifyLoginService =
-                ServiceGenerator.getInstance().createLoginService();
+        if (mCivifyLoginService == null) {
+            mCivifyLoginService =
+                    ServiceGenerator.getInstance().createService(CivifyLoginService.class);
+        }
         Call<String> call;
         if (isEmail()) {
-            call = civifyLoginService
+            call = mCivifyLoginService
                     .loginWithEmail(new CivifyEmailCredentials(mFirstCredential,
                             getPassHash(mPassword)));
         } else {
-            call = civifyLoginService
+            call = mCivifyLoginService
                     .loginWithUsername(new CivifyUsernameCredentials(mFirstCredential,
                             getPassHash(mPassword)));
         }
@@ -96,43 +109,35 @@ public class LoginAdapterImpl implements LoginAdapter {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "Not_sent: Login succesful token: " + response.body());
                     fetchToken(response.body());
                     callMeService();
                 } else {
-                    Log.e(TAG, "Login error using login service" + response.code());
                     mLoginFinishedCallback.onLoginFailed(generateException(response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.d(TAG, "Not_sent: Login error using login service" + t.getMessage());
+                t.printStackTrace();
             }
         });
 
     }
 
-    private boolean isEmail() {
-        return mFirstCredential.contains("@");
-    }
-
     private void callMeService() {
         if (hasToken()) {
-            CivifyMeService civifyMeService =
-                    ServiceGenerator.getInstance().createService(CivifyMeService.class);
+            if (mCivifyMeService == null) {
+                mCivifyMeService =
+                        ServiceGenerator.getInstance().createService(CivifyMeService.class);
+            }
             Call<User> call =
-                    civifyMeService.getUser(mAuthToken);
-
+                    mCivifyMeService.getUser(mAuthToken);
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
-                        Log.d(TAG, "User obtained using Me Service");
                         mLoginFinishedCallback.onLoginSucceeded(response.body());
                     } else {
-                        Log.e(TAG, "Not_sent: Me error on response" + response.code()
-                                + response.message());
                         if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                             mLoginFinishedCallback.onLoginFailed(
                                     new LoginError(LoginError.ErrorType.NOT_LOGGED_IN,
@@ -143,7 +148,7 @@ public class LoginAdapterImpl implements LoginAdapter {
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    Log.e(TAG, "Not_sent: Me error" + t.getMessage());
+                    t.printStackTrace();
                 }
             });
         } else {

@@ -110,4 +110,5 @@ dependencies {
   testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.4'
   testCompile "org.robolectric:robolectric:3.3.1"
   testCompile "org.robolectric:shadows-support-v4:3.3.1"
+  testCompile 'org.json:json:20140107'
 }
