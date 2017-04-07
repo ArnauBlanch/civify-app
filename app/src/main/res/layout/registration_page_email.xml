@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix,Overdraw"
+    tools:mContext=".activity.registration.RegistrationActivity"
+    >
+
+  <TextView
+      android:id="@+id/title2"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/choose_email"
+      android:textAlignment="center"
+      android:textColor="#000000"
+      android:textSize="28sp"
+      fontPath="fonts/Nunito-ExtraBold.ttf"
+      />
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:orientation="vertical"
+      >
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:textColorHint="@color/grey"
+        >
+
+      <EditText
+          android:id="@+id/email_input"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/email"
+          android:imeOptions="actionDone"
+          android:inputType="textEmailAddress"
+          android:singleLine="true"
+          android:textColor="#000"
+          android:textSize="22sp"
+          tools:ignore="Deprecated"
+          />
+
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          tools:ignore="UseCompoundDrawables"
+          >
+
+        <ImageView
+            android:id="@+id/email_validation_icon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:contentDescription="@string/email_validation_icon"
+            />
+
+        <TextView
+            android:id="@+id/email_validation_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            fontPath="fonts/Nunito-SemiBold.ttf"
+            />
+      </LinearLayout>
+    </android.support.design.widget.TextInputLayout>
+  </LinearLayout>
+
+  <android.support.v7.widget.AppCompatButton
+      android:id="@+id/button2"
+      android:layout_width="180dp"
+      android:layout_height="50dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="50dp"
+      android:background="@drawable/button_round"
+      android:onClick="emailButtonListener"
+      android:text="@string/continue_button"
+      android:textAllCaps="false"
+      android:textColor="#ffffff"
+      android:textSize="24sp"
+      fontPath="fonts/Nunito-Bold.ttf"
+      />
+
+</LinearLayout>
