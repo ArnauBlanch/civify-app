@@ -3,12 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.civify.civify">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <!-- To make requests to the API -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-feature android:name="android.hardware.camera" />
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".activity.BasicActivity"
+            android:name=".activity.issue.CreateIssueActivity"
             android:label="@string/title_activity_basic"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
