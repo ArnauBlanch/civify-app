@@ -9,21 +9,25 @@ import org.junit.Test;
 
 public class MessageResponseTest {
 
-    @Test public void setMessage() throws Exception {
+    @Test
+    public void setMessage() throws Exception {
 
     }
 
     private MessageResponse mMessageResponse;
 
-    @Before public void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         mMessageResponse = new MessageResponse();
     }
 
-    @After public void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         mMessageResponse = null;
     }
 
-    @Test public void testMessage() throws Exception {
+    @Test
+    public void testMessage() throws Exception {
         mMessageResponse.setMessage("Test message.");
         assertThat(mMessageResponse.getMessage(), is("Test message."));
     }

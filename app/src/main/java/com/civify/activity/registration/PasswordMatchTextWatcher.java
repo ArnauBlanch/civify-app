@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.civify.R;
 
-@SuppressWarnings({ "SameParameterValue", "ElementOnlyUsedFromTestCode" })
 class PasswordMatchTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
