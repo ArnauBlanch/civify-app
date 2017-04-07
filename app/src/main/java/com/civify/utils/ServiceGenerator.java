@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public final class ServiceGenerator {
-    private static final String BASE_URL = "http://10.4.41.152:3000/";
+    private static final String BASE_URL = "http://staging-api.civify.cf";
     // Put the server's IP
 
     private static Retrofit.Builder sBuilder =

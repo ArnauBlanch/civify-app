@@ -1,6 +1,7 @@
 package com.civify.activity;
 
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -15,10 +16,13 @@ import static org.hamcrest.Matchers.allOf;
 
 import android.os.Build;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.core.deps.guava.util.concurrent.ThreadFactoryBuilder;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiSelector;
+import android.util.Log;
 
 import com.civify.R;
 
@@ -26,9 +30,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ProfileFragmentTest {
+public class ProfileFragmentTest extends BasicUiTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(
@@ -63,14 +66,7 @@ public class ProfileFragmentTest {
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-//        allowPermissionsIfNeeded();
+        allowPermissionsIfNeeded();
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open navigation drawer"),

@@ -75,6 +75,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onLoginSucceeded(User u) {
                 Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
 

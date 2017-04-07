@@ -61,7 +61,9 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 mLoginAdapter.logout();
                 Context applicationContext = getActivity().getApplicationContext();
-                startActivity(new Intent(applicationContext, MainActivity.class));
+                Intent intent = new Intent(applicationContext, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
         return view;
