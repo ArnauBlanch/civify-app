@@ -29,12 +29,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@LargeTest @RunWith(AndroidJUnit4.class) public class MainActivityTest {
+@LargeTest
+@RunWith(AndroidJUnit4.class)
+public class MainActivityTest {
 
-    @Rule public ActivityTestRule<MainActivity> mActivityTestRule =
+    @Rule
+    public ActivityTestRule<MainActivity> mActivityTestRule =
             new ActivityTestRule<>(MainActivity.class);
 
-    @Test public void mainActivityTest() {
+    @Test
+    public void mainActivityTest() {
         ViewInteraction imageView = onView(allOf(withId(R.id.titleView), childAtPosition(
                 allOf(withId(R.id.mainLayout),
                         childAtPosition(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class),
@@ -138,12 +142,14 @@ import org.junit.runner.RunWith;
             final int position) {
 
         return new TypeSafeMatcher<View>() {
-            @Override public void describeTo(Description description) {
+            @Override
+            public void describeTo(Description description) {
                 description.appendText("Child at position " + position + " in parent ");
                 parentMatcher.describeTo(description);
             }
 
-            @Override public boolean matchesSafely(View view) {
+            @Override
+            public boolean matchesSafely(View view) {
                 ViewParent parent = view.getParent();
                 return parent instanceof ViewGroup && parentMatcher.matches(parent) && view.equals(
                         ((ViewGroup) parent).getChildAt(position));

@@ -5,3 +5,6 @@
 /build
 # Keystore files
 /coverage/
+
+# Para vosotros Mac'eadores
+.DS_Store
