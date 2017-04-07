@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix,Overdraw"
+    >
+
+  <TextView
+      android:id="@+id/title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/whats_happening"
+      android:textAlignment="center"
+      android:textColor="#000000"
+      android:textSize="28sp"
+      fontPath="fonts/Nunito-ExtraBold.ttf"
+      />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:textColorHint="@color/grey"
+        app:errorEnabled="true"
+        >
+
+      <EditText
+          android:id="@+id/title_input"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/issue_title"
+          android:imeOptions="actionDone"
+          android:inputType="textNoSuggestions"
+          android:singleLine="true"
+          android:textColor="#000"
+          android:textSize="22sp"
+          tools:ignore="Deprecated"
+          />
+
+    </android.support.design.widget.TextInputLayout>
+
+  <android.support.v7.widget.AppCompatButton
+      android:id="@+id/button0"
+      android:layout_width="180dp"
+      android:layout_height="50dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="50dp"
+      android:background="@drawable/button_round"
+      android:onClick="continueButtonListener"
+      android:text="@string/continue_button"
+      android:textAllCaps="false"
+      android:textColor="#ffffff"
+      android:textSize="24sp"
+      fontPath="fonts/Nunito-Bold.ttf"
+      />
+
+</LinearLayout>
