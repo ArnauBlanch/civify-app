@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import com.civify.civify.utils.ServiceGenerator;
+import com.civify.model.Category;
+import com.civify.model.Issue;
+import com.civify.model.Picture;
+import com.civify.utils.ServiceGenerator;
 
 import org.junit.After;
 import org.junit.Before;

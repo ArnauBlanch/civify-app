@@ -4,18 +4,18 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import android.content.SharedPreferences;
 
-import com.civify.civify.model.Category;
-import com.civify.civify.model.Issue;
-import com.civify.civify.model.Picture;
-import com.civify.civify.service.IssueService;
-import com.civify.civify.service.IssueSimpleCallback;
-import com.civify.civify.service.ListIssuesSimpleCallback;
-import com.civify.civify.utils.ServiceGenerator;
+import com.civify.adapter.IssueAdapter;
+import com.civify.model.Category;
+import com.civify.model.Issue;
+import com.civify.model.Picture;
+import com.civify.service.IssueService;
+import com.civify.service.IssueSimpleCallback;
+import com.civify.service.ListIssuesSimpleCallback;
+import com.civify.utils.ServiceGenerator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;

@@ -2,7 +2,8 @@ package com.civify.civify.model;
 
 import static org.junit.Assert.assertEquals;
 
-import com.civify.civify.utils.ServiceGenerator;
+import com.civify.model.Picture;
+import com.civify.utils.ServiceGenerator;
 
 import org.junit.After;
 import org.junit.Before;

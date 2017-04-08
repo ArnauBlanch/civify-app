@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-  <color name="colorPrimary">#FFFFFF</color>
-  <color name="colorPrimaryDark">#C1C1C1</color>
+<resources>
+  <color name="colorPrimary">#239c56</color>
+  <color name="colorPrimaryDark">#1b7943</color>
   <color name="colorAccent">#27AE60</color>
 
   <color name="green">#27AE60</color>
   <color name="red">#E74C3C</color>
-  <color name="blue" tools:ignore="UnusedResources">#3498DB</color>
+  <color name="blue">#3498DB</color>
   <color name="grey">#959595</color>
+
+  <color name="colorPrimarySoft">#a7d7bb</color>
+  <color name="greyBackground">#ececec</color>
+  <color name="greyText">#7a7a7a</color>
 </resources>

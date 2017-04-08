@@ -2,8 +2,11 @@
 <inspections version="1.0">
   <option name="myName" value="CivifyAndroid" />
   <inspection_tool class="AbsoluteAlignmentInUserInterface" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="AbstractClassNamingConvention" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="AbstractClassNeverImplemented" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="AbstractClassNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
+    <option name="m_minLength" value="1" />
+    <option name="m_maxLength" value="0" />
+  </inspection_tool>
+  <inspection_tool class="AbstractClassNeverImplemented" enabled="true" level="INFO" enabled_by_default="true" />
   <inspection_tool class="AbstractMethodCallInConstructor" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
   <inspection_tool class="AbstractMethodOverridesAbstractMethod" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="ignoreJavaDoc" value="true" />
@@ -16,8 +19,8 @@
   <inspection_tool class="AmbiguousMethodCall" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="AnnotationNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
-    <option name="m_minLength" value="8" />
-    <option name="m_maxLength" value="64" />
+    <option name="m_minLength" value="1" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
   <inspection_tool class="AnonymousClassComplexity" enabled="true" level="INFO" enabled_by_default="true">
     <option name="m_limit" value="3" />
@@ -49,7 +52,9 @@
   </inspection_tool>
   <inspection_tool class="AssignmentToSuperclassField" enabled="true" level="INFO" enabled_by_default="true" />
   <inspection_tool class="AssignmentUsedAsCondition" enabled="true" level="INFO" enabled_by_default="true" />
-  <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true">
+    <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,okhttp3.Call,execute,okhttp3.Response,body" />
+  </inspection_tool>
   <inspection_tool class="AwaitNotInLoop" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="AwaitWithoutCorrespondingSignal" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="BadExceptionCaught" enabled="true" level="WARNING" enabled_by_default="true">
@@ -70,9 +75,8 @@
     <option name="ignoreBooleanMethods" value="false" />
     <option name="ignoreInAnnotationInterface" value="true" />
     <option name="onlyWarnOnBaseMethods" value="true" />
-    <option name="questionString" value="add,are,can,check,contains,could,endsWith,equals,has,is,matches,must,put,remove,shall,should,startsWith,was,were,will,would" />
+    <option name="questionString" value="add,are,can,check,contains,could,endsWith,equals,has,is,matches,must,put,remove,shall,should,startsWith,was,were,will,would,pass" />
   </inspection_tool>
-  <inspection_tool class="BooleanParameter" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="BooleanVariableAlwaysNegated" enabled="true" level="INFO" enabled_by_default="true" />
   <inspection_tool class="BreakStatement" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
   <inspection_tool class="BreakStatementWithLabel" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -90,7 +94,7 @@
   </inspection_tool>
   <inspection_tool class="CallToStringConcatCanBeReplacedByOperator" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="CastConflictsWithInstanceof" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="CastThatLosesPrecision" enabled="true" level="WARNING" enabled_by_default="true">
+  <inspection_tool class="CastThatLosesPrecision" enabled="false" level="WARNING" enabled_by_default="false">
     <option name="ignoreIntegerCharCasts" value="true" />
   </inspection_tool>
   <inspection_tool class="CastToIncompatibleInterface" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -115,12 +119,11 @@
     <option name="reportClassesWithNonAbstractMethods" value="true" />
   </inspection_tool>
   <inspection_tool class="ClassNameDiffersFromFileName" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="ClassNamePrefixedWithPackageName" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="ClassNameSameAsAncestorName" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="ClassNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
-    <option name="m_minLength" value="8" />
-    <option name="m_maxLength" value="64" />
+    <option name="m_minLength" value="1" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
   <inspection_tool class="ClassNestingDepth" enabled="true" level="INFO" enabled_by_default="true">
     <option name="m_limit" value="1" />
@@ -170,8 +173,8 @@
   <inspection_tool class="ConstantNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="onlyCheckImmutables" value="true" />
     <option name="m_regex" value="[A-Z][A-Z_\d]*" />
-    <option name="m_minLength" value="5" />
-    <option name="m_maxLength" value="32" />
+    <option name="m_minLength" value="1" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
   <inspection_tool class="ConstantOnLHSOfComparison" enabled="true" level="INFO" enabled_by_default="true" />
   <inspection_tool class="ConstantValueVariableUse" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -226,13 +229,13 @@
   <inspection_tool class="EmptySynchronizedStatement" enabled="true" level="INFO" enabled_by_default="true" />
   <inspection_tool class="EnumeratedClassNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
-    <option name="m_minLength" value="8" />
-    <option name="m_maxLength" value="64" />
+    <option name="m_minLength" value="1" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
   <inspection_tool class="EnumeratedConstantNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="[A-Z][A-Z_\d]*" />
     <option name="m_minLength" value="2" />
-    <option name="m_maxLength" value="64" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
   <inspection_tool class="EnumerationCanBeIteration" enabled="true" level="INFO" enabled_by_default="true" />
   <inspection_tool class="EqualsAndHashcode" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -329,18 +332,18 @@
   <inspection_tool class="InstanceGuardedByStatic" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="InstanceMethodNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="[a-z][A-Za-z\d]*" />
-    <option name="m_minLength" value="4" />
-    <option name="m_maxLength" value="64" />
+    <option name="m_minLength" value="3" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
   <inspection_tool class="InstanceVariableInitialization" enabled="false" level="WEAK WARNING" enabled_by_default="false">
     <option name="m_ignorePrimitives" value="true" />
   </inspection_tool>
   <inspection_tool class="InstanceVariableNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="m[A-Z][a-z0-9][a-zA-Z0-9]*" />
-    <option name="m_minLength" value="5" />
-    <option name="m_maxLength" value="32" />
+    <option name="m_minLength" value="3" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
-  <inspection_tool class="InstanceVariableUninitializedUse" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+  <inspection_tool class="InstanceVariableUninitializedUse" enabled="false" level="WEAK WARNING" enabled_by_default="false">
     <option name="m_ignorePrimitives" value="true" />
     <option name="annotationNamesString" value="" />
   </inspection_tool>
@@ -360,10 +363,10 @@
   <inspection_tool class="InterfaceMayBeAnnotatedFunctional" enabled="true" level="INFO" enabled_by_default="true" />
   <inspection_tool class="InterfaceNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
-    <option name="m_minLength" value="8" />
-    <option name="m_maxLength" value="64" />
+    <option name="m_minLength" value="2" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
-  <inspection_tool class="InterfaceNeverImplemented" enabled="true" level="WARNING" enabled_by_default="true">
+  <inspection_tool class="InterfaceNeverImplemented" enabled="true" level="INFO" enabled_by_default="true">
     <option name="ignoreInterfacesThatOnlyDeclareConstants" value="true" />
   </inspection_tool>
   <inspection_tool class="IteratorHasNextCallsIteratorNext" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -395,10 +398,10 @@
   <inspection_tool class="LabeledStatement" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="LambdaParameterHidingMemberVariable" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="LambdaParameterNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
-    <option name="m_maxLength" value="32" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
-  <inspection_tool class="LambdaUnfriendlyMethodOverload" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="LawOfDemeter" enabled="true" level="INFO" enabled_by_default="true">
+  <inspection_tool class="LambdaUnfriendlyMethodOverload" enabled="true" level="INFO" enabled_by_default="true" />
+  <inspection_tool class="LawOfDemeter" enabled="false" level="INFO" enabled_by_default="false">
     <option name="ignoreLibraryCalls" value="true" />
   </inspection_tool>
   <inspection_tool class="LengthOneStringInIndexOf" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -417,7 +420,7 @@
     <option name="m_ignoreCatchParameters" value="false" />
     <option name="m_regex" value="[a-z][A-Za-z\d]*" />
     <option name="m_minLength" value="1" />
-    <option name="m_maxLength" value="32" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
   <inspection_tool class="LoggerInitializedWithForeignClass" enabled="false" level="WARNING" enabled_by_default="false">
     <option name="loggerClassName" value="org.apache.log4j.Logger,org.slf4j.LoggerFactory,org.apache.commons.logging.LogFactory,java.util.logging.Logger" />
@@ -429,7 +432,6 @@
     <option name="ignoreIterators" value="true" />
   </inspection_tool>
   <inspection_tool class="LoopWithImplicitTerminationCondition" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="MagicCharacter" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="MagicNumber" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="ignoreInitialCapacity" value="true" />
   </inspection_tool>
@@ -458,19 +460,14 @@
   <inspection_tool class="MethodMayBeSynchronized" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="MethodNameSameAsParentName" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="MethodNamesDifferOnlyByCase" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="MethodOnlyUsedFromInnerClass" enabled="true" level="WARNING" enabled_by_default="true">
-    <option name="ignoreMethodsAccessedFromAnonymousClass" value="false" />
-    <option name="ignoreStaticMethodsFromNonStaticInnerClass" value="false" />
-    <option name="onlyReportStaticMethods" value="false" />
-  </inspection_tool>
   <inspection_tool class="MethodOverloadsParentMethod" enabled="true" level="INFO" enabled_by_default="true" />
   <inspection_tool class="MethodOverridesPackageLocalMethod" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="MethodOverridesPrivateMethod" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="MethodOverridesStaticMethod" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="MethodReturnAlwaysConstant" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+  <inspection_tool class="MethodReturnAlwaysConstant" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
   <inspection_tool class="MethodReturnOfConcreteClass" enabled="false" level="INFO" enabled_by_default="false" />
   <inspection_tool class="MethodWithMultipleLoops" enabled="true" level="INFO" enabled_by_default="true" />
-  <inspection_tool class="MigrateAssertToMatcherAssert" enabled="true" level="INFO" enabled_by_default="true" />
+  <inspection_tool class="MigrateAssertToMatcherAssert" enabled="false" level="INFO" enabled_by_default="false" />
   <inspection_tool class="MisorderedAssertEqualsParameters" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="MissingDeprecatedAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="MissingOverrideAnnotation" enabled="true" level="WARNING" enabled_by_default="true">
@@ -494,7 +491,10 @@
   <inspection_tool class="MultipleTopLevelClassesInFile" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="MultipleTypedDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="NakedNotify" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="NativeMethodNamingConvention" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="NativeMethodNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
+    <option name="m_minLength" value="3" />
+    <option name="m_maxLength" value="0" />
+  </inspection_tool>
   <inspection_tool class="NegatedConditional" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_ignoreNegatedNullComparison" value="true" />
   </inspection_tool>
@@ -595,14 +595,14 @@
     <option name="m_ignoreForPropertySetters" value="true" />
     <option name="m_ignoreForAbstractMethods" value="true" />
   </inspection_tool>
-  <inspection_tool class="ParameterNameDiffersFromOverriddenParameter" enabled="true" level="WARNING" enabled_by_default="true">
+  <inspection_tool class="ParameterNameDiffersFromOverriddenParameter" enabled="false" level="WARNING" enabled_by_default="false">
     <option name="m_ignoreSingleCharacterNames" value="false" />
     <option name="m_ignoreOverridesOfLibraryMethods" value="true" />
   </inspection_tool>
   <inspection_tool class="ParameterNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="[a-z][A-Za-z\d]*" />
     <option name="m_minLength" value="1" />
-    <option name="m_maxLength" value="32" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
   <inspection_tool class="ParameterOfConcreteClass" enabled="false" level="INFO" enabled_by_default="false" />
   <inspection_tool class="ParameterTypePreventsOverriding" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
@@ -626,7 +626,9 @@
   <inspection_tool class="PublicField" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="ignoreEnums" value="true" />
     <option name="ignorableAnnotations">
-      <value />
+      <value>
+        <item value="org.junit.Rule" />
+      </value>
     </option>
   </inspection_tool>
   <inspection_tool class="PublicFieldAccessedInSynchronizedContext" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -674,6 +676,7 @@
   <inspection_tool class="RuntimeExec" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="SafeLock" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="SamePackageImport" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="SameReturnValue" enabled="false" level="WARNING" enabled_by_default="false" />
   <inspection_tool class="SerialVersionUIDNotStaticFinal" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="SerializableHasSerialVersionUIDField" enabled="true" level="WEAK WARNING" enabled_by_default="true">
     <option name="ignoreAnonymousInnerClasses" value="true" />
@@ -707,10 +710,9 @@
   <inspection_tool class="StaticInheritance" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="StaticMethodNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="m_regex" value="[a-z][A-Za-z\d]*" />
-    <option name="m_minLength" value="4" />
-    <option name="m_maxLength" value="64" />
+    <option name="m_minLength" value="3" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
-  <inspection_tool class="StaticMethodOnlyUsedInOneClass" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="StaticSuite" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="StaticVariableInitialization" enabled="false" level="WEAK WARNING" enabled_by_default="false">
     <option name="m_ignorePrimitives" value="true" />
@@ -718,10 +720,10 @@
   <inspection_tool class="StaticVariableNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="checkMutableFinals" value="false" />
     <option name="m_regex" value="s[A-Z][a-z0-9][a-zA-Z0-9]*" />
-    <option name="m_minLength" value="5" />
-    <option name="m_maxLength" value="32" />
+    <option name="m_minLength" value="3" />
+    <option name="m_maxLength" value="0" />
   </inspection_tool>
-  <inspection_tool class="StaticVariableUninitializedUse" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+  <inspection_tool class="StaticVariableUninitializedUse" enabled="false" level="WEAK WARNING" enabled_by_default="false">
     <option name="m_ignorePrimitives" value="false" />
   </inspection_tool>
   <inspection_tool class="StringBufferMustHaveInitialCapacity" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
@@ -777,7 +779,7 @@
   </inspection_tool>
   <inspection_tool class="TestMethodInProductCode" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="TestMethodIsPublicVoidNoArg" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="TestMethodWithoutAssertion" enabled="true" level="WARNING" enabled_by_default="true">
+  <inspection_tool class="TestMethodWithoutAssertion" enabled="true" level="INFO" enabled_by_default="true">
     <option name="assertionMethods" value="org.junit.Assert,assert.*|fail.*,junit.framework.Assert,assert.*|fail.*,org.mockito.Mockito,verify.*,org.mockito.InOrder,verify,org.junit.rules.ExpectedException,expect.*,org.hamcrest.MatcherAssert,assertThat" />
     <option name="assertKeywordIsAssertion" value="false" />
   </inspection_tool>
@@ -849,7 +851,7 @@
   </inspection_tool>
   <inspection_tool class="UnnecessaryCallToStringValueOf" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="UnnecessaryConstantArrayCreationExpression" enabled="true" level="WARNING" enabled_by_default="true" />
-  <inspection_tool class="UnnecessaryConstructor" enabled="true" level="WARNING" enabled_by_default="true">
+  <inspection_tool class="UnnecessaryConstructor" enabled="false" level="WARNING" enabled_by_default="false">
     <option name="ignoreAnnotations" value="true" />
   </inspection_tool>
   <inspection_tool class="UnnecessaryExplicitNumericCast" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -906,7 +908,6 @@
     </option>
     <option name="ignoreClassesWithOnlyMain" value="false" />
   </inspection_tool>
-  <inspection_tool class="VariableNotUsedInsideIf" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="VolatileArrayField" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="VolatileLongOrDoubleField" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
   <inspection_tool class="WaitCalledOnCondition" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
@@ -915,8 +916,14 @@
   <inspection_tool class="WaitOrAwaitWithoutTimeout" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="WaitWhileHoldingTwoLocks" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="WaitWithoutCorrespondingNotify" enabled="true" level="WARNING" enabled_by_default="true" />
+  <inspection_tool class="WeakerAccess" enabled="false" level="WARNING" enabled_by_default="false">
+    <option name="SUGGEST_PACKAGE_LOCAL_FOR_MEMBERS" value="false" />
+    <option name="SUGGEST_PACKAGE_LOCAL_FOR_TOP_CLASSES" value="false" />
+    <option name="SUGGEST_PRIVATE_FOR_INNERS" value="false" />
+  </inspection_tool>
   <inspection_tool class="WhileLoopSpinsOnField" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="ignoreNonEmtpyLoops" value="false" />
   </inspection_tool>
   <inspection_tool class="ZeroLengthArrayInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
 </inspections>
+
