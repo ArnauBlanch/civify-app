@@ -31,11 +31,6 @@ public class CategoryTest {
     }
 
     @Test
-    public void testToString() {
-        assertEquals("illumination", mCategory.toString());
-    }
-
-    @Test
     public void testName() {
         assertEquals(R.string.illumination, mCategory.getName());
     }
