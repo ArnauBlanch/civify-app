@@ -6,8 +6,13 @@ import com.civify.civify.adapter.IssueAdapter;
 
 public class AdapterFactory {
 
-    public AdapterFactory getInstance() {
-        return this;
+    private static AdapterFactory mAdapterFactory;
+
+    public static AdapterFactory getInstance() {
+        if (mAdapterFactory == null) {
+            mAdapterFactory = new AdapterFactory();
+        }
+        return mAdapterFactory;
     }
 
     public IssueAdapter getIssueAdapter(SharedPreferences sharedPreferences) {
