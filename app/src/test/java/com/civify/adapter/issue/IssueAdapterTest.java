@@ -54,8 +54,8 @@ public class IssueAdapterTest {
                 .excludeFieldsWithoutExposeAnnotation()
                 .setDateFormat(ServiceGenerator.RAILS_DATE_FORMAT)
                 .create();
-        Retrofit retrofit = (new Retrofit.Builder().baseUrl(mMockWebServer.url("").toString())
-                .addConverterFactory(GsonConverterFactory.create(mGson))).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(mMockWebServer.url("").toString())
+                .addConverterFactory(GsonConverterFactory.create(mGson)).build();
         IssueService issueService = retrofit.create(IssueService.class);
         SharedPreferences sharedPreferences = mock(SharedPreferences.class);
         mIssueAdapter = new IssueAdapter(issueService, sharedPreferences);
@@ -95,7 +95,8 @@ public class IssueAdapterTest {
         // Test request body (issue)
         assertEquals(mIssue.getTitle(), requestJson.get("title").getAsString());
         assertEquals(mIssue.getDescription(), requestJson.get("description").getAsString());
-        assertEquals(mIssue.getCategory().toString(), requestJson.get("category").getAsString());
+        assertEquals(mIssue.getCategory().toString().toLowerCase(),
+                requestJson.get("category").getAsString());
         assertEquals(mIssue.getLongitude(), requestJson.get("longitude").getAsFloat());
         assertEquals(mIssue.getLatitude(), requestJson.get("latitude").getAsFloat());
         assertEquals(mIssue.isRisk(), requestJson.get("risk").getAsBoolean());
