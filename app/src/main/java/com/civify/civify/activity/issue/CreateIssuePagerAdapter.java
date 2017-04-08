@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 class CreateIssuePagerAdapter extends FragmentPagerAdapter {
-    private static final int NUM_PAGES = 4;
+    private static final int NUM_PAGES = 5;
 
     CreateIssuePagerAdapter(FragmentManager fm) {
         super(fm);

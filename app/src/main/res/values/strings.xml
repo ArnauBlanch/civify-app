@@ -22,4 +22,8 @@
   <string name="gallery_permission_denied">Read external storage permission denied</string>
   <string name="need_to_allow_read_storage_permission">You need to allow read external storage permission</string>
   <string name="must_insert_issue_title">You must insert an issue title</string>
+  <string name="must_choose_photo">You must choose a photo</string>
+  <string name="must_choose_option">You must choose an option</string>
+  <string name="finish">Finish</string>
+  <string name="couldnt_create_issue">Couldn\'t create new issue</string>
 </resources>
