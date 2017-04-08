@@ -1,4 +1,4 @@
-package com.civify.model;
+package com.civify.model.issue;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

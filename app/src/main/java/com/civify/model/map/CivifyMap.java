@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
-import com.civify.model.Issue;
+import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;

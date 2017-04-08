@@ -1,12 +1,9 @@
-package com.civify.civify.model;
+package com.civify.model.issue;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import com.civify.model.Category;
-import com.civify.model.Issue;
-import com.civify.model.Picture;
 import com.civify.utils.ServiceGenerator;
 
 import org.junit.After;
@@ -42,7 +39,7 @@ public class IssueTest {
         String stringDate1 = "2017-03-28T23:53:20.000Z";
         String stringDate2 = "2016-04-24T23:53:20.000Z";
         DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT, Locale
-                .FRANCE);
+                .getDefault());
         try {
             mUpdatedAt = dateFormat.parse(stringDate1);
             mCreatedAt = dateFormat.parse(stringDate2);

@@ -2,10 +2,10 @@ package com.civify.utils;
 
 import android.content.SharedPreferences;
 
-import com.civify.adapter.IssueAdapter;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginAdapterImpl;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.issue.IssueAdapter;
 
 public class AdapterFactory {
     private static AdapterFactory sInstance;

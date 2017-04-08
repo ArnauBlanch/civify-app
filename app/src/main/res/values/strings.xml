@@ -103,4 +103,14 @@
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="level">Level</string>
 
+  <!-- Categories -->
+  <string name="road_signs">Road signs</string>
+  <string name="illumination">Illumination</string>
+  <string name="grove">Grove</string>
+  <string name="street_furniture">Street furniture</string>
+  <string name="trash_and_cleaning">Trash and cleaning</string>
+  <string name="public_transport">Public transport</string>
+  <string name="suggestion">Suggestion</string>
+  <string name="other">Other</string>
+
 </resources>

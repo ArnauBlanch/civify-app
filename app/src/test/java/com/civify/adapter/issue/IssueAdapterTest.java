@@ -1,4 +1,4 @@
-package com.civify.civify.adapter;
+package com.civify.adapter.issue;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
@@ -8,13 +8,12 @@ import static org.mockito.Mockito.verify;
 
 import android.content.SharedPreferences;
 
-import com.civify.adapter.IssueAdapter;
-import com.civify.model.Category;
-import com.civify.model.Issue;
-import com.civify.model.Picture;
-import com.civify.service.IssueService;
-import com.civify.service.IssueSimpleCallback;
-import com.civify.service.ListIssuesSimpleCallback;
+import com.civify.model.issue.Category;
+import com.civify.model.issue.Issue;
+import com.civify.model.issue.Picture;
+import com.civify.service.issue.IssueService;
+import com.civify.service.issue.IssueSimpleCallback;
+import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
