@@ -23,7 +23,7 @@ public class Picture {
     private int mFileSize;
 
     @Expose(serialize = false)
-    @SerializedName("picture_updated_at")
+    @SerializedName("updated_at")
     private Date mUpdatedAt;
 
     @Expose(serialize = false)
