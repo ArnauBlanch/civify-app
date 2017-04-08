@@ -23,19 +23,20 @@
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:textColorHint="@color/grey"
         >
 
       <EditText
-          android:id="@+id/title_input"
+          android:id="@+id/description_input"
           android:layout_width="match_parent"
           android:layout_height="200dp"
           android:hint="@string/issue_description"
-          android:imeOptions="actionDone"
-          android:inputType="textNoSuggestions"
           android:textColor="#000"
           android:textSize="22sp"
+          android:inputType="textMultiLine|textNoSuggestions"
+          android:maxLength="500"
+          android:gravity="top|left"
           tools:ignore="Deprecated"
           />
 
@@ -48,8 +49,8 @@
       android:layout_gravity="center_horizontal"
       android:layout_marginTop="50dp"
       android:background="@drawable/button_round"
-      android:onClick="continueButtonListener"
-      android:text="@string/continue_button"
+      android:onClick="descriptionButtonListener"
+      android:text="@string/finish"
       android:textAllCaps="false"
       android:textColor="#ffffff"
       android:textSize="24sp"

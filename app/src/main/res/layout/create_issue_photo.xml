@@ -31,13 +31,27 @@
       android:layout_weight="0.40"
       />
 
+  <TextView
+    android:id="@+id/photo_validation"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+      android:layout_marginTop="15dp"
+      android:textColor="@color/red"
+      android:layout_gravity="center_horizontal"
+      android:text="@string/must_choose_photo"
+    android:gravity="center_vertical"
+    fontPath="fonts/Nunito-SemiBold.ttf"
+      android:visibility="invisible"
+    />
+
+
 
   <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
       android:layout_gravity="center_horizontal"
-      android:layout_marginTop="50dp"
+      android:layout_marginTop="20dp"
       >
     <ImageButton
         android:id="@+id/camera_button"
@@ -72,7 +86,7 @@
       android:layout_height="50dp"
       android:layout_gravity="center_horizontal"
       android:background="@drawable/button_round"
-      android:onClick="continueButtonListener"
+      android:onClick="photoButtonListener"
       android:text="@string/continue_button"
       android:textAllCaps="false"
       android:textColor="#ffffff"

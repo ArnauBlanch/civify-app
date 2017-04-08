@@ -27,6 +27,7 @@
         android:layout_marginTop="10dp"
         android:textColorHint="@color/grey"
         app:errorEnabled="true"
+        android:id="@+id/title_input_layout"
         >
 
       <EditText
@@ -51,7 +52,7 @@
       android:layout_gravity="center_horizontal"
       android:layout_marginTop="50dp"
       android:background="@drawable/button_round"
-      android:onClick="continueButtonListener"
+      android:onClick="titleButtonListener"
       android:text="@string/continue_button"
       android:textAllCaps="false"
       android:textColor="#ffffff"
