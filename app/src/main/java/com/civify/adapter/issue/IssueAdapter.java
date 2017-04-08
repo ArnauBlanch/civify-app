@@ -1,11 +1,11 @@
-package com.civify.adapter;
+package com.civify.adapter.issue;
 
 import android.content.SharedPreferences;
 
-import com.civify.model.Issue;
-import com.civify.service.IssueService;
-import com.civify.service.IssueSimpleCallback;
-import com.civify.service.ListIssuesSimpleCallback;
+import com.civify.model.issue.Issue;
+import com.civify.service.issue.IssueService;
+import com.civify.service.issue.IssueSimpleCallback;
+import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.JsonParser;
 

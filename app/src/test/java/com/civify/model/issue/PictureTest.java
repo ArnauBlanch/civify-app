@@ -1,8 +1,8 @@
-package com.civify.civify.model;
+package com.civify.model.issue;
 
 import static org.junit.Assert.assertEquals;
 
-import com.civify.model.Picture;
+import com.civify.model.issue.Picture;
 import com.civify.utils.ServiceGenerator;
 
 import org.junit.After;
@@ -18,12 +18,12 @@ import java.util.Locale;
 public class PictureTest {
     private static final String FILE_NAME = "test-file-name";
     private static final String CONTENT_TYPE = "test-content-type";
+    private static final String CONTENT = "test-content";
     private static final int FILE_SIZE = 1234;
     private Date mUpdatedAt;
     private static final String SMALL_URL = "test-small-url";
     private static final String MED_URL = "test-med-url";
     private static final String LARGE_URL = "test-large-url";
-    private static final String CONTENT = "test-content";
 
     private Picture mPicture;
 
@@ -58,6 +58,12 @@ public class PictureTest {
     }
 
     @Test
+    public void testPictureContent() {
+        mPicture.setContent(CONTENT);
+        assertEquals(CONTENT, mPicture.getContent());
+    }
+
+    @Test
     public void testPictureFileSize() {
         mPicture.setFileSize(FILE_SIZE);
         assertEquals(FILE_SIZE, mPicture.getFileSize());
@@ -85,12 +91,6 @@ public class PictureTest {
     public void testPictureLargeUrl() {
         mPicture.setLargeUrl(LARGE_URL);
         assertEquals(LARGE_URL, mPicture.getLargeUrl());
-    }
-
-    @Test
-    public void testPictureContent() {
-        mPicture.setContent(CONTENT);
-        assertEquals(CONTENT, mPicture.getContent());
     }
 
     @Test

@@ -1,6 +1,6 @@
-package com.civify.service;
+package com.civify.service.issue;
 
-import com.civify.model.Issue;
+import com.civify.model.issue.Issue;
 
 import java.util.List;
 

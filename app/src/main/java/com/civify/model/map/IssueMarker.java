@@ -9,7 +9,7 @@ import android.util.Log;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
-import com.civify.model.Issue;
+import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;

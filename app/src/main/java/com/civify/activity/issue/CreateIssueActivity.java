@@ -16,11 +16,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.adapter.IssueAdapter;
-import com.civify.model.Category;
-import com.civify.model.Issue;
-import com.civify.model.Picture;
-import com.civify.service.IssueSimpleCallback;
+import com.civify.adapter.issue.IssueAdapter;
+import com.civify.model.issue.Category;
+import com.civify.model.issue.Issue;
+import com.civify.model.issue.Picture;
+import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
 public class CreateIssueActivity extends CameraGalleryActivity {
