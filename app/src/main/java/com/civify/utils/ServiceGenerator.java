@@ -1,5 +1,8 @@
 package com.civify.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -17,10 +20,14 @@ public final class ServiceGenerator {
     private final HttpLoggingInterceptor mLogging;
 
     private ServiceGenerator() {
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .setDateFormat(RAILS_DATE_FORMAT)
+                .create();
         mBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create(gson));
         mRetrofit = mBuilder.build();
         mHttpClient = new OkHttpClient.Builder();
         mLogging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
