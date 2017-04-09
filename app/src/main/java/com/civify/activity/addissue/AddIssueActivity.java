@@ -1,4 +1,4 @@
-package com.civify.activity.issue;
+package com.civify.activity.addissue;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -23,7 +22,7 @@ import com.civify.model.issue.Picture;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
-public class CreateIssueActivity extends CameraGalleryActivity {
+public class AddIssueActivity extends CameraGalleryActivity {
     private IssueAdapter mIssueAdapter;
     private ViewPager mViewPager;
 
@@ -31,23 +30,24 @@ public class CreateIssueActivity extends CameraGalleryActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences userPreferences = getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
+        SharedPreferences userPreferences =
+                getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(userPreferences);
         setContentView(R.layout.create_issue_layout);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         // Set an Adapter on the ViewPager
-        mViewPager.setAdapter(new CreateIssuePagerAdapter(getSupportFragmentManager()));
+        mViewPager.setAdapter(new AddIssuePagerAdapter(getSupportFragmentManager()));
         mViewPager.setCurrentItem(0);
         mViewPager.setOffscreenPageLimit(mViewPager.getAdapter().getCount() - 1);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.create_issue_toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.create_issue_toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.report_new_issue));
+        getSupportActionBar().setTitle(getString(R.string.report_new_issue));*/
     }
 
     @Override

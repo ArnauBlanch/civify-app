@@ -1,4 +1,4 @@
-package com.civify.activity.issue;
+package com.civify.activity.addissue;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.civify.R;
 
-public class CreateIssueFragment extends Fragment {
+public class AddIssuePagerFragment extends Fragment {
     private static final int ISSUE_TITLE = 0;
     private static final int ISSUE_CATEGORY = 1;
     private static final int ISSUE_PHOTO = 2;

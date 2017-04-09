@@ -1,4 +1,4 @@
-package com.civify.activity.issue;
+package com.civify.activity.addissue;
 
 import android.Manifest.permission;
 import android.app.Activity;
@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -29,8 +30,8 @@ public abstract class CameraGalleryActivity extends BaseActivity {
     protected abstract void handlePhotoResult(Bitmap imageBitmap);
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         switch (requestCode) {
             case CAMERA_REQUEST:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -80,21 +81,21 @@ public abstract class CameraGalleryActivity extends BaseActivity {
     }
 
     private void onSelectFromGalleryResult(Intent data) {
-        Bitmap bm = null;
+        Bitmap imageBitmap = null;
         if (data != null) {
             try {
-                bm = MediaStore.Images.Media.getBitmap(
+                imageBitmap = MediaStore.Images.Media.getBitmap(
                         getApplicationContext().getContentResolver(), data.getData());
             } catch (IOException e) {
                 Log.e(getLocalClassName(), e.getMessage());
             }
         }
-        handlePhotoResult(bm);
+        handlePhotoResult(imageBitmap);
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get(DATA);
-        handlePhotoResult(thumbnail);
+        Bitmap imageBitmap = (Bitmap) data.getExtras().get(DATA);
+        handlePhotoResult(imageBitmap);
     }
 
     private void cameraIntent() {
