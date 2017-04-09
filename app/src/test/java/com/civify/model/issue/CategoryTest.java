@@ -21,11 +21,6 @@ public class CategoryTest {
     }
 
     @Test
-    public void testMarkerSelected() {
-        assertEquals(R.drawable.civify, mCategory.getMarkerSelected());
-    }
-
-    @Test
     public void testIcon() {
         assertEquals(R.drawable.civify, mCategory.getIcon());
     }
