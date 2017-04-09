@@ -8,36 +8,43 @@ import com.google.gson.annotations.SerializedName;
 public enum Category {
     // Senyalitació vial
     @SerializedName("road_signs")
-    ROAD_SIGNS(R.drawable.civify, R.drawable.civify, R.string
-            .road_signs),
+    ROAD_SIGNS(R.drawable.traffic_signs_lights_pin, R.drawable.traffic_signs_lights_icon,
+            R.string.road_signs),
 
     // Il·lumincació
     @SerializedName("illumination")
-    ILLUMINATION(R.drawable.civify, R.drawable.civify, R.string.illumination),
+    ILLUMINATION(R.drawable.street_lights_pin, R.drawable.street_lights_icon,
+            R.string.illumination),
 
-    // Arbolada
+    // Arbres i plantes
     @SerializedName("grove")
-    GROVE(R.drawable.civify, R.drawable.civify, R.string.grove),
+    GROVE(R.drawable.trees_and_plants_pin, R.drawable.trees_and_plants_icon,
+            R.string.grove),
 
     // Mobiliari urbà
     @SerializedName("street_furniture")
-    STREET_FURNITURE(R.drawable.civify, R.drawable.civify, R.string.street_furniture),
+    STREET_FURNITURE(R.drawable.urban_furniture_pin, R.drawable.urban_furniture_icon,
+            R.string.street_furniture),
 
     // Escombraries i neteja
     @SerializedName("trash_and_cleaning")
-    TRASH_AND_CLEANING(R.drawable.civify, R.drawable.civify, R.string.trash_and_cleaning),
+    TRASH_AND_CLEANING(R.drawable.trash_and_cleaning_pin, R.drawable.trash_and_cleaning_icon,
+            R.string.trash_and_cleaning),
 
     // Transport públic
     @SerializedName("public_transport")
-    PUBLIC_TANSPORT(R.drawable.civify, R.drawable.civify, R.string.public_transport),
+    PUBLIC_TANSPORT(R.drawable.public_transportation_pin, R.drawable.public_transportation_icon,
+            R.string.public_transport),
 
     // Suggeriment
     @SerializedName("suggestion")
-    SUGGESTION(R.drawable.civify, R.drawable.civify, R.string.suggestion),
+    SUGGESTION(R.drawable.suggestion_pin, R.drawable.suggestion_icon,
+            R.string.suggestion),
 
     // Altres
     @SerializedName("other")
-    OTHER(R.drawable.civify, R.drawable.civify, R.string.other);
+    OTHER(R.drawable.others_pin, R.drawable.others_icon,
+            R.string.other);
 
     private final int mMarker;
     private final int mIcon;

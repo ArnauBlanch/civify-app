@@ -22,8 +22,7 @@
         android:icon="@drawable/logo_planeta"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        android:theme="@style/AppTheme">
 
       <meta-data
         android:name="com.google.android.geo.API_KEY"
@@ -48,6 +47,7 @@
       <activity android:name=".activity.LoginActivity"
           android:theme="@style/AppTheme.NoActionBar"/>
       <activity android:name=".activity.registration.RegistrationActivity" />
+      <activity android:name=".activity.addissue.AddIssueActivity" />
     </application>
 
 </manifest>

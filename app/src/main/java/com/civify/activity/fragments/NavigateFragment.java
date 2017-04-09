@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.addissue.AddIssueActivity;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotReadyException;
 
@@ -94,6 +95,18 @@ public class NavigateFragment extends Fragment {
                 }
             }
         });
+
+        FloatingActionButton fabCreateIssue = (FloatingActionButton)
+                mapView.findViewById(R.id.fab_add);
+        fabCreateIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(),
+                        AddIssueActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return mapView;
     }
 }
