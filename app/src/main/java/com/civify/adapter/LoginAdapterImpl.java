@@ -135,6 +135,7 @@ public class LoginAdapterImpl implements LoginAdapter {
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
                         mLoginFinishedCallback.onLoginSucceeded(response.body());
+                        UserAdapter.setCurrentUser(response.body());
                     } else {
                         if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                             mLoginFinishedCallback.onLoginFailed(
