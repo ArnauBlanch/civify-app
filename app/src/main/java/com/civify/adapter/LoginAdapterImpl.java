@@ -59,6 +59,7 @@ public class LoginAdapterImpl implements LoginAdapter {
 
     public void logout() {
         mSharedPreferences.edit().remove(AUTH_TOKEN).apply();
+        UserAdapter.setCurrentUser(null);
     }
 
     public void isLogged(LoginFinishedCallback loginFinishedCallback) {
