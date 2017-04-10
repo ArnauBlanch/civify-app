@@ -89,6 +89,7 @@ public class LoginAdapterImplTest {
         verify(mLoginFinishedCallbackMock, timeout(1000))
                 .onLoginSucceeded(mUserCallbackArgCaptor.capture());
         assertEquals(mUser.getEmail(), mUserCallbackArgCaptor.getValue().getEmail());
+        assertEquals(mUser.getUsername(), UserAdapter.getCurrentUser().getUsername());
     }
 
     @Test
@@ -109,6 +110,7 @@ public class LoginAdapterImplTest {
         verify(mLoginFinishedCallbackMock, timeout(1000))
                 .onLoginSucceeded(mUserCallbackArgCaptor.capture());
         assertEquals(mUser.getSurname(), mUserCallbackArgCaptor.getValue().getSurname());
+        assertEquals(mUser.getUsername(), UserAdapter.getCurrentUser().getUsername());
     }
 
     @Test
@@ -139,6 +141,7 @@ public class LoginAdapterImplTest {
         verify(mLoginFinishedCallbackMock, timeout(1000))
                 .onLoginSucceeded(mUserCallbackArgCaptor.capture());
         assertEquals(mUser.getEmail(), mUserCallbackArgCaptor.getValue().getEmail());
+        assertEquals(mUser.getUsername(), UserAdapter.getCurrentUser().getUsername());
     }
 
     @Test

@@ -29,6 +29,8 @@ public class UserAdapter {
     public static final String USER_EXISTS = "User exists";
     public static final String USER_DOESNT_EXIST = "User not exists";
 
+    private static User sCurrentUser;
+
     private UserService mUserService;
 
 
@@ -166,5 +168,13 @@ public class UserAdapter {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static void setCurrentUser(User user) {
+        sCurrentUser = user;
+    }
+
+    public static User getCurrentUser() {
+        return sCurrentUser;
     }
 }
