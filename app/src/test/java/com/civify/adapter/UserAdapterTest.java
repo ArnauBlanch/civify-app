@@ -31,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UserAdapterTest {
     private UserAdapter mUserAdapter;
     private MockWebServer mMockServer;
+    private User mUser;
     @Captor
     private ArgumentCaptor<ValidationCallback> mCallbackArgCaptor;
 
@@ -42,6 +43,8 @@ public class UserAdapterTest {
                 .addConverterFactory(GsonConverterFactory.create())).build();
         UserService userService = retrofit.create(UserService.class);
         mUserAdapter = new UserAdapter(userService);
+        mUser = new User("username", "name", "surname", "email@email.com", "validPassw0rd",
+                "validPassw0rd");
     }
 
     @After
@@ -58,9 +61,7 @@ public class UserAdapterTest {
                 .setBody(body.toString()));
         SimpleCallback mockCallback = mock(SimpleCallback.class);
 
-        mUserAdapter.registerUser(
-                new User("username", "name", "surname", "email@email.com", "validPassw0rd",
-                        "validPassw0rd"), mockCallback);
+        mUserAdapter.registerUser(mUser, mockCallback);
 
         RecordedRequest request = mMockServer.takeRequest();
         String json = request.getUtf8Body();
@@ -88,9 +89,7 @@ public class UserAdapterTest {
                 .setBody(body.toString()));
         SimpleCallback mockCallback = mock(SimpleCallback.class);
 
-        mUserAdapter.registerUser(
-                new User("username", "name", "surname", "email@email.com", "validPassw0rd",
-                        "validPassw0rd"), mockCallback);
+        mUserAdapter.registerUser(mUser, mockCallback);
 
         RecordedRequest request = mMockServer.takeRequest();
         String json = request.getUtf8Body();
@@ -221,5 +220,11 @@ public class UserAdapterTest {
     @Test
     public void checkInvalidPassword() {
         assertEquals(false, mUserAdapter.checkValidPassword("invalidpassword"));
+    }
+
+    @Test
+    public void testCurrentUser() {
+        UserAdapter.setCurrentUser(mUser);
+        assertEquals(mUser, UserAdapter.getCurrentUser());
     }
 }
