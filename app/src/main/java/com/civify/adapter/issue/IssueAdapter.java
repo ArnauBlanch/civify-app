@@ -2,6 +2,7 @@ package com.civify.adapter.issue;
 
 import android.content.SharedPreferences;
 
+import com.civify.adapter.UserAdapter;
 import com.civify.model.issue.Issue;
 import com.civify.service.issue.IssueService;
 import com.civify.service.issue.IssueSimpleCallback;
@@ -30,11 +31,12 @@ public class IssueAdapter {
 
     public IssueAdapter(IssueService service, SharedPreferences sharedPreferences) {
         this.mIssueService = service;
-        this.mAuthToken = sharedPreferences.getString("AUTH_TOKEN", "");
+        this.mAuthToken = sharedPreferences.getString("authToken", "");
     }
 
     public void createIssue(Issue issue, final IssueSimpleCallback callback) {
-        Call<Issue> call = mIssueService.createIssue(mAuthToken, issue, issue.getUserAuthToken());
+        Call<Issue> call = mIssueService.createIssue(mAuthToken, issue, UserAdapter
+                .getCurrentUser().getUserAuthToken());
         call.enqueue(new Callback<Issue>() {
 
             @Override
