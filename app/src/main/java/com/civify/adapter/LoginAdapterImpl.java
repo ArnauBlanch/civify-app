@@ -27,7 +27,7 @@ public class LoginAdapterImpl implements LoginAdapter {
     public static final String NEEDS_LOGIN_MESSAGE = "Needs login";
     public static final String USER_NOT_EXISTS_MESSAGE = "User not exists";
     public static final String INVALID_CREDENTIALS_MESSAGE = "Invalid credentials";
-    private static final String AUTH_TOKEN = "authToken";
+    public static final String AUTH_TOKEN = "authToken";
     private static final String AUTH_TOKEN_JSON = "auth_token";
     private static final String TAG = LoginAdapterImpl.class.getSimpleName();
     private LoginFinishedCallback mLoginFinishedCallback;
