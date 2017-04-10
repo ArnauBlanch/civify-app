@@ -145,4 +145,12 @@ public class User {
     public void setCoins(int coins) {
         mCoins = coins;
     }
+
+    public String getUserAuthToken() {
+        return mUserAuthToken;
+    }
+
+    public void setUserAuthToken(String userAuthToken) {
+        mUserAuthToken = userAuthToken;
+    }
 }

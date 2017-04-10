@@ -8,6 +8,8 @@ import static org.mockito.Mockito.verify;
 
 import android.content.SharedPreferences;
 
+import com.civify.adapter.UserAdapter;
+import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
 import com.civify.model.issue.Picture;
@@ -45,6 +47,7 @@ public class IssueAdapterTest {
     private MockWebServer mMockWebServer;
     private Gson mGson;
     private Issue mIssue;
+    private User mUser;
 
     @Before
     public void setUp() throws IOException, ParseException {
@@ -76,6 +79,8 @@ public class IssueAdapterTest {
                 .setBody(jsonBody);
         mMockWebServer.enqueue(mockResponse);
         IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
+
+        UserAdapter.setCurrentUser(mUser);
 
         mIssueAdapter.createIssue(mIssue, mockCallback);
 
@@ -147,6 +152,8 @@ public class IssueAdapterTest {
                 .setBody(body.toString());
         mMockWebServer.enqueue(mockResponse);
         IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
+
+        UserAdapter.setCurrentUser(mUser);
 
         mIssueAdapter.createIssue(mIssue, mockCallback);
 
@@ -292,5 +299,7 @@ public class IssueAdapterTest {
         mIssue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true,
                 45.0f, 46.0f, 0, 0, false, 0, date, date, "issue-auth-token", "user-auth-token",
                 picture);
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
     }
 }

@@ -11,8 +11,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface IssueService {
-    String ENDPOINT = "http://localhost:3000";
-
     @POST("/users/{user_auth_token}/issues")
     Call<Issue> createIssue(@Header("Authorization") String authToken, @Body Issue issue, @Path
             ("user_auth_token") String userAuthToken);
