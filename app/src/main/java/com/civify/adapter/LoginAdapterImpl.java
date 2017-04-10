@@ -1,7 +1,6 @@
 package com.civify.adapter;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.civify.model.CivifyEmailCredentials;
 import com.civify.model.CivifyUsernameCredentials;
@@ -18,7 +17,6 @@ import java.security.NoSuchAlgorithmException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +42,7 @@ public class LoginAdapterImpl implements LoginAdapter {
     }
 
     LoginAdapterImpl(CivifyLoginService civifyLoginService, CivifyMeService civifyMeService,
-                      SharedPreferences sharedPreferences) {
+            SharedPreferences sharedPreferences) {
         mCivifyLoginService = civifyLoginService;
         mCivifyMeService = civifyMeService;
         mSharedPreferences = sharedPreferences;
@@ -60,9 +58,7 @@ public class LoginAdapterImpl implements LoginAdapter {
     }
 
     public void logout() {
-        mSharedPreferences.edit()
-                .remove(AUTH_TOKEN)
-                .apply();
+        mSharedPreferences.edit().remove(AUTH_TOKEN).apply();
     }
 
     public void isLogged(LoginFinishedCallback loginFinishedCallback) {
@@ -81,8 +77,7 @@ public class LoginAdapterImpl implements LoginAdapter {
                 return new LoginError(LoginError.ErrorType.USER_NOT_EXISTS,
                         USER_NOT_EXISTS_MESSAGE);
             case HttpURLConnection.HTTP_UNAUTHORIZED:
-                return new LoginError(
-                        LoginError.ErrorType.INVALID_CREDENTIALS,
+                return new LoginError(LoginError.ErrorType.INVALID_CREDENTIALS,
                         INVALID_CREDENTIALS_MESSAGE);
             default:
                 return null;
@@ -97,13 +92,11 @@ public class LoginAdapterImpl implements LoginAdapter {
         }
         Call<String> call;
         if (isEmail()) {
-            call = mCivifyLoginService
-                    .loginWithEmail(new CivifyEmailCredentials(mFirstCredential,
-                            getPassHash(mPassword)));
+            call = mCivifyLoginService.loginWithEmail(
+                    new CivifyEmailCredentials(mFirstCredential, getPassHash(mPassword)));
         } else {
-            call = mCivifyLoginService
-                    .loginWithUsername(new CivifyUsernameCredentials(mFirstCredential,
-                            getPassHash(mPassword)));
+            call = mCivifyLoginService.loginWithUsername(
+                    new CivifyUsernameCredentials(mFirstCredential, getPassHash(mPassword)));
         }
         call.enqueue(new Callback<String>() {
             @Override
@@ -121,7 +114,6 @@ public class LoginAdapterImpl implements LoginAdapter {
                 t.printStackTrace();
             }
         });
-
     }
 
     private boolean isEmail() {
@@ -134,8 +126,7 @@ public class LoginAdapterImpl implements LoginAdapter {
                 mCivifyMeService =
                         ServiceGenerator.getInstance().createService(CivifyMeService.class);
             }
-            Call<User> call =
-                    mCivifyMeService.getUser(mAuthToken);
+            Call<User> call = mCivifyMeService.getUser(mAuthToken);
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
