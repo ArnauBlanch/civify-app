@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,6 +51,7 @@ public class ProfileFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USERPREFS",
                 Context.MODE_PRIVATE);
         mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -55,17 +59,43 @@ public class ProfileFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        Button signoutButton = (Button) view.findViewById(R.id.button_signout);
-        signoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLoginAdapter.logout();
-                Context applicationContext = getActivity().getApplicationContext();
-                Intent intent = new Intent(applicationContext, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
+//        Button signoutButton = (Button) view.findViewById(R.id.button_signout);
+//        signoutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mLoginAdapter.logout();
+//                Context applicationContext = getActivity().getApplicationContext();
+//                Intent intent = new Intent(applicationContext, MainActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//            }
+//        });
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_signout:
+                signOut();
+                return false;
+            default:
+                break;
+        }
+
+        return false;
+    }
+
+    private void signOut() {
+        mLoginAdapter.logout();
+        Context applicationContext = getActivity().getApplicationContext();
+        Intent intent = new Intent(applicationContext, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

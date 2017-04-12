@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -44,6 +45,7 @@ public class DrawerActivity extends BaseActivity
     private NavigationView mNavigationView;
     //private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
+    private boolean mShowMenu;
 
     public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
@@ -64,7 +66,7 @@ public class DrawerActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
-
+        mShowMenu = false;
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
@@ -149,7 +151,22 @@ public class DrawerActivity extends BaseActivity
     private void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).commit();
+        if (fragmentId == PROFILE_ID) mShowMenu = true;
+        else mShowMenu = false;
+        invalidateOptionsMenu();
         mCurrentFragment = fragmentId;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.drawer, menu);
+
+        for (int i = 0; i < menu.size(); ++i) {
+            menu.getItem(i).setVisible(mShowMenu);
+        }
+
+        return true;
     }
 
     private void setUserHeader(User user) {
