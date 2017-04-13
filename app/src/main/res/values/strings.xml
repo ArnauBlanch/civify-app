@@ -81,5 +81,6 @@
     <string name="sign_out">Sign out</string>
     <string name="title_activity_remove_this">RemoveThisActivity</string>
 
+    <string name="profile_title">My profile</string>
 
 </resources>
