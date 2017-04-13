@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,8 @@ import com.civify.utils.AdapterFactory;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
+
+    private static String mTitle;
 
     private LoginAdapter mLoginAdapter;
 
@@ -52,6 +55,7 @@ public class ProfileFragment extends Fragment {
                 Context.MODE_PRIVATE);
         mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
         setHasOptionsMenu(true);
+        mTitle = getResources().getString(R.string.profile_title);
     }
 
     @Override
@@ -70,6 +74,8 @@ public class ProfileFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle(mTitle);
         return view;
     }
 
