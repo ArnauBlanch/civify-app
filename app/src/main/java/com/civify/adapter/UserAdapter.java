@@ -29,11 +29,13 @@ public class UserAdapter {
     public static final String USER_EXISTS = "User exists";
     public static final String USER_DOESNT_EXIST = "User not exists";
 
+    private static User sCurrentUser;
+
     private UserService mUserService;
 
 
     public UserAdapter() {
-        this(ServiceGenerator.createService(UserService.class));
+        this(ServiceGenerator.getInstance().createService(UserService.class));
     }
 
     UserAdapter(UserService userService) {
@@ -166,5 +168,13 @@ public class UserAdapter {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static void setCurrentUser(User user) {
+        sCurrentUser = user;
+    }
+
+    public static User getCurrentUser() {
+        return sCurrentUser;
     }
 }

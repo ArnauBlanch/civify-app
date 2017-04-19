@@ -18,7 +18,8 @@ public enum Category {
 
     // Arbres i plantes
     @SerializedName("grove")
-    GROVE(R.drawable.trees_and_plants_pin, R.drawable.trees_and_plants_icon, R.string.grove),
+    GROVE(R.drawable.trees_and_plants_pin, R.drawable.trees_and_plants_icon,
+            R.string.grove),
 
     // Mobiliari urbà
     @SerializedName("street_furniture")
@@ -37,11 +38,13 @@ public enum Category {
 
     // Suggeriment
     @SerializedName("suggestion")
-    SUGGESTION(R.drawable.suggestion_pin, R.drawable.suggestion_icon, R.string.suggestion),
+    SUGGESTION(R.drawable.suggestion_pin, R.drawable.suggestion_icon,
+            R.string.suggestion),
 
     // Altres
     @SerializedName("other")
-    OTHER(R.drawable.others_pin, R.drawable.others_icon, R.string.other);
+    OTHER(R.drawable.others_pin, R.drawable.others_icon,
+            R.string.other);
 
     private final int mMarker;
     private final int mIcon;

@@ -163,8 +163,8 @@
         android:id="@+id/descriptionTex"
         android:layout_width="match_parent"
         android:hint="@string/description"
-        android:layout_height="100dp"
-        android:maxLength="100"
+        android:layout_height="200dp"
+        android:maxLength="500"
         android:inputType="textMultiLine"
         />
     </android.support.design.widget.TextInputLayout>
