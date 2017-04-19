@@ -91,4 +91,37 @@
   <string name="description">Description</string>
 
 
+  <!-- Categories -->
+  <string name="road_signs">Road signs</string>
+  <string name="illumination">Illumination</string>
+  <string name="grove">Grove</string>
+  <string name="street_furniture">Street furniture</string>
+  <string name="trash_and_cleaning">Trash and cleaning</string>
+  <string name="public_transport">Public transport</string>
+  <string name="suggestion">Suggestion</string>
+  <string name="other">Other</string>
+
+
+  <string name="whats_happening">What\'s happening?</string>
+  <string name="issue_title">Issue Title</string>
+  <string name="describe_your_problem">Describe your problem</string>
+  <string name="issue_description">Issue description</string>
+  <string name="what_kind_of_problem">What kind of issue?</string>
+  <string name="pose_a_risk">Does it pose a risk to people?</string>
+  <string name="take_a_picture">Do you have a photo of the issue?</string>
+  <string name="report_new_issue">Report new issue</string>
+  <string name="something_went_wrong">Something went wrong</string>
+  <string name="havent_picked_image">You haven\'t picked an image!</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Cancel</string>
+  <string name="need_to_allow_camera_permission">You need to allow camera permission to take a photo</string>
+  <string name="camera_permission_denied">Camera permission denied</string>
+  <string name="select_photo">Select photo</string>
+  <string name="gallery_permission_denied">Read external storage permission denied</string>
+  <string name="need_to_allow_read_storage_permission">You need to allow read external storage permission</string>
+  <string name="must_insert_issue_title">You must insert an issue title</string>
+  <string name="must_choose_photo">You must choose a photo</string>
+  <string name="must_choose_option">You must choose an option</string>
+  <string name="couldnt_create_issue">Couldn\'t create new issue</string>
+
 </resources>
