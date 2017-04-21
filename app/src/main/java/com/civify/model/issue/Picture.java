@@ -42,15 +42,9 @@ public class Picture {
 
     }
 
-    public Picture(String fileName, String contentType, String content, int fileSize, Date
-            updatedAt, String smallUrl, String medUrl, String largeUrl) {
+    public Picture(String fileName, String contentType, String content) {
         mFileName = fileName;
         mContentType = contentType;
-        mFileSize = fileSize;
-        mUpdatedAt = updatedAt;
-        mSmallUrl = smallUrl;
-        mMedUrl = medUrl;
-        mLargeUrl = largeUrl;
         mContent = content;
     }
 

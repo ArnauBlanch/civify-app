@@ -57,14 +57,14 @@ public enum Category {
     }
 
     public int getMarker() {
-        return this.mMarker;
+        return mMarker;
     }
 
     public int getIcon() {
-        return this.mIcon;
+        return mIcon;
     }
 
     public int getName() {
-        return this.mName;
+        return mName;
     }
 }

@@ -18,7 +18,6 @@ import com.civify.R;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
-import com.civify.model.issue.Picture;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
@@ -125,7 +124,7 @@ public class AddIssueActivity extends CameraGalleryActivity {
         boolean risk = ((RadioGroup) findViewById(R.id.radio_group)).getCheckedRadioButtonId() == 0;
         float longitude = 0.0f;
         float latitude = 0.0f;
-        Picture picture = null;
+        Bitmap picture = null;
         String userAuthToken = null;
 
         Issue newIssue = new Issue(title, description, category, risk,

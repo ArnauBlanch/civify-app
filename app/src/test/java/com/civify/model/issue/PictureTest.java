@@ -95,15 +95,9 @@ public class PictureTest {
 
     @Test
     public void testConstructor() {
-        mPicture = new Picture(FILE_NAME, CONTENT_TYPE, CONTENT, FILE_SIZE, mUpdatedAt, SMALL_URL,
-                MED_URL, LARGE_URL);
+        mPicture = new Picture(FILE_NAME, CONTENT_TYPE, CONTENT);
         assertEquals(FILE_NAME, mPicture.getFileName());
         assertEquals(CONTENT_TYPE, mPicture.getContentType());
-        assertEquals(FILE_SIZE, mPicture.getFileSize());
-        assertEquals(mUpdatedAt, mPicture.getUpdatedAt());
-        assertEquals(SMALL_URL, mPicture.getSmallUrl());
-        assertEquals(MED_URL, mPicture.getMedUrl());
-        assertEquals(LARGE_URL, mPicture.getLargeUrl());
         assertEquals(CONTENT, mPicture.getContent());
     }
 }

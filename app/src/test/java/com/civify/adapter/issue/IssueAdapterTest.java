@@ -7,6 +7,7 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
@@ -294,8 +295,7 @@ public class IssueAdapterTest {
         Date date = dateFormat.parse(dateString);
 
         Picture picture = new Picture("picture-file-name", "picture-content-type",
-                "picture-content", 1234, date, "picture-small-url", "picture-med-url",
-                "picture-large-url");
+                "picture-content");
         mIssue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true,
                 45.0f, 46.0f, 0, 0, false, 0, date, date, "issue-auth-token", "user-auth-token",
                 picture);
