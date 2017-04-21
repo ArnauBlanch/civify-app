@@ -5,4 +5,6 @@ public interface LoginAdapter {
                LoginFinishedCallback onLoginFinishedCallback);
 
     void isLogged(LoginFinishedCallback loginFinishedCallback);
+
+    void logout();
 }

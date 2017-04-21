@@ -74,12 +74,15 @@ public class DrawerActivity extends BaseActivity
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+        toolbar.setTitle(R.string.app_name);
 
         NavigateFragment navigateFragment = NavigateFragment.newInstance();
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
-        User fakeUser = new User("dsegoviat", "David", "Segovia", "david@civify.app", "password",
+
+        User fakeUser = new User("ArnauBlanch", "Arnau", "Blanch", "arnaublanch@civify.app",
+                "password",
                 "password2");
         fakeUser.setLevel(LEVEL);
         fakeUser.setCoins(COINS);
@@ -91,9 +94,8 @@ public class DrawerActivity extends BaseActivity
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        } else super.onBackPressed();
+        //        else finish();
     }
 
     /*
