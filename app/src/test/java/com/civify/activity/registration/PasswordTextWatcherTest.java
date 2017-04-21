@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.adapter.RegisterAdapter;
+import com.civify.adapter.UserAdapter;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,7 +21,7 @@ import org.junit.Test;
 public class PasswordTextWatcherTest {
     private PasswordTextWatcher mPasswordTextWatcher;
     private Context mContext;
-    private RegisterAdapter mRegisterAdapter;
+    private UserAdapter mUserAdapter;
     private ImageView mIcon;
     private TextView mText;
     private Resources mResources;
@@ -32,7 +32,7 @@ public class PasswordTextWatcherTest {
         View view = mock(View.class);
         int iconRes = 0;
         int textRes = 1;
-        mRegisterAdapter = mock(RegisterAdapter.class);
+        mUserAdapter = mock(UserAdapter.class);
         mIcon = mock(ImageView.class);
         mText = mock(TextView.class);
         mResources = mock(Resources.class);
@@ -42,7 +42,7 @@ public class PasswordTextWatcherTest {
         when(view.findViewById(iconRes)).thenReturn(mIcon);
         when(view.findViewById(textRes)).thenReturn(mText);
 
-        mPasswordTextWatcher = new PasswordTextWatcher(mRegisterAdapter, view, iconRes, textRes);
+        mPasswordTextWatcher = new PasswordTextWatcher(mUserAdapter, view, iconRes, textRes);
     }
 
     @After
@@ -57,7 +57,7 @@ public class PasswordTextWatcherTest {
         String text = "message";
 
         when(mockEditable.toString()).thenReturn("validPassw0rd");
-        when(mRegisterAdapter.checkValidPassword("validPassw0rd"))
+        when(mUserAdapter.checkValidPassword("validPassw0rd"))
                 .thenReturn(true);
         when(mResources.getColor(R.color.green)).thenReturn(color);
         when(mContext.getString(R.string.valid_password)).thenReturn(text);
@@ -75,7 +75,7 @@ public class PasswordTextWatcherTest {
         String text = "message";
 
         when(mockEditable.toString()).thenReturn("invalidpassword");
-        when(mRegisterAdapter.checkValidPassword("invalidpassword"))
+        when(mUserAdapter.checkValidPassword("invalidpassword"))
                 .thenReturn(false);
         when(mResources.getColor(R.color.red)).thenReturn(color);
         when(mContext.getString(R.string.invalid_password)).thenReturn(text);

@@ -1,9 +1,13 @@
 package com.civify.model.map;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.Marker;
 
@@ -14,10 +18,12 @@ import java.util.Iterator;
 public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickListener {
 
     public static final String TAG = CivifyMarkers.class.getSimpleName();
+    private CivifyMap mMap;
 
     private HashMap<String, CivifyMarker<?>> mMarkers = new HashMap<>();
 
     CivifyMarkers(@NonNull CivifyMap map) {
+        mMap = map;
         map.getGoogleMap().setOnMarkerClickListener(this);
     }
 
@@ -71,7 +77,8 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
             if (civifyMarker != null) {
                 Log.v(TAG, "Marker " + tag + " clicked.");
                 //TODO Call fragment issueDetails
-                // return true;
+                mMap.showIssueDetails(civifyMarker);
+                return true;
             }
         }
         return false;

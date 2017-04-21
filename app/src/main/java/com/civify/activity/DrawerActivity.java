@@ -146,7 +146,7 @@ public class DrawerActivity extends BaseActivity
         return true;
     }
 
-    private void setFragment(Fragment fragment, int fragmentId) {
+    public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).commit();
         mCurrentFragment = fragmentId;

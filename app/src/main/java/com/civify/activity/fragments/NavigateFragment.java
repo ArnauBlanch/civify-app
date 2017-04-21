@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotReadyException;
 
@@ -32,7 +33,7 @@ public class NavigateFragment extends Fragment {
     }
 
     private void setMap() {
-        mCivifyMap = new CivifyMap(getActivity());
+        mCivifyMap = new CivifyMap((DrawerActivity) getActivity());
         Fragment mapFragment = mCivifyMap.getMapFragment();
         mCivifyMap.enableLocationUpdates();
         getFragmentManager()

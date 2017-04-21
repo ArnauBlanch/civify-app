@@ -1,40 +1,32 @@
 package com.civify.activity.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.civify.R;
+import com.civify.adapter.LocalityCallback;
+import com.civify.model.User;
+import com.civify.model.map.CivifyMarker;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link IssueDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link IssueDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Date;
+
 public class IssueDetailsFragment extends Fragment {
 
     public IssueDetailsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment IssueDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static IssueDetailsFragment newInstance(String param1, String param2) {
-        return new IssueDetailsFragment();
+    public static IssueDetailsFragment newInstance(CivifyMarker<?> marker) {
+        IssueDetailsFragment fragment = new IssueDetailsFragment();
+        Bundle data = new Bundle();
+        data.putSerializable("marker", marker);
+        fragment.setArguments(data);
+        return fragment;
     }
 
     @Override
@@ -44,7 +36,78 @@ public class IssueDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_issue_details, container, false);
+        View viewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
+        init(viewDetails);
+        return viewDetails;
     }
+
+    private void init(@NonNull View viewDetails) {
+        TextView nameIssue = (TextView) viewDetails.findViewById(R.id.nameText);
+        TextView likesIssue = (TextView)viewDetails.findViewById(R.id.likesText);
+        TextView categoryIssue = (TextView)viewDetails.findViewById(R.id.categoryText);
+        TextView riskIssue = (TextView)viewDetails.findViewById(R.id.riskAnswer);
+        TextView descriptionIssue = (TextView)viewDetails.findViewById(R.id.descriptionText);
+        final TextView streetIssue = (TextView)viewDetails.findViewById(R.id.streetText);
+        TextView distanceIssue = (TextView)viewDetails.findViewById(R.id.distanceText);
+        TextView timeIssue = (TextView)viewDetails.findViewById(R.id.sinceText);
+        User user;
+        Bundle bundle = getArguments();
+        CivifyMarker<?> marker = (CivifyMarker<?>) bundle.getSerializable("marker");
+        nameIssue.setText(marker.getIssue().getTitle());
+        likesIssue.setText("+23");
+        categoryIssue.setText("Senyalitzacio");
+        riskIssue.setText("No");
+        if(marker.getIssue().getRisk()) riskIssue.setText("Yes");
+        descriptionIssue.setText("New description");
+        marker.getAddress(new LocalityCallback() {
+            @Override
+            public void onLocalityResponse(@NonNull String address) {
+                streetIssue.setText(address);
+            }
+
+            @Override
+            public void onLocalityError() {}
+        });
+        distanceIssue.setText(String.valueOf(marker.getDistanceFromCurrentLocation()));
+        Date date = new Date();
+        Date dateIssue = marker.getIssue().getDate();
+        long difference = date.getTime() - dateIssue.getTime();
+        difference = difference/1000/3600/24;
+        timeIssue.setText( "Since " + difference  + " days");
+        //setUser( new User("PESAdicto", "Sergio", "Sanchis", "sergio@gmail"
+               //+ ".com", "lalalala", "lalalala"));
+    }
+
+    /*
+    private void setUser(User user) {
+        View userView = mNavigationView.getHeaderView(0);
+        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
+
+        ProgressBar progressBar = (ProgressBar) userView.findViewById(R.id.userProgress);
+
+        TextView name = (TextView) userView.findViewById(R.id.userName);
+        name.setText(user.getName() + " " + user.getSurname());
+
+        TextView username = (TextView) userView.findViewById(R.id.userUsername);
+        username.setText(user.getUsername());
+
+        TextView level = (TextView) userView.findViewById(R.id.userLevel);
+        String userLevel = Integer.toString(user.getLevel());
+        String showLevel = getString(R.string.level) + ' ' + userLevel;
+        level.setText(showLevel);
+
+        TextView xp = (TextView) userView.findViewById(R.id.userxp);
+        String userExperience = Integer.toString(user.getExperience());
+        //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
+
+        TextView coins = (TextView) userView.findViewById(R.id.userCoins);
+        String userCoins = Integer.toString(user.getCoins());
+        coins.setText(userCoins);
+
+        CircularImageView profileImage =
+                (CircularImageView) userView.findViewById(R.id.userImage);
+        //profileImage.setImageBitmap(img); // bitmap
+        //profileImage.setImageIcon(img); // icon
+    }
+    */
 }

@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
 import com.civify.model.Issue;
@@ -32,7 +35,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private boolean mPlayerSet;
     private final LocationAdapter mLocationAdapter;
 
-    public CivifyMap(@NonNull Activity context) {
+    public CivifyMap(@NonNull DrawerActivity context) {
         this(new LocationAdapter(context));
     }
 
@@ -113,12 +116,17 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mMarkers;
     }
 
+    public void showIssueDetails(CivifyMarker<?> issueMarker){
+        Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(issueMarker);
+        getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+    }
+
     GoogleMap getGoogleMap() {
         return mGoogleMap;
     }
 
-    Activity getContext() {
-        return mLocationAdapter.getContext();
+    DrawerActivity getContext() {
+        return (DrawerActivity) mLocationAdapter.getContext();
     }
 
     public void enableLocation() {
