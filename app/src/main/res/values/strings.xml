@@ -1,11 +1,11 @@
 <resources>
 
-    <string name="email_validation_icon">Validation icon for e-mail</string>
-    <string name="name_validation_icon">Validation icon for name</string>
-    <string name="surname_validation_icon">Validation icon for surname</string>
-    <string name="username_validation_icon">Validation icon for username</string>
-    <string name="password_validation_icon">Validation icon for password</string>
-    <string name="app_name">Civify</string>
+  <string name="email_validation_icon">Validation icon for e-mail</string>
+  <string name="name_validation_icon">Validation icon for name</string>
+  <string name="surname_validation_icon">Validation icon for surname</string>
+  <string name="username_validation_icon">Validation icon for username</string>
+  <string name="password_validation_icon">Validation icon for password</string>
+  <string name="app_name">Civify</string>
 
   <string name="valid_unused_username">The username is valid and unused</string>
   <string name="invalid_username">The username is invalid (Should have 8–20 characters. Special characters allowed: .,)</string>

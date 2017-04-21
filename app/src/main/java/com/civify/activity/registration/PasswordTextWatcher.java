@@ -8,22 +8,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.adapter.UserAdapter;
+import com.civify.adapter.RegisterAdapter;
 import com.civify.utils.AdapterFactory;
 
 class PasswordTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
     private final Context mContext;
-    private final UserAdapter mUserAdapter;
+    private final RegisterAdapter mRegisterAdapter;
 
     PasswordTextWatcher(View view, int iconResource, int messageResource) {
-        this(AdapterFactory.getInstance().getUserAdapter(),
+        this(AdapterFactory.getInstance().getRegisterAdapter(),
                 view, iconResource, messageResource);
     }
 
-    PasswordTextWatcher(UserAdapter userAdapter, View view, int iconResource, int messageResource) {
-        this.mUserAdapter = userAdapter;
+    PasswordTextWatcher(RegisterAdapter registerAdapter, View view, int iconResource, int messageResource) {
+        this.mRegisterAdapter = registerAdapter;
         this.mContext = view.getContext();
         this.mIcon = (ImageView) view.findViewById(iconResource);
         this.mMessageView = (TextView) view.findViewById(messageResource);
@@ -39,7 +39,7 @@ class PasswordTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (mUserAdapter.checkValidPassword(s.toString())) {
+        if (mRegisterAdapter.checkValidPassword(s.toString())) {
             setIconAndMessage(R.drawable.ic_checked, R.string.valid_password, R.color.green);
         } else {
             setIconAndMessage(R.drawable.ic_cancel, R.string.invalid_password, R.color.red);

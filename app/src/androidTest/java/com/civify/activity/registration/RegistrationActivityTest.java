@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.civify.R;
-import com.civify.adapter.UserAdapter;
+import com.civify.adapter.RegisterAdapter;
 import com.civify.service.UserService;
 import com.civify.utils.AdapterFactory;
 import com.google.gson.JsonObject;
@@ -58,7 +58,7 @@ public class RegistrationActivityTest {
         mMockServer.start();
         Retrofit retrofit = (new Retrofit.Builder().baseUrl(mMockServer.url("").toString())
                 .addConverterFactory(GsonConverterFactory.create())).build();
-        AdapterFactory.getInstance().getUserAdapter()
+        AdapterFactory.getInstance().getRegisterAdapter()
                 .setService(retrofit.create(UserService.class));
     }
 
@@ -151,7 +151,7 @@ public class RegistrationActivityTest {
         appCompatEditText11.perform(click());
 
         // MOCK SERVER RESPONSE (username)
-        mockRequest(5, HttpURLConnection.HTTP_NOT_FOUND, UserAdapter.USER_DOESNT_EXIST);
+        mockRequest(5, HttpURLConnection.HTTP_NOT_FOUND, RegisterAdapter.USER_DOESNT_EXIST);
 
         ViewInteraction appCompatEditText12 =
                 onView(allOf(withId(R.id.username_input),
@@ -169,7 +169,7 @@ public class RegistrationActivityTest {
         appCompatEditText13.perform(pressImeActionButton());
 
         // MOCK SERVER RESPONSE
-        mockRequest(1, HttpURLConnection.HTTP_NOT_FOUND, UserAdapter.USER_DOESNT_EXIST);
+        mockRequest(1, HttpURLConnection.HTTP_NOT_FOUND, RegisterAdapter.USER_DOESNT_EXIST);
 
         ViewInteraction appCompatButton4 =
                 onView(allOf(withId(R.id.button1), withText(R.string.continue_button), isDisplayed()));
@@ -205,7 +205,7 @@ public class RegistrationActivityTest {
         appCompatButton5.perform(click());
 
         // MOCK SERVER RESPONSE (email)
-        mockRequest(3, HttpURLConnection.HTTP_NOT_FOUND, UserAdapter.USER_DOESNT_EXIST);
+        mockRequest(3, HttpURLConnection.HTTP_NOT_FOUND, RegisterAdapter.USER_DOESNT_EXIST);
 
         ViewInteraction appCompatEditText16 =
                 onView(allOf(withId(R.id.email_input), isDisplayed()));
@@ -221,7 +221,7 @@ public class RegistrationActivityTest {
         appCompatEditText17.perform(pressImeActionButton());
 
         // MOCK SERVER RESPONSE
-        mockRequest(1, HttpURLConnection.HTTP_NOT_FOUND, UserAdapter.USER_DOESNT_EXIST);
+        mockRequest(1, HttpURLConnection.HTTP_NOT_FOUND, RegisterAdapter.USER_DOESNT_EXIST);
 
         ViewInteraction appCompatButton6 =
                 onView(allOf(withId(R.id.button2), withText(R.string.continue_button), isDisplayed()));
@@ -296,7 +296,7 @@ public class RegistrationActivityTest {
         textView16.check(matches(withText(R.string.matching_passwords)));
 
         // MOCK SERVER RESPONSE
-        mockRequest(1, HttpURLConnection.HTTP_CREATED, UserAdapter.USER_CREATED);
+        mockRequest(1, HttpURLConnection.HTTP_CREATED, RegisterAdapter.USER_CREATED);
 
         ViewInteraction appCompatButton8 =
                 onView(allOf(withId(R.id.button3), withText(R.string.finish), isDisplayed()));

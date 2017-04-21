@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.adapter.UserAdapter;
+import com.civify.adapter.RegisterAdapter;
 import com.civify.adapter.ValidationCallback;
 
 import org.junit.After;
@@ -29,7 +29,7 @@ public class EmailTextWatcherTest {
     @Mock
     private Context mContext;
     @Mock
-    private UserAdapter mUserAdapter;
+    private RegisterAdapter mRegisterAdapter;
     @Captor
     private ArgumentCaptor<ValidationCallback> mCallbackArgCaptor;
     @Mock
@@ -52,7 +52,7 @@ public class EmailTextWatcherTest {
         when(mView.findViewById(iconRes)).thenReturn(mIcon);
         when(mView.findViewById(textRes)).thenReturn(mText);
 
-        mEmailTextWatcher = new EmailTextWatcher(mUserAdapter, mView, iconRes, textRes);
+        mEmailTextWatcher = new EmailTextWatcher(mRegisterAdapter, mView, iconRes, textRes);
     }
 
     @After
@@ -72,10 +72,10 @@ public class EmailTextWatcherTest {
 
         mEmailTextWatcher.afterTextChanged(mockEditable);
 
-        verify(mUserAdapter).checkValidUnusedEmail(anyString(),
+        verify(mRegisterAdapter).checkValidUnusedEmail(anyString(),
                 mCallbackArgCaptor.capture());
 
-        mCallbackArgCaptor.getValue().onValidationResponse(UserAdapter.VALID_UNUSED);
+        mCallbackArgCaptor.getValue().onValidationResponse(RegisterAdapter.VALID_UNUSED);
 
         verify(mIcon).setImageResource(R.drawable.ic_checked);
         verify(mText).setText(text);
@@ -94,9 +94,9 @@ public class EmailTextWatcherTest {
 
         mEmailTextWatcher.afterTextChanged(mockEditable);
 
-        verify(mUserAdapter).checkValidUnusedEmail(anyString(),
+        verify(mRegisterAdapter).checkValidUnusedEmail(anyString(),
                 mCallbackArgCaptor.capture());
-        mCallbackArgCaptor.getValue().onValidationResponse(UserAdapter.INVALID);
+        mCallbackArgCaptor.getValue().onValidationResponse(RegisterAdapter.INVALID);
 
         verify(mIcon).setImageResource(R.drawable.ic_cancel);
         verify(mText).setText(text);
@@ -115,9 +115,9 @@ public class EmailTextWatcherTest {
 
         mEmailTextWatcher.afterTextChanged(mockEditable);
 
-        verify(mUserAdapter).checkValidUnusedEmail(anyString(),
+        verify(mRegisterAdapter).checkValidUnusedEmail(anyString(),
                 mCallbackArgCaptor.capture());
-        mCallbackArgCaptor.getValue().onValidationResponse(UserAdapter.USED);
+        mCallbackArgCaptor.getValue().onValidationResponse(RegisterAdapter.USED);
 
         verify(mIcon).setImageResource(R.drawable.ic_cancel);
         verify(mText).setText(text);
