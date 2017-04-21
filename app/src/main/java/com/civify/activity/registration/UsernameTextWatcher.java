@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.adapter.RegisterAdapter;
+import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
 import com.civify.utils.AdapterFactory;
 
@@ -16,14 +16,14 @@ class UsernameTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
     private final Context mContext;
-    private final RegisterAdapter mRegisterAdapter;
+    private final UserAdapter mUserAdapter;
 
     UsernameTextWatcher(View view, int iconResource, int messageResource) {
-        this(AdapterFactory.getInstance().getRegisterAdapter(), view, iconResource, messageResource);
+        this(AdapterFactory.getInstance().getUserAdapter(), view, iconResource, messageResource);
     }
 
-    UsernameTextWatcher(RegisterAdapter registerAdapter, View view, int iconResource, int messageResource) {
-        this.mRegisterAdapter = registerAdapter;
+    UsernameTextWatcher(UserAdapter userAdapter, View view, int iconResource, int messageResource) {
+        this.mUserAdapter = userAdapter;
         this.mContext = view.getContext();
         this.mIcon = (ImageView) view.findViewById(iconResource);
         this.mMessageView = (TextView) view.findViewById(messageResource);
@@ -39,16 +39,16 @@ class UsernameTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        mRegisterAdapter.checkValidUnusedUsername(s.toString(), new ValidationCallback() {
+        mUserAdapter.checkValidUnusedUsername(s.toString(), new ValidationCallback() {
             @Override
             public void onValidationResponse(int response) {
                 switch (response) {
-                    case RegisterAdapter.VALID_UNUSED:
+                    case UserAdapter.VALID_UNUSED:
                         setIconAndMessage(
                                 R.drawable.ic_checked,
                                 R.string.valid_unused_username, R.color.green);
                         break;
-                    case RegisterAdapter.INVALID:
+                    case UserAdapter.INVALID:
                         setIconAndMessage(
                                 R.drawable.ic_cancel, R.string.invalid_username, R.color.red);
                         break;

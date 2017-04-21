@@ -6,6 +6,7 @@ import com.civify.adapter.LocationAdapter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 // Temporal Issue (Stub)
@@ -66,5 +67,13 @@ public class Issue {
             else pj = -pj;
         }
         return examples;
+    }
+
+    public Date getDate() {
+        return new Date();
+    }
+
+    public boolean getRisk() {
+        return true;
     }
 }

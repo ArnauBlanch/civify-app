@@ -18,7 +18,7 @@ import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
 import com.civify.adapter.LoginFinishedCallback;
 import com.civify.adapter.SimpleCallback;
-import com.civify.adapter.RegisterAdapter;
+import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
@@ -26,14 +26,14 @@ import com.civify.utils.AdapterFactory;
 public class RegistrationActivity
         extends BaseActivity {
 
-    private RegisterAdapter mRegisterAdapter;
+    private UserAdapter mUserAdapter;
     private ViewPager mViewPager;
     private LoginAdapter mLoginAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRegisterAdapter = AdapterFactory.getInstance().getRegisterAdapter();
+        mUserAdapter = AdapterFactory.getInstance().getUserAdapter();
         SharedPreferences userpreferences =
                 getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(userpreferences);
@@ -92,7 +92,7 @@ public class RegistrationActivity
         String password2 = ((EditText) findViewById(R.id.password2_input)).getText().toString();
 
         User newUser = new User(username, name, surname, email, password, password2);
-        mRegisterAdapter.registerUser(newUser, new SimpleCallback() {
+        mUserAdapter.registerUser(newUser, new SimpleCallback() {
             @Override
             public void onSuccess() {
                 mLoginAdapter.login(username, password, new LoginFinishedCallback() {
@@ -145,12 +145,12 @@ public class RegistrationActivity
         if (((EditText) findViewById(R.id.username_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.username_input)).setText("");
         }
-        mRegisterAdapter.checkValidUnusedUsername(
+        mUserAdapter.checkValidUnusedUsername(
                 ((EditText) findViewById(R.id.username_input)).getText().toString(),
                 new ValidationCallback() {
                     @Override
                     public void onValidationResponse(int response) {
-                        if (response == RegisterAdapter.VALID_UNUSED) {
+                        if (response == UserAdapter.VALID_UNUSED) {
                             nextPage();
                         }
                     }
@@ -161,12 +161,12 @@ public class RegistrationActivity
         if (((EditText) findViewById(R.id.email_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.email_input)).setText("");
         }
-        mRegisterAdapter.checkValidUnusedEmail(
+        mUserAdapter.checkValidUnusedEmail(
                 ((EditText) findViewById(R.id.email_input)).getText().toString(),
                 new ValidationCallback() {
                     @Override
                     public void onValidationResponse(int response) {
-                        if (response == RegisterAdapter.VALID_UNUSED) {
+                        if (response == UserAdapter.VALID_UNUSED) {
                             nextPage();
                         }
                     }
@@ -182,7 +182,7 @@ public class RegistrationActivity
         }
         EditText password = (EditText) findViewById(R.id.password_input);
         EditText matchingPassword = (EditText) findViewById(R.id.password2_input);
-        if (mRegisterAdapter.checkValidPassword(password.getText().toString())
+        if (mUserAdapter.checkValidPassword(password.getText().toString())
                 && password.getText().toString().equals(matchingPassword.getText().toString())) {
             register();
         }

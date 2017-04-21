@@ -4,11 +4,11 @@ import android.content.SharedPreferences;
 
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginAdapterImpl;
-import com.civify.adapter.RegisterAdapter;
+import com.civify.adapter.UserAdapter;
 
 public class AdapterFactory {
     private static AdapterFactory sInstance;
-    private RegisterAdapter mRegisterAdapter;
+    private UserAdapter mUserAdapter;
     private LoginAdapter mLoginAdapter;
 
     public static AdapterFactory getInstance() {
@@ -18,11 +18,11 @@ public class AdapterFactory {
         return sInstance;
     }
 
-    public RegisterAdapter getRegisterAdapter() {
-        if (mRegisterAdapter == null) {
-            mRegisterAdapter = new RegisterAdapter();
+    public UserAdapter getUserAdapter() {
+        if (mUserAdapter == null) {
+            mUserAdapter = new UserAdapter();
         }
-        return mRegisterAdapter;
+        return mUserAdapter;
     }
 
     public LoginAdapter getLoginAdapter(SharedPreferences sharedPreferences) {

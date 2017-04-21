@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.adapter.RegisterAdapter;
+import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
 
 import org.junit.After;
@@ -29,7 +29,7 @@ public class UsernameTextWatcherTest {
     @Mock
     private Context mContext;
     @Mock
-    private RegisterAdapter mRegisterAdapter;
+    private UserAdapter mUserAdapter;
     @Mock
     private ImageView mIcon;
     @Mock
@@ -52,7 +52,7 @@ public class UsernameTextWatcherTest {
         when(mView.findViewById(iconRes)).thenReturn(mIcon);
         when(mView.findViewById(textRes)).thenReturn(mText);
 
-        mUsernameTextWatcher = new UsernameTextWatcher(mRegisterAdapter, mView, iconRes, textRes);
+        mUsernameTextWatcher = new UsernameTextWatcher(mUserAdapter, mView, iconRes, textRes);
     }
 
     @After
@@ -72,9 +72,9 @@ public class UsernameTextWatcherTest {
 
         mUsernameTextWatcher.afterTextChanged(mockEditable);
 
-        verify(mRegisterAdapter).checkValidUnusedUsername(anyString(),
+        verify(mUserAdapter).checkValidUnusedUsername(anyString(),
                 mCallbackArgCaptor.capture());
-        mCallbackArgCaptor.getValue().onValidationResponse(RegisterAdapter.VALID_UNUSED);
+        mCallbackArgCaptor.getValue().onValidationResponse(UserAdapter.VALID_UNUSED);
 
         verify(mIcon).setImageResource(R.drawable.ic_checked);
         verify(mText).setText(text);
@@ -93,9 +93,9 @@ public class UsernameTextWatcherTest {
 
         mUsernameTextWatcher.afterTextChanged(mockEditable);
 
-        verify(mRegisterAdapter).checkValidUnusedUsername(anyString(),
+        verify(mUserAdapter).checkValidUnusedUsername(anyString(),
                 mCallbackArgCaptor.capture());
-        mCallbackArgCaptor.getValue().onValidationResponse(RegisterAdapter.INVALID);
+        mCallbackArgCaptor.getValue().onValidationResponse(UserAdapter.INVALID);
 
         verify(mIcon).setImageResource(R.drawable.ic_cancel);
         verify(mText).setText(text);
@@ -114,9 +114,9 @@ public class UsernameTextWatcherTest {
 
         mUsernameTextWatcher.afterTextChanged(mockEditable);
 
-        verify(mRegisterAdapter).checkValidUnusedUsername(anyString(),
+        verify(mUserAdapter).checkValidUnusedUsername(anyString(),
                 mCallbackArgCaptor.capture());
-        mCallbackArgCaptor.getValue().onValidationResponse(RegisterAdapter.USED);
+        mCallbackArgCaptor.getValue().onValidationResponse(UserAdapter.USED);
 
         verify(mIcon).setImageResource(R.drawable.ic_cancel);
         verify(mText).setText(text);
