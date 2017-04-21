@@ -4,11 +4,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import android.graphics.Bitmap;
+
 import com.civify.utils.ServiceGenerator;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+@RunWith(RobolectricTestRunner.class)
 public class IssueTest {
     private static final String TITLE = "test-issue-title";
     private static final String DESCRIPTION = "test-issue-description";
@@ -29,9 +34,12 @@ public class IssueTest {
     private static final int REPORTS = 6;
     private static final String ISSUE_AUTH_TOKEN = "test-issue-auth-token";
     private static final String USER_AUTH_TOKEN = "test-user-auth-token";
+    private static final int BITMAP_WIDTH = 2;
+    private static final int BITMAP_HEIGHT = 2;
     private Date mCreatedAt;
     private Date mUpdatedAt;
     private Issue mIssue;
+    private Bitmap mBitmap;
 
     @Before
     public void setUp() {
@@ -46,6 +54,8 @@ public class IssueTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+        mBitmap = Bitmap.createBitmap(BITMAP_WIDTH, BITMAP_HEIGHT, conf);
     }
 
     @After
@@ -146,8 +156,7 @@ public class IssueTest {
 
     @Test
     public void testFirstConstructor() {
-        Picture picture = mock(Picture.class);
-        mIssue = new Issue(TITLE, DESCRIPTION, CATEGORY, RISK, LONGITUDE, LATITUDE, picture,
+        mIssue = new Issue(TITLE, DESCRIPTION, CATEGORY, RISK, LONGITUDE, LATITUDE, mBitmap,
                 USER_AUTH_TOKEN);
         assertEquals(TITLE, mIssue.getTitle());
         assertEquals(DESCRIPTION, mIssue.getDescription());
@@ -159,16 +168,14 @@ public class IssueTest {
         assertEquals(0, mIssue.getResolvedVotes());
         assertEquals(false, mIssue.isResolved());
         assertEquals(0, mIssue.getReports());
-        assertEquals(picture, mIssue.getPicture());
         assertEquals(USER_AUTH_TOKEN, mIssue.getUserAuthToken());
     }
 
     @Test
     public void testSecondConstructor() {
-        Picture picture = mock(Picture.class);
         mIssue = new Issue(TITLE, DESCRIPTION, CATEGORY, RISK, LONGITUDE, LATITUDE,
                 CONFIRM_VOTES, RESOLVED_VOTES, RESOLVED, REPORTS, mCreatedAt, mUpdatedAt,
-                ISSUE_AUTH_TOKEN, USER_AUTH_TOKEN, picture);
+                ISSUE_AUTH_TOKEN, USER_AUTH_TOKEN, mock(Picture.class));
         assertEquals(TITLE, mIssue.getTitle());
         assertEquals(DESCRIPTION, mIssue.getDescription());
         assertEquals(CATEGORY, mIssue.getCategory());
@@ -179,7 +186,6 @@ public class IssueTest {
         assertEquals(RESOLVED_VOTES, mIssue.getResolvedVotes());
         assertEquals(RESOLVED, mIssue.isResolved());
         assertEquals(REPORTS, mIssue.getReports());
-        assertEquals(picture, mIssue.getPicture());
         assertEquals(ISSUE_AUTH_TOKEN, mIssue.getIssueAuthToken());
         assertEquals(USER_AUTH_TOKEN, mIssue.getUserAuthToken());
         assertEquals(mCreatedAt, mIssue.getCreatedAt());

@@ -17,12 +17,12 @@ public class CategoryTest {
 
     @Test
     public void testMarker() {
-        assertEquals(R.drawable.civify, mCategory.getMarker());
+        assertEquals(R.drawable.street_lights_pin, mCategory.getMarker());
     }
 
     @Test
     public void testIcon() {
-        assertEquals(R.drawable.civify, mCategory.getIcon());
+        assertEquals(R.drawable.street_lights_icon, mCategory.getIcon());
     }
 
     @Test

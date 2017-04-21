@@ -1,11 +1,19 @@
 package com.civify.model.issue;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 
 public class Issue {
+
+    private static final int BITMAP_COMPRESS_VALUE = 100;
+
     @Expose
     @SerializedName("title")
     private String mTitle;
@@ -71,19 +79,19 @@ public class Issue {
     }
 
     public Issue(String title, String description, Category category, boolean risk, float longitude,
-            float latitude, Picture picture, String userAuthToken) {
+            float latitude, Bitmap pictureBitmap, String userAuthToken) {
         mTitle = title;
         mDescription = description;
         mCategory = category;
         mRisk = risk;
         mLongitude = longitude;
         mLatitude = latitude;
-        mPicture = picture;
         mResolved = false;
         mResolvedVotes = 0;
         mConfirmVotes = 0;
         mReports = 0;
         mUserAuthToken = userAuthToken;
+        setPicture(pictureBitmap);
     }
 
     public Issue(String title, String description, Category category, boolean risk, float longitude,
@@ -225,5 +233,18 @@ public class Issue {
 
     public void setPicture(Picture picture) {
         mPicture = picture;
+    }
+
+    public void setPicture(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, BITMAP_COMPRESS_VALUE, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        mPicture = new Picture("issue-picture", "image/jpg",
+                Base64.encodeToString(byteArray, Base64.DEFAULT));
+    }
+
+    public Bitmap getPictureBitmap() {
+        byte[] decodedString = Base64.decode(mPicture.getContent(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }
