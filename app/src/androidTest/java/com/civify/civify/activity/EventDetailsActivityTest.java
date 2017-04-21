@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.civify.activity.events.EventDetailsActivity;
 import com.civify.civify.R;
 
 import org.hamcrest.Description;

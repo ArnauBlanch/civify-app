@@ -20,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserAdapter {
+public class RegisterAdapter {
     public static final int INVALID = 0;
     public static final int USED = 1;
     public static final int VALID_UNUSED = 2;
@@ -32,11 +32,11 @@ public class UserAdapter {
     private UserService mUserService;
 
 
-    public UserAdapter() {
+    public RegisterAdapter() {
         this(ServiceGenerator.getInstance().createService(UserService.class));
     }
 
-    UserAdapter(UserService userService) {
+    RegisterAdapter(UserService userService) {
         mUserService = userService;
     }
 

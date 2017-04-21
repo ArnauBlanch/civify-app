@@ -27,9 +27,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @RunWith(MockitoJUnitRunner.class)
-@PrepareForTest({UserAdapter.class, UserService.class})
-public class UserAdapterTest {
-    private UserAdapter mUserAdapter;
+@PrepareForTest({RegisterAdapter.class, UserService.class})
+public class RegisterAdapterTest {
+    private RegisterAdapter mRegisterAdapter;
     private MockWebServer mMockServer;
     @Captor
     private ArgumentCaptor<ValidationCallback> mCallbackArgCaptor;
@@ -41,24 +41,24 @@ public class UserAdapterTest {
         Retrofit retrofit = (new Retrofit.Builder().baseUrl(mMockServer.url("").toString())
                 .addConverterFactory(GsonConverterFactory.create())).build();
         UserService userService = retrofit.create(UserService.class);
-        mUserAdapter = new UserAdapter(userService);
+        mRegisterAdapter = new RegisterAdapter(userService);
     }
 
     @After
     public void tearDown() throws Exception {
-        mUserAdapter = null;
+        mRegisterAdapter = null;
     }
 
     @Test
     public void registerNotExistingUser() throws InterruptedException {
         JsonObject body = new JsonObject();
-        body.addProperty("message", UserAdapter.USER_CREATED);
+        body.addProperty("message", RegisterAdapter.USER_CREATED);
         mMockServer.enqueue(new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_CREATED)
                 .setBody(body.toString()));
         SimpleCallback mockCallback = mock(SimpleCallback.class);
 
-        mUserAdapter.registerUser(
+        mRegisterAdapter.registerUser(
                 new User("username", "name", "surname", "email@email.com", "validPassw0rd",
                         "validPassw0rd"), mockCallback);
 
@@ -82,13 +82,13 @@ public class UserAdapterTest {
     @Test
     public void registerExistingUser() throws InterruptedException {
         JsonObject body = new JsonObject();
-        body.addProperty("message", UserAdapter.USER_NOT_CREATED);
+        body.addProperty("message", RegisterAdapter.USER_NOT_CREATED);
         mMockServer.enqueue(new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
                 .setBody(body.toString()));
         SimpleCallback mockCallback = mock(SimpleCallback.class);
 
-        mUserAdapter.registerUser(
+        mRegisterAdapter.registerUser(
                 new User("username", "name", "surname", "email@email.com", "validPassw0rd",
                         "validPassw0rd"), mockCallback);
 
@@ -114,13 +114,13 @@ public class UserAdapterTest {
     @Test
     public void checkValidUnusedEmail() throws InterruptedException {
         JsonObject body = new JsonObject();
-        body.addProperty("message", UserAdapter.USER_DOESNT_EXIST);
+        body.addProperty("message", RegisterAdapter.USER_DOESNT_EXIST);
         mMockServer.enqueue(new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
                 .setBody(body.toString()));
         ValidationCallback mockCallback = mock(ValidationCallback.class);
 
-        mUserAdapter.checkValidUnusedEmail("valid@email.com", mockCallback);
+        mRegisterAdapter.checkValidUnusedEmail("valid@email.com", mockCallback);
 
         RecordedRequest request = mMockServer.takeRequest();
         String json = request.getUtf8Body();
@@ -130,29 +130,29 @@ public class UserAdapterTest {
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
         assertEquals("valid@email.com", requestJson.get("email").getAsString());
 
-        verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.VALID_UNUSED);
+        verify(mockCallback, timeout(1000)).onValidationResponse(RegisterAdapter.VALID_UNUSED);
     }
 
     @Test
     public void checkInvalidEmail() {
         ValidationCallback mockCallback = mock(ValidationCallback.class);
 
-        mUserAdapter.checkValidUnusedEmail("invalidemail.com", mockCallback);
+        mRegisterAdapter.checkValidUnusedEmail("invalidemail.com", mockCallback);
 
         assertEquals(0, mMockServer.getRequestCount());
-        verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.INVALID);
+        verify(mockCallback, timeout(1000)).onValidationResponse(RegisterAdapter.INVALID);
     }
 
     @Test
     public void checkUsedEmail() throws InterruptedException {
         JsonObject body = new JsonObject();
-        body.addProperty("message", UserAdapter.USER_EXISTS);
+        body.addProperty("message", RegisterAdapter.USER_EXISTS);
         mMockServer.enqueue(new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
                 .setBody(body.toString()));
         ValidationCallback mockCallback = mock(ValidationCallback.class);
 
-        mUserAdapter.checkValidUnusedEmail("used@email.com", mockCallback);
+        mRegisterAdapter.checkValidUnusedEmail("used@email.com", mockCallback);
 
         RecordedRequest request = mMockServer.takeRequest();
         String json = request.getUtf8Body();
@@ -162,19 +162,19 @@ public class UserAdapterTest {
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
         assertEquals("used@email.com", requestJson.get("email").getAsString());
 
-        verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.USED);
+        verify(mockCallback, timeout(1000)).onValidationResponse(RegisterAdapter.USED);
     }
 
     @Test
     public void checkValidUnusedUsername() throws InterruptedException {
         JsonObject body = new JsonObject();
-        body.addProperty("message", UserAdapter.USER_DOESNT_EXIST);
+        body.addProperty("message", RegisterAdapter.USER_DOESNT_EXIST);
         mMockServer.enqueue(new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
                 .setBody(body.toString()));
         ValidationCallback mockCallback = mock(ValidationCallback.class);
 
-        mUserAdapter.checkValidUnusedUsername("validUsername", mockCallback);
+        mRegisterAdapter.checkValidUnusedUsername("validUsername", mockCallback);
         RecordedRequest request = mMockServer.takeRequest();
         String json = request.getUtf8Body();
         JsonObject requestJson = new JsonParser().parse(json).getAsJsonObject();
@@ -182,27 +182,27 @@ public class UserAdapterTest {
         assertEquals("/users/search", request.getPath());
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
         assertEquals("validUsername", requestJson.get("username").getAsString());
-        verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.VALID_UNUSED);
+        verify(mockCallback, timeout(1000)).onValidationResponse(RegisterAdapter.VALID_UNUSED);
     }
 
     @Test
     public void checkInvalidUsername() {
         ValidationCallback mockCallback = mock(ValidationCallback.class);
 
-        mUserAdapter.checkValidUnusedUsername(".invalidUsername", mockCallback);
-        verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.INVALID);
+        mRegisterAdapter.checkValidUnusedUsername(".invalidUsername", mockCallback);
+        verify(mockCallback, timeout(1000)).onValidationResponse(RegisterAdapter.INVALID);
     }
 
     @Test
     public void checkUsedUsername() throws InterruptedException {
         JsonObject body = new JsonObject();
-        body.addProperty("message", UserAdapter.USER_EXISTS);
+        body.addProperty("message", RegisterAdapter.USER_EXISTS);
         mMockServer.enqueue(new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
                 .setBody(body.toString()));
         ValidationCallback mockCallback = mock(ValidationCallback.class);
 
-        mUserAdapter.checkValidUnusedUsername("usedUsername", mockCallback);
+        mRegisterAdapter.checkValidUnusedUsername("usedUsername", mockCallback);
         RecordedRequest request = mMockServer.takeRequest();
         String json = request.getUtf8Body();
         JsonObject requestJson = new JsonParser().parse(json).getAsJsonObject();
@@ -210,16 +210,16 @@ public class UserAdapterTest {
         assertEquals("/users/search", request.getPath());
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
         assertEquals("usedUsername", requestJson.get("username").getAsString());
-        verify(mockCallback, timeout(1000)).onValidationResponse(UserAdapter.USED);
+        verify(mockCallback, timeout(1000)).onValidationResponse(RegisterAdapter.USED);
     }
 
     @Test
     public void checkValidPassword() {
-        assertEquals(true, mUserAdapter.checkValidPassword("validPassw0rd"));
+        assertEquals(true, mRegisterAdapter.checkValidPassword("validPassw0rd"));
     }
 
     @Test
     public void checkInvalidPassword() {
-        assertEquals(false, mUserAdapter.checkValidPassword("invalidpassword"));
+        assertEquals(false, mRegisterAdapter.checkValidPassword("invalidpassword"));
     }
 }

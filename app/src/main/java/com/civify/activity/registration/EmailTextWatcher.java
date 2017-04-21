@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.adapter.UserAdapter;
+import com.civify.adapter.RegisterAdapter;
 import com.civify.adapter.ValidationCallback;
 import com.civify.utils.AdapterFactory;
 
@@ -16,15 +16,15 @@ class EmailTextWatcher implements TextWatcher {
     private final ImageView mIcon;
     private final TextView mMessageView;
     private final Context mContext;
-    private final UserAdapter mUserAdapter;
+    private final RegisterAdapter mRegisterAdapter;
 
     EmailTextWatcher(View view, int iconResource, int messageResource) {
-        this(AdapterFactory.getInstance().getUserAdapter(),
+        this(AdapterFactory.getInstance().getRegisterAdapter(),
                 view, iconResource, messageResource);
     }
 
-    EmailTextWatcher(UserAdapter userAdapter, View view, int iconResource, int messageResource) {
-        this.mUserAdapter = userAdapter;
+    EmailTextWatcher(RegisterAdapter registerAdapter, View view, int iconResource, int messageResource) {
+        this.mRegisterAdapter = registerAdapter;
         this.mContext = view.getContext();
         this.mIcon = (ImageView) view.findViewById(iconResource);
         this.mMessageView = (TextView) view.findViewById(messageResource);
@@ -42,15 +42,15 @@ class EmailTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        mUserAdapter.checkValidUnusedEmail(s.toString(), new ValidationCallback() {
+        mRegisterAdapter.checkValidUnusedEmail(s.toString(), new ValidationCallback() {
             @Override
             public void onValidationResponse(int response) {
                 switch (response) {
-                    case UserAdapter.VALID_UNUSED:
+                    case RegisterAdapter.VALID_UNUSED:
                         setIconAndMessage(
                                 R.drawable.ic_checked, R.string.valid_unused_email, R.color.green);
                         break;
-                    case UserAdapter.INVALID:
+                    case RegisterAdapter.INVALID:
                         setIconAndMessage(
                                 R.drawable.ic_cancel, R.string.invalid_email, R.color.red);
                         break;
