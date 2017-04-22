@@ -36,6 +36,7 @@
         android:textColor="@color/green"
         android:buttonTint="@color/green"
         android:textSize="26sp"
+        android:checked="false"
         fontPath="fonts/Nunito-SemiBold.ttf"
         android:layout_marginRight="40dp"
         />
@@ -44,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no"
+        android:checked="false"
         android:textColor="@color/green"
         android:buttonTint="@color/green"
         android:textSize="22sp"

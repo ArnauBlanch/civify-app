@@ -30,7 +30,7 @@
       <EditText
           android:id="@+id/description_input"
           android:layout_width="match_parent"
-          android:layout_height="200dp"
+          android:layout_height="150dp"
           android:hint="@string/issue_description"
           android:textColor="#000"
           android:textSize="22sp"
