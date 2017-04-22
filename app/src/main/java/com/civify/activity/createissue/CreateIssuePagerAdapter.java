@@ -1,4 +1,4 @@
-package com.civify.activity.addissue;
+package com.civify.activity.createissue;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,10 +6,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-class AddIssuePagerAdapter extends FragmentPagerAdapter {
+class CreateIssuePagerAdapter extends FragmentPagerAdapter {
     private static final int NUM_PAGES = 5;
 
-    AddIssuePagerAdapter(FragmentManager fm) {
+    CreateIssuePagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -19,7 +19,7 @@ class AddIssuePagerAdapter extends FragmentPagerAdapter {
         if (position < 0 || position >= NUM_PAGES) {
             return null;
         }
-        Fragment pageFragment = new AddIssuePagerFragment();
+        Fragment pageFragment = new CreateIssuePagerFragment();
         Bundle args = new Bundle();
         args.putInt("page", position);
         pageFragment.setArguments(args);

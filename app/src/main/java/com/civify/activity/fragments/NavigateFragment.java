@@ -11,13 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
-import com.civify.activity.addissue.AddIssueActivity;
+import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.activity.createissue.CreateIssueListener;
+import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotReadyException;
 
 public class NavigateFragment extends Fragment {
 
+    public static final String LISTENER = "listener";
     private CivifyMap mCivifyMap;
+    private CreateIssueListenerImpl mCreateIssueListener;
 
     public NavigateFragment() {
         // Required empty public constructor
@@ -30,6 +34,7 @@ public class NavigateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCreateIssueListener = new CreateIssueListenerImpl();
     }
 
     private void setMap() {
@@ -71,14 +76,6 @@ public class NavigateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
-        FloatingActionButton fabAdd = (FloatingActionButton) mapView.findViewById(R.id.fab_add);
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, R.string.not_implemented_yet, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.action, null).show();
-            }
-        });
 
         setMap();
 
@@ -102,11 +99,21 @@ public class NavigateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity().getApplicationContext(),
-                        AddIssueActivity.class);
+                        CreateIssueActivity.class);
+                intent.putExtra(LISTENER, mCreateIssueListener);
                 startActivity(intent);
             }
         });
 
         return mapView;
+    }
+
+    private static class CreateIssueListenerImpl implements CreateIssueListener {
+        private static final long serialVersionUID = -853835573599268942L;
+
+        @Override
+        public void onIssueCreated(Issue issue) {
+            // Set issue details fragment using 'issue'
+        }
     }
 }
