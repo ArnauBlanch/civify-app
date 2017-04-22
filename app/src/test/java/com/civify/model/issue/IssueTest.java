@@ -30,7 +30,6 @@ public class IssueTest {
     private static final float LATITUDE = 44.0f;
     private static final int CONFIRM_VOTES = 5;
     private static final int RESOLVED_VOTES = 4;
-    private static final boolean RESOLVED = false;
     private static final int REPORTS = 6;
     private static final String ISSUE_AUTH_TOKEN = "test-issue-auth-token";
     private static final String USER_AUTH_TOKEN = "test-user-auth-token";
@@ -112,12 +111,6 @@ public class IssueTest {
     }
 
     @Test
-    public void testResolved() {
-        mIssue.setResolved(RESOLVED);
-        assertEquals(RESOLVED, mIssue.isResolved());
-    }
-
-    @Test
     public void testReports() {
         mIssue.setReports(REPORTS);
         assertEquals(REPORTS, mIssue.getReports());
@@ -166,7 +159,6 @@ public class IssueTest {
         assertTrue(LATITUDE == mIssue.getLatitude());
         assertEquals(0, mIssue.getConfirmVotes());
         assertEquals(0, mIssue.getResolvedVotes());
-        assertEquals(false, mIssue.isResolved());
         assertEquals(0, mIssue.getReports());
         assertEquals(USER_AUTH_TOKEN, mIssue.getUserAuthToken());
     }
@@ -174,7 +166,7 @@ public class IssueTest {
     @Test
     public void testSecondConstructor() {
         mIssue = new Issue(TITLE, DESCRIPTION, CATEGORY, RISK, LONGITUDE, LATITUDE,
-                CONFIRM_VOTES, RESOLVED_VOTES, RESOLVED, REPORTS, mCreatedAt, mUpdatedAt,
+                CONFIRM_VOTES, RESOLVED_VOTES, REPORTS, mCreatedAt, mUpdatedAt,
                 ISSUE_AUTH_TOKEN, USER_AUTH_TOKEN, mock(Picture.class));
         assertEquals(TITLE, mIssue.getTitle());
         assertEquals(DESCRIPTION, mIssue.getDescription());
@@ -184,7 +176,6 @@ public class IssueTest {
         assertTrue(LATITUDE == mIssue.getLatitude());
         assertEquals(CONFIRM_VOTES, mIssue.getConfirmVotes());
         assertEquals(RESOLVED_VOTES, mIssue.getResolvedVotes());
-        assertEquals(RESOLVED, mIssue.isResolved());
         assertEquals(REPORTS, mIssue.getReports());
         assertEquals(ISSUE_AUTH_TOKEN, mIssue.getIssueAuthToken());
         assertEquals(USER_AUTH_TOKEN, mIssue.getUserAuthToken());

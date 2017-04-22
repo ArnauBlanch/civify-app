@@ -14,7 +14,7 @@ public class Picture {
     @SerializedName("content_type")
     private String mContentType;
 
-    @Expose
+    @Expose(deserialize = false)
     @SerializedName("content")
     private String mContent;
 

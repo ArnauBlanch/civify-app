@@ -106,11 +106,6 @@ public class IssueAdapterTest {
         assertEquals(mIssue.getLongitude(), requestJson.get("longitude").getAsFloat());
         assertEquals(mIssue.getLatitude(), requestJson.get("latitude").getAsFloat());
         assertEquals(mIssue.isRisk(), requestJson.get("risk").getAsBoolean());
-        assertEquals(mIssue.isResolved(), requestJson.get("resolved").getAsBoolean());
-        assertEquals(mIssue.getConfirmVotes(), requestJson.get("confirm_votes").getAsInt());
-        assertEquals(mIssue.getReports(), requestJson.get("reports").getAsInt());
-        assertEquals(mIssue.getResolvedVotes(), requestJson.get("resolved_votes").getAsInt());
-        assertEquals(mIssue.getUserAuthToken(), requestJson.get("user_auth_token").getAsString());
 
         // Test request body (picture)
         assertEquals(mIssue.getPicture().getContentType(), requestJson.get("picture")
@@ -129,25 +124,21 @@ public class IssueAdapterTest {
         assertEquals(mIssue.getLongitude(), responseIssue.getLongitude());
         assertEquals(mIssue.getLatitude(), responseIssue.getLatitude());
         assertEquals(mIssue.isRisk(), responseIssue.isRisk());
-        assertEquals(mIssue.isResolved(), responseIssue.isResolved());
         assertEquals(mIssue.getConfirmVotes(), responseIssue.getConfirmVotes());
         assertEquals(mIssue.getReports(), responseIssue.getReports());
         assertEquals(mIssue.getResolvedVotes(), responseIssue.getResolvedVotes());
-        assertEquals(mIssue.getUserAuthToken(), responseIssue.getUserAuthToken());
 
         // Test response body (picture)
         assertEquals(mIssue.getPicture().getContentType(),
                 responseIssue.getPicture().getContentType());
         assertEquals(mIssue.getPicture().getFileName(),
                 responseIssue.getPicture().getFileName());
-        assertEquals(mIssue.getPicture().getContent(),
-                responseIssue.getPicture().getContent());
     }
 
     @Test
     public void testInvalidCreateIssue() throws InterruptedException {
         JsonObject body = new JsonObject();
-        body.addProperty("message", IssueAdapter.ISSUE_NOT_CREATED);
+        body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
                 .setBody(body.toString());
@@ -183,7 +174,7 @@ public class IssueAdapterTest {
         assertEquals("/issues", request.getPath());
 
         // Test mockCallback.onSuccess() is called;
-        ArgumentCaptor<List<Issue>> argument = ArgumentCaptor.forClass((Class) List.class);
+        ArgumentCaptor<List<Issue>> argument = forClass((Class) List.class);
         verify(mockCallback, timeout(1000)).onSuccess(argument.capture());
 
         // Test response body (issue list)
@@ -195,26 +186,22 @@ public class IssueAdapterTest {
             assertEquals(mIssue.getLongitude(), responseIssue.getLongitude());
             assertEquals(mIssue.getLatitude(), responseIssue.getLatitude());
             assertEquals(mIssue.isRisk(), responseIssue.isRisk());
-            assertEquals(mIssue.isResolved(), responseIssue.isResolved());
             assertEquals(mIssue.getConfirmVotes(), responseIssue.getConfirmVotes());
             assertEquals(mIssue.getReports(), responseIssue.getReports());
             assertEquals(mIssue.getResolvedVotes(), responseIssue.getResolvedVotes());
-            assertEquals(mIssue.getUserAuthToken(), responseIssue.getUserAuthToken());
 
             // Test response body (picture)
             assertEquals(mIssue.getPicture().getContentType(),
                     responseIssue.getPicture().getContentType());
             assertEquals(mIssue.getPicture().getFileName(),
                     responseIssue.getPicture().getFileName());
-            assertEquals(mIssue.getPicture().getContent(),
-                    responseIssue.getPicture().getContent());
         }
     }
 
     @Test
     public void testInvalidGetIssues() throws InterruptedException {
         JsonObject body = new JsonObject();
-        body.addProperty("message", IssueAdapter.NO_ISSUES_FOUND);
+        body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
                 .setBody(body.toString());
@@ -257,25 +244,21 @@ public class IssueAdapterTest {
         assertEquals(mIssue.getLongitude(), responseIssue.getLongitude());
         assertEquals(mIssue.getLatitude(), responseIssue.getLatitude());
         assertEquals(mIssue.isRisk(), responseIssue.isRisk());
-        assertEquals(mIssue.isResolved(), responseIssue.isResolved());
         assertEquals(mIssue.getConfirmVotes(), responseIssue.getConfirmVotes());
         assertEquals(mIssue.getReports(), responseIssue.getReports());
         assertEquals(mIssue.getResolvedVotes(), responseIssue.getResolvedVotes());
-        assertEquals(mIssue.getUserAuthToken(), responseIssue.getUserAuthToken());
 
         // Test response body (picture)
         assertEquals(mIssue.getPicture().getContentType(),
                 responseIssue.getPicture().getContentType());
         assertEquals(mIssue.getPicture().getFileName(),
                 responseIssue.getPicture().getFileName());
-        assertEquals(mIssue.getPicture().getContent(),
-                responseIssue.getPicture().getContent());
     }
 
     @Test
     public void testInvalidGetIssue() {
         JsonObject body = new JsonObject();
-        body.addProperty("message", IssueAdapter.ISSUE_NOT_FOUND);
+        body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
                 .setBody(body.toString());
@@ -297,7 +280,7 @@ public class IssueAdapterTest {
         Picture picture = new Picture("picture-file-name", "picture-content-type",
                 "picture-content");
         mIssue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true,
-                45.0f, 46.0f, 0, 0, false, 0, date, date, "issue-auth-token", "user-auth-token",
+                45.0f, 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token",
                 picture);
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
         mUser.setUserAuthToken("user-auth-token");
