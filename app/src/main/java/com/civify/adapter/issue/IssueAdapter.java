@@ -42,7 +42,7 @@ public class IssueAdapter {
             public void onResponse(Call<Issue> call, Response<Issue> response) {
                 if (response.code() == HttpURLConnection.HTTP_CREATED) {
                     callback.onSuccess(response.body());
-                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                } else {
                     callback.onFailure();
                 }
             }
@@ -62,9 +62,7 @@ public class IssueAdapter {
             public void onResponse(Call<List<Issue>> call, Response<List<Issue>> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
-                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
-                        && getMessageFromError(response.errorBody())
-                        .equals(RECORD_DOES_NOT_EXIST)) {
+                } else {
                     callback.onFailure();
                 }
             }
@@ -84,9 +82,7 @@ public class IssueAdapter {
             public void onResponse(Call<Issue> call, Response<Issue> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
-                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
-                        && getMessageFromError(response.errorBody())
-                        .equals(RECORD_DOES_NOT_EXIST)) {
+                } else {
                     callback.onFailure();
                 }
             }
