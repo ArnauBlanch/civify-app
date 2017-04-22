@@ -20,9 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IssueAdapter {
-    public static final String ISSUE_NOT_CREATED = "Issue not created";
-    public static final String ISSUE_NOT_FOUND = "Issue not found";
-    public static final String NO_ISSUES_FOUND = "No issues found";
+    public static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -44,9 +42,7 @@ public class IssueAdapter {
             public void onResponse(Call<Issue> call, Response<Issue> response) {
                 if (response.code() == HttpURLConnection.HTTP_CREATED) {
                     callback.onSuccess(response.body());
-                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST
-                        && getMessageFromError(response.errorBody())
-                        .equals(ISSUE_NOT_CREATED)) {
+                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
                     callback.onFailure();
                 }
             }
@@ -67,7 +63,8 @@ public class IssueAdapter {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
                 } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
-                        && getMessageFromError(response.errorBody()).equals(NO_ISSUES_FOUND)) {
+                        && getMessageFromError(response.errorBody())
+                        .equals(RECORD_DOES_NOT_EXIST)) {
                     callback.onFailure();
                 }
             }
@@ -88,7 +85,8 @@ public class IssueAdapter {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
                 } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
-                        && getMessageFromError(response.errorBody()).equals(ISSUE_NOT_FOUND)) {
+                        && getMessageFromError(response.errorBody())
+                        .equals(RECORD_DOES_NOT_EXIST)) {
                     callback.onFailure();
                 }
             }

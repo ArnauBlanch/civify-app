@@ -38,19 +38,15 @@ public class Issue {
     @SerializedName("latitude")
     private float mLatitude;
 
-    @Expose
+    @Expose(serialize = false)
     @SerializedName("confirm_votes")
     private int mConfirmVotes;
 
-    @Expose
+    @Expose(serialize = false)
     @SerializedName("resolved_votes")
     private int mResolvedVotes;
 
-    @Expose
-    @SerializedName("resolved")
-    private boolean mResolved;
-
-    @Expose
+    @Expose(serialize = false)
     @SerializedName("reports")
     private int mReports;
 
@@ -66,7 +62,7 @@ public class Issue {
     @SerializedName("issue_auth_token")
     private String mIssueAuthToken;
 
-    @Expose
+    @Expose(serialize = false)
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
@@ -86,7 +82,6 @@ public class Issue {
         mRisk = risk;
         mLongitude = longitude;
         mLatitude = latitude;
-        mResolved = false;
         mResolvedVotes = 0;
         mConfirmVotes = 0;
         mReports = 0;
@@ -95,7 +90,7 @@ public class Issue {
     }
 
     public Issue(String title, String description, Category category, boolean risk, float longitude,
-            float latitude, int confirmVotes, int resolvedVotes, boolean resolved, int reports,
+            float latitude, int confirmVotes, int resolvedVotes, int reports,
             Date createdAt, Date updatedAt, String issueAuthToken, String userAuthToken,
             Picture picture) {
         mTitle = title;
@@ -106,7 +101,6 @@ public class Issue {
         mLatitude = latitude;
         mConfirmVotes = confirmVotes;
         mResolvedVotes = resolvedVotes;
-        mResolved = resolved;
         mReports = reports;
         mCreatedAt = createdAt;
         mUpdatedAt = updatedAt;
@@ -177,14 +171,6 @@ public class Issue {
 
     public void setResolvedVotes(int resolvedVotes) {
         this.mResolvedVotes = resolvedVotes;
-    }
-
-    public boolean isResolved() {
-        return mResolved;
-    }
-
-    public void setResolved(boolean resolved) {
-        this.mResolved = resolved;
     }
 
     public int getReports() {
