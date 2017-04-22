@@ -36,8 +36,11 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void onLoginSucceeded(User u) {
                             Log.d(tag, "login succeed");
-                            startActivity(new Intent(getApplicationContext(),
-                                    DrawerActivity.class));
+                            Intent intent = new Intent(getApplicationContext(),
+                                    DrawerActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
 
                         @Override
@@ -61,6 +64,7 @@ public class LoginActivity extends BaseActivity {
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

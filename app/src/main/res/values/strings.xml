@@ -102,6 +102,7 @@
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="level">Level</string>
+  <string name="sign_out">Sign out</string>
 
   <!-- Categories -->
   <string name="road_signs">Road signs</string>
