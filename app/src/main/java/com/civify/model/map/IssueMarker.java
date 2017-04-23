@@ -9,7 +9,7 @@ import android.util.Log;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
-import com.civify.model.Issue;
+import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -33,7 +33,7 @@ public class IssueMarker implements CivifyMarker<Issue> {
                 .draggable(false)
                 .flat(false)
         );
-        mMarker.setTag(issue.getAuthToken());
+        mMarker.setTag(issue.getIssueAuthToken());
         mPresent = true;
     }
 
@@ -85,8 +85,8 @@ public class IssueMarker implements CivifyMarker<Issue> {
     @Override
     public IssueMarker setMarkerPosition(@NonNull LatLng position) {
         mMarker.setPosition(position);
-        mIssue.setLatitude(position.latitude);
-        mIssue.setLongitude(position.longitude);
+        mIssue.setLatitude((float) position.latitude);
+        mIssue.setLongitude((float) position.longitude);
         return this;
     }
 
