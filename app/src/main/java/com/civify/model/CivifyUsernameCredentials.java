@@ -1,11 +1,15 @@
 package com.civify.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CivifyUsernameCredentials {
 
+    @Expose
     @SerializedName("username")
     private String mUsername;
+
+    @Expose
     @SerializedName("password")
     private String mPassword;
 

@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
-import com.civify.model.Issue;
+import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -16,9 +16,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
@@ -154,10 +151,12 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     private void addExampleIssues() {
+        /*
         List<Issue> issues = Issue.getExamples(LocationAdapter.getLatLng(getCurrentLocation()));
         List<IssueMarker> markers = new ArrayList<>(issues.size());
         for (Issue issue : issues) markers.add(new IssueMarker(issue, this));
         mMarkers.addAll(markers);
+        */
     }
 
     public final void setRefreshLocations(boolean refreshLocations) {
