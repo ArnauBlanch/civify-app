@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 
 import com.civify.R;
 import com.civify.activity.createissue.CreateIssueActivity;
-import com.civify.activity.createissue.CreateIssueListener;
-import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotReadyException;
 
@@ -21,7 +19,6 @@ public class NavigateFragment extends Fragment {
 
     public static final String LISTENER = "listener";
     private CivifyMap mCivifyMap;
-    private CreateIssueListenerImpl mCreateIssueListener;
 
     public NavigateFragment() {
         // Required empty public constructor
@@ -29,12 +26,6 @@ public class NavigateFragment extends Fragment {
 
     public static NavigateFragment newInstance() {
         return new NavigateFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mCreateIssueListener = new CreateIssueListenerImpl();
     }
 
     private void setMap() {
@@ -69,7 +60,14 @@ public class NavigateFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCivifyMap.onMapSettingsResults(requestCode, resultCode);
+        if (requestCode == CreateIssueActivity.ISSUE_CREATION) {
+            if (resultCode == CreateIssueActivity.ISSUE_CREATED) {
+                Snackbar.make(getView(), getString(R.string.issue_created),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        } else {
+            mCivifyMap.onMapSettingsResults(requestCode, resultCode);
+        }
     }
 
     @Override
@@ -100,20 +98,10 @@ public class NavigateFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity().getApplicationContext(),
                         CreateIssueActivity.class);
-                intent.putExtra(LISTENER, mCreateIssueListener);
-                startActivity(intent);
+                startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
             }
         });
 
         return mapView;
-    }
-
-    private static class CreateIssueListenerImpl implements CreateIssueListener {
-        private static final long serialVersionUID = -853835573599268942L;
-
-        @Override
-        public void onIssueCreated(Issue issue) {
-            // Set issue details fragment using 'issue'
-        }
     }
 }

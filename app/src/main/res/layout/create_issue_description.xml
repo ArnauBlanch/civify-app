@@ -12,7 +12,7 @@
       android:id="@+id/title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/describe_your_problem"
+      android:text="@string/describe_your_issue"
       android:textAlignment="center"
       android:textColor="#000000"
       android:textSize="28sp"
@@ -21,7 +21,8 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="260dp"
-        android:layout_height="wrap_content"
+        android:layout_height="180dp"
+        android:id="@+id/description_layout"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:textColorHint="@color/grey"
@@ -30,7 +31,7 @@
       <EditText
           android:id="@+id/description_input"
           android:layout_width="match_parent"
-          android:layout_height="150dp"
+          android:layout_height="140dp"
           android:hint="@string/issue_description"
           android:textColor="#000"
           android:textSize="22sp"
@@ -43,25 +44,11 @@
     </android.support.design.widget.TextInputLayout>
 
 
-  <TextView
-      android:id="@+id/description_validation"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="15dp"
-      android:textColor="@color/red"
-      android:layout_gravity="center_horizontal"
-      android:text="@string/must_enter_a_description"
-      android:gravity="center_vertical"
-      fontPath="fonts/Nunito-SemiBold.ttf"
-      android:visibility="invisible"
-      />
-
   <android.support.v7.widget.AppCompatButton
       android:id="@+id/button0"
       android:layout_width="180dp"
       android:layout_height="50dp"
       android:layout_gravity="center_horizontal"
-      android:layout_marginTop="50dp"
       android:background="@drawable/button_round"
       android:onClick="descriptionListener"
       android:text="@string/finish"

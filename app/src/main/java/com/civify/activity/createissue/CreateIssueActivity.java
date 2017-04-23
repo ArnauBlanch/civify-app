@@ -34,9 +34,11 @@ import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
 public class CreateIssueActivity extends CameraGalleryLocationActivity {
+
+    public static final int ISSUE_CREATION = 10110;
+    public static final int ISSUE_CREATED = 3343;
     private IssueAdapter mIssueAdapter;
     private ViewPager mViewPager;
-    private CreateIssueListener mListener;
 
     private String mTitle;
     private Category mCategory;
@@ -48,9 +50,6 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mListener = (CreateIssueListener) getIntent().getSerializableExtra("listener");
-
         SharedPreferences userPreferences =
                 getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(userPreferences);
@@ -186,15 +185,15 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
     public void descriptionListener(View v) {
         hideSoftKeyboard();
         findViewById(android.R.id.content).requestFocus();
+        TextInputLayout descLayout = (TextInputLayout) findViewById(R.id.description_layout);
         mDescription = ((TextView) findViewById(R.id.description_input)).getText().toString();
-        TextView validation = (TextView) findViewById(R.id.description_validation);
 
 
         if (mDescription.isEmpty()) {
-            validation.setVisibility(View.VISIBLE);
+            descLayout.setError(getString(R.string.must_insert_issue_title));
         } else {
             showProgressDialog();
-            validation.setVisibility(View.INVISIBLE);
+            descLayout.setError(null);
             processIssue();
         }
     }
@@ -214,17 +213,16 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
             mIssueAdapter.createIssue(newIssue, new IssueSimpleCallback() {
                 @Override
                 public void onSuccess(Issue issue) {
-                    showError(R.string.issue_created);
                     mProgressDialog.dismiss();
+                    setResult(ISSUE_CREATED);
                     finish();
-                    mListener.onIssueCreated(issue);
                 }
 
                 @Override
                 public void onFailure() {
                     mProgressDialog.dismiss();
                     Snackbar.make(findViewById(R.id.create_issue_linearlayout),
-                            getString(R.string.couldnt_create_issue), Snackbar.LENGTH_SHORT)
+                            getString(R.string.couldnt_create_issue), Snackbar.LENGTH_LONG)
                             .show();
                 }
             });

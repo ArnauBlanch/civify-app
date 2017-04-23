@@ -7,18 +7,18 @@
     >
 
   <ImageView
-      android:id="@+id/icon"
+      android:id="@+id/category_icon"
       android:layout_width="40dp"
       android:layout_height="40dp"
       android:padding="10dp"
       android:layout_gravity="center_vertical"
       />
   <TextView
-      android:id="@+id/text"
+      android:id="@+id/category_text"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:textColor="#000"
-      android:textSize="22sp"
+      android:textSize="18sp"
       android:padding="10dp"
       android:layout_gravity="center_vertical"
       >

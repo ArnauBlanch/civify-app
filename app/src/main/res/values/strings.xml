@@ -9,7 +9,7 @@
 
   <string name="whats_happening">What\'s happening?</string>
   <string name="issue_title">Issue Title</string>
-  <string name="describe_your_problem">Describe your problem</string>
+  <string name="describe_your_issue">Describe your issue</string>
   <string name="issue_description">Issue description</string>
   <string name="what_kind_of_problem">What kind of issue?</string>
   <string name="yes">Yes</string>

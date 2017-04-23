@@ -103,4 +103,8 @@ public class IssueAdapter {
             return "";
         }
     }
+
+    public void setService(IssueService issueService) {
+        mIssueService = issueService;
+    }
 }
