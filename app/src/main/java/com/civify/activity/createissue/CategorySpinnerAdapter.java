@@ -45,12 +45,12 @@ public class CategorySpinnerAdapter extends ArrayAdapter<CategoryItem> {
         return getCustomView(position, convertView, parent);
     }
 
-    public View getCustomView(int position, View convertView, ViewGroup parent) {
+    private View getCustomView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View spinnerItem = inflater.inflate(R.layout.text_and_icon_spinner_tem, parent, false);
 
-        TextView categoryName = (TextView) spinnerItem.findViewById(R.id.text);
-        ImageView categoryIcon = (ImageView) spinnerItem.findViewById(R.id.icon);
+        TextView categoryName = (TextView) spinnerItem.findViewById(R.id.category_text);
+        ImageView categoryIcon = (ImageView) spinnerItem.findViewById(R.id.category_icon);
 
         categoryName.setText(mItems[position].getName());
         if (position == getCount()) {

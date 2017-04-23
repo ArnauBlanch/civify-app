@@ -111,16 +111,6 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
     }
 
     private void requestPermission(final String permission, int messageRes) {
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-            showMessageOkCancel(getString(messageRes), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ActivityCompat.requestPermissions(CameraGalleryLocationActivity.this,
-                            new String[] {permission}, REQUEST_CODE_ASK_PERMISSIONS);
-                }
-            });
-            return;
-        }
         ActivityCompat.requestPermissions(this, new String[] {permission},
                 REQUEST_CODE_ASK_PERMISSIONS);
     }
@@ -203,8 +193,7 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
     }
 
     private void galleryIntent() {
-        Intent intent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(IMAGE);
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_photo)),
                 GALLERY_REQUEST);
