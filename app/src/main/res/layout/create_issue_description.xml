@@ -42,6 +42,20 @@
 
     </android.support.design.widget.TextInputLayout>
 
+
+  <TextView
+      android:id="@+id/description_validation"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="15dp"
+      android:textColor="@color/red"
+      android:layout_gravity="center_horizontal"
+      android:text="@string/must_enter_a_description"
+      android:gravity="center_vertical"
+      fontPath="fonts/Nunito-SemiBold.ttf"
+      android:visibility="invisible"
+      />
+
   <android.support.v7.widget.AppCompatButton
       android:id="@+id/button0"
       android:layout_width="180dp"
@@ -49,12 +63,20 @@
       android:layout_gravity="center_horizontal"
       android:layout_marginTop="50dp"
       android:background="@drawable/button_round"
-      android:onClick="descriptionButtonListener"
+      android:onClick="descriptionListener"
       android:text="@string/finish"
       android:textAllCaps="false"
       android:textColor="#ffffff"
       android:textSize="24sp"
       fontPath="fonts/Nunito-Bold.ttf"
       />
+
+  <ProgressBar
+      android:id="@+id/progress"
+      style="?android:attr/progressBarStyleLarge"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="invisible"
+      android:layout_centerHorizontal="true" />
 
 </LinearLayout>

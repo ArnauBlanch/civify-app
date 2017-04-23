@@ -119,5 +119,8 @@
   <string name="camera_error">Sorry, there was an error with the camera</string>
   <string name="gallery_error">Sorry, there was an error when getting the image</string>
   <string name="couldnt_get_location">Couldn\'t get current location</string>
+  <string name="issue_created">Issue created</string>
+  <string name="must_enter_a_description">You must enter a description</string>
+  <string name="creating_new_issue">Creating new issue...</string>
 
 </resources>

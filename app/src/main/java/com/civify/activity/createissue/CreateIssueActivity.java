@@ -1,6 +1,7 @@
 package com.civify.activity.createissue;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -17,13 +18,16 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.activity.CustomViewPager;
+import com.civify.adapter.UserAdapter;
 import com.civify.adapter.issue.IssueAdapter;
+import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
 import com.civify.service.issue.IssueSimpleCallback;
@@ -39,6 +43,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
     private Bitmap mImageBitmap;
     private boolean mRisk;
     private String mDescription;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,10 +170,12 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
 
     public void riskButtonListener(View v) {
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+        RadioButton radioButton = (RadioButton) findViewById(R.id.radio_yes);
         TextView message = (TextView) findViewById(R.id.risk_validation);
         if (radioGroup.getCheckedRadioButtonId() != -1) {
             message.setVisibility(View.INVISIBLE);
-            mRisk = radioGroup.getCheckedRadioButtonId() == 0;
+            mRisk = radioGroup.getCheckedRadioButtonId()
+                    == radioButton.getId();
             nextPage();
         } else {
 
@@ -176,11 +183,24 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
         }
     }
 
-    public void descriptionButtonListener(View v) {
+    public void descriptionListener(View v) {
         hideSoftKeyboard();
         findViewById(android.R.id.content).requestFocus();
         mDescription = ((TextView) findViewById(R.id.description_input)).getText().toString();
-        String userAuthToken = null;
+        TextView validation = (TextView) findViewById(R.id.description_validation);
+
+
+        if (mDescription.isEmpty()) {
+            validation.setVisibility(View.VISIBLE);
+        } else {
+            showProgressDialog();
+            validation.setVisibility(View.INVISIBLE);
+            processIssue();
+        }
+    }
+
+    private void processIssue() {
+        User currentUser = UserAdapter.getCurrentUser();
         Location currentLocation = getCurrentLocation();
 
         // Initialize the location fields
@@ -188,29 +208,29 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
             float longitude = (float) currentLocation.getLongitude();
             float latitude = (float) currentLocation.getLatitude();
 
-            Issue newIssue = new Issue(mTitle, mDescription, mCategory, mRisk,
-                    longitude, latitude, mImageBitmap, userAuthToken);
+            Issue newIssue =
+                    new Issue(mTitle, mDescription, mCategory, mRisk, longitude, latitude,
+                            mImageBitmap, currentUser.getUserAuthToken());
             mIssueAdapter.createIssue(newIssue, new IssueSimpleCallback() {
                 @Override
                 public void onSuccess(Issue issue) {
+                    showError(R.string.issue_created);
+                    mProgressDialog.dismiss();
                     finish();
                     mListener.onIssueCreated(issue);
                 }
 
                 @Override
                 public void onFailure() {
+                    mProgressDialog.dismiss();
                     Snackbar.make(findViewById(R.id.create_issue_linearlayout),
                             getString(R.string.couldnt_create_issue), Snackbar.LENGTH_SHORT)
                             .show();
                 }
             });
-
         } else {
             showError(R.string.couldnt_get_location);
         }
-
-
-
     }
 
     @Override
@@ -220,5 +240,11 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
         TextView message = (TextView) findViewById(R.id.photo_validation);
         message.setVisibility(View.GONE);
         mImageBitmap = imageBitmap;
+    }
+
+    private void showProgressDialog() {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(getString(R.string.creating_new_issue));
+        mProgressDialog.show();
     }
 }

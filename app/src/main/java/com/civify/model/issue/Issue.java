@@ -1,6 +1,7 @@
 package com.civify.model.issue;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
@@ -12,7 +13,7 @@ import java.util.Date;
 
 public class Issue {
 
-    private static final int BITMAP_COMPRESS_VALUE = 100;
+    private static final int BITMAP_COMPRESS_VALUE = 70;
 
     @Expose
     @SerializedName("title")
@@ -32,11 +33,11 @@ public class Issue {
 
     @Expose
     @SerializedName("longitude")
-    private float mLongitude;
+    private double mLongitude;
 
     @Expose
     @SerializedName("latitude")
-    private float mLatitude;
+    private double mLatitude;
 
     @Expose(serialize = false)
     @SerializedName("confirm_votes")
@@ -74,8 +75,8 @@ public class Issue {
 
     }
 
-    public Issue(String title, String description, Category category, boolean risk, float longitude,
-            float latitude, Bitmap pictureBitmap, String userAuthToken) {
+    public Issue(String title, String description, Category category, boolean risk,
+            double longitude, double latitude, Bitmap pictureBitmap, String userAuthToken) {
         mTitle = title;
         mDescription = description;
         mCategory = category;
@@ -89,8 +90,8 @@ public class Issue {
         setPicture(pictureBitmap);
     }
 
-    public Issue(String title, String description, Category category, boolean risk, float longitude,
-            float latitude, int confirmVotes, int resolvedVotes, int reports,
+    public Issue(String title, String description, Category category, boolean risk,
+            double longitude, double latitude, int confirmVotes, int resolvedVotes, int reports,
             Date createdAt, Date updatedAt, String issueAuthToken, String userAuthToken,
             Picture picture) {
         mTitle = title;
@@ -141,7 +142,7 @@ public class Issue {
         this.mRisk = risk;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return mLongitude;
     }
 
@@ -149,7 +150,7 @@ public class Issue {
         this.mLongitude = longitude;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return mLatitude;
     }
 
@@ -223,7 +224,7 @@ public class Issue {
 
     public void setPicture(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, BITMAP_COMPRESS_VALUE, byteArrayOutputStream);
+        bitmap.compress(CompressFormat.JPEG, BITMAP_COMPRESS_VALUE, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         mPicture = new Picture("issue-picture", "image/jpg",
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
