@@ -94,7 +94,11 @@ public class DrawerActivity extends BaseActivity
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else super.onBackPressed();
+        } else {
+            if(getFragmentManager().getBackStackEntryCount()>0){
+                getFragmentManager().popBackStack();
+            } else super.onBackPressed();
+        }
         //        else finish();
     }
 
@@ -148,9 +152,12 @@ public class DrawerActivity extends BaseActivity
 
     public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).addToBackStack
+                ("tag").commit();
         mCurrentFragment = fragmentId;
     }
+
+
 
     private void setUserHeader(User user) {
         View headerView = mNavigationView.getHeaderView(0);

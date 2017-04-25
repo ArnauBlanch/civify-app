@@ -76,4 +76,22 @@ public class Issue {
     public boolean getRisk() {
         return true;
     }
+
+    public String getDescription(){
+        return "El semàfor no té cap tapa per amagar els cables, que estan completament al "
+                + "descobert // El semàfor no té cap tapa per amagar els cables, que estan completament al "
+                + "descobert // El semàfor no té cap tapa per amagar els cables, que estan completament al "
+                + "descobert // El semàfor no té cap tapa per amagar els cables, que estan completament al "
+                + "descobert // El semàfor no té cap tapa per amagar els cables, que estan completament al "
+                + "descobert // El semàfor no té cap tapa per amagar els cables, que estan completament al "
+                + "descobert";
+    }
+
+    public int getLikes(){
+        return 23;
+    }
+
+    public String getCategory(){
+        return "Senyalització";
+    }
 }

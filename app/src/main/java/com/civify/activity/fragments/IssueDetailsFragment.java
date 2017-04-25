@@ -3,19 +3,27 @@ package com.civify.activity.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.adapter.LocalityCallback;
 import com.civify.model.User;
 import com.civify.model.map.CivifyMarker;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Date;
+import java.util.StringTokenizer;
 
 public class IssueDetailsFragment extends Fragment {
+
+    private static final int MILLISECONDS_TO_DAYS = 86400000;
+
+    private View mViewDetails;
 
     public IssueDetailsFragment() {
         // Required empty public constructor
@@ -36,29 +44,36 @@ public class IssueDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View viewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
-        init(viewDetails);
-        return viewDetails;
+        mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
+        init();
+        return mViewDetails;
     }
 
-    private void init(@NonNull View viewDetails) {
-        TextView nameIssue = (TextView) viewDetails.findViewById(R.id.nameText);
-        TextView likesIssue = (TextView)viewDetails.findViewById(R.id.likesText);
-        TextView categoryIssue = (TextView)viewDetails.findViewById(R.id.categoryText);
-        TextView riskIssue = (TextView)viewDetails.findViewById(R.id.riskAnswer);
-        TextView descriptionIssue = (TextView)viewDetails.findViewById(R.id.descriptionText);
-        final TextView streetIssue = (TextView)viewDetails.findViewById(R.id.streetText);
-        TextView distanceIssue = (TextView)viewDetails.findViewById(R.id.distanceText);
-        TextView timeIssue = (TextView)viewDetails.findViewById(R.id.sinceText);
-        User user;
+
+
+    private void init() {
         Bundle bundle = getArguments();
         CivifyMarker<?> marker = (CivifyMarker<?>) bundle.getSerializable("marker");
+
+        TextView nameIssue = (TextView) mViewDetails.findViewById(R.id.nameText);
         nameIssue.setText(marker.getIssue().getTitle());
-        likesIssue.setText("+23");
-        categoryIssue.setText("Senyalitzacio");
-        riskIssue.setText("No");
-        if(marker.getIssue().getRisk()) riskIssue.setText("Yes");
-        descriptionIssue.setText("New description");
+        nameIssue.setMovementMethod(new ScrollingMovementMethod());
+
+        TextView likesIssue = (TextView)mViewDetails.findViewById(R.id.likesText);
+        likesIssue.setText("+" + marker.getIssue().getLikes());
+
+        TextView categoryIssue = (TextView)mViewDetails.findViewById(R.id.categoryText);
+        categoryIssue.setText(marker.getIssue().getCategory());
+
+        TextView riskIssue = (TextView)mViewDetails.findViewById(R.id.riskAnswer);
+        riskIssue.setText(getText(R.string.no));
+        if(marker.getIssue().getRisk()) riskIssue.setText(getText(R.string.yes));
+
+        TextView descriptionIssue = (TextView)mViewDetails.findViewById(R.id.descriptionText);
+        descriptionIssue.setText(marker.getIssue().getDescription());
+        descriptionIssue.setMovementMethod(new ScrollingMovementMethod());
+
+        final TextView streetIssue = (TextView)mViewDetails.findViewById(R.id.streetText);
         marker.getAddress(new LocalityCallback() {
             @Override
             public void onLocalityResponse(@NonNull String address) {
@@ -68,46 +83,61 @@ public class IssueDetailsFragment extends Fragment {
             @Override
             public void onLocalityError() {}
         });
-        distanceIssue.setText(String.valueOf(marker.getDistanceFromCurrentLocation()));
+        streetIssue.setMovementMethod(new ScrollingMovementMethod());
+
+        TextView distanceIssue = (TextView)mViewDetails.findViewById(R.id.distanceText);
+        float distance = marker.getDistanceFromCurrentLocation()/1000;
+        String stringDistance = String.valueOf(distance);
+        StringTokenizer token = new StringTokenizer(stringDistance, ".");
+        String distanceToken = token.nextToken();
+        distanceIssue.setText(distanceToken + " " + getText(R.string.km));
+
+        TextView timeIssue = (TextView)mViewDetails.findViewById(R.id.sinceText);
         Date date = new Date();
         Date dateIssue = marker.getIssue().getDate();
         long difference = date.getTime() - dateIssue.getTime();
-        difference = difference/1000/3600/24;
-        timeIssue.setText( "Since " + difference  + " days");
-        //setUser( new User("PESAdicto", "Sergio", "Sanchis", "sergio@gmail"
-               //+ ".com", "lalalala", "lalalala"));
+        difference /= MILLISECONDS_TO_DAYS;
+        timeIssue.setText(difference + " " + getText(R.string.days));
+
+        setUser(buildFakeUser());
     }
 
-    /*
+    private User buildFakeUser() {
+        User fakeUser = new User("demingo7", "Iván", "de Mingo", "ivanDeMingo@hotmail.com",
+                "ivan1234", "ivan1234");
+        fakeUser.setLevel(3);
+
+        return fakeUser;
+    }
+
     private void setUser(User user) {
-        View userView = mNavigationView.getHeaderView(0);
         // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
-        ProgressBar progressBar = (ProgressBar) userView.findViewById(R.id.userProgress);
+        ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
 
-        TextView name = (TextView) userView.findViewById(R.id.userName);
+        TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
         name.setText(user.getName() + " " + user.getSurname());
 
-        TextView username = (TextView) userView.findViewById(R.id.userUsername);
+        TextView username = (TextView) mViewDetails.findViewById(R.id.userUsername);
         username.setText(user.getUsername());
 
-        TextView level = (TextView) userView.findViewById(R.id.userLevel);
+        TextView level = (TextView) mViewDetails.findViewById(R.id.userLevel);
         String userLevel = Integer.toString(user.getLevel());
         String showLevel = getString(R.string.level) + ' ' + userLevel;
         level.setText(showLevel);
 
-        TextView xp = (TextView) userView.findViewById(R.id.userxp);
+        TextView xp = (TextView) mViewDetails.findViewById(R.id.userxp);
         String userExperience = Integer.toString(user.getExperience());
         //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
 
-        TextView coins = (TextView) userView.findViewById(R.id.userCoins);
+        TextView coins = (TextView) mViewDetails.findViewById(R.id.userCoins);
         String userCoins = Integer.toString(user.getCoins());
         coins.setText(userCoins);
 
         CircularImageView profileImage =
-                (CircularImageView) userView.findViewById(R.id.userImage);
+                (CircularImageView) mViewDetails.findViewById(R.id.userImage);
         //profileImage.setImageBitmap(img); // bitmap
         //profileImage.setImageIcon(img); // icon
     }
-    */
+
 }
