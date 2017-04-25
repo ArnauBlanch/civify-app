@@ -12,26 +12,12 @@
       android:layout_marginRight="10dp"
       android:orientation="vertical"
       >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="40"
-        >
-      <Button
-          android:id="@+id/button4"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Button"
-          android:layout_alignParentTop="true"
-          android:layout_alignParentRight="true"
-          android:layout_alignParentEnd="true"
-          />
       <ImageView
           android:id="@+id/eventView"
-          android:layout_width="fill_parent"
-          android:layout_height="fill_parent"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="40"
           />
-    </RelativeLayout>
     <LinearLayout
         android:id="@+id/nameLikesShareLayout"
         android:layout_width="match_parent"
