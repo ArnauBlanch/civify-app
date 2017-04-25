@@ -144,9 +144,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
         Retrofit retrofit = new Retrofit.Builder().baseUrl(mockWebServer.url("").toString())
                 .addConverterFactory(GsonConverterFactory.create(gson)).build();
         IssueService issueService = retrofit.create(IssueService.class);
-        SharedPreferences userPreferences = getTargetContext()
-                .getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        IssueAdapter issueAdapter = AdapterFactory.getInstance().getIssueAdapter(userPreferences);
+        IssueAdapter issueAdapter =
+                AdapterFactory.getInstance().getIssueAdapter(getTargetContext());
         issueAdapter.setService(issueService);
 
         String jsonBody;

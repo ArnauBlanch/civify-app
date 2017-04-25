@@ -8,6 +8,8 @@ import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.model.LatLng;
 
 public interface CivifyMarker<E extends Issue> {
+    void setMap(@NonNull CivifyMap map);
+
     @NonNull
     String getTag();
 
