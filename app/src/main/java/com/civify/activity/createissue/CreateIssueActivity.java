@@ -192,7 +192,6 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
         if (mDescription.isEmpty()) {
             descLayout.setError(getString(R.string.must_insert_issue_title));
         } else {
-            showProgressDialog();
             descLayout.setError(null);
             processIssue();
         }
@@ -207,6 +206,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
             float longitude = (float) currentLocation.getLongitude();
             float latitude = (float) currentLocation.getLatitude();
 
+            showProgressDialog();
             Issue newIssue =
                     new Issue(mTitle, mDescription, mCategory, mRisk, longitude, latitude,
                             mImageBitmap, currentUser.getUserAuthToken());
