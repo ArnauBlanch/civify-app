@@ -69,6 +69,7 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
             if (mLocation != null) {
                 onLocationChanged(mLocation);
             } else {
+                mLocationManager.requestLocationUpdates(mLocationProvider, MIN_TIME, 1, this);
                 showError(R.string.couldnt_get_location);
             }
         }
