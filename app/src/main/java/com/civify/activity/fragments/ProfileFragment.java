@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,17 +31,12 @@ public class ProfileFragment extends Fragment {
     private static String mTitle;
 
     private LoginAdapter mLoginAdapter;
+    private FragmentTabHost mTabHost;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment NavigateFragment.
-     */
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -62,23 +58,21 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-//        Button signoutButton = (Button) view.findViewById(R.id.button_signout);
-//        signoutButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mLoginAdapter.logout();
-//                Context applicationContext = getActivity().getApplicationContext();
-//                Intent intent = new Intent(applicationContext, MainActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//            }
-//        });
 
-        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mTitle);
+
+        mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
+        mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
+
+        mTabHost.addTab(
+                mTabHost.newTabSpec("Issues").setIndicator("ISSUES", null),
+                TabHostFragment.class, null);
+        mTabHost.addTab(
+                mTabHost.newTabSpec("Badges").setIndicator("BADGES", null),
+                TabHostFragment.class, null);
+
         return view;
     }
 
