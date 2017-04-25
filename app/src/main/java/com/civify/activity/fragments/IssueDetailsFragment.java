@@ -55,34 +55,41 @@ public class IssueDetailsFragment extends Fragment {
 
 
     private void init() {
-        Log.v(DEBUG, "init()");
+        Log.v(DEBUG, "init");
+        Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
         CivifyMarker<?> marker = (CivifyMarker<?>) bundle.getSerializable("marker");
 
-
+        Log.v(DEBUG, "Adding image issue in layout");
         ImageView imageIssue = (ImageView)mViewDetails.findViewById(R.id.eventView);
         imageIssue.setImageBitmap(marker.getIssue().getPictureBitmap());
 
+        Log.v(DEBUG, "Adding issue title in layout");
         TextView nameIssue = (TextView) mViewDetails.findViewById(R.id.nameText);
         nameIssue.setText(marker.getIssue().getTitle());
         nameIssue.setMovementMethod(new ScrollingMovementMethod());
 
+        Log.v(DEBUG, "Adding confirm value in layout");
         TextView likesIssue = (TextView)mViewDetails.findViewById(R.id.likesText);
-        likesIssue.setText("+" + marker.getIssue().getConfirmVotes());
+        likesIssue.setText("+" + String.valueOf(marker.getIssue().getConfirmVotes()));
 
+        Log.v(DEBUG, "Adding icon and name category in layout");
         ImageView categoryIcon = (ImageView)mViewDetails.findViewById(R.id.categoryView);
         categoryIcon.setImageResource(marker.getIssue().getCategory().getIcon());
         TextView categoryIssue = (TextView)mViewDetails.findViewById(R.id.categoryText);
         categoryIssue.setText(marker.getIssue().getCategory().name());
 
+        Log.v(DEBUG, "Adding risk in layout");
         TextView riskIssue = (TextView)mViewDetails.findViewById(R.id.riskAnswer);
         riskIssue.setText(getText(R.string.no));
         if(marker.getIssue().isRisk()) riskIssue.setText(getText(R.string.yes));
 
+        Log.v(DEBUG, "Adding description in layout");
         TextView descriptionIssue = (TextView)mViewDetails.findViewById(R.id.descriptionText);
         descriptionIssue.setText(marker.getIssue().getDescription());
         descriptionIssue.setMovementMethod(new ScrollingMovementMethod());
 
+        Log.v(DEBUG, "Adding street in layout");
         final TextView streetIssue = (TextView)mViewDetails.findViewById(R.id.streetText);
         marker.getAddress(new LocalityCallback() {
             @Override
@@ -95,6 +102,7 @@ public class IssueDetailsFragment extends Fragment {
         });
         streetIssue.setMovementMethod(new ScrollingMovementMethod());
 
+        Log.v(DEBUG, "Adding distance in layout");
         TextView distanceIssue = (TextView)mViewDetails.findViewById(R.id.distanceText);
         float distance = marker.getDistanceFromCurrentLocation()/1000;
         String stringDistance = String.valueOf(distance);
@@ -102,6 +110,7 @@ public class IssueDetailsFragment extends Fragment {
         String distanceToken = token.nextToken();
         distanceIssue.setText(distanceToken + " " + getText(R.string.km));
 
+        Log.v(DEBUG, "Adding time in layout");
         TextView timeIssue = (TextView)mViewDetails.findViewById(R.id.sinceText);
         Date date = new Date();
         Date dateIssue = marker.getIssue().getCreatedAt();
@@ -112,7 +121,9 @@ public class IssueDetailsFragment extends Fragment {
         difference /= MILLISECONDS_TO_DAYS;
         timeIssue.setText(difference + " " + getText(R.string.days));
 
+        Log.v(DEBUG, "Adding user in layout");
         setUser(buildFakeUser());
+        Log.v(DEBUG, "init finished");
     }
 
     private User buildFakeUser() {
@@ -124,6 +135,7 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     private void setUser(User user) {
+        Log.v(DEBUG, "setUser");
         // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
         ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
@@ -151,6 +163,7 @@ public class IssueDetailsFragment extends Fragment {
                 (CircularImageView) mViewDetails.findViewById(R.id.userImage);
         //profileImage.setImageBitmap(img); // bitmap
         //profileImage.setImageIcon(img); // icon
+        Log.v(DEBUG, "setUser finished");
     }
 
 }
