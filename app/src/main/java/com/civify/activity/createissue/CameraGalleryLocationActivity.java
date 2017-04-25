@@ -57,7 +57,7 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
+        // Define the criteria how to select the location provider -> use
         // default
         Criteria criteria = new Criteria();
         mLocationProvider = mLocationManager.getBestProvider(criteria, false);
