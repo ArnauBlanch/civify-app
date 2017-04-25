@@ -166,6 +166,9 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
         File storageDir = new File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
                 "Camera");
+        if (!storageDir.exists()) {
+            storageDir.mkdirs();
+        }
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         // Save a file: path for use with ACTION_VIEW intents
