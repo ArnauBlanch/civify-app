@@ -2,8 +2,7 @@ package com.civify.activity.createissue;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
@@ -50,9 +49,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences userPreferences =
-                getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(userPreferences);
+        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(this);
         setContentView(R.layout.create_issue_layout);
 
         mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
@@ -214,7 +211,9 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
                 @Override
                 public void onSuccess(Issue issue) {
                     mProgressDialog.dismiss();
-                    setResult(ISSUE_CREATED);
+                    Intent intent = getIntent();
+                    intent.putExtra("issue", issue);
+                    setResult(ISSUE_CREATED, intent);
                     finish();
                 }
 

@@ -18,7 +18,14 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
     private HashMap<String, CivifyMarker<?>> mMarkers = new HashMap<>();
 
     CivifyMarkers(@NonNull CivifyMap map) {
+        setMap(map);
+    }
+
+    public final void setMap(@NonNull CivifyMap map) {
         map.getGoogleMap().setOnMarkerClickListener(this);
+        if (!mMarkers.isEmpty()) {
+            for (CivifyMarker<?> marker : mMarkers.values()) marker.setMap(map);
+        }
     }
 
     @Nullable

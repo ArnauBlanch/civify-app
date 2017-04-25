@@ -12,13 +12,14 @@ import android.view.ViewGroup;
 
 import com.civify.R;
 import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotReadyException;
 
 public class NavigateFragment extends Fragment {
 
-    public static final String LISTENER = "listener";
     private CivifyMap mCivifyMap;
+    private boolean mCreatingIssue;
 
     public NavigateFragment() {
         // Required empty public constructor
@@ -31,7 +32,7 @@ public class NavigateFragment extends Fragment {
     private void setMap() {
         mCivifyMap = new CivifyMap(getActivity());
         Fragment mapFragment = mCivifyMap.getMapFragment();
-        mCivifyMap.enableLocationUpdates();
+        mCivifyMap.enable();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.map_fragment_placeholder, mapFragment)
@@ -42,13 +43,14 @@ public class NavigateFragment extends Fragment {
     // Called after onCreate
     public void onResume() {
         super.onResume();
-        mCivifyMap.enableLocationUpdates();
+        mCivifyMap.enable();
     }
 
     @Override
     public void onPause() {
+        mCivifyMap.disable();
+        if (!mCreatingIssue) mCivifyMap.outdateToBeRefreshed();
         super.onPause();
-        mCivifyMap.disableLocationUpdates();
     }
 
     @Override
@@ -62,8 +64,15 @@ public class NavigateFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CreateIssueActivity.ISSUE_CREATION) {
             if (resultCode == CreateIssueActivity.ISSUE_CREATED) {
+                Issue issue = (Issue) data.getExtras().getSerializable("issue");
+                try {
+                    mCivifyMap.addIssueMarker(issue);
+                } catch (MapNotReadyException ignore) {
+                    // Button to create issues is only enabled if the map is ready
+                }
                 Snackbar.make(getView(), getString(R.string.issue_created),
                         Snackbar.LENGTH_SHORT).show();
+                mCreatingIssue = false;
             }
         } else {
             mCivifyMap.onMapSettingsResults(requestCode, resultCode);
@@ -85,8 +94,7 @@ public class NavigateFragment extends Fragment {
                 try {
                     mCivifyMap.center();
                 } catch (MapNotReadyException ignore) {
-                    Snackbar.make(view, "Map loading, please wait...", Snackbar.LENGTH_LONG)
-                            .setAction(R.string.action, null).show();
+                    showMapLoadingWarning(view);
                 }
             }
         });
@@ -96,12 +104,20 @@ public class NavigateFragment extends Fragment {
         fabCreateIssue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(),
-                        CreateIssueActivity.class);
-                startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
+                if (mCivifyMap.isMapReady()) {
+                    mCreatingIssue = true;
+                    Intent intent = new Intent(getActivity().getApplicationContext(),
+                            CreateIssueActivity.class);
+                    startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
+                } else showMapLoadingWarning(view);
             }
         });
 
         return mapView;
+    }
+
+    private static void showMapLoadingWarning(View view) {
+        Snackbar.make(view, "Map loading, please wait...", Snackbar.LENGTH_LONG)
+                .setAction(R.string.action, null).show();
     }
 }
