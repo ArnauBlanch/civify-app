@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import java.util.StringTokenizer;
 
 public class IssueDetailsFragment extends Fragment {
 
+    private static final String DEBUG = "debug-IssueDetails";
     private static final int MILLISECONDS_TO_DAYS = 86400000;
 
     private View mViewDetails;
@@ -52,22 +55,29 @@ public class IssueDetailsFragment extends Fragment {
 
 
     private void init() {
+        Log.v(DEBUG, "init()");
         Bundle bundle = getArguments();
         CivifyMarker<?> marker = (CivifyMarker<?>) bundle.getSerializable("marker");
+
+
+        ImageView imageIssue = (ImageView)mViewDetails.findViewById(R.id.eventView);
+        imageIssue.setImageBitmap(marker.getIssue().getPictureBitmap());
 
         TextView nameIssue = (TextView) mViewDetails.findViewById(R.id.nameText);
         nameIssue.setText(marker.getIssue().getTitle());
         nameIssue.setMovementMethod(new ScrollingMovementMethod());
 
         TextView likesIssue = (TextView)mViewDetails.findViewById(R.id.likesText);
-        likesIssue.setText("+" + marker.getIssue().getLikes());
+        likesIssue.setText("+" + marker.getIssue().getConfirmVotes());
 
+        ImageView categoryIcon = (ImageView)mViewDetails.findViewById(R.id.categoryView);
+        categoryIcon.setImageResource(marker.getIssue().getCategory().getIcon());
         TextView categoryIssue = (TextView)mViewDetails.findViewById(R.id.categoryText);
-        categoryIssue.setText(marker.getIssue().getCategory());
+        categoryIssue.setText(marker.getIssue().getCategory().name());
 
         TextView riskIssue = (TextView)mViewDetails.findViewById(R.id.riskAnswer);
         riskIssue.setText(getText(R.string.no));
-        if(marker.getIssue().getRisk()) riskIssue.setText(getText(R.string.yes));
+        if(marker.getIssue().isRisk()) riskIssue.setText(getText(R.string.yes));
 
         TextView descriptionIssue = (TextView)mViewDetails.findViewById(R.id.descriptionText);
         descriptionIssue.setText(marker.getIssue().getDescription());
@@ -94,7 +104,10 @@ public class IssueDetailsFragment extends Fragment {
 
         TextView timeIssue = (TextView)mViewDetails.findViewById(R.id.sinceText);
         Date date = new Date();
-        Date dateIssue = marker.getIssue().getDate();
+        Date dateIssue = marker.getIssue().getCreatedAt();
+        if(marker.getIssue().getUpdatedAt() != null){
+            dateIssue = marker.getIssue().getUpdatedAt();
+        }
         long difference = date.getTime() - dateIssue.getTime();
         difference /= MILLISECONDS_TO_DAYS;
         timeIssue.setText(difference + " " + getText(R.string.days));

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidDomInspection -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    style="@style/AppTheme.NoActionBar"
+    android:id="@+id/create_issue_linearlayout"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix,Overdraw">
+
+  <android.support.v7.widget.Toolbar
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="#ffffff"
+      android:id="@+id/create_issue_toolbar"
+
+      app:popupTheme="@style/AppTheme" />
+
+  <com.civify.activity.CustomViewPager
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/viewpager" />
+
+</LinearLayout>
