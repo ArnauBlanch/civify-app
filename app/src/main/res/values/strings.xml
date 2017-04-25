@@ -86,6 +86,7 @@
   <string name="questionRisk">Poses a risk?</string>
   <string name="yes">Yes</string>
   <string name="no">No</string>
-  <string name='daysAgo'>days ago</string>
+  <string name='days'>days</string>
   <string name='today'>today</string>
+  <string name='km'>km</string>
 </resources>
