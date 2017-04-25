@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.civify.activity.MainActivity;
 import com.civify.adapter.LoginAdapter;
 import com.civify.utils.AdapterFactory;
@@ -74,7 +75,9 @@ public class ProfileFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+
+        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mTitle);
         return view;
     }
