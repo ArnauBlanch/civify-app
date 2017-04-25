@@ -3,6 +3,7 @@ package com.civify.activity.createissue;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -214,7 +215,9 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
                 @Override
                 public void onSuccess(Issue issue) {
                     mProgressDialog.dismiss();
-                    setResult(ISSUE_CREATED);
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("newIssueToken", issue.getIssueAuthToken());
+                    setResult(ISSUE_CREATED, returnIntent);
                     finish();
                 }
 
