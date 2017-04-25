@@ -190,7 +190,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
 
 
         if (mDescription.isEmpty()) {
-            descLayout.setError(getString(R.string.must_insert_issue_title));
+            descLayout.setError(getString(R.string.must_insert_description));
         } else {
             descLayout.setError(null);
             processIssue();
