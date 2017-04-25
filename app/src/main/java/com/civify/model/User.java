@@ -2,38 +2,48 @@ package com.civify.model;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
 
+    @Expose
     @SerializedName("username")
     private String mUsername;
 
+    @Expose
     @SerializedName("email")
     private String mEmail;
 
+    @Expose
     @SerializedName("first_name")
     private String mName;
 
+    @Expose
     @SerializedName("last_name")
     private String mSurname;
 
+    @Expose(deserialize = false)
     @SerializedName("password")
     private String mPassword;
 
+    @Expose(deserialize = false)
     @SerializedName("password_confirmation")
     private String mPasswordConfirmation;
 
-    @SerializedName("password_digest")
-    private String mPassworddigest;
-
+    @Expose(serialize = false)
     @SerializedName("created_at")
     private String mCreatedat;
 
+    @Expose(serialize = false, deserialize = false)
     @SerializedName("updated_at")
     private String mUpdatedat;
+
+    @Expose(serialize = false)
+    @SerializedName("user_auth_token")
+    private String mUserAuthToken;
 
     private int mLevel;
     private int mExperience;
@@ -98,19 +108,11 @@ public class User implements Serializable {
         mPasswordConfirmation = passwordConfirmation;
     }
 
-    public String getPassword_digest() {
-        return mPassworddigest;
-    }
-
-    public void setPassword_digest(String passworddigest) {
-        this.mPassworddigest = passworddigest;
-    }
-
-    public String getCreated_at() {
+    public String getCreatedat() {
         return mCreatedat;
     }
 
-    public void setCreated_at(String createdat) {
+    public void setCreatedat(String createdat) {
         this.mCreatedat = createdat;
     }
 
@@ -118,7 +120,7 @@ public class User implements Serializable {
         return mUpdatedat;
     }
 
-    public void setUpdated_at(String updatedat) {
+    public void setUpdatedat(String updatedat) {
         this.mUpdatedat = updatedat;
     }
 
@@ -144,5 +146,13 @@ public class User implements Serializable {
 
     public void setCoins(int coins) {
         mCoins = coins;
+    }
+
+    public String getUserAuthToken() {
+        return mUserAuthToken;
+    }
+
+    public void setUserAuthToken(String userAuthToken) {
+        mUserAuthToken = userAuthToken;
     }
 }

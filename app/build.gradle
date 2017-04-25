@@ -87,7 +87,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-//    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2') {
+      // Necessary to avoid version conflicts
+      exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile 'org.mockito:mockito-core:1.9.5'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:retrofit-mock:2.2.0'

@@ -4,7 +4,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.civify.adapter.LocalityCallback;
-import com.civify.model.Issue;
+import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
