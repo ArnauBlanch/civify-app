@@ -1,8 +1,6 @@
 package com.civify.activity.registration;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -34,9 +32,7 @@ public class RegistrationActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUserAdapter = AdapterFactory.getInstance().getUserAdapter();
-        SharedPreferences userpreferences =
-                getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(userpreferences);
+        mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(this);
         setContentView(R.layout.registration_layout);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);

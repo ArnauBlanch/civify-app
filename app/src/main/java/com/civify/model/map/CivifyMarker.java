@@ -10,6 +10,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.Serializable;
 
 public interface CivifyMarker<E extends Issue> extends Serializable {
+    void setMap(@NonNull CivifyMap map);
+
     @NonNull
     String getTag();
 

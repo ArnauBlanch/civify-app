@@ -2,7 +2,6 @@ package com.civify.activity.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,9 +44,7 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USERPREFS",
-                Context.MODE_PRIVATE);
-        mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
+        mLoginAdapter = adapterFactory.getLoginAdapter(getActivity());
     }
 
     @Override

@@ -12,6 +12,9 @@ import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
 import com.civify.model.issue.Issue;
+import com.civify.service.issue.ListIssuesSimpleCallback;
+import com.civify.utils.AdapterFactory;
+import com.civify.utils.ConfirmDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -19,6 +22,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
+
+import java.util.List;
 
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
@@ -101,7 +106,30 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         settings.setTiltGesturesEnabled(false);
         settings.setMapToolbarEnabled(false);
         settings.setMyLocationButtonEnabled(false);
-        mMarkers = new CivifyMarkers(this);
+        setMarkers();
+    }
+
+    private void setMarkers() {
+        if (mMarkers == null) {
+            mMarkers = new CivifyMarkers(this);
+            refreshIssues();
+        } else mMarkers.setMap(this);
+    }
+
+    public void refreshIssues() {
+        AdapterFactory.getInstance().getIssueAdapter(getContext())
+                .getIssues(new ListIssuesSimpleCallback() {
+                    @Override
+                    public void onSuccess(List<Issue> issues) {
+                        mMarkers.addAll(IssueMarker.getMarkers(issues, CivifyMap.this));
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        ConfirmDialog.show(getContext(), "Error",
+                                "Issues cannot be retrieved, please try again later.");
+                    }
+                });
     }
 
     public void addIssueMarker(@NonNull Issue issue) throws MapNotReadyException {
@@ -176,16 +204,17 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         mLocationAdapter.setUpdateIntervals(priority, millisPeriod, millisMinimumPeriod);
     }
 
-    public void enableLocationUpdates() {
+    public void disable() {
+        if (!mLocationAdapter.isRequestingPermissions()) mLocationAdapter.disconnect();
+    }
+
+    public void enable() {
         mLocationAdapter.connect();
     }
 
-    public void disableLocationUpdates() {
-        if (!mLocationAdapter.isRequestingPermissions()) {
-            mLocationAdapter.disconnect();
-            mPlayerSet = false;
-            mMapFragment = null;
-        }
+    public void outdateToBeRefreshed() {
+        mPlayerSet = false;
+        mMapFragment = null;
     }
 
     public void onRequestPermissionsResult(int requestCode, int[] grantResults) {

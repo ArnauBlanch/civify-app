@@ -9,9 +9,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Issue {
+public class Issue implements Serializable {
 
     private static final int BITMAP_COMPRESS_VALUE = 70;
 
