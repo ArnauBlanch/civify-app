@@ -26,7 +26,7 @@ import com.civify.utils.AdapterFactory;
  */
 public class ProfileFragment extends Fragment {
 
-    private static String mTitle;
+    private String mTitle;
 
     private LoginAdapter mLoginAdapter;
     private FragmentTabHost mTabHost;

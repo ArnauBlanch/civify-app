@@ -33,7 +33,8 @@ public class ProfileInfoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_info, container, false);
         setUserInfo(mCurrentUser, view);
@@ -67,10 +68,10 @@ public class ProfileInfoFragment extends Fragment {
             String userCoins = Integer.toString(user.getCoins());
             coins.setText(userCoins);
 
-            CircularImageView profileImage = (CircularImageView) view.findViewById(R.id.user_info_image);
+            CircularImageView profileImage =
+                    (CircularImageView) view.findViewById(R.id.user_info_image);
             //profileImage.setImageBitmap(img); // bitmap
             //profileImage.setImageIcon(img); // icon
         }
     }
-
 }
