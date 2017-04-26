@@ -52,8 +52,8 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USERPREFS",
-                Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences =
+                getActivity().getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
         setHasOptionsMenu(true);
         mTitle = getResources().getString(R.string.profile_title);
@@ -70,12 +70,12 @@ public class ProfileFragment extends Fragment {
         mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
 
-        mTabHost.addTab(
-                mTabHost.newTabSpec("Issues").setIndicator("ISSUES", null),
-                TabHostFragment.class, null);
-        mTabHost.addTab(
-                mTabHost.newTabSpec("Badges").setIndicator("BADGES", null),
-                TabHostFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.tab_spec_issues))
+                        .setIndicator(getString(R.string.tab_label_issues), null),
+                            TabHostFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.tab_spec_badges))
+                        .setIndicator(getString(R.string.tab_label_badges), null),
+                            TabHostFragment.class, null);
 
         return view;
     }
