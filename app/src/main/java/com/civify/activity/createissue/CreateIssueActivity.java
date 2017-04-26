@@ -1,6 +1,5 @@
 package com.civify.activity.createissue;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.activity.CustomViewPager;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
@@ -56,7 +54,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
         mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(userPreferences);
         setContentView(R.layout.create_issue_layout);
 
-        mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         // Set an Adapter on the ViewPager
         mViewPager.setAdapter(new CreateIssuePagerAdapter(getSupportFragmentManager()));
@@ -103,7 +101,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
 
     private void hideSoftKeyboard() {
         InputMethodManager inputMethodManager =
-                (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager
                 .hideSoftInputFromWindow(findViewById(android.R.id.content).getWindowToken(), 0);
 
