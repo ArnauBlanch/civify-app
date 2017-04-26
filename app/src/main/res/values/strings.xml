@@ -132,4 +132,9 @@
   <string name="must_insert_description">You must enter a description</string>
   <string name="profile_title">My profile</string>
 
+  <string name="tab_label_issues">ISSUES</string>
+  <string name="tab_label_badges">BADGES</string>
+  <string name="tab_spec_issues">Issues</string>
+  <string name="tab_spec_badges">Badges</string>
+
 </resources>
