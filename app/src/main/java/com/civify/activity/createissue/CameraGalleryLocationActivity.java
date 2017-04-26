@@ -57,7 +57,7 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
+        // Define the criteria how to select the location provider -> use
         // default
         Criteria criteria = new Criteria();
         mLocationProvider = mLocationManager.getBestProvider(criteria, false);
@@ -166,6 +166,9 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
         File storageDir = new File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
                 "Camera");
+        if (!storageDir.exists()) {
+            storageDir.mkdirs();
+        }
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         // Save a file: path for use with ACTION_VIEW intents
