@@ -51,9 +51,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences userPreferences =
-                getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(userPreferences);
+        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(this);
         setContentView(R.layout.create_issue_layout);
 
         mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
@@ -215,9 +213,9 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
                 @Override
                 public void onSuccess(Issue issue) {
                     mProgressDialog.dismiss();
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("newIssueToken", issue.getIssueAuthToken());
-                    setResult(ISSUE_CREATED, returnIntent);
+                    Intent intent = getIntent();
+                    intent.putExtra("issue", issue);
+                    setResult(ISSUE_CREATED, intent);
                     finish();
                 }
 
