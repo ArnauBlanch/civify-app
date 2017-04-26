@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.createissue.CreateIssueActivity;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotReadyException;
 
 public class NavigateFragment extends Fragment {
 
+    public static final String LISTENER = "listener";
     private CivifyMap mCivifyMap;
 
     public NavigateFragment() {
@@ -24,11 +26,6 @@ public class NavigateFragment extends Fragment {
 
     public static NavigateFragment newInstance() {
         return new NavigateFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     private void setMap() {
@@ -63,21 +60,21 @@ public class NavigateFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCivifyMap.onMapSettingsResults(requestCode, resultCode);
+        if (requestCode == CreateIssueActivity.ISSUE_CREATION) {
+            if (resultCode == CreateIssueActivity.ISSUE_CREATED) {
+                String issueToken = data.getStringExtra("newIssueToken");
+                Snackbar.make(getView(), getString(R.string.issue_created) + ": " + issueToken,
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        } else {
+            mCivifyMap.onMapSettingsResults(requestCode, resultCode);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
-        FloatingActionButton fabAdd = (FloatingActionButton) mapView.findViewById(R.id.fab_add);
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, R.string.not_implemented_yet, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.action, null).show();
-            }
-        });
 
         setMap();
 
@@ -94,6 +91,18 @@ public class NavigateFragment extends Fragment {
                 }
             }
         });
+
+        FloatingActionButton fabCreateIssue = (FloatingActionButton)
+                mapView.findViewById(R.id.fab_add);
+        fabCreateIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(),
+                        CreateIssueActivity.class);
+                startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
+            }
+        });
+
         return mapView;
     }
 }
