@@ -1,4 +1,4 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.profile;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -19,13 +19,12 @@ import com.civify.R;
 import com.civify.activity.fragments.AchievementsFragment;
 import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
-import com.civify.activity.fragments.ProfileFragment;
+import com.civify.activity.fragments.profile.ProfileFragment;
 import com.civify.activity.fragments.RewardsFragment;
 import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.WallFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
-import com.civify.utils.AdapterFactory;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class DrawerActivity extends BaseActivity
