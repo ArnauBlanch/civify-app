@@ -23,7 +23,9 @@ import com.civify.activity.fragments.ProfileFragment;
 import com.civify.activity.fragments.RewardsFragment;
 import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.WallFragment;
+import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
+import com.civify.utils.AdapterFactory;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class DrawerActivity extends BaseActivity
@@ -46,6 +48,7 @@ public class DrawerActivity extends BaseActivity
     //private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
     private boolean mShowMenu;
+    private User mCurrentUser;
 
     public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
@@ -82,14 +85,12 @@ public class DrawerActivity extends BaseActivity
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
+        mCurrentUser = UserAdapter.getCurrentUser();
 
-        User fakeUser = new User("ArnauBlanch", "Arnau", "Blanch", "arnaublanch@civify.app",
-                "password",
-                "password2");
-        fakeUser.setLevel(LEVEL);
-        fakeUser.setCoins(COINS);
-        fakeUser.setExperience(EXPERIENCE);
-        setUserHeader(fakeUser);
+        mCurrentUser.setLevel(LEVEL);
+        mCurrentUser.setCoins(COINS);
+        mCurrentUser.setExperience(EXPERIENCE);
+        setUserHeader(mCurrentUser);
     }
 
     @Override
