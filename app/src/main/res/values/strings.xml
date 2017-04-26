@@ -122,6 +122,7 @@
   <string name="issue_created">Issue created</string>
   <string name="must_enter_a_description">You must enter a description</string>
   <string name="creating_new_issue">Creating new issue...</string>
+  <string name="must_insert_description">You must enter a description</string>
 
   <string name="share">share</string>
   <string name="category">Category:</string>

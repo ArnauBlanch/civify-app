@@ -63,7 +63,8 @@ public class NavigateFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CreateIssueActivity.ISSUE_CREATION) {
             if (resultCode == CreateIssueActivity.ISSUE_CREATED) {
-                Snackbar.make(getView(), getString(R.string.issue_created),
+                String issueToken = data.getStringExtra("newIssueToken");
+                Snackbar.make(getView(), getString(R.string.issue_created) + ": " + issueToken,
                         Snackbar.LENGTH_SHORT).show();
             }
         } else {
