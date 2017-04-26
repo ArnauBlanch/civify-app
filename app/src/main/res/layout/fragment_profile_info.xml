@@ -27,6 +27,7 @@
           android:gravity="center"
           >
         <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/user_info_image"
             android:src="@drawable/man"
             android:layout_width="90dp"
             android:layout_height="90dp"
@@ -42,7 +43,7 @@
           android:paddingTop="28dp"
           >
         <TextView
-            android:id="@+id/header_name"
+            android:id="@+id/user_info_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Arnau Blanch Cortès"
@@ -53,7 +54,7 @@
             android:paddingBottom="5dp"
             />
         <TextView
-            android:id="@+id/header_username"
+            android:id="@+id/user_info_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ArnauBlanch"
@@ -72,14 +73,15 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/ic_coins"
+              android:paddingTop="4dp"
               />
           <TextView
-              android:id="@+id/num_coins"
+              android:id="@+id/user_info_coins"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:paddingTop="5dp"
-              android:paddingStart="5dp"
               android:paddingEnd="5dp"
+              android:paddingStart="5dp"
+              android:paddingTop="5dp"
               android:text="153"
               />
           <ImageView
@@ -87,17 +89,19 @@
               android:layout_height="wrap_content"
               android:src="@drawable/ic_menu_rewards"
               android:tint="@color/grey"
+              android:paddingTop="4dp"
               />
           <TextView
-              android:id="@+id/num_rewards"
+              android:id="@+id/user_info_rewards"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:paddingTop="5dp"
-              android:paddingStart="5dp"
               android:paddingEnd="5dp"
+              android:paddingStart="5dp"
+              android:paddingTop="5dp"
               android:text="5"
               />
         </LinearLayout>
+
       </LinearLayout>
     </LinearLayout>
   </LinearLayout>
@@ -111,9 +115,8 @@
       android:paddingTop="3dp"
       android:paddingBottom="3dp"
       >
-    <!-- Aqui va la progress bar-->
     <ProgressBar
-        android:id="@+id/header_progress"
+        android:id="@+id/user_info_progress"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:indeterminate="false"
@@ -128,7 +131,7 @@
         android:layout_marginBottom="2dp"
         >
       <TextView
-          android:id="@+id/profile_level"
+          android:id="@+id/user_info_level"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Level 2"
@@ -143,7 +146,7 @@
           android:layout_marginStart="4dp"
           />
       <TextView
-          android:id="@+id/header_xp"
+          android:id="@+id/user_info_xp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="276/1800"

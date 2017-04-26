@@ -14,12 +14,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.MainActivity;
 import com.civify.adapter.LoginAdapter;
+import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 /**
  * A simple {@link Fragment} subclass.
