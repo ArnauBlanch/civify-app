@@ -7,6 +7,30 @@
   <string name="password_validation_icon">Validation icon for password</string>
   <string name="app_name">Civify</string>
 
+  <string name="whats_happening">What\'s happening?</string>
+  <string name="issue_title">Issue Title</string>
+  <string name="describe_your_issue">Describe your issue</string>
+  <string name="issue_description">Issue description</string>
+  <string name="what_kind_of_problem">What kind of issue?</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="pose_a_risk">Does it pose a risk to people?</string>
+  <string name="take_a_picture">Do you have a photo of the issue?</string>
+  <string name="report_new_issue">Report new issue</string>
+  <string name="something_went_wrong">Something went wrong</string>
+  <string name="havent_picked_image">You haven\'t picked an image!</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Cancel</string>
+  <string name="need_to_allow_camera_permission">You need to allow camera permission to take a photo</string>
+  <string name="camera_permission_denied">Camera permission denied</string>
+  <string name="select_photo">Select photo</string>
+  <string name="gallery_permission_denied">Read external storage permission denied</string>
+  <string name="need_to_allow_read_storage_permission">You need to allow read external storage permission</string>
+  <string name="must_insert_issue_title">You must insert an issue title</string>
+  <string name="must_choose_photo">You must choose a photo</string>
+  <string name="must_choose_option">You must choose an option</string>
+  <string name="couldnt_create_issue">Couldn\'t create new issue</string>
+
   <string name="valid_unused_username">The username is valid and unused</string>
   <string name="invalid_username">The username is invalid (Should have 8–20 characters. Special
         characters allowed: .,)
@@ -86,8 +110,26 @@
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="level">Level</string>
   <string name="sign_out">Sign out</string>
-  <string name="title_activity_remove_this">RemoveThisActivity</string>
 
+  <!-- Categories -->
+  <string name="road_signs">Road signs</string>
+  <string name="illumination">Illumination</string>
+  <string name="grove">Grove</string>
+  <string name="street_furniture">Street furniture</string>
+  <string name="trash_and_cleaning">Trash and cleaning</string>
+  <string name="public_transport">Public transport</string>
+  <string name="suggestion">Suggestion</string>
+  <string name="other">Other</string>
+  <string name="select_category">Select category</string>
+  <string name="must_choose_category">You must choose a category</string>
+  <string name="need_to_allow_location_permission">You need to allow location permission</string>
+  <string name="camera_error">Sorry, there was an error with the camera</string>
+  <string name="gallery_error">Sorry, there was an error when getting the image</string>
+  <string name="couldnt_get_location">Couldn\'t get current location</string>
+  <string name="issue_created">Issue created</string>
+  <string name="must_enter_a_description">You must enter a description</string>
+  <string name="creating_new_issue">Creating new issue...</string>
+  <string name="must_insert_description">You must enter a description</string>
   <string name="profile_title">My profile</string>
 
 </resources>

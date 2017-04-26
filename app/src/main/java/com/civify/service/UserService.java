@@ -10,12 +10,12 @@ import retrofit2.http.POST;
 
 public interface UserService {
 
-    @POST("users")
+    @POST("/users")
     Call<MessageResponse> registerUser(@Body User user);
 
-    @POST("users/search")
+    @POST("/users/search")
     Call<MessageResponse> checkUnusedUsername(@Body JsonObject username);
 
-    @POST("users/search")
+    @POST("/users/search")
     Call<MessageResponse> checkUnusedEmail(@Body JsonObject email);
 }
