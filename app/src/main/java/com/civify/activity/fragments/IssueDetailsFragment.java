@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.civify.R;
@@ -18,6 +20,7 @@ import com.civify.model.User;
 import com.civify.model.map.CivifyMarker;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -48,13 +51,17 @@ public class IssueDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
-        init();
+        try {
+            init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return mViewDetails;
     }
 
 
 
-    private void init() {
+    private void init() throws IOException {
         Log.v(DEBUG, "init");
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
@@ -76,7 +83,7 @@ public class IssueDetailsFragment extends Fragment {
         Log.v(DEBUG, "Adding icon and name category in layout");
         ImageView categoryIcon = (ImageView)mViewDetails.findViewById(R.id.categoryView);
         categoryIcon.setImageResource(marker.getIssue().getCategory().getIcon());
-        TextView categoryIssue = (TextView)mViewDetails.findViewById(R.id.categoryText);
+        TextView categoryIssue = (TextView)mViewDetails.findViewById(R.id.nameCategoryText);
         categoryIssue.setText(marker.getIssue().getCategory().name());
 
         Log.v(DEBUG, "Adding risk in layout");
@@ -108,7 +115,16 @@ public class IssueDetailsFragment extends Fragment {
         String stringDistance = String.valueOf(distance);
         StringTokenizer token = new StringTokenizer(stringDistance, ".");
         String distanceToken = token.nextToken();
-        distanceIssue.setText(distanceToken + " " + getText(R.string.km));
+        if(distanceToken != "0") {
+            distanceIssue.setText(distanceToken + " " + getText(R.string.km));
+        }
+        else {
+            distance = marker.getDistanceFromCurrentLocation()/1000000;
+            stringDistance = String.valueOf(distance);
+            token = new StringTokenizer(stringDistance, ".");
+            distanceToken = token.nextToken();
+            distanceIssue.setText(distanceToken + " " + getText(R.string.m));
+        }
 
         Log.v(DEBUG, "Adding time in layout");
         TextView timeIssue = (TextView)mViewDetails.findViewById(R.id.sinceText);
@@ -122,6 +138,8 @@ public class IssueDetailsFragment extends Fragment {
         timeIssue.setText(difference + " " + getText(R.string.days));
 
         Log.v(DEBUG, "Adding user in layout");
+        //LinearLayout userLayout = (LinearLayout)mViewDetails.findViewById(R.id.userLayout);
+        //userLayout.setMovementMethod(new ScrollingMovementMethod());
         setUser(buildFakeUser());
         Log.v(DEBUG, "init finished");
     }

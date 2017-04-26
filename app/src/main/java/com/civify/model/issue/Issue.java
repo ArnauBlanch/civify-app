@@ -3,13 +3,19 @@ package com.civify.model.issue;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 
+import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 public class Issue implements Serializable {
@@ -88,6 +94,7 @@ public class Issue implements Serializable {
         mConfirmVotes = 0;
         mReports = 0;
         mUserAuthToken = userAuthToken;
+        Log.v("Issue creadora", pictureBitmap.toString());
         setPicture(pictureBitmap);
     }
 
@@ -231,8 +238,9 @@ public class Issue implements Serializable {
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
     }
 
-    public Bitmap getPictureBitmap() {
-        byte[] decodedString = Base64.decode(mPicture.getContent(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    public Bitmap getPictureBitmap() throws IOException {
+        URL url = new URL(ServiceGenerator.BASE_URL + mPicture.getLargeUrl());
+        return BitmapFactory.decodeStream(url.openConnection().getInputStream());
     }
+
 }

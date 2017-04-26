@@ -130,4 +130,5 @@
   <string name='days'>days</string>
   <string name='today'>today</string>
   <string name='km'>km</string>
+  <string name="m">m</string>
 </resources>

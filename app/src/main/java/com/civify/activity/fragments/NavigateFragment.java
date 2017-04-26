@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
@@ -30,7 +31,7 @@ public class NavigateFragment extends Fragment {
     }
 
     private void setMap() {
-        mCivifyMap = new CivifyMap(getActivity());
+        mCivifyMap = new CivifyMap((DrawerActivity)getActivity());
         Fragment mapFragment = mCivifyMap.getMapFragment();
         mCivifyMap.enable();
         getFragmentManager()
