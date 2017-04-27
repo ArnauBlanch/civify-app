@@ -43,54 +43,57 @@
 <i>5</i>&nbsp;
 <i>6</i>&nbsp;import com.civify.adapter.LocalityCallback;
 <i>7</i>&nbsp;import com.civify.model.issue.Issue;
-<i>8</i>&nbsp;import com.google.android.gms.maps.model.LatLng;
-<i>9</i>&nbsp;
-<i>10</i>&nbsp;public interface CivifyMarker&lt;E extends Issue&gt; {
-<i>11</i>&nbsp;    void setMap(@NonNull CivifyMap map);
-<i>12</i>&nbsp;
-<i>13</i>&nbsp;    @NonNull
-<i>14</i>&nbsp;    String getTag();
+<i>8</i>&nbsp;import com.google.android.gms.maps.GoogleMap;
+<i>9</i>&nbsp;import com.google.android.gms.maps.model.LatLng;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public interface CivifyMarker&lt;E extends Issue&gt; {
+<i>12</i>&nbsp;    void attachToMap(@NonNull GoogleMap map);
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    GoogleMap getAttachedMap();
 <i>15</i>&nbsp;
 <i>16</i>&nbsp;    @NonNull
-<i>17</i>&nbsp;    E getIssue();
+<i>17</i>&nbsp;    String getTag();
 <i>18</i>&nbsp;
-<i>19</i>&nbsp;    void getAddress(LocalityCallback callback);
-<i>20</i>&nbsp;
-<i>21</i>&nbsp;    float getDistanceFromCurrentLocation();
-<i>22</i>&nbsp;
-<i>23</i>&nbsp;    @NonNull
-<i>24</i>&nbsp;    CivifyMarker&lt;E&gt; setMarkerIcon(@DrawableRes int markerIcon);
+<i>19</i>&nbsp;    @NonNull
+<i>20</i>&nbsp;    E getIssue();
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    void getAddress(LocalityCallback callback);
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    float getDistanceFromCurrentLocation();
 <i>25</i>&nbsp;
-<i>26</i>&nbsp;    LatLng getMarkerPosition();
-<i>27</i>&nbsp;
-<i>28</i>&nbsp;    @NonNull
-<i>29</i>&nbsp;    CivifyMarker&lt;E&gt; setMarkerPosition(@NonNull LatLng position);
+<i>26</i>&nbsp;    @NonNull
+<i>27</i>&nbsp;    CivifyMarker&lt;E&gt; setIcon(@DrawableRes int markerIcon);
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    LatLng getPosition();
 <i>30</i>&nbsp;
-<i>31</i>&nbsp;    float getRotation();
-<i>32</i>&nbsp;
-<i>33</i>&nbsp;    @NonNull
-<i>34</i>&nbsp;    CivifyMarker&lt;E&gt; setRotation(float rotation);
+<i>31</i>&nbsp;    @NonNull
+<i>32</i>&nbsp;    CivifyMarker&lt;E&gt; setPosition(@NonNull LatLng position);
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    float getRotation();
 <i>35</i>&nbsp;
-<i>36</i>&nbsp;    boolean isDraggable();
-<i>37</i>&nbsp;
-<i>38</i>&nbsp;    @NonNull
-<i>39</i>&nbsp;    CivifyMarker&lt;E&gt; setDraggable(boolean draggable);
+<i>36</i>&nbsp;    @NonNull
+<i>37</i>&nbsp;    CivifyMarker&lt;E&gt; setRotation(float rotation);
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    boolean isDraggable();
 <i>40</i>&nbsp;
-<i>41</i>&nbsp;    boolean isVisible();
-<i>42</i>&nbsp;
-<i>43</i>&nbsp;    @NonNull
-<i>44</i>&nbsp;    CivifyMarker&lt;E&gt; setVisible(boolean visible);
+<i>41</i>&nbsp;    @NonNull
+<i>42</i>&nbsp;    CivifyMarker&lt;E&gt; setDraggable(boolean draggable);
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    boolean isVisible();
 <i>45</i>&nbsp;
-<i>46</i>&nbsp;    void remove();
-<i>47</i>&nbsp;
-<i>48</i>&nbsp;    boolean isPresent();
-<i>49</i>&nbsp;}
+<i>46</i>&nbsp;    @NonNull
+<i>47</i>&nbsp;    CivifyMarker&lt;E&gt; setVisible(boolean visible);
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    void remove();
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    boolean isPresent();
+<i>52</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2017-04-27 06:07</div>
+    <div style="float:right;">generated on 2017-04-27 17:08</div>
 </div>
 </body>
 </html>
