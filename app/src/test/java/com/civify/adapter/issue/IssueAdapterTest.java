@@ -99,7 +99,7 @@ public class IssueAdapterTest {
         assertEquals("application/json; charset=UTF-8", request.getHeader("Content-Type"));
 
         // Test request body (issue)
-        assertEquals(mIssue.getTitle(), requestJson.get("mTextView").getAsString());
+        assertEquals(mIssue.getTitle(), requestJson.get("title").getAsString());
         assertEquals(mIssue.getDescription(), requestJson.get("description").getAsString());
         assertEquals(mIssue.getCategory().toString().toLowerCase(),
                 requestJson.get("category").getAsString());
@@ -279,7 +279,7 @@ public class IssueAdapterTest {
 
         Picture picture = new Picture("picture-file-name", "picture-content-type",
                 "picture-content");
-        mIssue = new Issue("issue-mTextView", "issue-description", Category.ROAD_SIGNS, true,
+        mIssue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true,
                 45.0f, 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token",
                 picture);
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");

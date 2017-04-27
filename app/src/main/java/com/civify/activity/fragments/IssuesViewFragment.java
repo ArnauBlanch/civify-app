@@ -22,8 +22,8 @@ import java.util.List;
 public class IssuesViewFragment extends Fragment {
 
     private List<Issue> mIssuesList;
-    private RecyclerView recyclerView;
-    private IssuesViewAdapter adapter;
+    private RecyclerView mRecyclerView;
+    private IssuesViewAdapter mIssuesViewAdapter;
 
     public IssuesViewFragment() {
         // Required empty public constructor
@@ -33,7 +33,7 @@ public class IssuesViewFragment extends Fragment {
     public void setIssuesList(List<Issue> issuesList) {
         mIssuesList.clear();
         mIssuesList.addAll(issuesList);
-        adapter.notifyDataSetChanged();
+        mIssuesViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -46,23 +46,23 @@ public class IssuesViewFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_issues_view, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        adapter = new IssuesViewAdapter(getContext(), mIssuesList);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mIssuesViewAdapter = new IssuesViewAdapter(getContext(), mIssuesList);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(2), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(2), true));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mIssuesViewAdapter);
 
         return view;
     }
 
-    //@Override
-    //public void onViewCreated(View view, Bundle savedInstanceState) {
-    //    //WallFragment wallFragment = (WallFragment) getParentFragment();
-    //    //wallFragment.onChildFragmentReady();
-    //}
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(
+                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -79,39 +79,32 @@ public class IssuesViewFragment extends Fragment {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                 RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % mSpanCount; // item column
+            int position = parent.getChildAdapterPosition(view);
+            int column = position % mSpanCount;
 
             if (mIncludeEdge) {
                 outRect.left = mSpacing
                         - column * mSpacing
-                        / mSpanCount; // mSpacing - column * ((1f / mSpanCount) * mSpacing)
+                        / mSpanCount;
                 outRect.right = (column + 1) * mSpacing
-                        / mSpanCount; // (column + 1) * ((1f / mSpanCount) * mSpacing)
+                        / mSpanCount;
 
-                if (position < mSpanCount) { // top edge
+                if (position < mSpanCount) {
                     outRect.top = mSpacing;
                 }
-                outRect.bottom = mSpacing; // item bottom
+                outRect.bottom = mSpacing;
             } else {
                 outRect.left =
-                        column * mSpacing / mSpanCount; // column * ((1f / mSpanCount) * mSpacing)
+                        column * mSpacing / mSpanCount;
                 outRect.right = mSpacing
                         - (column + 1) * mSpacing
-                        / mSpanCount; // mSpacing - (column + 1) * ((1f /    mSpanCount) * mSpacing)
+                        / mSpanCount;
                 if (position >= mSpanCount) {
-                    outRect.top = mSpacing; // item top
+                    outRect.top = mSpacing;
                 }
             }
         }
     }
 
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
+
 }
