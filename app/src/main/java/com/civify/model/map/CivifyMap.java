@@ -1,11 +1,11 @@
 package com.civify.model.map;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.civify.activity.DrawerActivity;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
 import com.civify.adapter.issue.IssueAdapter;
@@ -30,6 +30,8 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     private static final int DEFAULT_ZOOM = 18;
 
+    private static CivifyMap sInstance;
+
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
     private CivifyMarkers mMarkers;
@@ -37,17 +39,26 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private final LocationAdapter mLocationAdapter;
     private final IssueAdapter mIssueAdapter;
 
-    public CivifyMap(@NonNull Activity context) {
+    private CivifyMap(@NonNull DrawerActivity context) {
         this(new LocationAdapter(context), AdapterFactory.getInstance().getIssueAdapter(context));
     }
 
-    // Dependency injection
+    // Dependency injection for tests
     CivifyMap(@NonNull LocationAdapter locationAdapter, @NonNull IssueAdapter issueAdapter) {
         mLocationAdapter = locationAdapter;
         mIssueAdapter = issueAdapter;
         setRefreshMillis(LocationAdapter.Priority.HIGH_ACCURACY,
                 LocationAdapter.Priority.HIGH_ACCURACY.getPeriodMillis(), 0L);
         setRefreshLocations(true);
+    }
+
+    public static void setContext(@NonNull DrawerActivity context) {
+        if (sInstance == null || sInstance.getContext() != context) {
+            if (sInstance != null) {
+                sInstance.disable();
+            }
+            sInstance = new CivifyMap(context);
+        }
     }
 
     @NonNull
@@ -150,8 +161,8 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mGoogleMap;
     }
 
-    public Activity getContext() {
-        return mLocationAdapter.getContext();
+    public DrawerActivity getContext() {
+        return (DrawerActivity) mLocationAdapter.getContext();
     }
 
     public void enableGoogleMyLocation() {
@@ -225,5 +236,10 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     public void onMapSettingsResults(int requestCode, int resultCode) {
         mLocationAdapter.onMapSettingsResults(requestCode, resultCode);
+    }
+
+    public static CivifyMap getInstance() {
+        if (sInstance == null) throw new RuntimeException("setContext(Activity) was not called!");
+        return sInstance;
     }
 }

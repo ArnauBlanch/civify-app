@@ -18,11 +18,11 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-import android.app.Activity;
 import android.location.Location;
 import android.support.annotation.Nullable;
 
 import com.civify.RobolectricTest;
+import com.civify.activity.DrawerActivity;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Issue;
@@ -54,7 +54,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 public class CivifyMapTest extends RobolectricTest {
 
     private static final String ISSUE_MOCK_ID = "abc123";
-    private Activity mContext;
+    private DrawerActivity mContext;
     private IssueAdapter mIssueAdapter;
     private Location mFakeLocation;
     private LocationAdapter mLocationAdapter;
@@ -63,7 +63,7 @@ public class CivifyMapTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        mContext = mock(Activity.class);
+        mContext = mock(DrawerActivity.class);
         mIssueAdapter = mock(IssueAdapter.class);
         initFakeLocation();
         initLocationAdapterMock();
