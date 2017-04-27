@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -20,5 +21,10 @@ public interface IssueService {
 
     @GET("/issues/{issue_auth_token}")
     Call<Issue> getIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")
+            String issueAuthToken);
+
+    @PATCH("/issues/{issue_auth_token}")
+    Call<Issue> editIssue(@Header("Authorization") String authToken, @Body Issue issue, @Path
+            ("issue_auth_token")
             String issueAuthToken);
 }
