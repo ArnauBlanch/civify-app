@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.Marker;
 
@@ -18,13 +19,13 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
     private HashMap<String, CivifyMarker<?>> mMarkers = new HashMap<>();
 
     CivifyMarkers(@NonNull CivifyMap map) {
-        setMap(map);
+        attachToMap(map.getGoogleMap());
     }
 
-    public final void setMap(@NonNull CivifyMap map) {
-        map.getGoogleMap().setOnMarkerClickListener(this);
+    public final void attachToMap(@NonNull GoogleMap map) {
+        map.setOnMarkerClickListener(this);
         if (!mMarkers.isEmpty()) {
-            for (CivifyMarker<?> marker : mMarkers.values()) marker.setMap(map);
+            for (CivifyMarker<?> marker : this) marker.attachToMap(map);
         }
     }
 
@@ -53,12 +54,15 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
 
     public void remove(@NonNull String tag) {
         CivifyMarker<?> civifyMarker = mMarkers.remove(idify(tag));
-        if (civifyMarker != null) civifyMarker.remove();
-        else Log.v(TAG, tag + " not found.");
+        if (civifyMarker != null && civifyMarker.isPresent()) civifyMarker.remove();
     }
 
     public void clear() {
-        mMarkers.clear();
+        Iterator<CivifyMarker<?>> it = iterator();
+        while (it.hasNext()) {
+            it.next();
+            it.remove();
+        }
     }
 
     public boolean isEmpty() {
@@ -92,6 +96,13 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
     @Override
     public Iterator<CivifyMarker<?>> iterator() {
         return new CivifyIssueMarkerIterator(mMarkers.values());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("{\n");
+        for (CivifyMarker<?> marker : this) builder.append(marker).append('\n');
+        return builder.append('}').toString();
     }
 
     private static final class CivifyIssueMarkerIterator implements Iterator<CivifyMarker<?>> {

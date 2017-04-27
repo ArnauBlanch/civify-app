@@ -132,7 +132,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     private void setMarkers() {
-        if (isMapLoaded()) mMarkers.setMap(this);
+        if (isMapLoaded()) mMarkers.attachToMap(mGoogleMap);
         else {
             mMarkers = new CivifyMarkers(this);
             try {
@@ -144,17 +144,27 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void refreshIssues() throws MapNotLoadedException {
+        refreshIssues(null);
+    }
+
+    public void refreshIssues(@Nullable final ListIssuesSimpleCallback callback)
+            throws MapNotLoadedException {
         if (!isMapLoaded()) throw new MapNotLoadedException();
         mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
                     @Override
                     public void onSuccess(List<Issue> issues) {
+                        mMarkers.clear();
                         mMarkers.addAll(IssueMarker.getMarkers(issues, CivifyMap.this));
+                        if (callback != null) callback.onSuccess(issues);
                     }
 
                     @Override
                     public void onFailure() {
-                        ConfirmDialog.show(getContext(), "Error",
-                                "Issues cannot be retrieved, please try again later.");
+                        if (callback != null) callback.onFailure();
+                        else {
+                            ConfirmDialog.show(getContext(), "Error",
+                                    "Issues cannot be retrieved, please try again later.");
+                        }
                     }
                 });
     }

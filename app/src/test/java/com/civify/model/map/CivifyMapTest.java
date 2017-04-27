@@ -1,6 +1,5 @@
 package com.civify.model.map;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -8,6 +7,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.never;
@@ -69,13 +69,13 @@ public class CivifyMapTest extends RobolectricTest {
         initLocationAdapterMock();
         initCivifyMapSpy();
         initIssueAdapterMock(null);
-        setGoogleMap();
+        setGoogleMapMock();
         mockStatics();
     }
 
     @Test
     public void testContext() {
-        assertThat(mMap.getContext(), is(equalTo(mContext)));
+        assertThat(mMap.getContext(), is(sameInstance(mContext)));
     }
 
     @Test
@@ -110,19 +110,14 @@ public class CivifyMapTest extends RobolectricTest {
 
     @Test
     public void testOnMapReadySettings() throws SecurityException, MapNotLoadedException {
-        final Issue mockIssue = getIssueMock();
-        initIssueAdapterMock(new ArrayList<Issue>() {{ add(mockIssue); }});
-        setMarkerMock();
         mMap.onMapReady(mGoogleMap);
-        assertThat(mMap.getGoogleMap(), is(sameInstance(mGoogleMap)));
         verify(mGoogleMap, atLeastOnce()).getUiSettings();
         verify(mLocationAdapter).setOnUpdateLocationListener(mMap);
-        assertThat(mMap.getMarkers(), is(not(nullValue())));
-        verify(mMap, atLeastOnce()).refreshIssues();
-        assertThat(mMap.getMarkers().get(ISSUE_MOCK_ID).getIssue(), is(mockIssue));
-        verify(mMap, atLeastOnce()).enableGoogleMyLocation();
         verify(mGoogleMap).setMyLocationEnabled(true);
         verify(mGoogleMap).setOnMarkerClickListener(mMap.getMarkers());
+        verify(mMap, atLeastOnce()).enableGoogleMyLocation();
+        assertThat(mMap.getGoogleMap(), is(sameInstance(mGoogleMap)));
+        assertThat(mMap.isMapLoaded(), is(true));
     }
 
     @Test
@@ -162,16 +157,64 @@ public class CivifyMapTest extends RobolectricTest {
     }
 
     @Test
+    public void testMapRefresh() throws MapNotLoadedException {
+        final Issue issueMock = getIssueMock();
+        initIssueAdapterMock(new ArrayList<Issue>() {{ add(issueMock); }});
+        Marker markerMock = getMarkerMock();
+        mMap.onMapReady(mGoogleMap);
+        verify(mMap, atLeastOnce()).refreshIssues();
+        CivifyMarker<?> civifyMarker = mMap.getMarkers().get(ISSUE_MOCK_ID);
+        assertThat(civifyMarker.getAttachedMap(), is(sameInstance(mGoogleMap)));
+        assertThat(civifyMarker, is(not(nullValue())));
+        assertThat(mMap.getMarkers().isEmpty(), is(false));
+        assertThat(mMap.getMarkers().size(), is(1));
+        assertThat(civifyMarker.getIssue(), is(sameInstance(issueMock)));
+        assertThat(civifyMarker.getPosition(), is(markerMock.getPosition()));
+        assertThat(civifyMarker.isPresent(), is(true));
+        assertThat(markerMock.isVisible(), is(true));
+
+        GoogleMap oldMap = mGoogleMap;
+        setGoogleMapMock();
+        Marker newMarkerMock = getMarkerMock();
+        assertThat(mGoogleMap, is(not(sameInstance(oldMap))));
+        mMap.onMapReady(mGoogleMap);
+        assertThat(civifyMarker.getAttachedMap(), is(sameInstance(mGoogleMap)));
+        assertThat(civifyMarker.getPosition(), is(newMarkerMock.getPosition()));
+        assertThat(civifyMarker.isPresent(), is(true));
+        assertThat(newMarkerMock.isVisible(), is(true));
+        assertThat(markerMock.isVisible(), is(false));
+
+        initIssueAdapterMock(null); // simulates issue deletion
+        mMap.refreshIssues();
+        assertThat(mMap.getMarkers().isEmpty(), is(true));
+        assertThat(mMap.getMarkers().size(), is(0));
+        assertThat(mMap.getMarkers().get(ISSUE_MOCK_ID), is(nullValue()));
+        assertThat(civifyMarker.getAttachedMap(), is(nullValue()));
+        assertThat(civifyMarker.isPresent(), is(false));
+    }
+
+    @Test
     public void testIssueMarkerAdded() throws MapNotLoadedException {
+        Issue issueMock = getIssueMock();
+        Marker markerMock = getMarkerMock();
+        assertThat(mMap.isMapLoaded(), is(false));
+        assertThat(mMap.getMarkers(), is(nullValue()));
+        try {
+            mMap.addIssueMarker(issueMock);
+            fail("Trying to add issue when map is not present!");
+        } catch (MapNotLoadedException ignore) {}
         mMap.onMapReady(mGoogleMap);
         when(mMap.isMapReady()).thenReturn(true);
-        Issue issueMock = getIssueMock();
-        Marker markerMock = setMarkerMock();
         mMap.addIssueMarker(issueMock);
+        assertThat(mMap.isMapLoaded(), is(true));
+        assertThat(mMap.getMarkers(), is(not(nullValue())));
+        assertThat(mMap.getMarkers().onMarkerClick(markerMock), is(true));
         CivifyMarker<?> marker = mMap.getMarkers().get(ISSUE_MOCK_ID.toUpperCase());
         assertThat(marker, is(instanceOf(IssueMarker.class)));
         assertThat(marker.getIssue(), is(sameInstance(issueMock)));
-        assertThat(mMap.getMarkers().onMarkerClick(markerMock), is(true));
+        assertThat(marker.getPosition(), is(markerMock.getPosition()));
+        assertThat(marker.isPresent(), is(true));
+        assertThat(markerMock.isVisible(), is(true));
     }
 
     @Test(expected = MapNotReadyException.class)
@@ -196,12 +239,12 @@ public class CivifyMapTest extends RobolectricTest {
         mMap = spy(new CivifyMap(mLocationAdapter, mIssueAdapter));
     }
 
-    private void setGoogleMap() {
+    private void setGoogleMapMock() {
         mGoogleMap = mock(GoogleMap.class);
         when(mGoogleMap.getUiSettings()).thenReturn(mock(UiSettings.class));
         doAnswer(new Answer<Void>() {
             @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(InvocationOnMock invocation) {
                 setCameraPosition(LocationAdapter.getLatLng(mFakeLocation));
                 return null;
             }
@@ -211,7 +254,7 @@ public class CivifyMapTest extends RobolectricTest {
     private void initIssueAdapterMock(@Nullable final Collection<Issue> extraIssues) {
         doAnswer(new Answer<Void>() {
             @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(InvocationOnMock invocation) {
                 ArrayList<Issue> issues = new ArrayList<>();
                 if (extraIssues != null) issues.addAll(extraIssues);
                 invocation.getArgumentAt(0, ListIssuesSimpleCallback.class).onSuccess(issues);
@@ -220,19 +263,42 @@ public class CivifyMapTest extends RobolectricTest {
         }).when(mIssueAdapter).getIssues(any(ListIssuesSimpleCallback.class));
         doAnswer(new Answer<Void>() {
             @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(InvocationOnMock invocation) {
                 ((Runnable)invocation.getArguments()[0]).run();
                 return null;
             }
         }).when(mLocationAdapter).setOnPermissionsRequestedListener(any(Runnable.class));
     }
 
-    private Marker setMarkerMock() {
+    private Marker getMarkerMock() {
         final Marker markerMock = mock(Marker.class);
-        when(mGoogleMap.addMarker(any(MarkerOptions.class))).thenReturn(markerMock);
+        final Answer<Void> onMarkerRemove = new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) {
+                when(markerMock.isVisible()).thenReturn(false);
+                return null;
+            }
+        };
+        final Answer<Void> onMarkerSetPosition = new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) {
+                when(markerMock.getPosition()).thenReturn(LocationAdapter.getLatLng(mFakeLocation));
+                return null;
+            }
+        };
+        when(mGoogleMap.addMarker(any(MarkerOptions.class))).then(new Answer<Marker>() {
+            @Override
+            public Marker answer(InvocationOnMock invocation) {
+                when(markerMock.isVisible()).thenReturn(true);
+                doAnswer(onMarkerRemove).when(markerMock).remove();
+                doAnswer(onMarkerSetPosition)
+                        .when(markerMock).setPosition(eq(LocationAdapter.getLatLng(mFakeLocation)));
+                return markerMock;
+            }
+        });
         doAnswer(new Answer<Void>() {
             @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(InvocationOnMock invocation) {
                 when(markerMock.getTag()).thenReturn(ISSUE_MOCK_ID);
                 return null;
             }
@@ -243,6 +309,8 @@ public class CivifyMapTest extends RobolectricTest {
     private Issue getIssueMock() {
         Issue mock = mock(Issue.class);
         when(mock.getIssueAuthToken()).thenReturn(ISSUE_MOCK_ID);
+        when(mock.getLatitude()).thenReturn(mFakeLocation.getLatitude());
+        when(mock.getLongitude()).thenReturn(mFakeLocation.getLongitude());
         return mock;
     }
 

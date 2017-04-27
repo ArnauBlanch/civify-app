@@ -5,10 +5,13 @@ import android.support.annotation.NonNull;
 
 import com.civify.adapter.LocalityCallback;
 import com.civify.model.issue.Issue;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 public interface CivifyMarker<E extends Issue> {
-    void setMap(@NonNull CivifyMap map);
+    void attachToMap(@NonNull GoogleMap map);
+
+    GoogleMap getAttachedMap();
 
     @NonNull
     String getTag();
@@ -21,12 +24,12 @@ public interface CivifyMarker<E extends Issue> {
     float getDistanceFromCurrentLocation();
 
     @NonNull
-    CivifyMarker<E> setMarkerIcon(@DrawableRes int markerIcon);
+    CivifyMarker<E> setIcon(@DrawableRes int markerIcon);
 
-    LatLng getMarkerPosition();
+    LatLng getPosition();
 
     @NonNull
-    CivifyMarker<E> setMarkerPosition(@NonNull LatLng position);
+    CivifyMarker<E> setPosition(@NonNull LatLng position);
 
     float getRotation();
 

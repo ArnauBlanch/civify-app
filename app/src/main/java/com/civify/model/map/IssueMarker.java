@@ -10,6 +10,7 @@ import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.issue.Issue;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -23,33 +24,40 @@ public class IssueMarker implements CivifyMarker<Issue> {
     private static final String TAG = IssueMarker.class.getSimpleName();
 
     private CivifyMap mMap;
+    private GoogleMap mAttached;
     private Issue mIssue;
     private Marker mMarker;
     private boolean mPresent;
 
     IssueMarker(@NonNull Issue issue, @NonNull CivifyMap map) {
         mIssue = issue;
-        setMap(map);
+        mMap = map;
+        attachToMap(map.getGoogleMap());
     }
 
     @Override
-    public void setMap(@NonNull CivifyMap map) {
-        remove();
-        mMap = map;
+    public void attachToMap(@NonNull GoogleMap googleMap) {
+        if (isPresent()) mMarker.remove();
+        mAttached = googleMap;
         addToMap();
     }
 
     private void addToMap() {
-        mMarker = mMap.getGoogleMap().addMarker(new MarkerOptions()
-                .position(LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()))
+        mMarker = mAttached.addMarker(new MarkerOptions()
                 .title(mIssue.getTitle())
                 .draggable(false)
                 .flat(false)
         );
         mMarker.setTag(mIssue.getIssueAuthToken());
+        setPosition(LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()));
         // FIXME: Resize icons
-        // setMarkerIcon(mIssue.getCategory().getMarker());
+        // setIcon(mIssue.getCategory().getMarker());
         mPresent = true;
+    }
+
+    @Override
+    public GoogleMap getAttachedMap() {
+        return mAttached;
     }
 
     @NonNull
@@ -70,7 +78,7 @@ public class IssueMarker implements CivifyMarker<Issue> {
     @Override
     public void getAddress(@NonNull LocalityCallback callback) {
         GeocoderAdapter.getLocality(mMap.getContext(),
-                LocationAdapter.getLocation(getMarkerPosition()),
+                LocationAdapter.getLocation(getPosition()),
                 callback);
     }
 
@@ -78,12 +86,12 @@ public class IssueMarker implements CivifyMarker<Issue> {
     @Override
     public float getDistanceFromCurrentLocation() {
         return mMap.getCurrentLocation().distanceTo(
-                LocationAdapter.getLocation(getMarkerPosition()));
+                LocationAdapter.getLocation(getPosition()));
     }
 
     @NonNull
     @Override
-    public final IssueMarker setMarkerIcon(@DrawableRes int markerIcon) {
+    public final IssueMarker setIcon(@DrawableRes int markerIcon) {
         Bitmap icon = BitmapFactory.decodeResource(mMap.getContext().getResources(), markerIcon);
         if (icon != null) {
             mMarker.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
@@ -92,13 +100,13 @@ public class IssueMarker implements CivifyMarker<Issue> {
     }
 
     @Override
-    public LatLng getMarkerPosition() {
+    public LatLng getPosition() {
         return mMarker.getPosition();
     }
 
     @NonNull
     @Override
-    public IssueMarker setMarkerPosition(@NonNull LatLng position) {
+    public IssueMarker setPosition(@NonNull LatLng position) {
         mMarker.setPosition(position);
         mIssue.setLatitude((float) position.latitude);
         mIssue.setLongitude((float) position.longitude);
@@ -146,6 +154,10 @@ public class IssueMarker implements CivifyMarker<Issue> {
         if (isPresent()) {
             mMarker.remove();
             mPresent = false;
+            mAttached = null;
+            String thisMarker = getTag();
+            CivifyMarkers markers = mMap.getMarkers();
+            if (markers != null && markers.get(thisMarker) != null) markers.remove(thisMarker);
             Log.v(TAG, "Removed marker " + getTag());
         }
     }
@@ -153,6 +165,11 @@ public class IssueMarker implements CivifyMarker<Issue> {
     @Override
     public boolean isPresent() {
         return mPresent;
+    }
+
+    @Override
+    public String toString() {
+        return getTag();
     }
 
     public static Collection<IssueMarker> getMarkers(Collection<Issue> issues, CivifyMap map) {
