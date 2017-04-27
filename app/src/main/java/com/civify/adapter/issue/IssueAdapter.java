@@ -107,7 +107,7 @@ public class IssueAdapter {
         JsonObject userToken = new JsonObject();
         userToken.addProperty("user", UserAdapter.getCurrentUser().getUserAuthToken());
 
-        Call<MessageResponse> call = mIssueService.confirmIssue(mAuthToken,
+        Call<MessageResponse> call = mIssueService.issueConfirmation(mAuthToken,
                 userToken, issueAuthToken);
         call.enqueue(new ExpectedResponseCallback(expectedResponse, callback));
     }
