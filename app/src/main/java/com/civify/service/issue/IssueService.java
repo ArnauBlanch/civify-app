@@ -5,6 +5,7 @@ import com.civify.model.issue.Issue;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
@@ -26,5 +27,9 @@ public interface IssueService {
     @PATCH("/issues/{issue_auth_token}")
     Call<Issue> editIssue(@Header("Authorization") String authToken, @Body Issue issue, @Path
             ("issue_auth_token")
+            String issueAuthToken);
+
+    @DELETE("/issues/íssue_auth_token}")
+    Call<Issue> deleteIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")
             String issueAuthToken);
 }
