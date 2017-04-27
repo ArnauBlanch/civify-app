@@ -1,7 +1,6 @@
 package com.civify.activity;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -96,9 +95,11 @@ public class DrawerActivity extends BaseActivity
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            if(getFragmentManager().getBackStackEntryCount()>0){
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
                 getFragmentManager().popBackStack();
-            } else super.onBackPressed();
+            } else {
+                super.onBackPressed();
+            }
         }
         //        else finish();
     }
@@ -153,12 +154,10 @@ public class DrawerActivity extends BaseActivity
 
     public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).addToBackStack
-                ("tag").commit();
+        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment)
+                .addToBackStack("tag").commit();
         mCurrentFragment = fragmentId;
     }
-
-
 
     private void setUserHeader(User user) {
         View headerView = mNavigationView.getHeaderView(0);

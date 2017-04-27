@@ -11,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,7 +31,15 @@ import java.util.StringTokenizer;
 public class IssueDetailsFragment extends Fragment {
 
     private static final String DEBUG = "debug-IssueDetails";
+    private static final String WHITE_SPACE = " ";
+    private static final String TAG_MARKER = "marker";
+
     private static final int MILLISECONDS_TO_DAYS = 86400000;
+    private static final int DISTANCE_TO_KILOMETERS = 1000;
+    private static final int DISTANCE_TO_METERS = 1000000;
+    private static final int LEVEL_FAKE_USER = 3;
+
+    private CivifyMarker<?> mMarker;
 
     private View mViewDetails;
 
@@ -44,7 +50,7 @@ public class IssueDetailsFragment extends Fragment {
     public static IssueDetailsFragment newInstance(CivifyMarker<?> marker) {
         IssueDetailsFragment fragment = new IssueDetailsFragment();
         Bundle data = new Bundle();
-        data.putSerializable("marker", marker);
+        data.putSerializable(TAG_MARKER, marker);
         fragment.setArguments(data);
         return fragment;
     }
@@ -55,7 +61,8 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
         try {
             init();
@@ -65,90 +72,32 @@ public class IssueDetailsFragment extends Fragment {
         return mViewDetails;
     }
 
-
-
     private void init() throws IOException {
         Log.v(DEBUG, "init");
+
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
-        CivifyMarker<?> marker = (CivifyMarker<?>) bundle.getSerializable("marker");
+        mMarker = (CivifyMarker<?>) bundle.getSerializable(TAG_MARKER);
 
-        Log.v(DEBUG, "Adding image issue in layout");
-        ImageView imageIssue = (ImageView)mViewDetails.findViewById(R.id.eventView);
-        String url = ServiceGenerator.BASE_URL + marker.getIssue().getPicture().getLargeUrl();
-        Glide.with(this).load(url).into(imageIssue);
+        addImageIssue();
+        addIssueTitle();
+        addConfirmValue();
+        addCategoryValue();
+        addRisk();
+        addDescription();
+        addStreet();
+        addDistance();
+        addTime();
+        addUser();
 
-        Log.v(DEBUG, "Adding issue title in layout");
-        TextView nameIssue = (TextView) mViewDetails.findViewById(R.id.nameText);
-        nameIssue.setText(marker.getIssue().getTitle());
-        nameIssue.setMovementMethod(new ScrollingMovementMethod());
+        Log.v(DEBUG, "init finished");
+    }
 
-        Log.v(DEBUG, "Adding confirm value in layout");
-        TextView likesIssue = (TextView)mViewDetails.findViewById(R.id.likesText);
-        likesIssue.setText("+" + String.valueOf(marker.getIssue().getConfirmVotes()));
-
-        Log.v(DEBUG, "Adding icon and name category in layout");
-        ImageView categoryIcon = (ImageView)mViewDetails.findViewById(R.id.categoryView);
-        categoryIcon.setImageResource(marker.getIssue().getCategory().getIcon());
-        TextView categoryIssue = (TextView)mViewDetails.findViewById(R.id.nameCategoryText);
-        int idCategory = marker.getIssue().getCategory().getName();
-        categoryIssue.setText(getString(idCategory));
-
-        Log.v(DEBUG, "Adding risk in layout");
-        TextView riskIssue = (TextView)mViewDetails.findViewById(R.id.riskAnswer);
-        riskIssue.setText(getText(R.string.no));
-        if(marker.getIssue().isRisk()) riskIssue.setText(getText(R.string.yes));
-
-        Log.v(DEBUG, "Adding description in layout");
-        TextView descriptionIssue = (TextView)mViewDetails.findViewById(R.id.descriptionText);
-        descriptionIssue.setText(marker.getIssue().getDescription());
-        descriptionIssue.setMovementMethod(new ScrollingMovementMethod());
-
-        Log.v(DEBUG, "Adding street in layout");
-        final TextView streetIssue = (TextView)mViewDetails.findViewById(R.id.streetText);
-        marker.getAddress(new LocalityCallback() {
-            @Override
-            public void onLocalityResponse(@NonNull String address) {
-                streetIssue.setText(address);
-            }
-
-            @Override
-            public void onLocalityError() {}
-        });
-
-        Log.v(DEBUG, "Adding distance in layout");
-        TextView distanceIssue = (TextView)mViewDetails.findViewById(R.id.distanceText);
-        float distance = marker.getDistanceFromCurrentLocation()/1000;
-        String stringDistance = String.valueOf(distance);
-        StringTokenizer token = new StringTokenizer(stringDistance, ".");
-        String distanceToken = token.nextToken();
-        if(distanceToken != "0") {
-            distanceIssue.setText(distanceToken + " " + getText(R.string.km));
-        }
-        else {
-            distance = marker.getDistanceFromCurrentLocation()/1000000;
-            stringDistance = String.valueOf(distance);
-            token = new StringTokenizer(stringDistance, ".");
-            distanceToken = token.nextToken();
-            distanceIssue.setText(distanceToken + " " + getText(R.string.m));
-        }
-
-        Log.v(DEBUG, "Adding time in layout");
-        TextView timeIssue = (TextView)mViewDetails.findViewById(R.id.sinceText);
-        Date date = new Date();
-        Date dateIssue = marker.getIssue().getCreatedAt();
-        if(marker.getIssue().getUpdatedAt() != null){
-            dateIssue = marker.getIssue().getUpdatedAt();
-        }
-        long difference = date.getTime() - dateIssue.getTime();
-        difference /= MILLISECONDS_TO_DAYS;
-        timeIssue.setText(difference + " " + getText(R.string.days));
-
+    private void addUser() {
         Log.v(DEBUG, "Adding user in layout");
-        String authToken = marker.getIssue().getIssueAuthToken();
-        SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("USERPREFS",
-                Context
-                .MODE_PRIVATE);
+        String authToken = mMarker.getIssue().getIssueAuthToken();
+        SharedPreferences sharedPreferences = getActivity().getApplicationContext()
+                .getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         new UserAdapter(sharedPreferences).getUser(authToken, new UserSimpleCallback() {
             @Override
             public void onSuccess(User user) {
@@ -160,13 +109,104 @@ public class IssueDetailsFragment extends Fragment {
                 setUser(buildFakeUser());
             }
         });
-        Log.v(DEBUG, "init finished");
+    }
+
+    private void addTime() {
+        Log.v(DEBUG, "Adding time in layout");
+        TextView timeIssue = (TextView) mViewDetails.findViewById(R.id.sinceText);
+        Date date = new Date();
+        Date dateIssue = mMarker.getIssue().getCreatedAt();
+        if (mMarker.getIssue().getUpdatedAt() != null) {
+            dateIssue = mMarker.getIssue().getUpdatedAt();
+        }
+        long difference = date.getTime() - dateIssue.getTime();
+        difference /= MILLISECONDS_TO_DAYS;
+        timeIssue.setText(difference + WHITE_SPACE + getText(R.string.days));
+    }
+
+    private void addDistance() {
+        Log.v(DEBUG, "Adding distance in layout");
+        TextView distanceIssue = (TextView) mViewDetails.findViewById(R.id.distanceText);
+        String point = ".";
+        float distance = mMarker.getDistanceFromCurrentLocation() / DISTANCE_TO_KILOMETERS;
+        String stringDistance = String.valueOf(distance);
+        StringTokenizer token = new StringTokenizer(stringDistance, point);
+        String distanceToken = token.nextToken();
+        if ("0".equals(distanceToken)) {
+            distance = mMarker.getDistanceFromCurrentLocation() / DISTANCE_TO_METERS;
+            stringDistance = String.valueOf(distance);
+            token = new StringTokenizer(stringDistance, point);
+            distanceToken = token.nextToken();
+            distanceIssue.setText(distanceToken + WHITE_SPACE + getText(R.string.m));
+        } else {
+            distanceIssue.setText(distanceToken + WHITE_SPACE + getText(R.string.km));
+        }
+    }
+
+    private void addStreet() {
+        Log.v(DEBUG, "Adding street in layout");
+        final TextView streetIssue = (TextView) mViewDetails.findViewById(R.id.streetText);
+        mMarker.getAddress(new LocalityCallback() {
+            @Override
+            public void onLocalityResponse(@NonNull String address) {
+                streetIssue.setText(address);
+            }
+
+            @Override
+            public void onLocalityError() {
+
+            }
+        });
+    }
+
+    private void addDescription() {
+        Log.v(DEBUG, "Adding description in layout");
+        TextView descriptionIssue = (TextView) mViewDetails.findViewById(R.id.descriptionText);
+        descriptionIssue.setText(mMarker.getIssue().getDescription());
+        descriptionIssue.setMovementMethod(new ScrollingMovementMethod());
+    }
+
+    private void addRisk() {
+        Log.v(DEBUG, "Adding risk in layout");
+        TextView riskIssue = (TextView) mViewDetails.findViewById(R.id.riskAnswer);
+        riskIssue.setText(getText(R.string.no));
+        if (mMarker.getIssue().isRisk()) riskIssue.setText(getText(R.string.yes));
+    }
+
+    private void addCategoryValue() {
+        Log.v(DEBUG, "Adding icon and name category in layout");
+        ImageView categoryIcon = (ImageView) mViewDetails.findViewById(R.id.categoryView);
+        categoryIcon.setImageResource(mMarker.getIssue().getCategory().getIcon());
+        TextView categoryIssue = (TextView) mViewDetails.findViewById(R.id.nameCategoryText);
+        int idCategory = mMarker.getIssue().getCategory().getName();
+        categoryIssue.setText(getString(idCategory));
+    }
+
+    private void addConfirmValue() {
+        Log.v(DEBUG, "Adding confirm value in layout");
+        TextView likesIssue = (TextView) mViewDetails.findViewById(R.id.likesText);
+        likesIssue.setText("+" + String.valueOf(mMarker.getIssue().getConfirmVotes()));
+    }
+
+    private void addIssueTitle() {
+        Log.v(DEBUG, "Adding issue title in layout");
+        TextView nameIssue = (TextView) mViewDetails.findViewById(R.id.nameText);
+        nameIssue.setText(mMarker.getIssue().getTitle());
+        nameIssue.setMovementMethod(new ScrollingMovementMethod());
+    }
+
+    private void addImageIssue() {
+        Log.v(DEBUG, "Adding image issue in layout");
+        ImageView imageIssue = (ImageView) mViewDetails.findViewById(R.id.eventView);
+        String url = ServiceGenerator.BASE_URL + mMarker.getIssue().getPicture().getLargeUrl();
+        Glide.with(this).load(url).into(imageIssue);
     }
 
     private User buildFakeUser() {
+        String password = "ivan1234";
         User fakeUser = new User("demingo7", "Iván", "de Mingo", "ivanDeMingo@hotmail.com",
-                "ivan1234", "ivan1234");
-        fakeUser.setLevel(3);
+                password, password);
+        fakeUser.setLevel(LEVEL_FAKE_USER);
 
         return fakeUser;
     }
@@ -178,7 +218,7 @@ public class IssueDetailsFragment extends Fragment {
         ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
 
         TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
-        name.setText(user.getName() + " " + user.getSurname());
+        name.setText(user.getName() + WHITE_SPACE + user.getSurname());
 
         TextView username = (TextView) mViewDetails.findViewById(R.id.userUsername);
         username.setText(user.getUsername());

@@ -31,7 +31,7 @@ public class NavigateFragment extends Fragment {
     }
 
     private void setMap() {
-        mCivifyMap = new CivifyMap((DrawerActivity)getActivity());
+        mCivifyMap = new CivifyMap((DrawerActivity) getActivity());
         Fragment mapFragment = mCivifyMap.getMapFragment();
         mCivifyMap.enable();
         getFragmentManager()

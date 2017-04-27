@@ -1,6 +1,5 @@
 package com.civify.model.map;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -141,7 +140,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mMarkers;
     }
 
-    public void showIssueDetails(CivifyMarker<?> issueMarker){
+    public void showIssueDetails(CivifyMarker<?> issueMarker) {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(issueMarker);
         getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
     }
