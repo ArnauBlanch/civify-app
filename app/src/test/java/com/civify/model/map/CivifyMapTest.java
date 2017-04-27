@@ -163,14 +163,15 @@ public class CivifyMapTest extends RobolectricTest {
         Marker markerMock = getMarkerMock();
         mMap.onMapReady(mGoogleMap);
         verify(mMap, atLeastOnce()).refreshIssues();
-        CivifyMarker<?> civifyMarker = mMap.getMarkers().get(ISSUE_MOCK_ID);
-        assertThat(civifyMarker.getAttachedMap(), is(sameInstance(mGoogleMap)));
-        assertThat(civifyMarker, is(not(nullValue())));
+        IssueMarker issueMarker = mMap.getMarkers().get(ISSUE_MOCK_ID);
+        assertThat(issueMarker.getAttachedMap(), is(sameInstance(mGoogleMap)));
+        assertThat(issueMarker, is(not(nullValue())));
         assertThat(mMap.getMarkers().isEmpty(), is(false));
         assertThat(mMap.getMarkers().size(), is(1));
-        assertThat(civifyMarker.getIssue(), is(sameInstance(issueMock)));
-        assertThat(civifyMarker.getPosition(), is(markerMock.getPosition()));
-        assertThat(civifyMarker.isPresent(), is(true));
+        assertThat(issueMarker.getIssue(), is(sameInstance(issueMock)));
+        assertThat(issueMarker.getPosition(), is(markerMock.getPosition()));
+        assertThat(issueMarker.isPresent(), is(true));
+        assertThat(issueMarker.isVisible(), is(true));
         assertThat(markerMock.isVisible(), is(true));
 
         GoogleMap oldMap = mGoogleMap;
@@ -178,10 +179,11 @@ public class CivifyMapTest extends RobolectricTest {
         Marker newMarkerMock = getMarkerMock();
         assertThat(mGoogleMap, is(not(sameInstance(oldMap))));
         mMap.onMapReady(mGoogleMap);
-        assertThat(civifyMarker.getAttachedMap(), is(sameInstance(mGoogleMap)));
-        assertThat(civifyMarker.getPosition(), is(newMarkerMock.getPosition()));
-        assertThat(civifyMarker.isPresent(), is(true));
+        assertThat(issueMarker.getAttachedMap(), is(sameInstance(mGoogleMap)));
+        assertThat(issueMarker.getPosition(), is(newMarkerMock.getPosition()));
+        assertThat(issueMarker.isPresent(), is(true));
         assertThat(newMarkerMock.isVisible(), is(true));
+        assertThat(issueMarker.isVisible(), is(true));
         assertThat(markerMock.isVisible(), is(false));
 
         initIssueAdapterMock(null); // simulates issue deletion
@@ -189,8 +191,9 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.getMarkers().isEmpty(), is(true));
         assertThat(mMap.getMarkers().size(), is(0));
         assertThat(mMap.getMarkers().get(ISSUE_MOCK_ID), is(nullValue()));
-        assertThat(civifyMarker.getAttachedMap(), is(nullValue()));
-        assertThat(civifyMarker.isPresent(), is(false));
+        assertThat(issueMarker.getAttachedMap(), is(nullValue()));
+        assertThat(issueMarker.isVisible(), is(false));
+        assertThat(issueMarker.isPresent(), is(false));
     }
 
     @Test
@@ -209,7 +212,7 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.isMapLoaded(), is(true));
         assertThat(mMap.getMarkers(), is(not(nullValue())));
         assertThat(mMap.getMarkers().onMarkerClick(markerMock), is(true));
-        CivifyMarker<?> marker = mMap.getMarkers().get(ISSUE_MOCK_ID.toUpperCase());
+        IssueMarker marker = mMap.getMarkers().get(ISSUE_MOCK_ID.toUpperCase());
         assertThat(marker, is(instanceOf(IssueMarker.class)));
         assertThat(marker.getIssue(), is(sameInstance(issueMock)));
         assertThat(marker.getPosition(), is(markerMock.getPosition()));

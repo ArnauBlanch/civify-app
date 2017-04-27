@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class IssueMarker implements CivifyMarker<Issue> {
+public class IssueMarker {
 
     private static final String TAG = IssueMarker.class.getSimpleName();
 
@@ -35,7 +35,6 @@ public class IssueMarker implements CivifyMarker<Issue> {
         attachToMap(map.getGoogleMap());
     }
 
-    @Override
     public void attachToMap(@NonNull GoogleMap googleMap) {
         if (isPresent()) mMarker.remove();
         mAttached = googleMap;
@@ -55,13 +54,11 @@ public class IssueMarker implements CivifyMarker<Issue> {
         mPresent = true;
     }
 
-    @Override
     public GoogleMap getAttachedMap() {
         return mAttached;
     }
 
     @NonNull
-    @Override
     public String getTag() {
         Object tag = mMarker.getTag();
         if (tag != null) return tag.toString();
@@ -70,12 +67,10 @@ public class IssueMarker implements CivifyMarker<Issue> {
     }
 
     @NonNull
-    @Override
     public Issue getIssue() {
         return mIssue;
     }
 
-    @Override
     public void getAddress(@NonNull LocalityCallback callback) {
         GeocoderAdapter.getLocality(mMap.getContext(),
                 LocationAdapter.getLocation(getPosition()),
@@ -83,14 +78,12 @@ public class IssueMarker implements CivifyMarker<Issue> {
     }
 
     /** @return distance in meters between the current geolocated position and this marker. */
-    @Override
     public float getDistanceFromCurrentLocation() {
         return mMap.getCurrentLocation().distanceTo(
                 LocationAdapter.getLocation(getPosition()));
     }
 
     @NonNull
-    @Override
     public final IssueMarker setIcon(@DrawableRes int markerIcon) {
         Bitmap icon = BitmapFactory.decodeResource(mMap.getContext().getResources(), markerIcon);
         if (icon != null) {
@@ -99,13 +92,11 @@ public class IssueMarker implements CivifyMarker<Issue> {
         return this;
     }
 
-    @Override
     public LatLng getPosition() {
         return mMarker.getPosition();
     }
 
     @NonNull
-    @Override
     public IssueMarker setPosition(@NonNull LatLng position) {
         mMarker.setPosition(position);
         mIssue.setLatitude((float) position.latitude);
@@ -113,43 +104,36 @@ public class IssueMarker implements CivifyMarker<Issue> {
         return this;
     }
 
-    @Override
     public float getRotation() {
         return mMarker.getRotation();
     }
 
     @NonNull
-    @Override
     public IssueMarker setRotation(float rotation) {
         mMarker.setRotation(rotation);
         return this;
     }
 
-    @Override
     public boolean isVisible() {
         return mMarker.isVisible();
     }
 
     @NonNull
-    @Override
     public IssueMarker setVisible(boolean visible) {
         mMarker.setVisible(visible);
         return this;
     }
 
-    @Override
     public boolean isDraggable() {
         return mMarker.isDraggable();
     }
 
     @NonNull
-    @Override
     public IssueMarker setDraggable(boolean draggable) {
         mMarker.setDraggable(draggable);
         return this;
     }
 
-    @Override
     public void remove() {
         if (isPresent()) {
             mMarker.remove();
@@ -162,7 +146,6 @@ public class IssueMarker implements CivifyMarker<Issue> {
         }
     }
 
-    @Override
     public boolean isPresent() {
         return mPresent;
     }
