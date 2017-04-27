@@ -1,0 +1,135 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ServiceGenerator</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.utils</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ServiceGenerator (com.civify.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServiceGenerator</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/ 21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.utils;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.google.gson.Gson;
+<i>4</i>&nbsp;import com.google.gson.GsonBuilder;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import okhttp3.OkHttpClient;
+<i>7</i>&nbsp;import okhttp3.logging.HttpLoggingInterceptor;
+<i>8</i>&nbsp;import retrofit2.Retrofit;
+<i>9</i>&nbsp;import retrofit2.converter.gson.GsonConverterFactory;
+<i>10</i>&nbsp;import retrofit2.converter.scalars.ScalarsConverterFactory;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;public final class ServiceGenerator {
+<i>13</i>&nbsp;    public static final String RAILS_DATE_FORMAT = &quot;yyyy-MM-dd&#39;T&#39;HH:mm:ss.000Z&quot;;
+<i>14</i>&nbsp;    private static final String BASE_URL = &quot;http://staging-api.civify.cf&quot;;
+<i>15</i>&nbsp;    private static ServiceGenerator sInstance;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    private final Retrofit.Builder mBuilder;
+<i>18</i>&nbsp;    private Retrofit mRetrofit;
+<i>19</i>&nbsp;    private final OkHttpClient.Builder mHttpClient;
+<i>20</i>&nbsp;    private final HttpLoggingInterceptor mLogging;
+<i>21</i>&nbsp;
+<b class="fc"><i>22</i>&nbsp;    private ServiceGenerator() {</b>
+<b class="fc"><i>23</i>&nbsp;        Gson gson = new GsonBuilder()</b>
+<b class="fc"><i>24</i>&nbsp;                .excludeFieldsWithoutExposeAnnotation()</b>
+<b class="fc"><i>25</i>&nbsp;                .setDateFormat(RAILS_DATE_FORMAT)</b>
+<b class="fc"><i>26</i>&nbsp;                .create();</b>
+<b class="fc"><i>27</i>&nbsp;        mBuilder = new Retrofit.Builder()</b>
+<b class="fc"><i>28</i>&nbsp;                .baseUrl(BASE_URL)</b>
+<b class="fc"><i>29</i>&nbsp;                .addConverterFactory(ScalarsConverterFactory.create())</b>
+<b class="fc"><i>30</i>&nbsp;                .addConverterFactory(GsonConverterFactory.create(gson));</b>
+<b class="fc"><i>31</i>&nbsp;        mRetrofit = mBuilder.build();</b>
+<b class="fc"><i>32</i>&nbsp;        mHttpClient = new OkHttpClient.Builder();</b>
+<b class="fc"><i>33</i>&nbsp;        mLogging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);</b>
+<i>34</i>&nbsp;
+<b class="fc"><i>35</i>&nbsp;    }</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public static ServiceGenerator getInstance() {
+<b class="fc"><i>38</i>&nbsp;        if (sInstance == null) {</b>
+<b class="fc"><i>39</i>&nbsp;            sInstance = new ServiceGenerator();</b>
+<i>40</i>&nbsp;        }
+<b class="fc"><i>41</i>&nbsp;        return sInstance;</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    public &lt;S&gt; S createService(Class&lt;S&gt; serviceClass) {
+<b class="fc"><i>45</i>&nbsp;        if (!mHttpClient.interceptors().contains(mLogging)) {</b>
+<b class="fc"><i>46</i>&nbsp;            mHttpClient.addInterceptor(mLogging);</b>
+<i>47</i>&nbsp;        }
+<b class="fc"><i>48</i>&nbsp;        mBuilder.client(mHttpClient.build());</b>
+<b class="fc"><i>49</i>&nbsp;        mRetrofit = mBuilder.build();</b>
+<b class="fc"><i>50</i>&nbsp;        return mRetrofit.create(serviceClass);</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 06:07</div>
+</div>
+</body>
+</html>
