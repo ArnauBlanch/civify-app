@@ -1,12 +1,24 @@
 package com.civify.activity.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.adapter.IssuesViewAdapter;
+import com.civify.adapter.issue.IssueAdapter;
+import com.civify.model.issue.Issue;
+import com.civify.service.issue.ListIssuesSimpleCallback;
+import com.civify.utils.AdapterFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,21 +27,15 @@ import com.civify.R;
  */
 public class WallFragment extends Fragment {
 
+    private IssueAdapter mIssueAdapter;
+    private List<Issue> mIssueList;
+
     public WallFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment NavigateFragment.
-     */
     public static WallFragment newInstance() {
-        WallFragment fragment = new WallFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new WallFragment();
     }
 
     @Override
@@ -41,6 +47,28 @@ public class WallFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wall, container, false);
+        View view = inflater.inflate(R.layout.fragment_wall, container, false);
+        SharedPreferences sharedPreferences =
+                getActivity().getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
+        AdapterFactory adapterFactory = AdapterFactory.getInstance();
+        mIssueAdapter = adapterFactory.getIssueAdapter(sharedPreferences);
+        mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
+            @Override
+            public void onSuccess(List<Issue> issues) {
+                mIssueList = new ArrayList<>(issues);
+                IssuesViewFragment issuesFragment = IssuesViewFragment.newInstance(mIssueList);
+                FragmentManager fragmentManager = getChildFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.wall_fragments, issuesFragment)
+                        .commit();
+            }
+
+            @Override
+            public void onFailure() {
+                // TODO: do something
+            }
+        });
+        return view;
     }
 }

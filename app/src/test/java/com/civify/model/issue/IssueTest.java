@@ -22,7 +22,7 @@ import java.util.Locale;
 
 @RunWith(RobolectricTestRunner.class)
 public class IssueTest {
-    private static final String TITLE = "test-issue-title";
+    private static final String TITLE = "test-issue-mTextView";
     private static final String DESCRIPTION = "test-issue-description";
     private static final Category CATEGORY = Category.ROAD_SIGNS;
     private static final boolean RISK = true;
