@@ -16,7 +16,7 @@ public class Issue {
     private static final int BITMAP_COMPRESS_VALUE = 70;
 
     @Expose
-    @SerializedName("title")
+    @SerializedName("mTextView")
     private String mTitle;
 
     @Expose

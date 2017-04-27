@@ -298,7 +298,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
         Picture picture = new Picture("picture-file-name", "picture-content-type",
                 "picture-content");
-        Issue issue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true,
+        Issue issue = new Issue("issue-mTextView", "issue-description", Category.ROAD_SIGNS, true,
                 45.0f, 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token",
                 picture);
         return issue;
