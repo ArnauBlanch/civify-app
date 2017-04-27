@@ -63,13 +63,9 @@ public class DrawerActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
-
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,

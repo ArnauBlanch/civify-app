@@ -1,5 +1,7 @@
 package com.civify.activity.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,10 +16,14 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.adapter.LocalityCallback;
+import com.civify.adapter.UserAdapter;
+import com.civify.adapter.UserSimpleCallback;
 import com.civify.model.User;
 import com.civify.model.map.CivifyMarker;
+import com.civify.utils.ServiceGenerator;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.IOException;
@@ -69,7 +75,8 @@ public class IssueDetailsFragment extends Fragment {
 
         Log.v(DEBUG, "Adding image issue in layout");
         ImageView imageIssue = (ImageView)mViewDetails.findViewById(R.id.eventView);
-        imageIssue.setImageBitmap(marker.getIssue().getPictureBitmap());
+        String url = ServiceGenerator.BASE_URL + marker.getIssue().getPicture().getLargeUrl();
+        Glide.with(this).load(url).into(imageIssue);
 
         Log.v(DEBUG, "Adding issue title in layout");
         TextView nameIssue = (TextView) mViewDetails.findViewById(R.id.nameText);
@@ -84,7 +91,8 @@ public class IssueDetailsFragment extends Fragment {
         ImageView categoryIcon = (ImageView)mViewDetails.findViewById(R.id.categoryView);
         categoryIcon.setImageResource(marker.getIssue().getCategory().getIcon());
         TextView categoryIssue = (TextView)mViewDetails.findViewById(R.id.nameCategoryText);
-        categoryIssue.setText(marker.getIssue().getCategory().name());
+        int idCategory = marker.getIssue().getCategory().getName();
+        categoryIssue.setText(getString(idCategory));
 
         Log.v(DEBUG, "Adding risk in layout");
         TextView riskIssue = (TextView)mViewDetails.findViewById(R.id.riskAnswer);
@@ -107,7 +115,6 @@ public class IssueDetailsFragment extends Fragment {
             @Override
             public void onLocalityError() {}
         });
-        streetIssue.setMovementMethod(new ScrollingMovementMethod());
 
         Log.v(DEBUG, "Adding distance in layout");
         TextView distanceIssue = (TextView)mViewDetails.findViewById(R.id.distanceText);
@@ -138,9 +145,21 @@ public class IssueDetailsFragment extends Fragment {
         timeIssue.setText(difference + " " + getText(R.string.days));
 
         Log.v(DEBUG, "Adding user in layout");
-        //LinearLayout userLayout = (LinearLayout)mViewDetails.findViewById(R.id.userLayout);
-        //userLayout.setMovementMethod(new ScrollingMovementMethod());
-        setUser(buildFakeUser());
+        String authToken = marker.getIssue().getIssueAuthToken();
+        SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("USERPREFS",
+                Context
+                .MODE_PRIVATE);
+        new UserAdapter(sharedPreferences).getUser(authToken, new UserSimpleCallback() {
+            @Override
+            public void onSuccess(User user) {
+                setUser(user);
+            }
+
+            @Override
+            public void onFailure() {
+                setUser(buildFakeUser());
+            }
+        });
         Log.v(DEBUG, "init finished");
     }
 
@@ -168,14 +187,6 @@ public class IssueDetailsFragment extends Fragment {
         String userLevel = Integer.toString(user.getLevel());
         String showLevel = getString(R.string.level) + ' ' + userLevel;
         level.setText(showLevel);
-
-        TextView xp = (TextView) mViewDetails.findViewById(R.id.userxp);
-        String userExperience = Integer.toString(user.getExperience());
-        //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
-
-        TextView coins = (TextView) mViewDetails.findViewById(R.id.userCoins);
-        String userCoins = Integer.toString(user.getCoins());
-        coins.setText(userCoins);
 
         CircularImageView profileImage =
                 (CircularImageView) mViewDetails.findViewById(R.id.userImage);
