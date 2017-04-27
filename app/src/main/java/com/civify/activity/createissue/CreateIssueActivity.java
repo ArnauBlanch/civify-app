@@ -1,6 +1,7 @@
 package com.civify.activity.createissue;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
