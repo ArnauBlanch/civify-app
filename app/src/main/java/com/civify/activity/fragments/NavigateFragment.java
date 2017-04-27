@@ -15,6 +15,7 @@ import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
+import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
 
 public class NavigateFragment extends Fragment {
@@ -67,8 +68,8 @@ public class NavigateFragment extends Fragment {
                 Issue issue = (Issue) data.getExtras().getSerializable("issue");
                 try {
                     CivifyMap.getInstance().addIssueMarker(issue);
-                } catch (MapNotReadyException ignore) {
-                    // Button to create issues is only enabled if the map is ready
+                } catch (MapNotLoadedException ignore) {
+                    // Button to create issues is only enabled if the map is loaded
                 }
                 Snackbar.make(getView(), getString(R.string.issue_created),
                         Snackbar.LENGTH_SHORT).show();

@@ -3,6 +3,7 @@ package com.civify.model.map;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.civify.activity.DrawerActivity;
@@ -69,8 +70,12 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mapFragment;
     }
 
+    public boolean isMapLoaded() {
+        return mMarkers != null;
+    }
+
     public boolean isMapReady() {
-        return mMarkers != null && mPlayerSet;
+        return isMapLoaded() && mPlayerSet;
     }
 
     public boolean isPlayerSet() {
@@ -127,13 +132,19 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     private void setMarkers() {
-        if (mMarkers == null) {
+        if (isMapLoaded()) mMarkers.setMap(this);
+        else {
             mMarkers = new CivifyMarkers(this);
-            refreshIssues();
-        } else mMarkers.setMap(this);
+            try {
+                refreshIssues();
+            } catch (MapNotLoadedException e) {
+                Log.wtf(TAG, e);
+            }
+        }
     }
 
-    public void refreshIssues() {
+    public void refreshIssues() throws MapNotLoadedException {
+        if (!isMapLoaded()) throw new MapNotLoadedException();
         mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
                     @Override
                     public void onSuccess(List<Issue> issues) {
@@ -148,15 +159,19 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
                 });
     }
 
-    public void addIssueMarker(@NonNull Issue issue) throws MapNotReadyException {
-        if (isMapReady()) mMarkers.add(new IssueMarker(issue, this));
-        else throw new MapNotReadyException();
+    public void addIssueMarker(@NonNull Issue issue) throws MapNotLoadedException {
+        if (isMapLoaded()) mMarkers.add(new IssueMarker(issue, this));
+        else throw new MapNotLoadedException();
     }
 
+    /** @return all markers of this map, including their issues, or null if not isMapLoaded() */
+    @Nullable
     public CivifyMarkers getMarkers() {
         return mMarkers;
     }
 
+    /** @return GoogleMap instance or null if not isMapLoaded() */
+    @Nullable
     public GoogleMap getGoogleMap() {
         return mGoogleMap;
     }

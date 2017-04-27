@@ -17,7 +17,7 @@ import org.robolectric.annotation.Config;
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, manifest="app/src/main/AndroidManifest.xml")
-@PowerMockIgnore({"org.mockito.*", "org.robolectric.*", "android.*"})
+@PowerMockIgnore({"org.mockito.*", "org.robolectric.*", "org.powermock.*", "android.*"})
 public abstract class RobolectricTest {
     @Rule
     public PowerMockRule rule = new PowerMockRule();

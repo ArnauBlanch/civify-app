@@ -79,7 +79,7 @@ public class CivifyMapTest extends RobolectricTest {
     }
 
     @Test
-    public void testGetMapFragment() {
+    public void testGetMapFragment() throws MapNotLoadedException {
         assertThat(mMap.isMapFragmentSet(), is(false));
 
         SupportMapFragment mapFragment = mMap.getMapFragment();
@@ -109,7 +109,7 @@ public class CivifyMapTest extends RobolectricTest {
     }
 
     @Test
-    public void testOnMapReadySettings() throws SecurityException {
+    public void testOnMapReadySettings() throws SecurityException, MapNotLoadedException {
         final Issue mockIssue = getIssueMock();
         initIssueAdapterMock(new ArrayList<Issue>() {{ add(mockIssue); }});
         setMarkerMock();
@@ -129,7 +129,9 @@ public class CivifyMapTest extends RobolectricTest {
     public void testMapEnabled() throws MapNotReadyException {
         mMap.getMapFragment();
         mMap.enable();
+        assertThat(mMap.isMapLoaded(), is(false));
         mMap.onMapReady(mGoogleMap);
+        assertThat(mMap.isMapLoaded(), is(true));
         assertThat(mMap.isMapReady(), is(false)); // needs location update too
 
         LatLng expectedLocation = LocationAdapter.getLatLng(mFakeLocation);
@@ -160,7 +162,7 @@ public class CivifyMapTest extends RobolectricTest {
     }
 
     @Test
-    public void testIssueMarkerAdded() throws MapNotReadyException {
+    public void testIssueMarkerAdded() throws MapNotLoadedException {
         mMap.onMapReady(mGoogleMap);
         when(mMap.isMapReady()).thenReturn(true);
         Issue issueMock = getIssueMock();
