@@ -44,12 +44,12 @@ public class IssueMarker implements CivifyMarker<Issue> {
 
     private void addToMap() {
         mMarker = mAttached.addMarker(new MarkerOptions()
+                .position(LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()))
                 .title(mIssue.getTitle())
                 .draggable(false)
                 .flat(false)
         );
         mMarker.setTag(mIssue.getIssueAuthToken());
-        setPosition(LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()));
         // FIXME: Resize icons
         // setIcon(mIssue.getCategory().getMarker());
         mPresent = true;
