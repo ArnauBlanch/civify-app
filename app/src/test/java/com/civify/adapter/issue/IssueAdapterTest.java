@@ -108,8 +108,8 @@ public class IssueAdapterTest {
         assertEquals(mIssue.getDescription(), requestJson.get("description").getAsString());
         assertEquals(mIssue.getCategory().toString().toLowerCase(),
                 requestJson.get("category").getAsString());
-        assertEquals(mIssue.getLongitude(), requestJson.get("longitude").getAsFloat());
-        assertEquals(mIssue.getLatitude(), requestJson.get("latitude").getAsFloat());
+        assertEquals(mIssue.getLongitude(), requestJson.get("longitude").getAsDouble());
+        assertEquals(mIssue.getLatitude(), requestJson.get("latitude").getAsDouble());
         assertEquals(mIssue.isRisk(), requestJson.get("risk").getAsBoolean());
 
         // Test request body (picture)
@@ -377,8 +377,7 @@ public class IssueAdapterTest {
 
     private void setUpIssue() throws ParseException {
         String dateString = "2017-04-22T22:11:41.000Z";
-        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT, Locale
-                .getDefault());
+        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT);
         Date date = dateFormat.parse(dateString);
 
         Picture picture = new Picture("picture-file-name", "picture-content-type",
