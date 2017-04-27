@@ -3,24 +3,27 @@ package com.civify.adapter.issue;
 import android.content.SharedPreferences;
 
 import com.civify.adapter.LoginAdapterImpl;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.model.MessageResponse;
 import com.civify.model.issue.Issue;
+import com.civify.service.ExpectedResponseCallback;
 import com.civify.service.issue.IssueService;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.civify.utils.ServiceGenerator;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IssueAdapter {
     public static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
+    public static final String RESOLUTION_ADDED = "Resolution added";
+    public static final String RESOLUTION_DELETED = "Resolution deleted";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -94,14 +97,26 @@ public class IssueAdapter {
         });
     }
 
-    private String getMessageFromError(ResponseBody errorBody) {
-        try {
-            return (new JsonParser().parse(errorBody.string()).getAsJsonObject()).get("message")
-                    .getAsString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
+    // Resolutions
+
+    private void issueResolution(String issueAuthToken, final String expectedResponse,
+            final SimpleCallback callback) {
+        JsonObject userToken = new JsonObject();
+        userToken.addProperty("user", UserAdapter.getCurrentUser().getUserAuthToken());
+
+        Call<MessageResponse> call = mIssueService.issueResolution(mAuthToken,
+                userToken, issueAuthToken);
+        call.enqueue(new ExpectedResponseCallback(expectedResponse, callback));
+    }
+
+    public void resolveIssue(String issueAuthToken, SimpleCallback callback) {
+        String expMessage = RESOLUTION_ADDED;
+        issueResolution(issueAuthToken, expMessage, callback);
+    }
+
+    public void unresolveIssue(String issueAuthToken, SimpleCallback callback) {
+        String expMessage = RESOLUTION_DELETED;
+        issueResolution(issueAuthToken, expMessage, callback);
     }
 
     public void setService(IssueService issueService) {
