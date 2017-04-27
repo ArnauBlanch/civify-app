@@ -10,7 +10,6 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
@@ -27,7 +26,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.apache.tools.ant.taskdefs.condition.Http;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -307,24 +305,16 @@ public class IssueAdapterTest {
 
     @Test
     public void testInvalidConfirm() {
-        String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
-                + "\" " + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
-                + "user-auth-token" + '"';
-        System.out.println("MOCK RESPONSE: " + expMessage);
-
-        JsonObject body = new JsonObject();
-        body.addProperty("message", expMessage);
         MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(body.toString());
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
         mMockWebServer.enqueue(mockResponse);
         SimpleCallback mockCallback = mock(SimpleCallback.class);
 
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
-        mUser.setUserAuthToken("user-auth-token2");
+        mUser.setUserAuthToken("user-auth-token");
         UserAdapter.setCurrentUser(mUser);
 
-        mIssueAdapter.confirmIssue("issue-auth-token2", mockCallback);
+        mIssueAdapter.confirmIssue("issue-auth-token", mockCallback);
 
         verify(mockCallback, timeout(1000)).onFailure();
     }
@@ -354,23 +344,16 @@ public class IssueAdapterTest {
 
     @Test
     public void testInvalidUnconfirm() {
-        String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
-                + UN + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
-                + "user-auth-token" + '"';
-
-        JsonObject body = new JsonObject();
-        body.addProperty("message", expMessage);
         MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(body.toString());
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
         mMockWebServer.enqueue(mockResponse);
         SimpleCallback mockCallback = mock(SimpleCallback.class);
 
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
-        mUser.setUserAuthToken("user-auth-token2");
+        mUser.setUserAuthToken("user-auth-token");
         UserAdapter.setCurrentUser(mUser);
 
-        mIssueAdapter.unconfirmIssue("issue-auth-token2", mockCallback);
+        mIssueAdapter.unconfirmIssue("issue-auth-token", mockCallback);
 
         verify(mockCallback, timeout(1000)).onFailure();
     }
