@@ -104,9 +104,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
     @Before
     public void setUp() {
         Context context = getInstrumentation().getTargetContext();
-        SharedPreferences userPreferences =
-                PreferenceManager.getDefaultSharedPreferences(context);
-        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(userPreferences);
+        //SharedPreferences userPreferences =
+        //        PreferenceManager.getDefaultSharedPreferences(context);
+        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
         loginAdapter.logout();
         loginAdapter.login("ArnauBlanch2", "Test1234", new LoginFinishedCallback() {
             @Override public void onLoginSucceeded(User u) {
