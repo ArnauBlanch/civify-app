@@ -16,6 +16,7 @@ import com.civify.R;
 import com.civify.adapter.IssuesViewAdapter;
 import com.civify.model.issue.Issue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IssuesViewFragment extends Fragment {
@@ -26,16 +27,13 @@ public class IssuesViewFragment extends Fragment {
 
     public IssuesViewFragment() {
         // Required empty public constructor
+        mIssuesList = new ArrayList<>();
     }
 
-    private void setIssuesList(List<Issue> issuesList) {
-        mIssuesList = issuesList;
-    }
-
-    public static IssuesViewFragment newInstance(List<Issue> issuesList) {
-        IssuesViewFragment fragment = new IssuesViewFragment();
-        fragment.setIssuesList(issuesList);
-        return fragment;
+    public void setIssuesList(List<Issue> issuesList) {
+        mIssuesList.clear();
+        mIssuesList.addAll(issuesList);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -47,18 +45,24 @@ public class IssuesViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.issues_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_issues_view, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        adapter = new IssuesViewAdapter(this.getContext(), mIssuesList);
+        adapter = new IssuesViewAdapter(getContext(), mIssuesList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
         return view;
     }
+
+    //@Override
+    //public void onViewCreated(View view, Bundle savedInstanceState) {
+    //    //WallFragment wallFragment = (WallFragment) getParentFragment();
+    //    //wallFragment.onChildFragmentReady();
+    //}
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 

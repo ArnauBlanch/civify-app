@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bumptech.glide.Glide;
+import com.civify.utils.ServiceGenerator;
 
 public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.MyViewHolder> {
 
@@ -34,9 +35,9 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
     }
 
 
-    public IssuesViewAdapter(Context mContext, List<Issue> mIssueList) {
+    public IssuesViewAdapter(Context mContext, List<Issue> issueList) {
         this.mContext = mContext;
-        this.mIssueList = new ArrayList<>(mIssueList);
+        this.mIssueList = issueList;
     }
 
     @Override
@@ -51,10 +52,11 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Issue issue = mIssueList.get(position);
         holder.mTextView.setText(issue.getTitle());
-        holder.mCount.setText(issue.getCreatedAt().toString());
+        holder.mCount.setText("fa 3 dies");
 
         // loading album cover using Glide library
-        Glide.with(mContext).load("http://goo.gl/gEgYUd").into(holder.mThumbnail);
+        String imageUrl = ServiceGenerator.BASE_URL + issue.getPicture().getLargeUrl();
+        Glide.with(mContext).load(imageUrl).into(holder.mThumbnail);
     }
 
     @Override
