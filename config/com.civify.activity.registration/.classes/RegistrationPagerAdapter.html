@@ -1,0 +1,117 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RegistrationPagerAdapter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.activity.registration</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RegistrationPagerAdapter (com.civify.activity.registration)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RegistrationPagerAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/ 10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.activity.registration;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.os.Bundle;
+<i>4</i>&nbsp;import android.support.annotation.Nullable;
+<i>5</i>&nbsp;import android.support.v4.app.Fragment;
+<i>6</i>&nbsp;import android.support.v4.app.FragmentManager;
+<i>7</i>&nbsp;import android.support.v4.app.FragmentPagerAdapter;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;class RegistrationPagerAdapter extends FragmentPagerAdapter {
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    private static final int NUM_PAGES = 4;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    RegistrationPagerAdapter(FragmentManager fm) {
+<b class="fc"><i>14</i>&nbsp;        super(fm);</b>
+<b class="fc"><i>15</i>&nbsp;    }</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    @Nullable
+<i>18</i>&nbsp;    @Override
+<i>19</i>&nbsp;    public Fragment getItem(int position) {
+<b class="fc"><i>20</i>&nbsp;        if (position &lt; 0 || position &gt;= NUM_PAGES) {</b>
+<b class="fc"><i>21</i>&nbsp;            return null;</b>
+<i>22</i>&nbsp;        }
+<b class="fc"><i>23</i>&nbsp;        Fragment pageFragment = new RegistrationFragment();</b>
+<b class="fc"><i>24</i>&nbsp;        Bundle args = new Bundle();</b>
+<b class="fc"><i>25</i>&nbsp;        args.putInt(&quot;page&quot;, position);</b>
+<b class="fc"><i>26</i>&nbsp;        pageFragment.setArguments(args);</b>
+<b class="fc"><i>27</i>&nbsp;        return pageFragment;</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    @Override
+<i>31</i>&nbsp;    public int getCount() {
+<b class="fc"><i>32</i>&nbsp;        return NUM_PAGES;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 06:07</div>
+</div>
+</body>
+</html>

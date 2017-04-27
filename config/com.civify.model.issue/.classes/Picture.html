@@ -1,0 +1,208 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Picture</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.model.issue</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Picture (com.civify.model.issue)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Picture</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/ 18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (31/ 31)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Picture$$EnhancerByMockitoWithCGLIB$$6e2fbbd1</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/ 18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (31/ 31)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.model.issue;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.google.gson.annotations.Expose;
+<i>4</i>&nbsp;import com.google.gson.annotations.SerializedName;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.io.Serializable;
+<i>7</i>&nbsp;import java.util.Date;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public class Picture implements Serializable {
+<i>10</i>&nbsp;    @Expose
+<i>11</i>&nbsp;    @SerializedName(&quot;file_name&quot;)
+<i>12</i>&nbsp;    private String mFileName;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    @Expose
+<i>15</i>&nbsp;    @SerializedName(&quot;content_type&quot;)
+<i>16</i>&nbsp;    private String mContentType;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    @Expose(deserialize = false)
+<i>19</i>&nbsp;    @SerializedName(&quot;content&quot;)
+<i>20</i>&nbsp;    private String mContent;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    @Expose(serialize = false)
+<i>23</i>&nbsp;    @SerializedName(&quot;file_size&quot;)
+<i>24</i>&nbsp;    private int mFileSize;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @Expose(serialize = false)
+<i>27</i>&nbsp;    @SerializedName(&quot;updated_at&quot;)
+<i>28</i>&nbsp;    private Date mUpdatedAt;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    @Expose(serialize = false)
+<i>31</i>&nbsp;    @SerializedName(&quot;small_url&quot;)
+<i>32</i>&nbsp;    private String mSmallUrl;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    @Expose(serialize = false)
+<i>35</i>&nbsp;    @SerializedName(&quot;med_url&quot;)
+<i>36</i>&nbsp;    private String mMedUrl;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    @Expose(serialize = false)
+<i>39</i>&nbsp;    @SerializedName(&quot;large_url&quot;)
+<i>40</i>&nbsp;    private String mLargeUrl;
+<i>41</i>&nbsp;
+<b class="fc"><i>42</i>&nbsp;    public Picture() {</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;    }</b>
+<i>45</i>&nbsp;
+<b class="fc"><i>46</i>&nbsp;    public Picture(String fileName, String contentType, String content) {</b>
+<b class="fc"><i>47</i>&nbsp;        mFileName = fileName;</b>
+<b class="fc"><i>48</i>&nbsp;        mContentType = contentType;</b>
+<b class="fc"><i>49</i>&nbsp;        mContent = content;</b>
+<b class="fc"><i>50</i>&nbsp;    }</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    public String getFileName() {
+<b class="fc"><i>53</i>&nbsp;        return mFileName;</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    public void setFileName(String fileName) {
+<b class="fc"><i>57</i>&nbsp;        mFileName = fileName;</b>
+<b class="fc"><i>58</i>&nbsp;    }</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    public String getContentType() {
+<b class="fc"><i>61</i>&nbsp;        return mContentType;</b>
+<i>62</i>&nbsp;    }
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    public void setContentType(String contentType) {
+<b class="fc"><i>65</i>&nbsp;        mContentType = contentType;</b>
+<b class="fc"><i>66</i>&nbsp;    }</b>
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;    public int getFileSize() {
+<b class="fc"><i>69</i>&nbsp;        return mFileSize;</b>
+<i>70</i>&nbsp;    }
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;    public void setFileSize(int fileSize) {
+<b class="fc"><i>73</i>&nbsp;        mFileSize = fileSize;</b>
+<b class="fc"><i>74</i>&nbsp;    }</b>
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    public Date getUpdatedAt() {
+<b class="fc"><i>77</i>&nbsp;        return mUpdatedAt;</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    public void setUpdatedAt(Date updatedAt) {
+<b class="fc"><i>81</i>&nbsp;        mUpdatedAt = updatedAt;</b>
+<b class="fc"><i>82</i>&nbsp;    }</b>
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;    public String getSmallUrl() {
+<b class="fc"><i>85</i>&nbsp;        return mSmallUrl;</b>
+<i>86</i>&nbsp;    }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    public void setSmallUrl(String smallUrl) {
+<b class="fc"><i>89</i>&nbsp;        mSmallUrl = smallUrl;</b>
+<b class="fc"><i>90</i>&nbsp;    }</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    public String getMedUrl() {
+<b class="fc"><i>93</i>&nbsp;        return mMedUrl;</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    public void setMedUrl(String medUrl) {
+<b class="fc"><i>97</i>&nbsp;        mMedUrl = medUrl;</b>
+<b class="fc"><i>98</i>&nbsp;    }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    public String getLargeUrl() {
+<b class="fc"><i>101</i>&nbsp;        return mLargeUrl;</b>
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;    public void setLargeUrl(String largeUrl) {
+<b class="fc"><i>105</i>&nbsp;        mLargeUrl = largeUrl;</b>
+<b class="fc"><i>106</i>&nbsp;    }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;    public String getContent() {
+<b class="fc"><i>109</i>&nbsp;        return mContent;</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    public void setContent(String content) {
+<b class="fc"><i>113</i>&nbsp;        mContent = content;</b>
+<b class="fc"><i>114</i>&nbsp;    }</b>
+<i>115</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 06:07</div>
+</div>
+</body>
+</html>

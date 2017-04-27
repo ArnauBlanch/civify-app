@@ -1,0 +1,609 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: LocationAdapter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.adapter</a> ]
+</div>
+
+<h1>Coverage Summary for Class: LocationAdapter (com.civify.adapter)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LocationAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    9,1%
+  </span>
+  <span class="absValue">
+    (4/ 44)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4,5%
+  </span>
+  <span class="absValue">
+    (8/ 179)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">LocationAdapter$$EnhancerByMockitoWithCGLIB$$d5e55981</td>
+  </tr>
+  <tr>
+    <td class="name">LocationAdapter$Priority</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (4/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (10/ 12)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    16%
+  </span>
+  <span class="absValue">
+    (8/ 50)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    9,4%
+  </span>
+  <span class="absValue">
+    (18/ 191)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.adapter;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.app.Activity;
+<i>4</i>&nbsp;import android.content.DialogInterface;
+<i>5</i>&nbsp;import android.content.DialogInterface.OnClickListener;
+<i>6</i>&nbsp;import android.content.IntentSender;
+<i>7</i>&nbsp;import android.content.pm.PackageManager;
+<i>8</i>&nbsp;import android.location.Location;
+<i>9</i>&nbsp;import android.location.LocationManager;
+<i>10</i>&nbsp;import android.os.Bundle;
+<i>11</i>&nbsp;import android.support.annotation.NonNull;
+<i>12</i>&nbsp;import android.support.annotation.Nullable;
+<i>13</i>&nbsp;import android.support.v4.app.ActivityCompat;
+<i>14</i>&nbsp;import android.support.v4.content.ContextCompat;
+<i>15</i>&nbsp;import android.util.Log;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import com.civify.R;
+<i>18</i>&nbsp;import com.civify.utils.ConfirmDialog;
+<i>19</i>&nbsp;import com.civify.utils.NetworkController;
+<i>20</i>&nbsp;import com.civify.utils.Timeout;
+<i>21</i>&nbsp;import com.google.android.gms.common.ConnectionResult;
+<i>22</i>&nbsp;import com.google.android.gms.common.api.CommonStatusCodes;
+<i>23</i>&nbsp;import com.google.android.gms.common.api.GoogleApiClient;
+<i>24</i>&nbsp;import com.google.android.gms.common.api.Result;
+<i>25</i>&nbsp;import com.google.android.gms.common.api.ResultCallback;
+<i>26</i>&nbsp;import com.google.android.gms.common.api.Status;
+<i>27</i>&nbsp;import com.google.android.gms.location.LocationListener;
+<i>28</i>&nbsp;import com.google.android.gms.location.LocationRequest;
+<i>29</i>&nbsp;import com.google.android.gms.location.LocationServices;
+<i>30</i>&nbsp;import com.google.android.gms.location.LocationSettingsRequest;
+<i>31</i>&nbsp;import com.google.android.gms.location.LocationSettingsStatusCodes;
+<i>32</i>&nbsp;import com.google.android.gms.maps.model.LatLng;
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;public class LocationAdapter implements</b>
+<i>35</i>&nbsp;        GoogleApiClient.ConnectionCallbacks,
+<i>36</i>&nbsp;        GoogleApiClient.OnConnectionFailedListener,
+<i>37</i>&nbsp;        LocationListener {
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;    public static final LatLng ZERO = new LatLng(0, 0);</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public static final int PERMISSION_ACCESS_LOCATION = 700;
+<i>42</i>&nbsp;
+<b class="fc"><i>43</i>&nbsp;    private static final String TAG = LocationAdapter.class.getSimpleName();</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    private static final int REQUEST_CHECK_SETTINGS = 800;
+<i>46</i>&nbsp;    private static final int CONNECTION_FAILURE_RESOLUTION = 900;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    private static final int ACCURACY_THRESHOLD = 600;
+<i>49</i>&nbsp;    private static final int LOCATION_UPDATE_TIMEOUT_MULTIPLIER = 4;
+<i>50</i>&nbsp;    private static final int LOCATION_FIRST_UPDATE_TIMEOUT_MULTIPLIER = 5;
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    private static final double EARTH_RADIUS = 6366198;
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    private final Activity mContext;
+<i>55</i>&nbsp;    private final GoogleApiClient mGoogleApiClient;
+<i>56</i>&nbsp;    private Location mLastLocation;
+<i>57</i>&nbsp;    private LocationRequest mLocationRequest;
+<i>58</i>&nbsp;    private UpdateLocationListener mUpdateLocationListener;
+<i>59</i>&nbsp;    private Timeout mOnUpdateTimeout;
+<i>60</i>&nbsp;    private Runnable mOnConnectedUpdateCallback, mOnPermissionsRequested;
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    private boolean mHasPermissions, mAutoRefresh, mRequestingPermissions, mLowConnectionWarning;
+<i>63</i>&nbsp;    private long mIntervalRefresh, mFastIntervalRefresh;
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;    public LocationAdapter(@NonNull Activity context) {</b>
+<b class="nc"><i>66</i>&nbsp;        mContext = context;</b>
+<b class="nc"><i>67</i>&nbsp;        mGoogleApiClient = new GoogleApiClient.Builder(mContext)</b>
+<b class="nc"><i>68</i>&nbsp;                .addConnectionCallbacks(this)</b>
+<b class="nc"><i>69</i>&nbsp;                .addOnConnectionFailedListener(this)</b>
+<b class="nc"><i>70</i>&nbsp;                .addApi(LocationServices.API)</b>
+<b class="nc"><i>71</i>&nbsp;                .build();</b>
+<b class="nc"><i>72</i>&nbsp;        mLocationRequest = null;</b>
+<b class="nc"><i>73</i>&nbsp;        setAutoRefresh(false);</b>
+<b class="nc"><i>74</i>&nbsp;        setRequestingPermissions(false);</b>
+<b class="nc"><i>75</i>&nbsp;        checkForPermissions();</b>
+<b class="nc"><i>76</i>&nbsp;    }</b>
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    public void setOnPermissionsRequestedListener(@Nullable Runnable onPermissions) {
+<b class="nc"><i>79</i>&nbsp;        mOnPermissionsRequested = onPermissions;</b>
+<b class="nc"><i>80</i>&nbsp;        if (!isRequestingPermissions() &amp;&amp; hasPermissions()) mOnPermissionsRequested.run();</b>
+<b class="nc"><i>81</i>&nbsp;    }</b>
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    public void connect() {
+<b class="nc"><i>84</i>&nbsp;        if (!isConnected()) {</b>
+<b class="nc"><i>85</i>&nbsp;            Log.i(TAG, &quot;Connecting location services...&quot;);</b>
+<b class="nc"><i>86</i>&nbsp;            mGoogleApiClient.connect();</b>
+<i>87</i>&nbsp;        }
+<b class="nc"><i>88</i>&nbsp;    }</b>
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    @Override
+<i>91</i>&nbsp;    public void onConnected(@Nullable Bundle bundle) {
+<b class="nc"><i>92</i>&nbsp;        updateLocation();</b>
+<b class="nc"><i>93</i>&nbsp;        if (mOnConnectedUpdateCallback != null) mOnConnectedUpdateCallback.run();</b>
+<b class="nc"><i>94</i>&nbsp;        Log.i(TAG, &quot;Location services connected.&quot;);</b>
+<b class="nc"><i>95</i>&nbsp;    }</b>
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    public boolean isConnected() {
+<b class="nc"><i>98</i>&nbsp;        return mGoogleApiClient.isConnected();</b>
+<i>99</i>&nbsp;    }
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    public void disconnect() {
+<b class="nc"><i>102</i>&nbsp;        if (mGoogleApiClient.isConnected()) {</b>
+<b class="nc"><i>103</i>&nbsp;            removeUpdates();</b>
+<b class="nc"><i>104</i>&nbsp;            mGoogleApiClient.disconnect();</b>
+<i>105</i>&nbsp;        }
+<b class="nc"><i>106</i>&nbsp;        if (isLocationUpdateTimeoutSet()) mOnUpdateTimeout.cancel();</b>
+<b class="nc"><i>107</i>&nbsp;        Log.i(TAG, &quot;Location services disconnected.&quot;);</b>
+<b class="nc"><i>108</i>&nbsp;    }</b>
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;    public Activity getContext() {
+<b class="nc"><i>111</i>&nbsp;        return mContext;</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    private void removeUpdates() {
+<b class="nc"><i>115</i>&nbsp;        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);</b>
+<b class="nc"><i>116</i>&nbsp;        Log.d(TAG, &quot;Removed location udpates.&quot;);</b>
+<b class="nc"><i>117</i>&nbsp;    }</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    public boolean isAutoRefresh() {
+<b class="nc"><i>120</i>&nbsp;        return mAutoRefresh;</b>
+<i>121</i>&nbsp;    }
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;    public void setAutoRefresh(boolean autoRefresh) {
+<b class="nc"><i>124</i>&nbsp;        mAutoRefresh = autoRefresh;</b>
+<b class="nc"><i>125</i>&nbsp;        boolean connected = mGoogleApiClient.isConnected();</b>
+<b class="nc"><i>126</i>&nbsp;        if (isAutoRefresh()) {</b>
+<b class="nc"><i>127</i>&nbsp;            if (mLocationRequest != null) {</b>
+<b class="nc"><i>128</i>&nbsp;                mLocationRequest.setInterval(mIntervalRefresh)</b>
+<b class="nc"><i>129</i>&nbsp;                        .setFastestInterval(mFastIntervalRefresh);</b>
+<i>130</i>&nbsp;            }
+<b class="nc"><i>131</i>&nbsp;            if (isLocationUpdateTimeoutSet()) {</b>
+<b class="nc"><i>132</i>&nbsp;                rescheduleLocationUpdateTimeout(</b>
+<b class="nc"><i>133</i>&nbsp;                        getLocationUpdateTimeoutTime(LOCATION_UPDATE_TIMEOUT_MULTIPLIER)</b>
+<b class="nc"><i>134</i>&nbsp;                                - mOnUpdateTimeout.getLapsedMillisFromSchedule());</b>
+<b class="nc"><i>135</i>&nbsp;            } else rescheduleLocationUpdateTimeout();</b>
+<b class="nc"><i>136</i>&nbsp;            if (connected) updateLocation();</b>
+<i>137</i>&nbsp;        } else {
+<b class="nc"><i>138</i>&nbsp;            if (connected) {</b>
+<b class="nc"><i>139</i>&nbsp;                removeUpdates();</b>
+<b class="nc"><i>140</i>&nbsp;                mLocationRequest = null;</b>
+<i>141</i>&nbsp;            }
+<b class="nc"><i>142</i>&nbsp;            if (isLocationUpdateTimeoutSet()) {</b>
+<b class="nc"><i>143</i>&nbsp;                mOnUpdateTimeout.cancel();</b>
+<b class="nc"><i>144</i>&nbsp;                mOnUpdateTimeout = null;</b>
+<i>145</i>&nbsp;            }
+<i>146</i>&nbsp;        }
+<b class="nc"><i>147</i>&nbsp;    }</b>
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    private LocationRequest getLocationRequest() {
+<b class="nc"><i>150</i>&nbsp;        if (mLocationRequest == null) {</b>
+<b class="nc"><i>151</i>&nbsp;            setUpdateIntervals(Priority.LOW_POWER, Priority.LOW_POWER.getPeriodMillis(),</b>
+<b class="nc"><i>152</i>&nbsp;                    Priority.LOW_POWER.getFastestPeriodMillis());</b>
+<i>153</i>&nbsp;        }
+<b class="nc"><i>154</i>&nbsp;        return mLocationRequest;</b>
+<i>155</i>&nbsp;    }
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;    public void setUpdateIntervals(@NonNull Priority priority,
+<i>158</i>&nbsp;                                   long updateMillis, long fastestUpdateMillis) {
+<b class="nc"><i>159</i>&nbsp;        mIntervalRefresh = updateMillis;</b>
+<b class="nc"><i>160</i>&nbsp;        mFastIntervalRefresh = fastestUpdateMillis;</b>
+<b class="nc"><i>161</i>&nbsp;        setLocationPriority(priority);</b>
+<b class="nc"><i>162</i>&nbsp;        setAutoRefresh(isAutoRefresh());</b>
+<b class="nc"><i>163</i>&nbsp;        Log.d(TAG, &quot;Location updates priority set to &quot; + priority</b>
+<i>164</i>&nbsp;                + &quot; [&quot; + mFastIntervalRefresh + &#39;,&#39; + mIntervalRefresh + &#39;]&#39;);
+<b class="nc"><i>165</i>&nbsp;    }</b>
+<i>166</i>&nbsp;
+<i>167</i>&nbsp;    private void setLocationPriority(@NonNull Priority priority) {
+<b class="nc"><i>168</i>&nbsp;        int locationRequestPriority = priority.getLocationRequestPriority();</b>
+<b class="nc"><i>169</i>&nbsp;        if (mLocationRequest == null || mLocationRequest.getPriority() != locationRequestPriority) {</b>
+<b class="nc"><i>170</i>&nbsp;            mLocationRequest = LocationRequest.create().setPriority(locationRequestPriority);</b>
+<i>171</i>&nbsp;        }
+<b class="nc"><i>172</i>&nbsp;    }</b>
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;    private boolean isDelayedUpdate() {
+<b class="nc"><i>175</i>&nbsp;        return mOnConnectedUpdateCallback != null;</b>
+<i>176</i>&nbsp;    }
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;    private void updateLocation() {
+<b class="nc"><i>179</i>&nbsp;        Log.v(TAG, &quot;Trying to update location...&quot;);</b>
+<b class="nc"><i>180</i>&nbsp;        if (isDelayedUpdate()) Log.v(TAG, &quot;Detected delayed updates.&quot;);</b>
+<i>181</i>&nbsp;        else {
+<b class="nc"><i>182</i>&nbsp;            if (checkConnection()) {</b>
+<b class="nc"><i>183</i>&nbsp;                if (hasPermissions()) {</b>
+<b class="nc"><i>184</i>&nbsp;                    setRequestingPermissions(true);</b>
+<b class="nc"><i>185</i>&nbsp;                    LocationSettingsRequest.Builder builder =</b>
+<b class="nc"><i>186</i>&nbsp;                            new LocationSettingsRequest.Builder().addLocationRequest(</b>
+<b class="nc"><i>187</i>&nbsp;                                    getLocationRequest()).setAlwaysShow(true);</b>
+<i>188</i>&nbsp;
+<b class="nc"><i>189</i>&nbsp;                    LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,</b>
+<b class="nc"><i>190</i>&nbsp;                            builder.build()).setResultCallback(getLocationSettingsResultCallback());</b>
+<b class="nc"><i>191</i>&nbsp;                    Log.v(TAG, &quot;Settings verification requested.&quot;);</b>
+<b class="nc"><i>192</i>&nbsp;                } else {</b>
+<b class="nc"><i>193</i>&nbsp;                    checkForPermissions();</b>
+<i>194</i>&nbsp;                }
+<i>195</i>&nbsp;            }
+<i>196</i>&nbsp;        }
+<b class="nc"><i>197</i>&nbsp;    }</b>
+<i>198</i>&nbsp;
+<i>199</i>&nbsp;    @NonNull
+<i>200</i>&nbsp;    private ResultCallback&lt;Result&gt; getLocationSettingsResultCallback() {
+<b class="nc"><i>201</i>&nbsp;        return new ResultCallback&lt;Result&gt;() {</b>
+<i>202</i>&nbsp;            @Override
+<i>203</i>&nbsp;            public void onResult(@NonNull Result result) {
+<i>204</i>&nbsp;                Status status = result.getStatus();
+<i>205</i>&nbsp;                if (status.getStatusCode() == CommonStatusCodes.SUCCESS) {
+<i>206</i>&nbsp;                    Log.i(TAG, &quot;All location settings are satisfied.&quot;);
+<i>207</i>&nbsp;                    Runnable requestUpdatesTask = new RequestUpdatesTask();
+<i>208</i>&nbsp;                    if (mGoogleApiClient.isConnected()) requestUpdatesTask.run();
+<i>209</i>&nbsp;                    else {
+<i>210</i>&nbsp;                        mOnConnectedUpdateCallback = requestUpdatesTask;
+<i>211</i>&nbsp;                        Log.d(TAG, &quot;Google API is not connected. &quot;
+<i>212</i>&nbsp;                                + &quot;Updates delayed until Google API is connected again.&quot;);
+<i>213</i>&nbsp;                    }
+<i>214</i>&nbsp;                } else if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
+<i>215</i>&nbsp;                    Log.i(TAG, &quot;Location settings are not satisfied. &quot;
+<i>216</i>&nbsp;                            + &quot;Showing the user a dialog to upgrade location settings.&quot;);
+<i>217</i>&nbsp;                    try {
+<i>218</i>&nbsp;                        // Show the dialog by calling startResolutionForResult(),
+<i>219</i>&nbsp;                        // and check the result in the onActivityResult() of mContext
+<i>220</i>&nbsp;                        status.startResolutionForResult(mContext, REQUEST_CHECK_SETTINGS);
+<i>221</i>&nbsp;                        setRequestingPermissions(true);
+<i>222</i>&nbsp;                    } catch (IntentSender.SendIntentException e) {
+<i>223</i>&nbsp;                        Log.wtf(TAG, &quot;PendingIntent unable to execute request&quot;, e);
+<i>224</i>&nbsp;                    }
+<i>225</i>&nbsp;                } else if (status.getStatusCode()
+<i>226</i>&nbsp;                        == LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE) {
+<i>227</i>&nbsp;                    if (checkNetwork()) {
+<i>228</i>&nbsp;                        Log.wtf(TAG, 
+<i>229</i>&nbsp;                                &quot;Location settings can&#39;t be changed to meet the requirements&quot;);
+<i>230</i>&nbsp;                    }
+<i>231</i>&nbsp;                }
+<i>232</i>&nbsp;            }
+<i>233</i>&nbsp;        };
+<i>234</i>&nbsp;    }
+<i>235</i>&nbsp;
+<i>236</i>&nbsp;    public void onMapSettingsResults(int requestCode, int resultCode) {
+<b class="nc"><i>237</i>&nbsp;        if (requestCode == CONNECTION_FAILURE_RESOLUTION) {</b>
+<b class="nc"><i>238</i>&nbsp;            if (resultCode == Activity.RESULT_OK) {</b>
+<b class="nc"><i>239</i>&nbsp;                Log.i(TAG, mContext.getString(</b>
+<i>240</i>&nbsp;                        R.string.user_location_settings_agreed));
+<i>241</i>&nbsp;                // Reconnect
+<b class="nc"><i>242</i>&nbsp;                connect();</b>
+<b class="nc"><i>243</i>&nbsp;            } else if (resultCode == Activity.RESULT_CANCELED) {</b>
+<b class="nc"><i>244</i>&nbsp;                Log.w(TAG, mContext.getString(R.string.location_connection_failed));</b>
+<b class="nc"><i>245</i>&nbsp;                rescheduleLocationUpdateTimeout();</b>
+<i>246</i>&nbsp;            }
+<b class="nc"><i>247</i>&nbsp;        } else if (requestCode == REQUEST_CHECK_SETTINGS) {</b>
+<b class="nc"><i>248</i>&nbsp;            if (resultCode == Activity.RESULT_OK) {</b>
+<b class="nc"><i>249</i>&nbsp;                Log.i(TAG, mContext.getString(R.string.user_location_settings_agreed));</b>
+<b class="nc"><i>250</i>&nbsp;                updateLocation();</b>
+<b class="nc"><i>251</i>&nbsp;            } else if (resultCode == Activity.RESULT_CANCELED) {</b>
+<b class="nc"><i>252</i>&nbsp;                Log.i(TAG, mContext.getString(R.string.user_location_settings_canceled));</b>
+<b class="nc"><i>253</i>&nbsp;                updateLocation();</b>
+<i>254</i>&nbsp;            }
+<i>255</i>&nbsp;        }
+<b class="nc"><i>256</i>&nbsp;    }</b>
+<i>257</i>&nbsp;
+<i>258</i>&nbsp;    private boolean checkConnection() {
+<b class="nc"><i>259</i>&nbsp;        if (!mGoogleApiClient.isConnected()) {</b>
+<b class="nc"><i>260</i>&nbsp;            Log.w(TAG, &quot;GoogleApiClient is not connected!&quot;);</b>
+<b class="nc"><i>261</i>&nbsp;            connect();</b>
+<b class="nc"><i>262</i>&nbsp;            return false;</b>
+<i>263</i>&nbsp;        }
+<b class="nc"><i>264</i>&nbsp;        return true;</b>
+<i>265</i>&nbsp;    }
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;    private void setRequestingPermissions(boolean requestingPermissions) {
+<b class="nc"><i>268</i>&nbsp;        mRequestingPermissions = requestingPermissions;</b>
+<b class="nc"><i>269</i>&nbsp;    }</b>
+<i>270</i>&nbsp;
+<i>271</i>&nbsp;    public boolean isRequestingPermissions() {
+<b class="nc"><i>272</i>&nbsp;        return mRequestingPermissions;</b>
+<i>273</i>&nbsp;    }
+<i>274</i>&nbsp;
+<i>275</i>&nbsp;    @Override
+<i>276</i>&nbsp;    public void onLocationChanged(@NonNull Location location) {
+<b class="nc"><i>277</i>&nbsp;        handleNewLocation(location);</b>
+<b class="nc"><i>278</i>&nbsp;    }</b>
+<i>279</i>&nbsp;
+<i>280</i>&nbsp;    @Override
+<i>281</i>&nbsp;    public void onConnectionSuspended(int i) {
+<b class="nc"><i>282</i>&nbsp;        Log.i(TAG, &quot;Location services suspended.&quot;);</b>
+<b class="nc"><i>283</i>&nbsp;    }</b>
+<i>284</i>&nbsp;
+<i>285</i>&nbsp;    @Override
+<i>286</i>&nbsp;    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+<b class="nc"><i>287</i>&nbsp;        if (connectionResult.hasResolution()) {</b>
+<i>288</i>&nbsp;            try {
+<b class="nc"><i>289</i>&nbsp;                connectionResult.startResolutionForResult(mContext, CONNECTION_FAILURE_RESOLUTION);</b>
+<b class="nc"><i>290</i>&nbsp;            } catch (IntentSender.SendIntentException e) {</b>
+<b class="nc"><i>291</i>&nbsp;                Log.wtf(TAG, &quot;Location services connection failed.&quot;, e);</b>
+<b class="nc"><i>292</i>&nbsp;            }</b>
+<i>293</i>&nbsp;        } else {
+<b class="nc"><i>294</i>&nbsp;            Log.wtf(TAG, &quot;Location services connection failed with code &quot;</b>
+<b class="nc"><i>295</i>&nbsp;                    + connectionResult.getErrorCode());</b>
+<i>296</i>&nbsp;        }
+<b class="nc"><i>297</i>&nbsp;    }</b>
+<i>298</i>&nbsp;
+<i>299</i>&nbsp;    private boolean hasPermissions() {
+<b class="nc"><i>300</i>&nbsp;        return mHasPermissions;</b>
+<i>301</i>&nbsp;    }
+<i>302</i>&nbsp;
+<i>303</i>&nbsp;    public void checkForPermissions() {
+<b class="nc"><i>304</i>&nbsp;        if (!isRequestingPermissions()) {</b>
+<b class="nc"><i>305</i>&nbsp;            mHasPermissions = false;</b>
+<b class="nc"><i>306</i>&nbsp;            setRequestingPermissions(true);</b>
+<i>307</i>&nbsp;            // If we don&#39;t have permissions we request them on runtime
+<b class="nc"><i>308</i>&nbsp;            if (ContextCompat.checkSelfPermission(mContext,</b>
+<i>309</i>&nbsp;                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+<i>310</i>&nbsp;                    != PackageManager.PERMISSION_GRANTED) {
+<b class="nc"><i>311</i>&nbsp;                Log.i(TAG, TAG + &quot; without permissions! Requesting them if available.&quot;);</b>
+<b class="nc"><i>312</i>&nbsp;                ActivityCompat.requestPermissions(mContext, new String[]</b>
+<i>313</i>&nbsp;                        {android.Manifest.permission.ACCESS_FINE_LOCATION},
+<i>314</i>&nbsp;                        PERMISSION_ACCESS_LOCATION);
+<b class="nc"><i>315</i>&nbsp;            } else if (checkNetwork()) {</b>
+<b class="nc"><i>316</i>&nbsp;                Log.i(TAG, TAG + &quot; with permissions.&quot;);</b>
+<b class="nc"><i>317</i>&nbsp;                mHasPermissions = true;</b>
+<b class="nc"><i>318</i>&nbsp;                setRequestingPermissions(false);</b>
+<b class="nc"><i>319</i>&nbsp;                if (mGoogleApiClient.isConnected()) updateLocation();</b>
+<i>320</i>&nbsp;            }
+<i>321</i>&nbsp;        }
+<b class="nc"><i>322</i>&nbsp;    }</b>
+<i>323</i>&nbsp;
+<i>324</i>&nbsp;    private boolean checkNetwork() {
+<b class="nc"><i>325</i>&nbsp;        return NetworkController.checkNetwork(mContext,</b>
+<i>326</i>&nbsp;            new Runnable() {
+<i>327</i>&nbsp;                @Override
+<i>328</i>&nbsp;                public void run() {
+<i>329</i>&nbsp;                    setRequestingPermissions(true);
+<i>330</i>&nbsp;                }
+<i>331</i>&nbsp;            },
+<i>332</i>&nbsp;            new Runnable() {
+<i>333</i>&nbsp;                @Override
+<i>334</i>&nbsp;                public void run() {
+<i>335</i>&nbsp;                    setRequestingPermissions(false);
+<i>336</i>&nbsp;                    rescheduleLocationUpdateTimeout();
+<i>337</i>&nbsp;                }
+<i>338</i>&nbsp;            });
+<i>339</i>&nbsp;    }
+<i>340</i>&nbsp;
+<i>341</i>&nbsp;    public void setOnUpdateLocationListener(@NonNull UpdateLocationListener listener) {
+<b class="nc"><i>342</i>&nbsp;        mUpdateLocationListener = listener;</b>
+<b class="nc"><i>343</i>&nbsp;        executeUpdateLocationListener();</b>
+<b class="nc"><i>344</i>&nbsp;    }</b>
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;    private void executeUpdateLocationListener() {
+<b class="nc"><i>347</i>&nbsp;        if (mLastLocation != null &amp;&amp; mUpdateLocationListener != null) {</b>
+<b class="nc"><i>348</i>&nbsp;            mUpdateLocationListener.onUpdateLocation(mLastLocation);</b>
+<i>349</i>&nbsp;        }
+<b class="nc"><i>350</i>&nbsp;    }</b>
+<i>351</i>&nbsp;
+<i>352</i>&nbsp;    private void handleNewLocation(@NonNull Location location) {
+<b class="nc"><i>353</i>&nbsp;        mLastLocation = location;</b>
+<b class="nc"><i>354</i>&nbsp;        Log.d(TAG, &quot;Location updated: &quot; + mLastLocation);</b>
+<b class="nc"><i>355</i>&nbsp;        executeUpdateLocationListener();</b>
+<b class="nc"><i>356</i>&nbsp;        if (location.getAccuracy() &lt; ACCURACY_THRESHOLD) rescheduleLocationUpdateTimeout();</b>
+<b class="nc"><i>357</i>&nbsp;        if (!isAutoRefresh()) setAutoRefresh(false);</b>
+<b class="nc"><i>358</i>&nbsp;    }</b>
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;    public Location getLastLocation() {
+<b class="nc"><i>361</i>&nbsp;        return mLastLocation;</b>
+<i>362</i>&nbsp;    }
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;    private boolean isLocationUpdateTimeoutSet() {
+<b class="nc"><i>365</i>&nbsp;        return mOnUpdateTimeout != null;</b>
+<i>366</i>&nbsp;    }
+<i>367</i>&nbsp;
+<i>368</i>&nbsp;    private void setLocationUpdateTimeout() {
+<b class="nc"><i>369</i>&nbsp;        if (!isLocationUpdateTimeoutSet()) {</b>
+<b class="nc"><i>370</i>&nbsp;            mLowConnectionWarning = false;</b>
+<b class="nc"><i>371</i>&nbsp;            mOnUpdateTimeout = Timeout.schedule(&quot;LocationUpdateTimeout&quot;, new Runnable() {</b>
+<i>372</i>&nbsp;                @Override
+<i>373</i>&nbsp;                public void run() {
+<i>374</i>&nbsp;                    if (!mLowConnectionWarning) {
+<i>375</i>&nbsp;                        checkForPermissions();
+<i>376</i>&nbsp;                        if (hasPermissions()) {
+<i>377</i>&nbsp;                            mLowConnectionWarning = true;
+<i>378</i>&nbsp;                            ConfirmDialog.show(mContext, &quot;Cannot retrieve location&quot;,
+<i>379</i>&nbsp;                                    &quot;It appears the map is taking too long to retrieve &quot;
+<i>380</i>&nbsp;                                            + &quot;your location.\n\nYour network connection &quot;
+<i>381</i>&nbsp;                                            + &quot;or GPS may be slow or unavailable.&quot;,
+<i>382</i>&nbsp;                                    new OnClickListener() {
+<i>383</i>&nbsp;                                        @Override
+<i>384</i>&nbsp;                                        public void onClick(DialogInterface d, int w) {
+<i>385</i>&nbsp;                                            checkForPermissions();
+<i>386</i>&nbsp;                                            // Uncomment to repeat message
+<i>387</i>&nbsp;                                            // mLowConnectionWarning = false;
+<i>388</i>&nbsp;                                        }
+<i>389</i>&nbsp;                                    }, null);
+<i>390</i>&nbsp;                        }
+<i>391</i>&nbsp;                    }
+<i>392</i>&nbsp;                }
+<b class="nc"><i>393</i>&nbsp;            }, getLocationUpdateTimeoutTime(LOCATION_FIRST_UPDATE_TIMEOUT_MULTIPLIER));</b>
+<i>394</i>&nbsp;        }
+<b class="nc"><i>395</i>&nbsp;    }</b>
+<i>396</i>&nbsp;
+<i>397</i>&nbsp;    private void rescheduleLocationUpdateTimeout() {
+<b class="nc"><i>398</i>&nbsp;        rescheduleLocationUpdateTimeout(</b>
+<b class="nc"><i>399</i>&nbsp;                getLocationUpdateTimeoutTime(LOCATION_UPDATE_TIMEOUT_MULTIPLIER));</b>
+<b class="nc"><i>400</i>&nbsp;    }</b>
+<i>401</i>&nbsp;
+<i>402</i>&nbsp;    private void rescheduleLocationUpdateTimeout(long millis) {
+<b class="nc"><i>403</i>&nbsp;        if (isLocationUpdateTimeoutSet()) mOnUpdateTimeout.reschedule(millis);</b>
+<b class="nc"><i>404</i>&nbsp;        else setLocationUpdateTimeout();</b>
+<b class="nc"><i>405</i>&nbsp;    }</b>
+<i>406</i>&nbsp;
+<i>407</i>&nbsp;    private long getLocationUpdateTimeoutTime(int multiplier) {
+<b class="nc"><i>408</i>&nbsp;        return mIntervalRefresh * multiplier;</b>
+<i>409</i>&nbsp;    }
+<i>410</i>&nbsp;
+<i>411</i>&nbsp;    @NonNull
+<i>412</i>&nbsp;    public static LatLng getLatLng(@NonNull Location location) {
+<b class="fc"><i>413</i>&nbsp;        return getLatLng(location.getLatitude(), location.getLongitude());</b>
+<i>414</i>&nbsp;    }
+<i>415</i>&nbsp;
+<i>416</i>&nbsp;    @NonNull
+<i>417</i>&nbsp;    public static LatLng getLatLng(double latitude, double longitude) {
+<b class="fc"><i>418</i>&nbsp;        return new LatLng(latitude, longitude);</b>
+<i>419</i>&nbsp;    }
+<i>420</i>&nbsp;
+<i>421</i>&nbsp;    @NonNull
+<i>422</i>&nbsp;    public static Location getLocation(@NonNull LatLng latitudeLongitude) {
+<b class="fc"><i>423</i>&nbsp;        Location location = new Location(LocationManager.GPS_PROVIDER);</b>
+<b class="fc"><i>424</i>&nbsp;        location.setLatitude(latitudeLongitude.latitude);</b>
+<b class="fc"><i>425</i>&nbsp;        location.setLongitude(latitudeLongitude.longitude);</b>
+<b class="fc"><i>426</i>&nbsp;        return location;</b>
+<i>427</i>&nbsp;    }
+<i>428</i>&nbsp;
+<i>429</i>&nbsp;    public static LatLng move(LatLng start, double toNorth, double toEast) {
+<b class="nc"><i>430</i>&nbsp;        double lonDiff = meterToLongitude(toEast, start.latitude);</b>
+<b class="nc"><i>431</i>&nbsp;        double latDiff = meterToLatitude(toNorth);</b>
+<b class="nc"><i>432</i>&nbsp;        return new LatLng(start.latitude + latDiff, start.longitude</b>
+<i>433</i>&nbsp;                + lonDiff);
+<i>434</i>&nbsp;    }
+<i>435</i>&nbsp;
+<i>436</i>&nbsp;    private static double meterToLongitude(double meterToEast, double latitude) {
+<b class="nc"><i>437</i>&nbsp;        double latArc = Math.toRadians(latitude);</b>
+<b class="nc"><i>438</i>&nbsp;        double radius = Math.cos(latArc) * EARTH_RADIUS;</b>
+<b class="nc"><i>439</i>&nbsp;        double rad = meterToEast / radius;</b>
+<b class="nc"><i>440</i>&nbsp;        return Math.toDegrees(rad);</b>
+<i>441</i>&nbsp;    }
+<i>442</i>&nbsp;
+<i>443</i>&nbsp;    private static double meterToLatitude(double meterToNorth) {
+<b class="nc"><i>444</i>&nbsp;        double rad = meterToNorth / EARTH_RADIUS;</b>
+<b class="nc"><i>445</i>&nbsp;        return Math.toDegrees(rad);</b>
+<i>446</i>&nbsp;    }
+<i>447</i>&nbsp;
+<b class="fc"><i>448</i>&nbsp;    public enum Priority {</b>
+<b class="fc"><i>449</i>&nbsp;        HIGH_ACCURACY(LocationRequest.PRIORITY_HIGH_ACCURACY, 3000, 1000),</b>
+<b class="fc"><i>450</i>&nbsp;        LOW_POWER(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 9000,</b>
+<b class="fc"><i>451</i>&nbsp;                HIGH_ACCURACY.getPeriodMillis());</b>
+<i>452</i>&nbsp;
+<i>453</i>&nbsp;        private final int mPriority;
+<i>454</i>&nbsp;        private final long mPeriodMillis, mFastestPeriodMillis;
+<i>455</i>&nbsp;
+<b class="fc"><i>456</i>&nbsp;        Priority(int priority, long periodMillis, long fastestPeriodMillis) {</b>
+<b class="fc"><i>457</i>&nbsp;            this.mPriority = priority;</b>
+<b class="fc"><i>458</i>&nbsp;            mPeriodMillis = periodMillis;</b>
+<b class="fc"><i>459</i>&nbsp;            mFastestPeriodMillis = fastestPeriodMillis;</b>
+<b class="fc"><i>460</i>&nbsp;        }</b>
+<i>461</i>&nbsp;
+<i>462</i>&nbsp;        private int getLocationRequestPriority() {
+<b class="nc"><i>463</i>&nbsp;            return mPriority;</b>
+<i>464</i>&nbsp;        }
+<i>465</i>&nbsp;
+<i>466</i>&nbsp;        public long getPeriodMillis() {
+<b class="fc"><i>467</i>&nbsp;            return mPeriodMillis;</b>
+<i>468</i>&nbsp;        }
+<i>469</i>&nbsp;
+<i>470</i>&nbsp;        public long getFastestPeriodMillis() {
+<b class="nc"><i>471</i>&nbsp;            return mFastestPeriodMillis;</b>
+<i>472</i>&nbsp;        }
+<i>473</i>&nbsp;    }
+<i>474</i>&nbsp;
+<i>475</i>&nbsp;    public void getLocalityFromCurrentPosition(@NonNull LocalityCallback callback) {
+<b class="nc"><i>476</i>&nbsp;        GeocoderAdapter.getLocality(mContext, mLastLocation, callback);</b>
+<b class="nc"><i>477</i>&nbsp;    }</b>
+<i>478</i>&nbsp;
+<i>479</i>&nbsp;    private class RequestUpdatesTask implements Runnable {
+<i>480</i>&nbsp;        @Override
+<i>481</i>&nbsp;        public void run() {
+<i>482</i>&nbsp;            try {
+<i>483</i>&nbsp;                LocationServices.FusedLocationApi.requestLocationUpdates(
+<i>484</i>&nbsp;                        mGoogleApiClient, getLocationRequest(),
+<i>485</i>&nbsp;                        LocationAdapter.this);
+<i>486</i>&nbsp;                if (mOnPermissionsRequested != null) mOnPermissionsRequested.run();
+<i>487</i>&nbsp;            } catch (SecurityException e) {
+<i>488</i>&nbsp;                mHasPermissions = false;
+<i>489</i>&nbsp;                Log.e(TAG, &quot;Permissions restricted due to SecurityException&quot;, e);
+<i>490</i>&nbsp;            }
+<i>491</i>&nbsp;            mOnConnectedUpdateCallback = null;
+<i>492</i>&nbsp;            Log.v(TAG, &quot;Updates requested successfully.&quot;);
+<i>493</i>&nbsp;            setRequestingPermissions(false);
+<i>494</i>&nbsp;            rescheduleLocationUpdateTimeout();
+<i>495</i>&nbsp;        }
+<i>496</i>&nbsp;    }
+<i>497</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 06:07</div>
+</div>
+</body>
+</html>

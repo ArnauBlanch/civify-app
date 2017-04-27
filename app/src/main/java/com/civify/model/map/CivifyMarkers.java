@@ -77,8 +77,8 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
             CivifyMarker<?> civifyMarker = mMarkers.get(idify(tag));
             if (civifyMarker != null) {
                 Log.v(TAG, "Marker " + tag + " clicked.");
-                
-                // return true;
+                // TODO: Go to details
+                return true;
             }
         }
         return false;
