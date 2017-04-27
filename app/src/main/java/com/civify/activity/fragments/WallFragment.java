@@ -28,7 +28,7 @@ import java.util.List;
 public class WallFragment extends Fragment {
 
     private IssueAdapter mIssueAdapter;
-    private List<Issue> mIssueList;
+    private IssuesViewFragment mIssuesViewFragment;
 
     public WallFragment() {
         // Required empty public constructor
@@ -48,20 +48,25 @@ public class WallFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         SharedPreferences sharedPreferences =
                 getActivity().getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         mIssueAdapter = adapterFactory.getIssueAdapter(sharedPreferences);
+        mIssuesViewFragment = new IssuesViewFragment();
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.wall_container, mIssuesViewFragment)
+                .commit();
         mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
             @Override
             public void onSuccess(List<Issue> issues) {
-                mIssueList = new ArrayList<>(issues);
-                IssuesViewFragment issuesFragment = IssuesViewFragment.newInstance(mIssueList);
-                FragmentManager fragmentManager = getChildFragmentManager();
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.wall_fragments, issuesFragment)
-                        .commit();
+                mIssuesViewFragment.setIssuesList(issues);
             }
 
             @Override
@@ -69,6 +74,5 @@ public class WallFragment extends Fragment {
                 // TODO: do something
             }
         });
-        return view;
     }
 }
