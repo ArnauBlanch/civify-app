@@ -63,6 +63,7 @@ public class WallFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.wall_container, mIssuesViewFragment)
                 .commit();
+        // CivifyMap.refreshIssues(add ListIssuesSimpleCallback)
         mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
             @Override
             public void onSuccess(List<Issue> issues) {

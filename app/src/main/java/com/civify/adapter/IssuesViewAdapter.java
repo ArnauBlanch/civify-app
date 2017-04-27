@@ -2,6 +2,7 @@ package com.civify.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
         public MyViewHolder(View view) {
             super(view);
             mTextView = (TextView) view.findViewById(R.id.title);
-            mCount = (TextView) view.findViewById(R.id.count);
+            mCount = (TextView) view.findViewById(R.id.title2);
             mThumbnail = (ImageView) view.findViewById(R.id.thumbnail);
         }
     }
@@ -51,8 +52,13 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Issue issue = mIssueList.get(position);
+        String description = issue.getDescription();
+        String title = issue.getTitle();
+        Log.d("Wall", "Title " + issue.getTitle());
+        Log.d("Wall", "Description " + issue.getTitle());
         holder.mTextView.setText(issue.getTitle());
         holder.mCount.setText("fa 3 dies");
+        // dist = CivifyMap.getMarkers().get(issue.getIssueAuthToken()).getDistanceFromMe().
 
         // loading album cover using Glide library
         String imageUrl = ServiceGenerator.BASE_URL + issue.getPicture().getLargeUrl();
