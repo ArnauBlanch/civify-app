@@ -360,7 +360,8 @@ public class IssueAdapterTest {
 
     private void setUpIssue() throws ParseException {
         String dateString = "2017-04-22T22:11:41.000Z";
-        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT,
+                Locale.getDefault());
         Date date = dateFormat.parse(dateString);
 
         Picture picture = new Picture("picture-file-name", "picture-content-type",
