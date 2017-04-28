@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.civify.R;
-import com.civify.model.issue.Issue;
 
 public class EditIssueActivity extends BaseActivity {
 

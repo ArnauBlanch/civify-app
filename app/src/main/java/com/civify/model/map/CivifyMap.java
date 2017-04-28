@@ -23,7 +23,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
@@ -149,7 +148,8 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         issueMarker.getAddress(new LocalityCallback() {
             @Override
             public void onLocalityResponse(@NonNull String address) {
-                Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(mSelectedMarker.getIssue(),
+                Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(mSelectedMarker
+                                .getIssue(),
                         mSelectedMarker.getDistanceFromCurrentLocation(), address);
                 getContext().setFragment(issueDetailsFragment, DETAILS_ID);
             }
