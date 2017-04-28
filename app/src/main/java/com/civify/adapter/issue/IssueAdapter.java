@@ -31,9 +31,9 @@ public class IssueAdapter {
     static final String REPORTED_BY_USER_WITH_AUTH_TOKEN =
             "reported by User with auth token ";
     static final String UN = " un";
-    private static final String USER = "user";
-    public static final String RESOLUTION_ADDED = "Resolution added";
-    public static final String RESOLUTION_DELETED = "Resolution deleted";
+    static final String USER = "user";
+    static final String RESOLUTION_ADDED = "Resolution added";
+    static final String RESOLUTION_DELETED = "Resolution deleted";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -167,13 +167,13 @@ public class IssueAdapter {
             e.printStackTrace();
             return "";
         }
+    }
     // Resolutions
 
     private void issueResolution(String issueAuthToken, final String expectedResponse,
             final SimpleCallback callback) {
         JsonObject userToken = new JsonObject();
-        userToken.addProperty("user", UserAdapter.getCurrentUser().getUserAuthToken());
-
+        userToken.addProperty(USER, UserAdapter.getCurrentUser().getUserAuthToken());
         Call<MessageResponse> call = mIssueService.issueResolution(mAuthToken,
                 userToken, issueAuthToken);
         call.enqueue(new ExpectedResponseCallback(expectedResponse, callback));

@@ -156,5 +156,11 @@
   <string name="unreport_message">Issue was unreported successfully</string>
   <string name="report_error_message">Couldn\'t report the issue</string>
   <string name="unreport_error_message">Couldn\'t unreport the issue</string>
+  <string name="unresolve">Unresolve</string>
+  <string name="resolve">Resolve</string>
+  <string name="resolve_message">Issue was marked as resolved successfully</string>
+  <string name="unresolve_message">Issue was marked as unresolved successfully</string>
+  <string name="resolve_error_message">Couldn\'t mark the issue as resolved</string>
+  <string name="unresolve_error_message">Couldn\'t mark the issue as unresolved</string>
   <string name="too_far_from_issue">You\'re too far from this issue</string>
 </resources>

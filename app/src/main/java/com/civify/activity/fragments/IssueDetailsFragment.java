@@ -273,6 +273,7 @@ public class IssueDetailsFragment extends Fragment {
         } else {
             setupConfirmButton();
             setupReportButton();
+            setupResolveButton();
         }
     }
 
@@ -312,6 +313,24 @@ public class IssueDetailsFragment extends Fragment {
             IssueButtonListener buttonListener =
                     new IssueButtonListener(mViewDetails, mIssue, IssueButton.REPORT,
                             IssueButton.UNREPORT);
+            button.setOnClickListener(buttonListener);
+        }
+    }
+
+    private void setupResolveButton() {
+        AppCompatButton button = (AppCompatButton) mViewDetails.findViewById(R.id.resolveButton);
+        String issueUserToken = mIssue.getUserAuthToken();
+        String userToken = UserAdapter.getCurrentUser().getUserAuthToken();
+
+        if (issueUserToken.equals(userToken)) {
+            button.setAlpha(DISABLED_ALPHA);
+        } else {
+            if (mIssue.getResolvedByAuthUser()) {
+                changeButtonStyle(button, IssueButton.UNRESOLVE);
+            }
+            IssueButtonListener buttonListener =
+                    new IssueButtonListener(mViewDetails, mIssue, IssueButton.RESOLVE,
+                            IssueButton.UNRESOLVE);
             button.setOnClickListener(buttonListener);
         }
     }
