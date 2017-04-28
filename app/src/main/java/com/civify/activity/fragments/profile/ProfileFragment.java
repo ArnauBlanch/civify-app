@@ -2,7 +2,6 @@ package com.civify.activity.fragments.profile;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
@@ -40,10 +39,11 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
-        SharedPreferences sharedPreferences =
-                getActivity().getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
+        //SharedPreferences sharedPreferences =
+        //        getActivity().getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         //mCurrentUser = UserAdapter.getCurrentUser();
-        mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
+        //mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
+        mLoginAdapter = adapterFactory.getLoginAdapter(getContext());
         setHasOptionsMenu(true);
         mTitle = getResources().getString(R.string.profile_title);
     }

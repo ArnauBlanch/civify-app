@@ -1,6 +1,8 @@
 package com.civify.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginAdapterImpl;
@@ -27,17 +29,21 @@ public class AdapterFactory {
         return mUserAdapter;
     }
 
-    public LoginAdapter getLoginAdapter(SharedPreferences sharedPreferences) {
+    public LoginAdapter getLoginAdapter(@NonNull Context context) {
         if (mLoginAdapter == null) {
-            mLoginAdapter = new LoginAdapterImpl(sharedPreferences);
+            mLoginAdapter = new LoginAdapterImpl(getSharedPreferences(context));
         }
         return mLoginAdapter;
     }
 
-    public IssueAdapter getIssueAdapter(SharedPreferences sharedPreferences) {
+    public IssueAdapter getIssueAdapter(@NonNull Context context) {
         if (mIssueAdapter == null) {
-            mIssueAdapter = new IssueAdapter(sharedPreferences);
+            mIssueAdapter = new IssueAdapter(getSharedPreferences(context));
         }
         return mIssueAdapter;
+    }
+
+    private SharedPreferences getSharedPreferences(Context context) {
+        return context.getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
     }
 }

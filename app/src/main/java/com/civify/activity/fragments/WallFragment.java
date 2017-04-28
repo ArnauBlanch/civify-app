@@ -63,7 +63,7 @@ public class WallFragment extends Fragment {
         SharedPreferences sharedPreferences =
                 getActivity().getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
-        mIssueAdapter = adapterFactory.getIssueAdapter(sharedPreferences);
+        mIssueAdapter = adapterFactory.getIssueAdapter(getContext());
         mIssuesViewFragment = new IssuesViewFragment();
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
