@@ -1,0 +1,99 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CivifyMarker</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.model.map</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CivifyMarker (com.civify.model.map)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">CivifyMarker</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.model.map;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.DrawableRes;
+<i>4</i>&nbsp;import android.support.annotation.NonNull;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.civify.adapter.LocalityCallback;
+<i>7</i>&nbsp;import com.civify.model.issue.Issue;
+<i>8</i>&nbsp;import com.google.android.gms.maps.GoogleMap;
+<i>9</i>&nbsp;import com.google.android.gms.maps.model.LatLng;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public interface CivifyMarker&lt;E extends Issue&gt; {
+<i>12</i>&nbsp;    void attachToMap(@NonNull GoogleMap map);
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    GoogleMap getAttachedMap();
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    @NonNull
+<i>17</i>&nbsp;    String getTag();
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    @NonNull
+<i>20</i>&nbsp;    E getIssue();
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    void getAddress(LocalityCallback callback);
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    float getDistanceFromCurrentLocation();
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @NonNull
+<i>27</i>&nbsp;    CivifyMarker&lt;E&gt; setIcon(@DrawableRes int markerIcon);
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    LatLng getPosition();
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    @NonNull
+<i>32</i>&nbsp;    CivifyMarker&lt;E&gt; setPosition(@NonNull LatLng position);
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    float getRotation();
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    @NonNull
+<i>37</i>&nbsp;    CivifyMarker&lt;E&gt; setRotation(float rotation);
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    boolean isDraggable();
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    @NonNull
+<i>42</i>&nbsp;    CivifyMarker&lt;E&gt; setDraggable(boolean draggable);
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    boolean isVisible();
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @NonNull
+<i>47</i>&nbsp;    CivifyMarker&lt;E&gt; setVisible(boolean visible);
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    void remove();
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    boolean isPresent();
+<i>52</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 17:08</div>
+</div>
+</body>
+</html>
