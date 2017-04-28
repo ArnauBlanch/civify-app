@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.civify.R;
 import com.civify.adapter.issue.IssueAdapter;
@@ -26,6 +27,7 @@ public class WallFragment extends Fragment {
 
     private IssueAdapter mIssueAdapter;
     private IssuesViewFragment mIssuesViewFragment;
+    private ProgressBar mProgressBar;
 
     public WallFragment() {
         // Required empty public constructor
@@ -45,6 +47,7 @@ public class WallFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.loading_wall);
         return view;
     }
 
@@ -63,6 +66,7 @@ public class WallFragment extends Fragment {
         mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
             @Override
             public void onSuccess(List<Issue> issues) {
+                mProgressBar.setVisibility(View.GONE);
                 mIssuesViewFragment.setIssuesList(issues);
             }
 

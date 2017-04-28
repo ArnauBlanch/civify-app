@@ -16,6 +16,7 @@ import com.civify.utils.ServiceGenerator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -28,6 +29,7 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
     public IssuesViewAdapter(Context context, List<Issue> issueList) {
         this.mContext = context;
         this.mIssueList = issueList;
+        Locale.setDefault(Locale.ENGLISH);
         mPrettyTime = new PrettyTime();
     }
 
@@ -45,12 +47,12 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
         holder.getTextView().setText(issue.getTitle());
         Date created = issue.getCreatedAt();
         holder.getCount().setText(mPrettyTime.format(created));
-        String numConfirms = Integer.toString(issue.getConfirmVotes());
+        String numConfirms = '+' + Integer.toString(issue.getConfirmVotes());
         holder.getNumConfirms().setText(numConfirms);
         // dist = CivifyMap.getMarkers().get(issue.getIssueAuthToken()).getDistanceFromMe().
 
         // loading album cover using Glide library
-        String imageUrl = ServiceGenerator.BASE_URL + issue.getPicture().getLargeUrl();
+        String imageUrl = ServiceGenerator.BASE_URL + issue.getPicture().getMedUrl();
         Glide.with(mContext).load(imageUrl).into(holder.mThumbnail);
     }
 
