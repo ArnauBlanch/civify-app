@@ -47,21 +47,29 @@ public class IssueButtonListener implements OnClickListener {
         if (mDoButton == IssueButton.CONFIRM) {
             mIssueAdapter
                     .confirmIssue(mIssue.getIssueAuthToken(),
-                            new IssueButtonCallback(mDoButton));
+                            new IssueButtonCallback(mUndoButton));
         } else if (mDoButton == IssueButton.REPORT) {
             mIssueAdapter
                     .reportIssue(mIssue.getIssueAuthToken(),
-                            new IssueButtonCallback(mDoButton));
+                            new IssueButtonCallback(mUndoButton));
+        } else {
+            mIssueAdapter
+                    .resolveIssue(mIssue.getIssueAuthToken(),
+                            new IssueButtonCallback(mUndoButton));
         }
     }
 
     private void undoAction() {
         if (mDoButton == IssueButton.CONFIRM) {
             mIssueAdapter.unconfirmIssue(mIssue.getIssueAuthToken(),
-                    new IssueButtonCallback(mUndoButton));
+                    new IssueButtonCallback(mDoButton));
         } else if (mDoButton == IssueButton.REPORT) {
             mIssueAdapter.unreportIssue(mIssue.getIssueAuthToken(),
-                    new IssueButtonCallback(mUndoButton));
+                    new IssueButtonCallback(mDoButton));
+        } else {
+            mIssueAdapter
+                    .unresolveIssue(mIssue.getIssueAuthToken(),
+                            new IssueButtonCallback(mDoButton));
         }
     }
 
