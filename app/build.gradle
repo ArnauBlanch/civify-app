@@ -104,6 +104,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
     compile 'com.mikhaellopez:circularimageview:3.0.2'
     compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.google.android.gms:play-services-maps:10.2.0'
