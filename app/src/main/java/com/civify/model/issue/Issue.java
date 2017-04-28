@@ -2,18 +2,13 @@ package com.civify.model.issue;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 
-import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Date;
 
 public class Issue implements Serializable {
@@ -72,13 +67,23 @@ public class Issue implements Serializable {
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
+    @Expose(serialize = false)
+    @SerializedName("confirmed_by_auth_user")
+    private boolean mConfirmedByAuthUser;
+
+    @Expose(serialize = false)
+    @SerializedName("reported_by_auth_user")
+    private boolean mReportedByAuthUser;
+
+    @Expose(serialize = false)
+    @SerializedName("resolved_by_auth_user")
+    private boolean mResolvedByAuthUser;
+
     @Expose
     @SerializedName("picture")
     private Picture mPicture;
 
-    public Issue() {
-
-    }
+    public Issue() { }
 
     public Issue(String title, String description, Category category, boolean risk,
             double longitude, double latitude, Bitmap pictureBitmap, String userAuthToken) {
@@ -92,7 +97,6 @@ public class Issue implements Serializable {
         mConfirmVotes = 0;
         mReports = 0;
         mUserAuthToken = userAuthToken;
-        Log.v("Issue creadora", pictureBitmap.toString());
         setPicture(pictureBitmap);
     }
 
@@ -236,9 +240,51 @@ public class Issue implements Serializable {
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
     }
 
-    public Bitmap getPictureBitmap() throws IOException {
-        URL url = new URL(ServiceGenerator.BASE_URL + mPicture.getLargeUrl());
-        return BitmapFactory.decodeStream(url.openConnection().getInputStream());
+    public boolean getConfirmedByAuthUser() {
+        return mConfirmedByAuthUser;
     }
 
+    public boolean getReportedByAuthUser() {
+        return mReportedByAuthUser;
+    }
+
+    public boolean getResolvedByAuthUser() {
+        return mResolvedByAuthUser;
+    }
+
+    @Override
+    public String toString() {
+        return '{'
+                + "mTitle='"
+                + mTitle
+                + '\''
+                + ", mDescription='"
+                + mDescription
+                + '\''
+                + ", mCategory="
+                + mCategory
+                + ", mRisk="
+                + mRisk
+                + ", mLongitude="
+                + mLongitude
+                + ", mLatitude="
+                + mLatitude
+                + ", mConfirmVotes="
+                + mConfirmVotes
+                + ", mResolvedVotes="
+                + mResolvedVotes
+                + ", mReports="
+                + mReports
+                + ", mCreatedAt="
+                + mCreatedAt
+                + ", mUpdatedAt="
+                + mUpdatedAt
+                + ", mIssueAuthToken='"
+                + mIssueAuthToken
+                + '\''
+                + ", mUserAuthToken='"
+                + mUserAuthToken
+                + '\''
+                + '}';
+    }
 }

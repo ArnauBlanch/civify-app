@@ -15,7 +15,7 @@
   <string name="no">No</string>
   <string name="pose_a_risk">Does it pose a risk to people?</string>
   <string name="take_a_picture">Do you have a photo of the issue?</string>
-  <string name="report_new_issue">Report new issue</string>
+  <string name="create_new_issue">Change new issue</string>
   <string name="something_went_wrong">Something went wrong</string>
   <string name="havent_picked_image">You haven\'t picked an image!</string>
   <string name="ok">OK</string>
@@ -138,6 +138,7 @@
   <string name="tab_label_badges">BADGES</string>
   <string name="tab_spec_issues">Issues</string>
   <string name="tab_spec_badges">Badges</string>
+  <string name="wall_title">Wall</string>
 
   <string name="share">share</string>
   <string name="category">Category</string>
@@ -146,6 +147,26 @@
   <string name='today'>today</string>
   <string name='km'>km</string>
   <string name="m">m</string>
+  <string name="unconfirm">Unconfirm</string>
+  <string name="confirm">Confirm</string>
+  <string name="confirm_message">Issue was confirmed successfully</string>
+  <string name="unconfirm_message">Issue was unconfirmed successfully</string>
+  <string name="confirm_error_message">Couldn\'t confirm the issue</string>
+  <string name="unconfirm_error_message">Couldn\'t unconfirm the issue</string>
+  <string name="couldnt_update_issue_info">Couldn\'t get updated issue info</string>
+  <string name="unreport">Unreport</string>
+  <string name="report">Report</string>
+  <string name="report_message">Issue was reported successfully</string>
+  <string name="unreport_message">Issue was unreported successfully</string>
+  <string name="report_error_message">Couldn\'t report the issue</string>
+  <string name="unreport_error_message">Couldn\'t unreport the issue</string>
+  <string name="unresolve">Unresolve</string>
+  <string name="resolve">Resolve</string>
+  <string name="resolve_message">Issue was marked as resolved successfully</string>
+  <string name="unresolve_message">Issue was marked as unresolved successfully</string>
+  <string name="resolve_error_message">Couldn\'t mark the issue as resolved</string>
+  <string name="unresolve_error_message">Couldn\'t mark the issue as unresolved</string>
+  <string name="too_far_from_issue">You\'re too far from this issue</string>
   <string name='daysAgo'>days ago</string>
   <string name="edit_issue">Edit Issue</string>
   <string name="delete_issue">Delete Issue</string>
