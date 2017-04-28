@@ -17,17 +17,13 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.MainActivity;
 import com.civify.adapter.LoginAdapter;
+import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProfileFragment extends Fragment {
 
     private String mTitle;
-
+    private User mCurrentUser;
     private LoginAdapter mLoginAdapter;
     private FragmentTabHost mTabHost;
 
@@ -37,8 +33,6 @@ public class ProfileFragment extends Fragment {
 
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -48,6 +42,7 @@ public class ProfileFragment extends Fragment {
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         SharedPreferences sharedPreferences =
                 getActivity().getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
+        //mCurrentUser = UserAdapter.getCurrentUser();
         mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
         setHasOptionsMenu(true);
         mTitle = getResources().getString(R.string.profile_title);
@@ -64,9 +59,11 @@ public class ProfileFragment extends Fragment {
         mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
 
+        IssuesProfileFragment issuesFragment = new IssuesProfileFragment();
+
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.tab_spec_issues))
-                        .setIndicator(getString(R.string.tab_label_issues), null),
-                            TabHostFragment.class, null);
+                                .setIndicator(getString(R.string.tab_label_issues), null),
+                            issuesFragment.getClass(), null);
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.tab_spec_badges))
                         .setIndicator(getString(R.string.tab_label_badges), null),
                             TabHostFragment.class, null);

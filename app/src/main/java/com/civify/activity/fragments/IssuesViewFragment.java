@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
-import com.civify.adapter.IssuesViewAdapter;
+import com.civify.adapter.issue.IssuesViewAdapter;
 import com.civify.model.issue.Issue;
 
 import java.util.ArrayList;
