@@ -29,7 +29,7 @@ public interface IssueService {
             ("issue_auth_token")
             String issueAuthToken);
 
-    @DELETE("/issues/íssue_auth_token}")
+    @DELETE("/issues/{issue_auth_token}")
     Call<Issue> deleteIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")
             String issueAuthToken);
 }
