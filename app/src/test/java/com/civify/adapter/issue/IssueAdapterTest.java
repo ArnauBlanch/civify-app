@@ -1,5 +1,8 @@
 package com.civify.adapter.issue;
 
+import static com.civify.adapter.issue.IssueAdapter.ISSUE_WITH_AUTH_TOKEN;
+import static com.civify.adapter.issue.IssueAdapter.REPORTED_BY_USER_WITH_AUTH_TOKEN;
+import static com.civify.adapter.issue.IssueAdapter.UN;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.mock;
@@ -9,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
@@ -51,7 +55,7 @@ public class IssueAdapterTest {
     private User mUser;
 
     @Before
-    public void setUp() throws IOException, ParseException {
+    public void setUp() throws IOException {
         mMockWebServer = new MockWebServer();
         mMockWebServer.start();
         mGson = new GsonBuilder()
@@ -63,7 +67,6 @@ public class IssueAdapterTest {
         IssueService issueService = retrofit.create(IssueService.class);
         SharedPreferences sharedPreferences = mock(SharedPreferences.class);
         mIssueAdapter = new IssueAdapter(issueService, sharedPreferences);
-        setUpIssue();
     }
 
     @After
@@ -73,7 +76,8 @@ public class IssueAdapterTest {
     }
 
     @Test
-    public void testValidCreateIssue() throws InterruptedException {
+    public void testValidCreateIssue() throws InterruptedException, ParseException {
+        setUpIssue();
         String jsonBody = mGson.toJson(mIssue);
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_CREATED)
@@ -136,7 +140,8 @@ public class IssueAdapterTest {
     }
 
     @Test
-    public void testInvalidCreateIssue() throws InterruptedException {
+    public void testInvalidCreateIssue() throws InterruptedException, ParseException {
+        setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
         MockResponse mockResponse = new MockResponse()
@@ -154,7 +159,8 @@ public class IssueAdapterTest {
     }
 
     @Test
-    public void testValidGetIssues() throws InterruptedException {
+    public void testValidGetIssues() throws InterruptedException, ParseException {
+        setUpIssue();
         List<Issue> issueList = new ArrayList<>();
         issueList.add(mIssue);
         issueList.add(mIssue);
@@ -199,7 +205,8 @@ public class IssueAdapterTest {
     }
 
     @Test
-    public void testInvalidGetIssues() throws InterruptedException {
+    public void testInvalidGetIssues() throws InterruptedException, ParseException {
+        setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
         MockResponse mockResponse = new MockResponse()
@@ -215,7 +222,8 @@ public class IssueAdapterTest {
     }
 
     @Test
-    public void testValidGetIssue() throws InterruptedException {
+    public void testValidGetIssue() throws InterruptedException, ParseException {
+        setUpIssue();
         String jsonBody = mGson.toJson(mIssue);
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
@@ -256,7 +264,8 @@ public class IssueAdapterTest {
     }
 
     @Test
-    public void testInvalidGetIssue() {
+    public void testInvalidGetIssue() throws ParseException {
+        setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
         MockResponse mockResponse = new MockResponse()
@@ -268,6 +277,84 @@ public class IssueAdapterTest {
         mIssueAdapter.getIssue(mIssue.getIssueAuthToken(), mockCallback);
 
         // Test mockCallback.onFailure() is called
+        verify(mockCallback, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void testValidConfirm() {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
+                + "\" " + REPORTED_BY_USER_WITH_AUTH_TOKEN
+                + "user-auth-token" + '"';
+
+        JsonObject body = new JsonObject();
+        body.addProperty("message", expMessage);
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body.toString());
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.reportIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onSuccess();
+    }
+
+    @Test
+    public void testInvalidConfirm() {
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.reportIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void testValidUnconfirm() {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
+                + UN + REPORTED_BY_USER_WITH_AUTH_TOKEN
+                + "user-auth-token" + '"';
+
+        JsonObject body = new JsonObject();
+        body.addProperty("message", expMessage);
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body.toString());
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.unreportIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onSuccess();
+    }
+
+    @Test
+    public void testInvalidUnconfirm() {
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.unreportIssue("issue-auth-token", mockCallback);
+
         verify(mockCallback, timeout(1000)).onFailure();
     }
 
