@@ -63,7 +63,7 @@ public class CreateIssueActivity extends CameraGalleryActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.report_new_issue));
+        getSupportActionBar().setTitle(getString(R.string.create_new_issue));
 
         setupCloseKeyboard(findViewById(android.R.id.content));
     }

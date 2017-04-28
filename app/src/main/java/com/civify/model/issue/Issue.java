@@ -2,17 +2,13 @@ package com.civify.model.issue;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Date;
 
 public class Issue implements Serializable {
@@ -70,6 +66,14 @@ public class Issue implements Serializable {
     @Expose(serialize = false)
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
+
+    @Expose(serialize = false)
+    @SerializedName("confirmed_by_auth_user")
+    private boolean mConfirmedByAuthUser;
+
+    @Expose(serialize = false)
+    @SerializedName("reported_by_auth_user")
+    private boolean mReportedByAuthUser;
 
     @Expose
     @SerializedName("picture")
@@ -232,9 +236,16 @@ public class Issue implements Serializable {
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
     }
 
-    public Bitmap getPictureBitmap() throws IOException {
-        URL url = new URL(ServiceGenerator.BASE_URL + mPicture.getLargeUrl());
-        return BitmapFactory.decodeStream(url.openConnection().getInputStream());
+    public boolean getConfirmedByAuthUser() {
+        return mConfirmedByAuthUser;
+    }
+
+    public void setConfirmedByAuthUser(boolean confirmation) {
+        mConfirmedByAuthUser = confirmation;
+    }
+
+    public boolean getReportedByAuthUser() {
+        return mReportedByAuthUser;
     }
 
     @Override
