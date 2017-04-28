@@ -1,5 +1,6 @@
 package com.civify.adapter;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.civify.model.MessageResponse;
@@ -30,6 +31,7 @@ public class UserAdapter {
     public static final String USER_DOESNT_EXIST = "User not exists";
 
     private static User sCurrentUser;
+    private String mAuthToken;
 
     private UserService mUserService;
 
@@ -42,6 +44,14 @@ public class UserAdapter {
         mUserService = userService;
     }
 
+    public UserAdapter(SharedPreferences sharedPreferences) {
+        this(ServiceGenerator.getInstance().createService(UserService.class), sharedPreferences);
+    }
+
+    public UserAdapter(UserService service, SharedPreferences sharedPreferences) {
+        this.mUserService = service;
+        this.mAuthToken = sharedPreferences.getString(LoginAdapterImpl.AUTH_TOKEN, "");
+    }
     public void setService(UserService userService) {
         mUserService = userService;
     }
@@ -176,5 +186,25 @@ public class UserAdapter {
 
     public static User getCurrentUser() {
         return sCurrentUser;
+    }
+
+    public void getUser(String userAuthToken, final UserSimpleCallback callback) {
+        Call<User> call = mUserService.getUser(mAuthToken, userAuthToken);
+        call.enqueue(new Callback<User>() {
+
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 }

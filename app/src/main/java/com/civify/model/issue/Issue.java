@@ -1,11 +1,25 @@
 package com.civify.model.issue;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
+
+import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.URL;
 import java.util.Date;
 
-public class Issue {
+public class Issue implements Serializable {
+
+    private static final int BITMAP_COMPRESS_VALUE = 70;
+
     @Expose
     @SerializedName("title")
     private String mTitle;
@@ -24,25 +38,21 @@ public class Issue {
 
     @Expose
     @SerializedName("longitude")
-    private float mLongitude;
+    private double mLongitude;
 
     @Expose
     @SerializedName("latitude")
-    private float mLatitude;
+    private double mLatitude;
 
-    @Expose
+    @Expose(serialize = false)
     @SerializedName("confirm_votes")
     private int mConfirmVotes;
 
-    @Expose
+    @Expose(serialize = false)
     @SerializedName("resolved_votes")
     private int mResolvedVotes;
 
-    @Expose
-    @SerializedName("resolved")
-    private boolean mResolved;
-
-    @Expose
+    @Expose(serialize = false)
     @SerializedName("reports")
     private int mReports;
 
@@ -58,7 +68,7 @@ public class Issue {
     @SerializedName("issue_auth_token")
     private String mIssueAuthToken;
 
-    @Expose
+    @Expose(serialize = false)
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
@@ -70,24 +80,24 @@ public class Issue {
 
     }
 
-    public Issue(String title, String description, Category category, boolean risk, float longitude,
-            float latitude, Picture picture, String userAuthToken) {
+    public Issue(String title, String description, Category category, boolean risk,
+            double longitude, double latitude, Bitmap pictureBitmap, String userAuthToken) {
         mTitle = title;
         mDescription = description;
         mCategory = category;
         mRisk = risk;
         mLongitude = longitude;
         mLatitude = latitude;
-        mPicture = picture;
-        mResolved = false;
         mResolvedVotes = 0;
         mConfirmVotes = 0;
         mReports = 0;
         mUserAuthToken = userAuthToken;
+        Log.v("Issue creadora", pictureBitmap.toString());
+        setPicture(pictureBitmap);
     }
 
-    public Issue(String title, String description, Category category, boolean risk, float longitude,
-            float latitude, int confirmVotes, int resolvedVotes, boolean resolved, int reports,
+    public Issue(String title, String description, Category category, boolean risk,
+            double longitude, double latitude, int confirmVotes, int resolvedVotes, int reports,
             Date createdAt, Date updatedAt, String issueAuthToken, String userAuthToken,
             Picture picture) {
         mTitle = title;
@@ -98,7 +108,6 @@ public class Issue {
         mLatitude = latitude;
         mConfirmVotes = confirmVotes;
         mResolvedVotes = resolvedVotes;
-        mResolved = resolved;
         mReports = reports;
         mCreatedAt = createdAt;
         mUpdatedAt = updatedAt;
@@ -139,7 +148,7 @@ public class Issue {
         this.mRisk = risk;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return mLongitude;
     }
 
@@ -147,7 +156,7 @@ public class Issue {
         this.mLongitude = longitude;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return mLatitude;
     }
 
@@ -169,14 +178,6 @@ public class Issue {
 
     public void setResolvedVotes(int resolvedVotes) {
         this.mResolvedVotes = resolvedVotes;
-    }
-
-    public boolean isResolved() {
-        return mResolved;
-    }
-
-    public void setResolved(boolean resolved) {
-        this.mResolved = resolved;
     }
 
     public int getReports() {
@@ -226,4 +227,18 @@ public class Issue {
     public void setPicture(Picture picture) {
         mPicture = picture;
     }
+
+    public void setPicture(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(CompressFormat.JPEG, BITMAP_COMPRESS_VALUE, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        mPicture = new Picture("issue-picture", "image/jpg",
+                Base64.encodeToString(byteArray, Base64.DEFAULT));
+    }
+
+    public Bitmap getPictureBitmap() throws IOException {
+        URL url = new URL(ServiceGenerator.BASE_URL + mPicture.getLargeUrl());
+        return BitmapFactory.decodeStream(url.openConnection().getInputStream());
+    }
+
 }

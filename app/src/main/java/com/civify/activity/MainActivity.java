@@ -1,10 +1,8 @@
 package com.civify.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -67,14 +65,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loginListener() {
-        SharedPreferences userpreferences = getSharedPreferences("USERPREFS",
-                Context.MODE_PRIVATE);
-        LoginAdapter loginAdapter = AdapterFactory.getInstance()
-                .getLoginAdapter(userpreferences);
+        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(this);
         loginAdapter.isLogged(new LoginFinishedCallback() {
             @Override
             public void onLoginSucceeded(User u) {
                 Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
 

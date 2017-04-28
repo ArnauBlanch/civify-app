@@ -1,6 +1,7 @@
 package com.civify.utils;
 
-import com.civify.service.CivifyLoginService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -9,30 +10,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public final class ServiceGenerator {
-    private static final String BASE_URL = "http://10.4.41.152:3000/";
-    // Put the server's IP
-
-    private static Retrofit.Builder sBuilder =
-            new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create());
-
-    private static Retrofit sRetrofit = sBuilder.build();
-
+    public static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.000Z";
+    public static final String BASE_URL = "http://staging-api.civify.cf";
     private static ServiceGenerator sInstance;
 
-    private final Retrofit.Builder mLoginBuilder;
-    private Retrofit mLoginRetrofit;
+    private final Retrofit.Builder mBuilder;
+    private Retrofit mRetrofit;
     private final OkHttpClient.Builder mHttpClient;
     private final HttpLoggingInterceptor mLogging;
 
     private ServiceGenerator() {
-        // Login init
-        mLoginBuilder = new Retrofit.Builder()
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .setDateFormat(RAILS_DATE_FORMAT)
+                .create();
+        mBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create());
-        mLoginRetrofit = mLoginBuilder.build();
+                .addConverterFactory(GsonConverterFactory.create(gson));
+        mRetrofit = mBuilder.build();
         mHttpClient = new OkHttpClient.Builder();
         mLogging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -45,17 +41,12 @@ public final class ServiceGenerator {
         return sInstance;
     }
 
-    public static <S> S createService(
-            Class<S> serviceClass) {
-        return sRetrofit.create(serviceClass);
-    }
-
-    public CivifyLoginService createLoginService() {
+    public <S> S createService(Class<S> serviceClass) {
         if (!mHttpClient.interceptors().contains(mLogging)) {
             mHttpClient.addInterceptor(mLogging);
         }
-        mLoginBuilder.client(mHttpClient.build());
-        mLoginRetrofit = mLoginBuilder.build();
-        return mLoginRetrofit.create(CivifyLoginService.class);
+        mBuilder.client(mHttpClient.build());
+        mRetrofit = mBuilder.build();
+        return mRetrofit.create(serviceClass);
     }
 }

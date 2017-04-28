@@ -21,18 +21,32 @@
 
   <Spinner
       android:id="@+id/category_spinner"
-      android:layout_width="260dp"
+      android:contentDescription="spinner category"
+      android:layout_width="300dp"
       android:layout_height="wrap_content"
       android:layout_marginBottom="20dp"
       android:layout_gravity="center_horizontal"
-      android:layout_marginTop="20dp" />
+      android:layout_marginTop="50dp" />
+
+  <TextView
+      android:id="@+id/category_validation"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:textColor="@color/red"
+      android:layout_gravity="center_horizontal"
+      android:text="@string/must_choose_category"
+      android:gravity="center_vertical"
+      fontPath="fonts/Nunito-SemiBold.ttf"
+      android:visibility="invisible"
+      />
 
   <android.support.v7.widget.AppCompatButton
       android:id="@+id/button0"
       android:layout_width="180dp"
       android:layout_height="50dp"
       android:layout_gravity="center_horizontal"
-      android:layout_marginTop="50dp"
+      android:layout_marginTop="30dp"
       android:background="@drawable/button_round"
       android:onClick="categoryButtonListener"
       android:text="@string/continue_button"

@@ -9,11 +9,14 @@ import android.util.Log;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
-import com.civify.model.Issue;
+import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class IssueMarker implements CivifyMarker<Issue> {
 
@@ -26,14 +29,26 @@ public class IssueMarker implements CivifyMarker<Issue> {
 
     IssueMarker(@NonNull Issue issue, @NonNull CivifyMap map) {
         mIssue = issue;
+        setMap(map);
+    }
+
+    @Override
+    public void setMap(@NonNull CivifyMap map) {
+        remove();
         mMap = map;
+        addToMap();
+    }
+
+    private void addToMap() {
         mMarker = mMap.getGoogleMap().addMarker(new MarkerOptions()
-                .position(LocationAdapter.getLatLng(issue.getLatitude(), issue.getLongitude()))
-                .title(issue.getTitle())
+                .position(LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()))
+                .title(mIssue.getTitle())
                 .draggable(false)
                 .flat(false)
         );
-        mMarker.setTag(issue.getAuthToken());
+        mMarker.setTag(mIssue.getIssueAuthToken());
+        // FIXME: Resize icons
+        // setMarkerIcon(mIssue.getCategory().getMarker());
         mPresent = true;
     }
 
@@ -68,7 +83,7 @@ public class IssueMarker implements CivifyMarker<Issue> {
 
     @NonNull
     @Override
-    public IssueMarker setMarkerIcon(@DrawableRes int markerIcon) {
+    public final IssueMarker setMarkerIcon(@DrawableRes int markerIcon) {
         Bitmap icon = BitmapFactory.decodeResource(mMap.getContext().getResources(), markerIcon);
         if (icon != null) {
             mMarker.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
@@ -85,8 +100,8 @@ public class IssueMarker implements CivifyMarker<Issue> {
     @Override
     public IssueMarker setMarkerPosition(@NonNull LatLng position) {
         mMarker.setPosition(position);
-        mIssue.setLatitude(position.latitude);
-        mIssue.setLongitude(position.longitude);
+        mIssue.setLatitude((float) position.latitude);
+        mIssue.setLongitude((float) position.longitude);
         return this;
     }
 
@@ -132,11 +147,17 @@ public class IssueMarker implements CivifyMarker<Issue> {
             mMarker.remove();
             mPresent = false;
             Log.v(TAG, "Removed marker " + getTag());
-        } else Log.v(TAG, getTag() + " already removed.");
+        }
     }
 
     @Override
     public boolean isPresent() {
         return mPresent;
+    }
+
+    public static Collection<IssueMarker> getMarkers(Collection<Issue> issues, CivifyMap map) {
+        Collection<IssueMarker> markers = new LinkedList<>();
+        for (Issue issue : issues) markers.add(new IssueMarker(issue, map));
+        return markers;
     }
 }

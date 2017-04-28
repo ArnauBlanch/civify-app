@@ -14,9 +14,10 @@
       android:layout_height="?attr/actionBarSize"
       android:background="#ffffff"
       android:id="@+id/create_issue_toolbar"
+
       app:popupTheme="@style/AppTheme" />
 
-  <android.support.v4.view.ViewPager
+  <com.civify.activity.CustomViewPager
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:id="@+id/viewpager" />
