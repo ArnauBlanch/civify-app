@@ -3,7 +3,6 @@ package com.civify.model.issue;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.util.Base64;
-import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -84,9 +83,7 @@ public class Issue implements Serializable {
     @SerializedName("picture")
     private Picture mPicture;
 
-    public Issue() {
-
-    }
+    public Issue() { }
 
     public Issue(String title, String description, Category category, boolean risk,
             double longitude, double latitude, Bitmap pictureBitmap, String userAuthToken) {
@@ -100,7 +97,6 @@ public class Issue implements Serializable {
         mConfirmVotes = 0;
         mReports = 0;
         mUserAuthToken = userAuthToken;
-        Log.v("Issue creadora", pictureBitmap.toString());
         setPicture(pictureBitmap);
     }
 
@@ -256,4 +252,39 @@ public class Issue implements Serializable {
         return mResolvedByAuthUser;
     }
 
+    @Override
+    public String toString() {
+        return '{'
+                + "mTitle='"
+                + mTitle
+                + '\''
+                + ", mDescription='"
+                + mDescription
+                + '\''
+                + ", mCategory="
+                + mCategory
+                + ", mRisk="
+                + mRisk
+                + ", mLongitude="
+                + mLongitude
+                + ", mLatitude="
+                + mLatitude
+                + ", mConfirmVotes="
+                + mConfirmVotes
+                + ", mResolvedVotes="
+                + mResolvedVotes
+                + ", mReports="
+                + mReports
+                + ", mCreatedAt="
+                + mCreatedAt
+                + ", mUpdatedAt="
+                + mUpdatedAt
+                + ", mIssueAuthToken='"
+                + mIssueAuthToken
+                + '\''
+                + ", mUserAuthToken='"
+                + mUserAuthToken
+                + '\''
+                + '}';
+    }
 }

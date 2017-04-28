@@ -6,6 +6,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -419,7 +420,7 @@ public class LocationAdapter implements
 
     @NonNull
     public static Location getLocation(@NonNull LatLng latitudeLongitude) {
-        Location location = new Location("");
+        Location location = new Location(LocationManager.GPS_PROVIDER);
         location.setLatitude(latitudeLongitude.latitude);
         location.setLongitude(latitudeLongitude.longitude);
         return location;

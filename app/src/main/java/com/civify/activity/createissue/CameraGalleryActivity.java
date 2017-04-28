@@ -33,12 +33,13 @@ public abstract class CameraGalleryActivity extends BaseActivity {
     public static final String IMAGE = "image/*";
     public static final int DEST_WIDTH = 1600;
     public static final String COM_CIVIFY_PROVIDER = "com.civify.provider";
-    public static final int MIN_TIME = 400;
     private static final int CAMERA_REQUEST = 0;
     private static final int GALLERY_REQUEST = 1;
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 2;
 
     private String mCameraPhotoPath;
+
+    protected abstract void handlePhotoResult(Bitmap imageBitmap);
 
     // Permissions
 
@@ -65,7 +66,7 @@ public abstract class CameraGalleryActivity extends BaseActivity {
         }
     }
 
-    protected boolean checkAndRequestPermission(String permission, int messageRes) {
+    private boolean checkAndRequestPermission(String permission, int messageRes) {
         int hasPermission = ContextCompat.checkSelfPermission(this, permission);
         if (hasPermission != PackageManager.PERMISSION_GRANTED) {
             requestPermission(permission, messageRes);
@@ -80,8 +81,6 @@ public abstract class CameraGalleryActivity extends BaseActivity {
     }
 
     // Camera & gallery
-
-    protected abstract void handlePhotoResult(Bitmap imageBitmap);
 
     public void cameraButtonListener(View v) {
         if (checkAndRequestPermission(permission.READ_EXTERNAL_STORAGE,
@@ -123,9 +122,6 @@ public abstract class CameraGalleryActivity extends BaseActivity {
         File storageDir = new File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
                 "Camera");
-        if (!storageDir.exists()) {
-            storageDir.mkdirs();
-        }
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         // Save a file: path for use with ACTION_VIEW intents
