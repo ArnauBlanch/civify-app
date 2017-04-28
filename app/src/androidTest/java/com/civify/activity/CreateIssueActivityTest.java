@@ -18,7 +18,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
@@ -47,7 +46,6 @@ import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 
 import com.civify.R;
 import com.civify.activity.createissue.CreateIssueActivity;
@@ -104,9 +102,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
     @Before
     public void setUp() {
         Context context = getInstrumentation().getTargetContext();
-        SharedPreferences userPreferences =
-                PreferenceManager.getDefaultSharedPreferences(context);
-        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(userPreferences);
+        //SharedPreferences userPreferences =
+        //        PreferenceManager.getDefaultSharedPreferences(context);
+        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
         loginAdapter.logout();
         loginAdapter.login("ArnauBlanch2", "Test1234", new LoginFinishedCallback() {
             @Override public void onLoginSucceeded(User u) {
@@ -144,9 +142,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
         Retrofit retrofit = new Retrofit.Builder().baseUrl(mockWebServer.url("").toString())
                 .addConverterFactory(GsonConverterFactory.create(gson)).build();
         IssueService issueService = retrofit.create(IssueService.class);
-        SharedPreferences userPreferences = getTargetContext()
-                .getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        IssueAdapter issueAdapter = AdapterFactory.getInstance().getIssueAdapter(userPreferences);
+        IssueAdapter issueAdapter =
+                AdapterFactory.getInstance().getIssueAdapter(getTargetContext());
         issueAdapter.setService(issueService);
 
         String jsonBody;
