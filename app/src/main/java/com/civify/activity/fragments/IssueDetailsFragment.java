@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.io.IOException;
 import java.util.Date;
 import java.util.StringTokenizer;
+
+import org.ocpsoft.prettytime.PrettyTime;
 
 public class IssueDetailsFragment extends Fragment {
 
@@ -79,6 +82,9 @@ public class IssueDetailsFragment extends Fragment {
         Bundle bundle = getArguments();
         mMarker = (CivifyMarker<?>) bundle.getSerializable(TAG_MARKER);
 
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(mMarker.getIssue().getTitle());
+
         addImageIssue();
         addIssueTitle();
         addConfirmValue();
@@ -114,14 +120,11 @@ public class IssueDetailsFragment extends Fragment {
     private void addTime() {
         Log.v(DEBUG, "Adding time in layout");
         TextView timeIssue = (TextView) mViewDetails.findViewById(R.id.sinceText);
-        Date date = new Date();
         Date dateIssue = mMarker.getIssue().getCreatedAt();
         if (mMarker.getIssue().getUpdatedAt() != null) {
             dateIssue = mMarker.getIssue().getUpdatedAt();
         }
-        long difference = date.getTime() - dateIssue.getTime();
-        difference /= MILLISECONDS_TO_DAYS;
-        timeIssue.setText(difference + WHITE_SPACE + getText(R.string.days));
+        timeIssue.setText(new PrettyTime().format(dateIssue));
     }
 
     private void addDistance() {
@@ -232,6 +235,7 @@ public class IssueDetailsFragment extends Fragment {
                 (CircularImageView) mViewDetails.findViewById(R.id.userImage);
         //profileImage.setImageBitmap(img); // bitmap
         //profileImage.setImageIcon(img); // icon
+
         Log.v(DEBUG, "setUser finished");
     }
 
