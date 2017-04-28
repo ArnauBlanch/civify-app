@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UsernameTextWatcher</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.activity.registration</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UsernameTextWatcher (com.civify.activity.registration)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UsernameTextWatcher</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/ 17)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UsernameTextWatcher$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (25/ 25)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.activity.registration;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Context;
+<i>4</i>&nbsp;import android.text.Editable;
+<i>5</i>&nbsp;import android.text.TextWatcher;
+<i>6</i>&nbsp;import android.view.View;
+<i>7</i>&nbsp;import android.widget.ImageView;
+<i>8</i>&nbsp;import android.widget.TextView;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import com.civify.R;
+<i>11</i>&nbsp;import com.civify.adapter.UserAdapter;
+<i>12</i>&nbsp;import com.civify.adapter.ValidationCallback;
+<i>13</i>&nbsp;import com.civify.utils.AdapterFactory;
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;class UsernameTextWatcher implements TextWatcher {</b>
+<i>16</i>&nbsp;    private final ImageView mIcon;
+<i>17</i>&nbsp;    private final TextView mMessageView;
+<i>18</i>&nbsp;    private final Context mContext;
+<i>19</i>&nbsp;    private final UserAdapter mUserAdapter;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    UsernameTextWatcher(View view, int iconResource, int messageResource) {
+<b class="fc"><i>22</i>&nbsp;        this(AdapterFactory.getInstance().getUserAdapter(), view, iconResource, messageResource);</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<b class="fc"><i>25</i>&nbsp;    UsernameTextWatcher(UserAdapter userAdapter, View view, int iconResource, int messageResource) {</b>
+<b class="fc"><i>26</i>&nbsp;        this.mUserAdapter = userAdapter;</b>
+<b class="fc"><i>27</i>&nbsp;        this.mContext = view.getContext();</b>
+<b class="fc"><i>28</i>&nbsp;        this.mIcon = (ImageView) view.findViewById(iconResource);</b>
+<b class="fc"><i>29</i>&nbsp;        this.mMessageView = (TextView) view.findViewById(messageResource);</b>
+<b class="fc"><i>30</i>&nbsp;    }</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    @Override
+<i>33</i>&nbsp;    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+<b class="fc"><i>34</i>&nbsp;    }</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    @Override
+<i>37</i>&nbsp;    public void onTextChanged(CharSequence s, int start, int before, int count) {
+<b class="fc"><i>38</i>&nbsp;    }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    @Override
+<i>41</i>&nbsp;    public void afterTextChanged(Editable s) {
+<b class="fc"><i>42</i>&nbsp;        mUserAdapter.checkValidUnusedUsername(s.toString(), new ValidationCallback() {</b>
+<i>43</i>&nbsp;            @Override
+<i>44</i>&nbsp;            public void onValidationResponse(int response) {
+<b class="fc"><i>45</i>&nbsp;                switch (response) {</b>
+<i>46</i>&nbsp;                    case UserAdapter.VALID_UNUSED:
+<b class="fc"><i>47</i>&nbsp;                        setIconAndMessage(</b>
+<i>48</i>&nbsp;                                R.drawable.ic_checked,
+<i>49</i>&nbsp;                                R.string.valid_unused_username, R.color.green);
+<b class="fc"><i>50</i>&nbsp;                        break;</b>
+<i>51</i>&nbsp;                    case UserAdapter.INVALID:
+<b class="fc"><i>52</i>&nbsp;                        setIconAndMessage(</b>
+<i>53</i>&nbsp;                                R.drawable.ic_cancel, R.string.invalid_username, R.color.red);
+<b class="fc"><i>54</i>&nbsp;                        break;</b>
+<i>55</i>&nbsp;                    default:
+<b class="fc"><i>56</i>&nbsp;                        setIconAndMessage(</b>
+<i>57</i>&nbsp;                                R.drawable.ic_cancel, R.string.used_username, R.color.red);
+<i>58</i>&nbsp;                }
+<b class="fc"><i>59</i>&nbsp;            }</b>
+<i>60</i>&nbsp;        });
+<b class="fc"><i>61</i>&nbsp;    }</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    private void setIconAndMessage(int iconDrawable, int message, int messageColor) {
+<b class="fc"><i>64</i>&nbsp;        mIcon.setImageResource(iconDrawable);</b>
+<b class="fc"><i>65</i>&nbsp;        mMessageView.setText(mContext.getString(message));</b>
+<i>66</i>&nbsp;        //noinspection deprecation
+<b class="fc"><i>67</i>&nbsp;        mMessageView.setTextColor(mContext.getResources().getColor(messageColor));</b>
+<b class="fc"><i>68</i>&nbsp;    }</b>
+<i>69</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 20:03</div>
+</div>
+</body>
+</html>

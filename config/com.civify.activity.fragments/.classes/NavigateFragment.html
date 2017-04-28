@@ -1,0 +1,205 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: NavigateFragment</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.activity.fragments</a> ]
+</div>
+
+<h1>Coverage Summary for Class: NavigateFragment (com.civify.activity.fragments)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NavigateFragment</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 45)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.activity.fragments;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Intent;
+<i>4</i>&nbsp;import android.os.Bundle;
+<i>5</i>&nbsp;import android.support.annotation.NonNull;
+<i>6</i>&nbsp;import android.support.design.widget.FloatingActionButton;
+<i>7</i>&nbsp;import android.support.design.widget.Snackbar;
+<i>8</i>&nbsp;import android.support.v4.app.Fragment;
+<i>9</i>&nbsp;import android.view.LayoutInflater;
+<i>10</i>&nbsp;import android.view.View;
+<i>11</i>&nbsp;import android.view.ViewGroup;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import com.civify.R;
+<i>14</i>&nbsp;import com.civify.activity.DrawerActivity;
+<i>15</i>&nbsp;import com.civify.activity.createissue.CreateIssueActivity;
+<i>16</i>&nbsp;import com.civify.model.issue.Issue;
+<i>17</i>&nbsp;import com.civify.model.map.CivifyMap;
+<i>18</i>&nbsp;import com.civify.model.map.MapNotLoadedException;
+<i>19</i>&nbsp;import com.civify.model.map.MapNotReadyException;
+<i>20</i>&nbsp;
+<b class="nc"><i>21</i>&nbsp;public class NavigateFragment extends Fragment {</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    private boolean mCreatingIssue;
+<i>24</i>&nbsp;
+<b class="nc"><i>25</i>&nbsp;    public NavigateFragment() {</b>
+<i>26</i>&nbsp;        // Required empty public constructor
+<b class="nc"><i>27</i>&nbsp;    }</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    public static NavigateFragment newInstance() {
+<b class="nc"><i>30</i>&nbsp;        return new NavigateFragment();</b>
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    private void setMap() {
+<b class="nc"><i>34</i>&nbsp;        CivifyMap.setContext((DrawerActivity) getActivity());</b>
+<b class="nc"><i>35</i>&nbsp;        Fragment mapFragment = CivifyMap.getInstance().getMapFragment();</b>
+<b class="nc"><i>36</i>&nbsp;        CivifyMap.getInstance().enable();</b>
+<b class="nc"><i>37</i>&nbsp;        getFragmentManager()</b>
+<b class="nc"><i>38</i>&nbsp;                .beginTransaction()</b>
+<b class="nc"><i>39</i>&nbsp;                .replace(R.id.map_fragment_placeholder, mapFragment)</b>
+<b class="nc"><i>40</i>&nbsp;                .commit();</b>
+<b class="nc"><i>41</i>&nbsp;    }</b>
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    @Override
+<i>44</i>&nbsp;    // Called after onCreate
+<i>45</i>&nbsp;    public void onResume() {
+<b class="nc"><i>46</i>&nbsp;        super.onResume();</b>
+<b class="nc"><i>47</i>&nbsp;        CivifyMap.getInstance().enable();</b>
+<b class="nc"><i>48</i>&nbsp;    }</b>
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    @Override
+<i>51</i>&nbsp;    public void onPause() {
+<b class="nc"><i>52</i>&nbsp;        CivifyMap.getInstance().disable();</b>
+<b class="nc"><i>53</i>&nbsp;        if (!mCreatingIssue) CivifyMap.getInstance().outdateToBeRefreshed();</b>
+<b class="nc"><i>54</i>&nbsp;        super.onPause();</b>
+<b class="nc"><i>55</i>&nbsp;    }</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    @Override
+<i>58</i>&nbsp;    public void onRequestPermissionsResult(int requestCode,
+<i>59</i>&nbsp;            @NonNull String[] permissions,
+<i>60</i>&nbsp;            @NonNull int[] grantResults) {
+<b class="nc"><i>61</i>&nbsp;        CivifyMap.getInstance().onRequestPermissionsResult(requestCode, grantResults);</b>
+<b class="nc"><i>62</i>&nbsp;    }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    @Override
+<i>65</i>&nbsp;    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+<b class="nc"><i>66</i>&nbsp;        if (requestCode == CreateIssueActivity.ISSUE_CREATION) {</b>
+<b class="nc"><i>67</i>&nbsp;            if (resultCode == CreateIssueActivity.ISSUE_CREATED) {</b>
+<b class="nc"><i>68</i>&nbsp;                Issue issue = (Issue) data.getExtras().getSerializable(&quot;issue&quot;);</b>
+<i>69</i>&nbsp;                try {
+<b class="nc"><i>70</i>&nbsp;                    CivifyMap.getInstance().addIssueMarker(issue);</b>
+<b class="nc"><i>71</i>&nbsp;                } catch (MapNotLoadedException ignore) {</b>
+<i>72</i>&nbsp;                    // Button to create issues is only enabled if the map is loaded
+<b class="nc"><i>73</i>&nbsp;                }</b>
+<b class="nc"><i>74</i>&nbsp;                Snackbar.make(getView(), getString(R.string.issue_created),</b>
+<b class="nc"><i>75</i>&nbsp;                        Snackbar.LENGTH_SHORT).show();</b>
+<b class="nc"><i>76</i>&nbsp;                mCreatingIssue = false;</b>
+<b class="nc"><i>77</i>&nbsp;            }</b>
+<b class="nc"><i>78</i>&nbsp;        } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);</b>
+<b class="nc"><i>79</i>&nbsp;    }</b>
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    @Override
+<i>82</i>&nbsp;    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+<i>83</i>&nbsp;            Bundle savedInstanceState) {
+<b class="nc"><i>84</i>&nbsp;        View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);</b>
+<i>85</i>&nbsp;
+<b class="nc"><i>86</i>&nbsp;        setMap();</b>
+<i>87</i>&nbsp;
+<b class="nc"><i>88</i>&nbsp;        FloatingActionButton fabLocation = (FloatingActionButton)</b>
+<b class="nc"><i>89</i>&nbsp;                mapView.findViewById(R.id.fab_location);</b>
+<b class="nc"><i>90</i>&nbsp;        fabLocation.setOnClickListener(new View.OnClickListener() {</b>
+<i>91</i>&nbsp;            @Override
+<i>92</i>&nbsp;            public void onClick(View view) {
+<i>93</i>&nbsp;                try {
+<i>94</i>&nbsp;                    CivifyMap.getInstance().center();
+<i>95</i>&nbsp;                } catch (MapNotReadyException ignore) {
+<i>96</i>&nbsp;                    showMapLoadingWarning(view);
+<i>97</i>&nbsp;                }
+<i>98</i>&nbsp;            }
+<i>99</i>&nbsp;        });
+<i>100</i>&nbsp;
+<b class="nc"><i>101</i>&nbsp;        FloatingActionButton fabCreateIssue = (FloatingActionButton)</b>
+<b class="nc"><i>102</i>&nbsp;                mapView.findViewById(R.id.fab_add);</b>
+<b class="nc"><i>103</i>&nbsp;        fabCreateIssue.setOnClickListener(new View.OnClickListener() {</b>
+<i>104</i>&nbsp;            @Override
+<i>105</i>&nbsp;            public void onClick(View view) {
+<i>106</i>&nbsp;                if (CivifyMap.getInstance().isMapReady()) {
+<i>107</i>&nbsp;                    mCreatingIssue = true;
+<i>108</i>&nbsp;                    Intent intent = new Intent(getActivity().getApplicationContext(),
+<i>109</i>&nbsp;                            CreateIssueActivity.class);
+<i>110</i>&nbsp;                    startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
+<i>111</i>&nbsp;                } else showMapLoadingWarning(view);
+<i>112</i>&nbsp;            }
+<i>113</i>&nbsp;        });
+<i>114</i>&nbsp;
+<b class="nc"><i>115</i>&nbsp;        return mapView;</b>
+<i>116</i>&nbsp;    }
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;    private static void showMapLoadingWarning(View view) {
+<b class="nc"><i>119</i>&nbsp;        Snackbar.make(view, &quot;Map loading, please wait...&quot;, Snackbar.LENGTH_LONG)</b>
+<b class="nc"><i>120</i>&nbsp;                .setAction(R.string.action, null).show();</b>
+<b class="nc"><i>121</i>&nbsp;    }</b>
+<i>122</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 20:03</div>
+</div>
+</body>
+</html>

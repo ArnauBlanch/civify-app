@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,10 @@ import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
+import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
 
 public class NavigateFragment extends Fragment {
-
-    private CivifyMap mCivifyMap;
-    private boolean mCreatingIssue;
 
     public NavigateFragment() {
         // Required empty public constructor
@@ -31,9 +30,9 @@ public class NavigateFragment extends Fragment {
     }
 
     private void setMap() {
-        mCivifyMap = new CivifyMap((DrawerActivity) getActivity());
-        Fragment mapFragment = mCivifyMap.getMapFragment();
-        mCivifyMap.enable();
+        CivifyMap.setContext((DrawerActivity) getActivity());
+        Fragment mapFragment = CivifyMap.getInstance().getMapFragment();
+        CivifyMap.getInstance().enable();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.map_fragment_placeholder, mapFragment)
@@ -44,13 +43,12 @@ public class NavigateFragment extends Fragment {
     // Called after onCreate
     public void onResume() {
         super.onResume();
-        mCivifyMap.enable();
+        CivifyMap.getInstance().enable();
     }
 
     @Override
     public void onPause() {
-        mCivifyMap.disable();
-        if (!mCreatingIssue) mCivifyMap.outdateToBeRefreshed();
+        CivifyMap.getInstance().disable();
         super.onPause();
     }
 
@@ -58,7 +56,7 @@ public class NavigateFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode,
             @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        mCivifyMap.onRequestPermissionsResult(requestCode, grantResults);
+        CivifyMap.getInstance().onRequestPermissionsResult(requestCode, grantResults);
     }
 
     @Override
@@ -67,17 +65,15 @@ public class NavigateFragment extends Fragment {
             if (resultCode == CreateIssueActivity.ISSUE_CREATED) {
                 Issue issue = (Issue) data.getExtras().getSerializable("issue");
                 try {
-                    mCivifyMap.addIssueMarker(issue);
-                } catch (MapNotReadyException ignore) {
-                    // Button to create issues is only enabled if the map is ready
+                    CivifyMap.getInstance().addIssueMarker(issue);
+                } catch (MapNotLoadedException ignore) {
+                    // Button to create issues is only enabled if the map is loaded
                 }
                 Snackbar.make(getView(), getString(R.string.issue_created),
                         Snackbar.LENGTH_SHORT).show();
-                mCreatingIssue = false;
             }
-        } else {
-            mCivifyMap.onMapSettingsResults(requestCode, resultCode);
-        }
+            CivifyMap.getInstance().setCanBeDisabled(true);
+        } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
     }
 
     @Override
@@ -87,13 +83,16 @@ public class NavigateFragment extends Fragment {
 
         setMap();
 
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Map");
+
         FloatingActionButton fabLocation = (FloatingActionButton)
                 mapView.findViewById(R.id.fab_location);
         fabLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    mCivifyMap.center();
+                    CivifyMap.getInstance().center(true);
                 } catch (MapNotReadyException ignore) {
                     showMapLoadingWarning(view);
                 }
@@ -105,8 +104,8 @@ public class NavigateFragment extends Fragment {
         fabCreateIssue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mCivifyMap.isMapReady()) {
-                    mCreatingIssue = true;
+                if (CivifyMap.getInstance().isMapReady()) {
+                    CivifyMap.getInstance().setCanBeDisabled(false);
                     Intent intent = new Intent(getActivity().getApplicationContext(),
                             CreateIssueActivity.class);
                     startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);

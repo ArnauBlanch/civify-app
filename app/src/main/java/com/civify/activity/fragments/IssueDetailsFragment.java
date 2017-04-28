@@ -23,7 +23,7 @@ import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.model.User;
 import com.civify.model.issue.Issue;
-import com.civify.model.map.CivifyMarker;
+import com.civify.model.map.IssueMarker;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
@@ -50,16 +50,16 @@ public class IssueDetailsFragment extends Fragment {
     private Issue mIssue;
 
     private View mViewDetails;
-    private CivifyMarker<?> mMarker;
+    private IssueMarker mMarker;
 
     public IssueDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static IssueDetailsFragment newInstance(CivifyMarker<?> marker) {
+    public static IssueDetailsFragment newInstance(IssueMarker marker) {
         IssueDetailsFragment fragment = new IssueDetailsFragment();
         Bundle data = new Bundle();
-        data.putSerializable(TAG_MARKER, marker);
+        //data.putSerializable(TAG_MARKER, marker);
         fragment.setArguments(data);
 
         sUserAdapter = AdapterFactory.getInstance().getUserAdapter();
@@ -76,7 +76,7 @@ public class IssueDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
-        init();
+        //init();
         return mViewDetails;
     }
 
@@ -85,7 +85,7 @@ public class IssueDetailsFragment extends Fragment {
 
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
-        mMarker = (CivifyMarker<?>) bundle.getSerializable(TAG_MARKER);
+        mMarker = (IssueMarker) bundle.getSerializable(TAG_MARKER);
         getUpdatedIssue();
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
