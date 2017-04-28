@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
       android:id="@+id/edit_issue"
-      android:orderInCategory="100"
-      android:title="@string/edit_issue"
-      app:showAsAction="never" />
+      android:title="@string/edit_issue" />
   <item
       android:id="@+id/delete_issue"
-      android:orderInCategory="100"
-      android:title="@string/delete_issue"
-      app:showAsAction="never" />
+      android:title="@string/delete_issue" />
 </menu>
