@@ -31,6 +31,7 @@ public class EditIssueActivity extends CameraGalleryActivity {
     private View.OnClickListener lis = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
+
            // mIssueAdapter.editIssue();
         }
     };
