@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.IssueDetailsFragment;
+import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
 import com.civify.model.issue.Issue;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
@@ -36,6 +38,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private CivifyMarkers mMarkers;
     private boolean mPlayerSet;
     private final LocationAdapter mLocationAdapter;
+    private CivifyMarker<?> mSelectedMarker;
 
     public CivifyMap(@NonNull DrawerActivity context) {
         this(new LocationAdapter(context));
@@ -142,8 +145,21 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void showIssueDetails(CivifyMarker<?> issueMarker) {
-        Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(issueMarker);
-        getContext().setFragment(issueDetailsFragment, DETAILS_ID);
+        mSelectedMarker = issueMarker;
+        issueMarker.getAddress(new LocalityCallback() {
+            @Override
+            public void onLocalityResponse(@NonNull String address) {
+                Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(mSelectedMarker.getIssue(),
+                        mSelectedMarker.getDistanceFromCurrentLocation(), address);
+                getContext().setFragment(issueDetailsFragment, DETAILS_ID);
+            }
+
+            @Override
+            public void onLocalityError() {
+
+            }
+        });
+
     }
 
     GoogleMap getGoogleMap() {

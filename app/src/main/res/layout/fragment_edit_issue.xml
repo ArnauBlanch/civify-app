@@ -12,7 +12,7 @@
       android:layout_width="368dp"
       android:layout_height="551dp"
       android:orientation="vertical"
-      tools:layout_editor_absoluteY="-20dp"
+      tools:layout_editor_absoluteY="0dp"
       tools:layout_editor_absoluteX="0dp"
       >
     <ImageView

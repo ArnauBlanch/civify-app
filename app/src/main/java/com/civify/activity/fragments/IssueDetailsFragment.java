@@ -10,8 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.civify.activity.EditIssueActivity;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.UserAdapter;
@@ -41,15 +40,19 @@ public class IssueDetailsFragment extends Fragment {
 
     private static final String DEBUG = "debug-IssueDetails";
     private static final String WHITE_SPACE = " ";
-    private static final String TAG_MARKER = "marker";
+    private static final String TAG_ISSUE = "issue";
+    private static final String TAG_DISTANCE = "distance";
+    private static final String TAG_ADDRESS = "address";
 
     private static final int MILLISECONDS_TO_DAYS = 86400000;
     private static final int DISTANCE_TO_KILOMETERS = 1000;
     private static final int DISTANCE_TO_METERS = 1000000;
     private static final int LEVEL_FAKE_USER = 3;
+    private static final int RESULT_OK = 1;
 
-    private CivifyMarker<?> mMarker;
     private Issue mIssue;
+    private float mDistance;
+    private String mAddress;
 
     private View mViewDetails;
 
@@ -57,10 +60,12 @@ public class IssueDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static IssueDetailsFragment newInstance(CivifyMarker<?> marker) {
+    public static IssueDetailsFragment newInstance(Issue issue, float distance, String address) {
         IssueDetailsFragment fragment = new IssueDetailsFragment();
         Bundle data = new Bundle();
-        data.putSerializable(TAG_MARKER, marker);
+        data.putSerializable(TAG_ISSUE, issue);
+        data.putFloat(TAG_DISTANCE, distance);
+        data.putString(TAG_ADDRESS, address);
         fragment.setArguments(data);
         return fragment;
     }
@@ -88,12 +93,12 @@ public class IssueDetailsFragment extends Fragment {
 
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
-        mMarker = (CivifyMarker<?>) bundle.getSerializable(TAG_MARKER);
-
-        mIssue = mMarker.getIssue();
+        mIssue = (Issue) bundle.getSerializable(TAG_ISSUE);
+        mDistance = bundle.getFloat(TAG_DISTANCE);
+        mAddress = bundle.getString(TAG_ADDRESS);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(mMarker.getIssue().getTitle());
+        toolbar.setTitle(mIssue.getTitle());
 
         addImageIssue();
         addIssueTitle();
@@ -111,7 +116,7 @@ public class IssueDetailsFragment extends Fragment {
 
     private void addUser() {
         Log.v(DEBUG, "Adding user in layout");
-        String authToken = mMarker.getIssue().getIssueAuthToken();
+        String authToken = mIssue.getIssueAuthToken();
         SharedPreferences sharedPreferences = getActivity().getApplicationContext()
                 .getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
         new UserAdapter(sharedPreferences).getUser(authToken, new UserSimpleCallback() {
@@ -130,9 +135,9 @@ public class IssueDetailsFragment extends Fragment {
     private void addTime() {
         Log.v(DEBUG, "Adding time in layout");
         TextView timeIssue = (TextView) mViewDetails.findViewById(R.id.sinceText);
-        Date dateIssue = mMarker.getIssue().getCreatedAt();
-        if (mMarker.getIssue().getUpdatedAt() != null) {
-            dateIssue = mMarker.getIssue().getUpdatedAt();
+        Date dateIssue = mIssue.getCreatedAt();
+        if (mIssue.getUpdatedAt() != null) {
+            dateIssue = mIssue.getUpdatedAt();
         }
         timeIssue.setText(new PrettyTime().format(dateIssue));
     }
@@ -141,12 +146,13 @@ public class IssueDetailsFragment extends Fragment {
         Log.v(DEBUG, "Adding distance in layout");
         TextView distanceIssue = (TextView) mViewDetails.findViewById(R.id.distanceText);
         String point = ".";
-        float distance = mMarker.getDistanceFromCurrentLocation() / DISTANCE_TO_KILOMETERS;
+        float distance = mDistance /
+                DISTANCE_TO_KILOMETERS;
         String stringDistance = String.valueOf(distance);
         StringTokenizer token = new StringTokenizer(stringDistance, point);
         String distanceToken = token.nextToken();
         if ("0".equals(distanceToken)) {
-            distance = mMarker.getDistanceFromCurrentLocation() / DISTANCE_TO_METERS;
+            distance = mDistance / DISTANCE_TO_METERS;
             stringDistance = String.valueOf(distance);
             token = new StringTokenizer(stringDistance, point);
             distanceToken = token.nextToken();
@@ -159,23 +165,13 @@ public class IssueDetailsFragment extends Fragment {
     private void addStreet() {
         Log.v(DEBUG, "Adding street in layout");
         final TextView streetIssue = (TextView) mViewDetails.findViewById(R.id.streetText);
-        mMarker.getAddress(new LocalityCallback() {
-            @Override
-            public void onLocalityResponse(@NonNull String address) {
-                streetIssue.setText(address);
-            }
-
-            @Override
-            public void onLocalityError() {
-
-            }
-        });
+        streetIssue.setText(mAddress);
     }
 
     private void addDescription() {
         Log.v(DEBUG, "Adding description in layout");
         TextView descriptionIssue = (TextView) mViewDetails.findViewById(R.id.descriptionText);
-        descriptionIssue.setText(mMarker.getIssue().getDescription());
+        descriptionIssue.setText(mIssue.getDescription());
         descriptionIssue.setMovementMethod(new ScrollingMovementMethod());
     }
 
@@ -183,35 +179,35 @@ public class IssueDetailsFragment extends Fragment {
         Log.v(DEBUG, "Adding risk in layout");
         TextView riskIssue = (TextView) mViewDetails.findViewById(R.id.riskAnswer);
         riskIssue.setText(getText(R.string.no));
-        if (mMarker.getIssue().isRisk()) riskIssue.setText(getText(R.string.yes));
+        if (mIssue.isRisk()) riskIssue.setText(getText(R.string.yes));
     }
 
     private void addCategoryValue() {
         Log.v(DEBUG, "Adding icon and name category in layout");
         ImageView categoryIcon = (ImageView) mViewDetails.findViewById(R.id.categoryView);
-        categoryIcon.setImageResource(mMarker.getIssue().getCategory().getIcon());
+        categoryIcon.setImageResource(mIssue.getCategory().getIcon());
         TextView categoryIssue = (TextView) mViewDetails.findViewById(R.id.nameCategoryText);
-        int idCategory = mMarker.getIssue().getCategory().getName();
+        int idCategory = mIssue.getCategory().getName();
         categoryIssue.setText(getString(idCategory));
     }
 
     private void addConfirmValue() {
         Log.v(DEBUG, "Adding confirm value in layout");
         TextView likesIssue = (TextView) mViewDetails.findViewById(R.id.likesText);
-        likesIssue.setText("+" + String.valueOf(mMarker.getIssue().getConfirmVotes()));
+        likesIssue.setText("+" + String.valueOf(mIssue.getConfirmVotes()));
     }
 
     private void addIssueTitle() {
         Log.v(DEBUG, "Adding issue title in layout");
         TextView nameIssue = (TextView) mViewDetails.findViewById(R.id.nameText);
-        nameIssue.setText(mMarker.getIssue().getTitle());
+        nameIssue.setText(mIssue.getTitle());
         nameIssue.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private void addImageIssue() {
         Log.v(DEBUG, "Adding image issue in layout");
         ImageView imageIssue = (ImageView) mViewDetails.findViewById(R.id.eventView);
-        String url = ServiceGenerator.BASE_URL + mMarker.getIssue().getPicture().getLargeUrl();
+        String url = ServiceGenerator.BASE_URL + mIssue.getPicture().getLargeUrl();
         Glide.with(this).load(url).into(imageIssue);
     }
 
@@ -250,18 +246,10 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_issue:
-                Log.d("Ricard", "has clicat a edit issue");
-                Intent intent = new Intent(getActivity(), EditIssueActivity.class);
-                intent.putExtra("issue", mIssue);
-                startActivity(intent);
+                launchEditActivity();
                 return false;
             default:
                 break;
@@ -269,5 +257,12 @@ public class IssueDetailsFragment extends Fragment {
 
         return false;
     }
+
+    public void launchEditActivity(){
+        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+        Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
+        drawerActivity.startActivity(intent);
+    }
+
 
 }
