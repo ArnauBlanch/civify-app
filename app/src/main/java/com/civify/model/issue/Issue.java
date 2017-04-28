@@ -5,7 +5,6 @@ import android.graphics.Bitmap.CompressFormat;
 import android.util.Base64;
 import android.util.Log;
 
-import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
