@@ -4,13 +4,16 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
+import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InvalidClassException;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Date;
 
 public class Issue implements Serializable {
@@ -73,9 +76,7 @@ public class Issue implements Serializable {
     @SerializedName("picture")
     private Picture mPicture;
 
-    public Issue() {
-
-    }
+    public Issue() {}
 
     public Issue(String title, String description, Category category, boolean risk,
             double longitude, double latitude, Bitmap pictureBitmap, String userAuthToken) {
@@ -232,9 +233,9 @@ public class Issue implements Serializable {
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
     }
 
-    public Bitmap getPictureBitmap() {
-        byte[] decodedString = Base64.decode(mPicture.getContent(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    public Bitmap getPictureBitmap() throws IOException {
+        URL url = new URL(ServiceGenerator.BASE_URL + mPicture.getLargeUrl());
+        return BitmapFactory.decodeStream(url.openConnection().getInputStream());
     }
 
     @Override
@@ -271,16 +272,5 @@ public class Issue implements Serializable {
                 + mUserAuthToken
                 + '\''
                 + '}';
-    }
-
-    public void validate() throws InvalidClassException {
-        if (mTitle == null) throw new InvalidClassException("mTime is null");
-        if (mDescription == null) throw new InvalidClassException("mDescription is null");
-        if (mCategory == null) throw new InvalidClassException("mCategory is null");
-        if (mCreatedAt == null) throw new InvalidClassException("mCreatedAt is null");
-        if (mUpdatedAt == null) throw new InvalidClassException("mUpdatedAt is null");
-        if (mIssueAuthToken == null) throw new InvalidClassException("mIssueAuthToken is null");
-        if (mUserAuthToken == null) throw new InvalidClassException("mUserAuthToken is null");
-        if (mPicture == null) throw new InvalidClassException("mPicture is null");
     }
 }
