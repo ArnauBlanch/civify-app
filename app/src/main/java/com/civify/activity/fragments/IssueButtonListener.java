@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.civify.R;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Issue;
