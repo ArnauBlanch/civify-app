@@ -1,0 +1,151 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ProfileFragment</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.activity.fragments</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ProfileFragment (com.civify.activity.fragments)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProfileFragment</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.activity.fragments;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Context;
+<i>4</i>&nbsp;import android.content.Intent;
+<i>5</i>&nbsp;import android.os.Bundle;
+<i>6</i>&nbsp;import android.support.v4.app.Fragment;
+<i>7</i>&nbsp;import android.view.LayoutInflater;
+<i>8</i>&nbsp;import android.view.View;
+<i>9</i>&nbsp;import android.view.ViewGroup;
+<i>10</i>&nbsp;import android.widget.Button;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import com.civify.R;
+<i>13</i>&nbsp;import com.civify.activity.MainActivity;
+<i>14</i>&nbsp;import com.civify.adapter.LoginAdapter;
+<i>15</i>&nbsp;import com.civify.utils.AdapterFactory;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;/**
+<i>18</i>&nbsp; * A simple {@link Fragment} subclass.
+<i>19</i>&nbsp; * Use the {@link ProfileFragment#newInstance} factory method to
+<i>20</i>&nbsp; * create an instance of this fragment.
+<i>21</i>&nbsp; */
+<b class="nc"><i>22</i>&nbsp;public class ProfileFragment extends Fragment {</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    private LoginAdapter mLoginAdapter;
+<i>25</i>&nbsp;
+<b class="nc"><i>26</i>&nbsp;    public ProfileFragment() {</b>
+<i>27</i>&nbsp;        // Required empty public constructor
+<b class="nc"><i>28</i>&nbsp;    }</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * Use this factory method to create a new instance of
+<i>32</i>&nbsp;     * this fragment using the provided parameters.
+<i>33</i>&nbsp;     *
+<i>34</i>&nbsp;     * @return A new instance of fragment NavigateFragment.
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    public static ProfileFragment newInstance() {
+<b class="nc"><i>37</i>&nbsp;        ProfileFragment fragment = new ProfileFragment();</b>
+<b class="nc"><i>38</i>&nbsp;        Bundle args = new Bundle();</b>
+<b class="nc"><i>39</i>&nbsp;        fragment.setArguments(args);</b>
+<b class="nc"><i>40</i>&nbsp;        return fragment;</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    @Override
+<i>44</i>&nbsp;    public void onCreate(Bundle savedInstanceState) {
+<b class="nc"><i>45</i>&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc"><i>46</i>&nbsp;        AdapterFactory adapterFactory = AdapterFactory.getInstance();</b>
+<b class="nc"><i>47</i>&nbsp;        mLoginAdapter = adapterFactory.getLoginAdapter(getActivity());</b>
+<b class="nc"><i>48</i>&nbsp;    }</b>
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    @Override
+<i>51</i>&nbsp;    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+<i>52</i>&nbsp;            Bundle savedInstanceState) {
+<i>53</i>&nbsp;        // Inflate the layout for this fragment
+<b class="nc"><i>54</i>&nbsp;        View view = inflater.inflate(R.layout.fragment_profile, container, false);</b>
+<b class="nc"><i>55</i>&nbsp;        Button signoutButton = (Button) view.findViewById(R.id.button_signout);</b>
+<b class="nc"><i>56</i>&nbsp;        signoutButton.setOnClickListener(new View.OnClickListener() {</b>
+<i>57</i>&nbsp;            @Override
+<i>58</i>&nbsp;            public void onClick(View v) {
+<i>59</i>&nbsp;                mLoginAdapter.logout();
+<i>60</i>&nbsp;                Context applicationContext = getActivity().getApplicationContext();
+<i>61</i>&nbsp;                Intent intent = new Intent(applicationContext, MainActivity.class);
+<i>62</i>&nbsp;                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+<i>63</i>&nbsp;                startActivity(intent);
+<i>64</i>&nbsp;            }
+<i>65</i>&nbsp;        });
+<b class="nc"><i>66</i>&nbsp;        return view;</b>
+<i>67</i>&nbsp;    }
+<i>68</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 20:03</div>
+</div>
+</body>
+</html>

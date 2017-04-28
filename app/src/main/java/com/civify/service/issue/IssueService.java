@@ -1,6 +1,8 @@
 package com.civify.service.issue;
 
+import com.civify.model.MessageResponse;
 import com.civify.model.issue.Issue;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 import retrofit2.Call;
@@ -23,6 +25,18 @@ public interface IssueService {
     @GET("/issues/{issue_auth_token}")
     Call<Issue> getIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")
             String issueAuthToken);
+
+    @POST("/issues/{issue_auth_token}/resolve")
+    Call<MessageResponse> issueResolution(@Header("Authorization") String authToken,
+            @Body JsonObject userToken, @Path("issue_auth_token") String issueAuthToken);
+
+    @POST("/issues/{issue_auth_token}/report")
+    Call<MessageResponse> issueReport(@Header("Authorization") String authToken,
+            @Body JsonObject userToken, @Path("issue_auth_token") String issueAuthToken);
+
+    @POST("/issues/{issue_auth_token}/confirm")
+    Call<MessageResponse> issueConfirmation(@Header("Authorization") String authToken,
+            @Body JsonObject userToken, @Path("issue_auth_token") String issueAuthToken);
 
     @PATCH("/issues/{issue_auth_token}")
     Call<Issue> editIssue(@Header("Authorization") String authToken, @Body Issue issue, @Path

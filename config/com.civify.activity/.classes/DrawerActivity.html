@@ -1,0 +1,278 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DrawerActivity</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.activity</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DrawerActivity (com.civify.activity)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DrawerActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 75)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DrawerActivity$$EnhancerByMockitoWithCGLIB$$65a6f938</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 75)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.activity;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.os.Bundle;
+<i>4</i>&nbsp;import android.support.annotation.NonNull;
+<i>5</i>&nbsp;import android.support.design.widget.NavigationView;
+<i>6</i>&nbsp;import android.support.v4.app.Fragment;
+<i>7</i>&nbsp;import android.support.v4.app.FragmentManager;
+<i>8</i>&nbsp;import android.support.v4.view.GravityCompat;
+<i>9</i>&nbsp;import android.support.v4.widget.DrawerLayout;
+<i>10</i>&nbsp;import android.support.v7.app.ActionBarDrawerToggle;
+<i>11</i>&nbsp;import android.support.v7.widget.Toolbar;
+<i>12</i>&nbsp;import android.view.MenuItem;
+<i>13</i>&nbsp;import android.view.View;
+<i>14</i>&nbsp;import android.widget.ProgressBar;
+<i>15</i>&nbsp;import android.widget.TextView;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import com.civify.R;
+<i>18</i>&nbsp;import com.civify.activity.fragments.AchievementsFragment;
+<i>19</i>&nbsp;import com.civify.activity.fragments.EventsFragment;
+<i>20</i>&nbsp;import com.civify.activity.fragments.NavigateFragment;
+<i>21</i>&nbsp;import com.civify.activity.fragments.ProfileFragment;
+<i>22</i>&nbsp;import com.civify.activity.fragments.RewardsFragment;
+<i>23</i>&nbsp;import com.civify.activity.fragments.SettingsFragment;
+<i>24</i>&nbsp;import com.civify.activity.fragments.WallFragment;
+<i>25</i>&nbsp;import com.civify.model.User;
+<i>26</i>&nbsp;import com.mikhaellopez.circularimageview.CircularImageView;
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;public class DrawerActivity extends BaseActivity</b>
+<i>29</i>&nbsp;        implements NavigationView.OnNavigationItemSelectedListener {
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    private static final int NAVIGATE_ID = 0;
+<i>32</i>&nbsp;    private static final int WALL_ID = 1;
+<i>33</i>&nbsp;    private static final int PROFILE_ID = 2;
+<i>34</i>&nbsp;    private static final int REWARDS_ID = 3;
+<i>35</i>&nbsp;    private static final int ACHIEVEMENTS_ID = 4;
+<i>36</i>&nbsp;    private static final int EVENTS_ID = 5;
+<i>37</i>&nbsp;    private static final int SETTINGS_ID = 6;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    private static final int COINS = 432;
+<i>40</i>&nbsp;    private static final int EXPERIENCE = 50;
+<i>41</i>&nbsp;    private static final int LEVEL = 3;
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    private DrawerLayout mDrawerLayout;
+<i>44</i>&nbsp;    private NavigationView mNavigationView;
+<i>45</i>&nbsp;    //private AppBarLayout mAppBarLayout;
+<i>46</i>&nbsp;    private int mCurrentFragment;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    public DrawerLayout getDrawerLayout() {
+<b class="nc"><i>49</i>&nbsp;        return mDrawerLayout;</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    public NavigationView getNavigationView() {
+<b class="nc"><i>53</i>&nbsp;        return mNavigationView;</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    public int getCurrentFragment() {
+<b class="nc"><i>57</i>&nbsp;        return mCurrentFragment;</b>
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    @Override
+<i>61</i>&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc"><i>62</i>&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc"><i>63</i>&nbsp;        setContentView(R.layout.activity_drawer);</b>
+<b class="nc"><i>64</i>&nbsp;        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);</b>
+<b class="nc"><i>65</i>&nbsp;        setSupportActionBar(toolbar);</b>
+<i>66</i>&nbsp;        //mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);</b>
+<b class="nc"><i>70</i>&nbsp;        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,</b>
+<i>71</i>&nbsp;                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+<b class="nc"><i>72</i>&nbsp;        mDrawerLayout.addDrawerListener(toggle);</b>
+<b class="nc"><i>73</i>&nbsp;        toggle.syncState();</b>
+<i>74</i>&nbsp;
+<b class="nc"><i>75</i>&nbsp;        mNavigationView = (NavigationView) findViewById(R.id.nav_view);</b>
+<b class="nc"><i>76</i>&nbsp;        mNavigationView.setNavigationItemSelectedListener(this);</b>
+<b class="nc"><i>77</i>&nbsp;        toolbar.setTitle(R.string.app_name);</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;        NavigateFragment navigateFragment = NavigateFragment.newInstance();</b>
+<b class="nc"><i>80</i>&nbsp;        setFragment(navigateFragment, NAVIGATE_ID);</b>
+<b class="nc"><i>81</i>&nbsp;        mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);</b>
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;
+<b class="nc"><i>84</i>&nbsp;        User fakeUser = new User(&quot;ArnauBlanch&quot;, &quot;Arnau&quot;, &quot;Blanch&quot;, &quot;arnaublanch@civify.app&quot;,</b>
+<i>85</i>&nbsp;                &quot;password&quot;,
+<i>86</i>&nbsp;                &quot;password2&quot;);
+<b class="nc"><i>87</i>&nbsp;        fakeUser.setLevel(LEVEL);</b>
+<b class="nc"><i>88</i>&nbsp;        fakeUser.setCoins(COINS);</b>
+<b class="nc"><i>89</i>&nbsp;        fakeUser.setExperience(EXPERIENCE);</b>
+<b class="nc"><i>90</i>&nbsp;        setUserHeader(fakeUser);</b>
+<b class="nc"><i>91</i>&nbsp;    }</b>
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    @Override
+<i>94</i>&nbsp;    public void onBackPressed() {
+<b class="nc"><i>95</i>&nbsp;        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {</b>
+<b class="nc"><i>96</i>&nbsp;            mDrawerLayout.closeDrawer(GravityCompat.START);</b>
+<b class="nc"><i>97</i>&nbsp;        } else super.onBackPressed();</b>
+<i>98</i>&nbsp;        //        else finish();
+<b class="nc"><i>99</i>&nbsp;    }</b>
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    /*
+<i>102</i>&nbsp;     * These functions will be used eventually
+<i>103</i>&nbsp;     */
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    //    private void hideToolbar() {
+<i>106</i>&nbsp;    //        mAppBarLayout.animate().translationY(-mToolbar.getHeight()).setInterpolator(
+<i>107</i>&nbsp;    //                new AccelerateInterpolator(2));
+<i>108</i>&nbsp;    //    }
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;    //    private void showToolbar() {
+<i>111</i>&nbsp;    //        mAppBarLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator
+<i>112</i>&nbsp;    // (2));
+<i>113</i>&nbsp;    //    }
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    @Override
+<i>116</i>&nbsp;    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+<i>117</i>&nbsp;        // Handle navigation view item clicks here.
+<b class="nc"><i>118</i>&nbsp;        int id = item.getItemId();</b>
+<i>119</i>&nbsp;
+<b class="nc"><i>120</i>&nbsp;        if (id == R.id.nav_navigate) {</b>
+<b class="nc"><i>121</i>&nbsp;            NavigateFragment navigateFragment = NavigateFragment.newInstance();</b>
+<b class="nc"><i>122</i>&nbsp;            setFragment(navigateFragment, NAVIGATE_ID);</b>
+<b class="nc"><i>123</i>&nbsp;        } else if (id == R.id.nav_wall) {</b>
+<b class="nc"><i>124</i>&nbsp;            WallFragment wallFragment = WallFragment.newInstance();</b>
+<b class="nc"><i>125</i>&nbsp;            setFragment(wallFragment, WALL_ID);</b>
+<b class="nc"><i>126</i>&nbsp;        } else if (id == R.id.nav_profile) {</b>
+<b class="nc"><i>127</i>&nbsp;            ProfileFragment profileFragment = ProfileFragment.newInstance();</b>
+<b class="nc"><i>128</i>&nbsp;            setFragment(profileFragment, PROFILE_ID);</b>
+<b class="nc"><i>129</i>&nbsp;        } else if (id == R.id.nav_rewards) {</b>
+<i>130</i>&nbsp;            // paint fragment
+<b class="nc"><i>131</i>&nbsp;            RewardsFragment rewardsFragment = RewardsFragment.newInstance();</b>
+<b class="nc"><i>132</i>&nbsp;            setFragment(rewardsFragment, REWARDS_ID);</b>
+<b class="nc"><i>133</i>&nbsp;        } else if (id == R.id.nav_achievements) {</b>
+<b class="nc"><i>134</i>&nbsp;            AchievementsFragment achievementsFragment = AchievementsFragment.newInstance();</b>
+<b class="nc"><i>135</i>&nbsp;            setFragment(achievementsFragment, ACHIEVEMENTS_ID);</b>
+<b class="nc"><i>136</i>&nbsp;        } else if (id == R.id.nav_events) {</b>
+<b class="nc"><i>137</i>&nbsp;            EventsFragment eventsFragment = EventsFragment.newInstance();</b>
+<b class="nc"><i>138</i>&nbsp;            setFragment(eventsFragment, EVENTS_ID);</b>
+<b class="nc"><i>139</i>&nbsp;        } else if (id == R.id.nav_settings) {</b>
+<b class="nc"><i>140</i>&nbsp;            SettingsFragment settingsFragment = SettingsFragment.newInstance();</b>
+<b class="nc"><i>141</i>&nbsp;            setFragment(settingsFragment, SETTINGS_ID);</b>
+<i>142</i>&nbsp;        }
+<i>143</i>&nbsp;
+<b class="nc"><i>144</i>&nbsp;        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);</b>
+<b class="nc"><i>145</i>&nbsp;        drawer.closeDrawer(GravityCompat.START);</b>
+<b class="nc"><i>146</i>&nbsp;        return true;</b>
+<i>147</i>&nbsp;    }
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    private void setFragment(Fragment fragment, int fragmentId) {
+<b class="nc"><i>150</i>&nbsp;        FragmentManager fragmentManager = getSupportFragmentManager();</b>
+<b class="nc"><i>151</i>&nbsp;        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).commit();</b>
+<b class="nc"><i>152</i>&nbsp;        mCurrentFragment = fragmentId;</b>
+<b class="nc"><i>153</i>&nbsp;    }</b>
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;    private void setUserHeader(User user) {
+<b class="nc"><i>156</i>&nbsp;        View headerView = mNavigationView.getHeaderView(0);</b>
+<i>157</i>&nbsp;        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
+<i>158</i>&nbsp;
+<b class="nc"><i>159</i>&nbsp;        ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);</b>
+<i>160</i>&nbsp;
+<b class="nc"><i>161</i>&nbsp;        TextView name = (TextView) headerView.findViewById(R.id.header_name);</b>
+<b class="nc"><i>162</i>&nbsp;        name.setText(user.getName() + &quot; &quot; + user.getSurname());</b>
+<i>163</i>&nbsp;
+<b class="nc"><i>164</i>&nbsp;        TextView username = (TextView) headerView.findViewById(R.id.header_username);</b>
+<b class="nc"><i>165</i>&nbsp;        username.setText(user.getUsername());</b>
+<i>166</i>&nbsp;
+<b class="nc"><i>167</i>&nbsp;        TextView level = (TextView) headerView.findViewById(R.id.header_level);</b>
+<b class="nc"><i>168</i>&nbsp;        String userLevel = Integer.toString(user.getLevel());</b>
+<b class="nc"><i>169</i>&nbsp;        String showLevel = getString(R.string.level) + &#39; &#39; + userLevel;</b>
+<b class="nc"><i>170</i>&nbsp;        level.setText(showLevel);</b>
+<i>171</i>&nbsp;
+<b class="nc"><i>172</i>&nbsp;        TextView xp = (TextView) headerView.findViewById(R.id.header_xp);</b>
+<b class="nc"><i>173</i>&nbsp;        String userExperience = Integer.toString(user.getExperience());</b>
+<i>174</i>&nbsp;        //xp.setText(userExperience + &#39;/&#39; + utils.calcMaxXp(userLevel));
+<i>175</i>&nbsp;
+<b class="nc"><i>176</i>&nbsp;        TextView coins = (TextView) headerView.findViewById(R.id.header_coins);</b>
+<b class="nc"><i>177</i>&nbsp;        String userCoins = Integer.toString(user.getCoins());</b>
+<b class="nc"><i>178</i>&nbsp;        coins.setText(userCoins);</b>
+<i>179</i>&nbsp;
+<b class="nc"><i>180</i>&nbsp;        CircularImageView profileImage =</b>
+<b class="nc"><i>181</i>&nbsp;                (CircularImageView) headerView.findViewById(R.id.header_image);</b>
+<i>182</i>&nbsp;        //profileImage.setImageBitmap(img); // bitmap
+<i>183</i>&nbsp;        //profileImage.setImageIcon(img); // icon
+<b class="nc"><i>184</i>&nbsp;    }</b>
+<i>185</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 20:03</div>
+</div>
+</body>
+</html>
