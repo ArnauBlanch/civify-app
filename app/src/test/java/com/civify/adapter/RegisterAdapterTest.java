@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 @PrepareForTest({UserAdapter.class, UserService.class})
-public class UserAdapterTest {
+public class RegisterAdapterTest {
     private UserAdapter mUserAdapter;
     private MockWebServer mMockServer;
     private User mUser;
