@@ -2,18 +2,11 @@ package com.civify.activity.createissue;
 
 import android.Manifest.permission;
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -21,7 +14,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.civify.R;
@@ -35,44 +27,17 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public abstract class CameraGalleryLocationActivity extends BaseActivity
-        implements LocationListener {
+public abstract class CameraGalleryActivity extends BaseActivity {
 
     public static final String DATA = "data";
     public static final String IMAGE = "image/*";
     public static final int DEST_WIDTH = 1600;
     public static final String COM_CIVIFY_PROVIDER = "com.civify.provider";
-    public static final int MIN_TIME = 400;
     private static final int CAMERA_REQUEST = 0;
     private static final int GALLERY_REQUEST = 1;
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 2;
 
     private String mCameraPhotoPath;
-    private LocationManager mLocationManager;
-    private String mLocationProvider;
-    private Location mLocation;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        Criteria criteria = new Criteria();
-        mLocationProvider = mLocationManager.getBestProvider(criteria, false);
-        if (checkAndRequestPermission(permission.ACCESS_FINE_LOCATION,
-                R.string.need_to_allow_location_permission)) {
-            mLocation = mLocationManager.getLastKnownLocation(mLocationProvider);
-
-            // Initialize the location fields
-            if (mLocation != null) {
-                onLocationChanged(mLocation);
-            } else {
-                showError(R.string.couldnt_get_location);
-            }
-        }
-    }
 
     protected abstract void handlePhotoResult(Bitmap imageBitmap);
 
@@ -113,14 +78,6 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
     private void requestPermission(final String permission, int messageRes) {
         ActivityCompat.requestPermissions(this, new String[] {permission},
                 REQUEST_CODE_ASK_PERMISSIONS);
-    }
-
-    private void showMessageOkCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(this).setMessage(message)
-                .setPositiveButton(getString(R.string.ok), okListener)
-                .setNegativeButton(getString(R.string.cancel), null)
-                .create()
-                .show();
     }
 
     // Camera & gallery
@@ -235,47 +192,6 @@ public abstract class CameraGalleryLocationActivity extends BaseActivity
             return Bitmap.createScaledBitmap(bitmap, destWidth, destHeight, false);
         }
         return bitmap;
-    }
-
-    // Location
-
-    protected Location getCurrentLocation() {
-        return mLocation;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (checkAndRequestPermission(permission.ACCESS_FINE_LOCATION, R.string
-                .need_to_allow_location_permission)) {
-            mLocationManager.requestLocationUpdates(mLocationProvider, MIN_TIME, 1, this);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mLocationManager.removeUpdates(this);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mLocation = location;
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
     
     protected void showError(int stringId) {

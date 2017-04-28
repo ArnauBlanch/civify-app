@@ -24,6 +24,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 
 import java.util.List;
+import java.util.Set;
 
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
@@ -154,7 +155,22 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
                     @Override
                     public void onSuccess(List<Issue> issues) {
                         mMarkers.clear();
-                        mMarkers.addAll(IssueMarker.getMarkers(issues, CivifyMap.this));
+                        int i = 0, visibleCount = 0, overlappedCount = 0;
+                        Log.v(TAG, "Issues: " + issues.size() + '\n');
+                        for (Issue issue : issues) {
+                            Log.v(TAG, "Issue[" + i + "] " + issue + '\n');
+                            Set<IssueMarker> overlapped = mMarkers.get(
+                                    LocationAdapter.getLatLng(
+                                            issue.getLatitude(), issue.getLongitude()));
+                            if (overlapped.isEmpty()) visibleCount++;
+                            else {
+                                Log.v(TAG, "Issue overlapped");
+                                overlappedCount++;
+                            }
+                            mMarkers.add(new IssueMarker(issue, CivifyMap.this));
+                            i++;
+                        }
+                        Log.v(TAG, "Overlapped: " + overlappedCount + ", Visible: " + visibleCount);
                         if (callback != null) callback.onSuccess(issues);
                     }
 
