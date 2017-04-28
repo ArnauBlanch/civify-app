@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -23,15 +22,11 @@ import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.EditIssueActivity;
-import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Issue;
-import com.civify.model.map.CivifyMarker;
-import com.civify.service.issue.IssueSimpleCallback;
-import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -67,11 +62,11 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     public static IssueDetailsFragment newInstance(Issue issue, float distance, String address) {
-        IssueDetailsFragment fragment = new IssueDetailsFragment();
         Bundle data = new Bundle();
         data.putSerializable(TAG_ISSUE, issue);
         data.putFloat(TAG_DISTANCE, distance);
         data.putString(TAG_ADDRESS, address);
+        IssueDetailsFragment fragment = new IssueDetailsFragment();
         fragment.setArguments(data);
         return fragment;
     }
@@ -153,8 +148,7 @@ public class IssueDetailsFragment extends Fragment {
         Log.v(DEBUG, "Adding distance in layout");
         TextView distanceIssue = (TextView) mViewDetails.findViewById(R.id.distanceText);
         String point = ".";
-        float distance = mDistance /
-                DISTANCE_TO_KILOMETERS;
+        float distance = mDistance / DISTANCE_TO_KILOMETERS;
         String stringDistance = String.valueOf(distance);
         StringTokenizer token = new StringTokenizer(stringDistance, point);
         String distanceToken = token.nextToken();
@@ -268,6 +262,7 @@ public class IssueDetailsFragment extends Fragment {
         return false;
     }
 
+    public void launchEditActivity() {
     private void delete_issue(){
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -308,6 +303,5 @@ public class IssueDetailsFragment extends Fragment {
         Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
         drawerActivity.startActivity(intent);
     }
-
 
 }

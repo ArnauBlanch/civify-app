@@ -165,8 +165,7 @@ public class DrawerActivity extends BaseActivity
         else if (fragmentId == DETAILS_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
-        }
-        else {
+        } else {
             mShowMenu = false;
             mShowMenuDetails = false;
         }
