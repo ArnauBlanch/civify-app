@@ -2,16 +2,17 @@ package com.civify.model.issue;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Issue {
+public class Issue implements Serializable {
 
     private static final int BITMAP_COMPRESS_VALUE = 70;
 
@@ -67,6 +68,10 @@ public class Issue {
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
+    @Expose(serialize = false)
+    @SerializedName("confirmed_by_auth_user")
+    private boolean mConfirmedByAuthUser;
+
     @Expose
     @SerializedName("picture")
     private Picture mPicture;
@@ -87,6 +92,7 @@ public class Issue {
         mConfirmVotes = 0;
         mReports = 0;
         mUserAuthToken = userAuthToken;
+        Log.v("Issue creadora", pictureBitmap.toString());
         setPicture(pictureBitmap);
     }
 
@@ -230,8 +236,12 @@ public class Issue {
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
     }
 
-    public Bitmap getPictureBitmap() {
-        byte[] decodedString = Base64.decode(mPicture.getContent(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    public boolean getConfirmedByAuthUser() {
+        return mConfirmedByAuthUser;
     }
+
+    public void setConfirmedByAuthUser(boolean confirmation) {
+        mConfirmedByAuthUser = confirmation;
+    }
+
 }

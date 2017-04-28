@@ -1,10 +1,8 @@
 package com.civify.activity.createissue;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.activity.CustomViewPager;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
@@ -51,12 +48,10 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences userPreferences =
-                getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(userPreferences);
+        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(this);
         setContentView(R.layout.create_issue_layout);
 
-        mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         // Set an Adapter on the ViewPager
         mViewPager.setAdapter(new CreateIssuePagerAdapter(getSupportFragmentManager()));
@@ -67,7 +62,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.report_new_issue));
+        getSupportActionBar().setTitle(getString(R.string.create_new_issue));
 
         setupCloseKeyboard(findViewById(android.R.id.content));
     }
@@ -103,7 +98,7 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
 
     private void hideSoftKeyboard() {
         InputMethodManager inputMethodManager =
-                (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager
                 .hideSoftInputFromWindow(findViewById(android.R.id.content).getWindowToken(), 0);
 
@@ -215,9 +210,9 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
                 @Override
                 public void onSuccess(Issue issue) {
                     mProgressDialog.dismiss();
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("newIssueToken", issue.getIssueAuthToken());
-                    setResult(ISSUE_CREATED, returnIntent);
+                    Intent intent = getIntent();
+                    intent.putExtra("issue", issue);
+                    setResult(ISSUE_CREATED, intent);
                     finish();
                 }
 

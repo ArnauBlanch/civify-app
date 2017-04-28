@@ -283,8 +283,8 @@ public class IssueAdapterTest {
     @Test
     public void testValidConfirm() {
         String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
-                + "\" " + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
-                + "user-auth-token" + '"';
+                + ' ' + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
+                + "user-auth-token";
 
         JsonObject body = new JsonObject();
         body.addProperty("message", expMessage);
@@ -323,7 +323,7 @@ public class IssueAdapterTest {
     public void testValidUnconfirm() {
         String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
                 + UN + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
-                + "user-auth-token" + '"';
+                + "user-auth-token";
 
         JsonObject body = new JsonObject();
         body.addProperty("message", expMessage);

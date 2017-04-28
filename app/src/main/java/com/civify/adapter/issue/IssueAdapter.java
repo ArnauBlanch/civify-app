@@ -25,10 +25,10 @@ import retrofit2.Response;
 
 public class IssueAdapter {
     public static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
-    public static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token \"";
+    public static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
     public static final String CONFIRMED_BY_USER_WITH_AUTH_TOKEN =
-            "confirmed by User with auth token \"";
-    public static final String UN = "\" un";
+            "confirmed by User with auth token ";
+    public static final String UN = " un";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -114,15 +114,15 @@ public class IssueAdapter {
 
     public void confirmIssue(String issueAuthToken, SimpleCallback callback) {
         String expMessage = ISSUE_WITH_AUTH_TOKEN + issueAuthToken
-                + "\" " + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
-                + UserAdapter.getCurrentUser().getUserAuthToken() + '"';
+                + " " + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
+                + UserAdapter.getCurrentUser().getUserAuthToken();
         issueConfirmation(issueAuthToken, expMessage, callback);
     }
 
     public void unconfirmIssue(String issueAuthToken, SimpleCallback callback) {
         String expMessage = ISSUE_WITH_AUTH_TOKEN + issueAuthToken
                 + UN + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
-                + UserAdapter.getCurrentUser().getUserAuthToken() + '"';
+                + UserAdapter.getCurrentUser().getUserAuthToken();
         issueConfirmation(issueAuthToken, expMessage, callback);
     }
 

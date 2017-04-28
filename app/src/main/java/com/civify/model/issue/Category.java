@@ -1,6 +1,7 @@
 package com.civify.model.issue;
 
 import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 
 import com.civify.R;
 import com.google.gson.annotations.SerializedName;
@@ -46,24 +47,30 @@ public enum Category {
     OTHER(R.drawable.others_pin, R.drawable.others_icon,
             R.string.other);
 
+    @DrawableRes
     private final int mMarker;
+    @DrawableRes
     private final int mIcon;
+    @StringRes
     private final int mName;
 
-    Category(@DrawableRes int marker, @DrawableRes int icon, int name) {
+    Category(@DrawableRes int marker, @DrawableRes int icon, @StringRes int name) {
         this.mMarker = marker;
         this.mIcon = icon;
         this.mName = name;
     }
 
+    @DrawableRes
     public int getMarker() {
         return mMarker;
     }
 
+    @DrawableRes
     public int getIcon() {
         return mIcon;
     }
 
+    @StringRes
     public int getName() {
         return mName;
     }
