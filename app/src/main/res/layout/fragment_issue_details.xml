@@ -255,7 +255,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_margin="5dp"
-              android:text="Resolve"
+              android:text="@string/resolve"
               android:textColor="@color/white"
               android:layout_weight="1"
               android:background="@drawable/blue_bg_button"
