@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
@@ -141,6 +143,13 @@ public class IssueMarker {
 
     public boolean isPresent() {
         return mPresent;
+    }
+
+    public void showIssueDetails() {
+        Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(this);
+        if (issueDetailsFragment != null) {
+            mMap.getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+        }
     }
 
     @Override
