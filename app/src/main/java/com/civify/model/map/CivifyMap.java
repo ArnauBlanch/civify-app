@@ -1,13 +1,14 @@
 package com.civify.model.map;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
 import com.civify.adapter.issue.IssueAdapter;
@@ -31,7 +32,7 @@ import java.util.Set;
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     public static final int DEFAULT_ZOOM = 18;
-    public static final int CAMERA_ANIMATION_MILLIS = 2000;
+    public static final int CAMERA_ANIMATION_MILLIS = 1000;
 
     private static final String TAG = CivifyMap.class.getSimpleName();
 
@@ -138,7 +139,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     private void setMarkers() {
-        if (isMapLoaded()) mMarkers.attachToMap(mGoogleMap);
+        if (isMapLoaded()) mMarkers.attachToMap(this);
         else {
             mMarkers = new CivifyMarkers(this);
             try {
@@ -201,12 +202,11 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mMarkers;
     }
 
-    public void showIssueDetails(CivifyMarker<?> issueMarker) {
+    public void showIssueDetails(IssueMarker issueMarker) {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(issueMarker);
         getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
     }
 
-    GoogleMap getGoogleMap() {
     /** @return GoogleMap instance or null if not isMapLoaded() */
     @Nullable
     public GoogleMap getGoogleMap() {

@@ -21,11 +21,10 @@ import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.model.User;
-import com.civify.model.map.CivifyMarker;
+import com.civify.model.map.IssueMarker;
 import com.civify.utils.ServiceGenerator;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -35,14 +34,14 @@ public class IssueDetailsFragment extends Fragment {
 
     private static final String DEBUG = "debug-IssueDetails";
     private static final String WHITE_SPACE = " ";
-    private static final String TAG_MARKER = "marker";
+    private static final String TAG_MARKER = "issueAuthToken";
 
     private static final int MILLISECONDS_TO_DAYS = 86400000;
     private static final int DISTANCE_TO_KILOMETERS = 1000;
     private static final int DISTANCE_TO_METERS = 1000000;
     private static final int LEVEL_FAKE_USER = 3;
 
-    private CivifyMarker<?> mMarker;
+    private IssueMarker mMarker;
 
     private View mViewDetails;
 
@@ -50,10 +49,10 @@ public class IssueDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static IssueDetailsFragment newInstance(CivifyMarker<?> marker) {
+    public static IssueDetailsFragment newInstance(IssueMarker marker) {
         IssueDetailsFragment fragment = new IssueDetailsFragment();
         Bundle data = new Bundle();
-        data.putSerializable(TAG_MARKER, marker);
+        //data.putString(TAG_MARKER, marker);
         fragment.setArguments(data);
         return fragment;
     }
@@ -67,20 +66,16 @@ public class IssueDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
-        try {
-            init();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //init();
         return mViewDetails;
     }
 
-    private void init() throws IOException {
+    private void init() {
         Log.v(DEBUG, "init");
 
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
-        mMarker = (CivifyMarker<?>) bundle.getSerializable(TAG_MARKER);
+        mMarker = (IssueMarker) bundle.getSerializable(TAG_MARKER);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mMarker.getIssue().getTitle());

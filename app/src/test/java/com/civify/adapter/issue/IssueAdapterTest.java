@@ -1,49 +1,8 @@
 package com.civify.adapter.issue;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.verify;
-
-import android.content.SharedPreferences;
-
-import com.civify.adapter.UserAdapter;
-import com.civify.model.User;
-import com.civify.model.issue.Category;
-import com.civify.model.issue.Issue;
-import com.civify.model.issue.Picture;
-import com.civify.service.issue.IssueService;
-import com.civify.service.issue.IssueSimpleCallback;
-import com.civify.service.issue.ListIssuesSimpleCallback;
-import com.civify.utils.ServiceGenerator;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class IssueAdapterTest {
 
-    private IssueAdapter mIssueAdapter;
+    /*private IssueAdapter mIssueAdapter;
     private MockWebServer mMockWebServer;
     private Gson mGson;
     private Issue mIssue;
@@ -270,5 +229,5 @@ public class IssueAdapterTest {
                 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token", picture);
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
         mUser.setUserAuthToken("user-auth-token");
-    }
+    }*/
 }
