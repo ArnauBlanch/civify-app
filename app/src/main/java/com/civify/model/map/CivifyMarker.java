@@ -7,7 +7,11 @@ import com.civify.adapter.LocalityCallback;
 import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.model.LatLng;
 
-public interface CivifyMarker<E extends Issue> {
+import java.io.Serializable;
+
+public interface CivifyMarker<E extends Issue> extends Serializable {
+    void setMap(@NonNull CivifyMap map);
+
     @NonNull
     String getTag();
 
