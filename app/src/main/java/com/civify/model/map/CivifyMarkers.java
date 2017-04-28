@@ -6,11 +6,14 @@ import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListener {
 
@@ -42,10 +45,19 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
         return null;
     }
 
+    public Set<IssueMarker> get(@NonNull LatLng position) {
+        Set<IssueMarker> atSamePosition = new HashSet<>();
+        for (IssueMarker marker : this) {
+            if (marker.getPosition().equals(position)) atSamePosition.add(marker);
+        }
+        return atSamePosition;
+    }
+
     public void add(@NonNull IssueMarker issueMarker) {
         String tag = issueMarker.getTag();
         mMarkers.put(idify(tag), issueMarker);
-        Log.v(TAG, "Added marker " + tag);
+        issueMarker.attachToMap();
+        Log.v(TAG, "Added marker " + tag + '(' + issueMarker.getIssue().getTitle() + ')');
     }
 
     public void addAll(@NonNull Collection<? extends IssueMarker> issueMarkers) {

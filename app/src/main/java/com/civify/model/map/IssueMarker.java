@@ -16,9 +16,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 public class IssueMarker {
 
     private static final String TAG = IssueMarker.class.getSimpleName();
@@ -27,31 +24,30 @@ public class IssueMarker {
     private GoogleMap mAttached;
     private Issue mIssue;
     private Marker mMarker;
+    private String mTag;
     private boolean mPresent;
 
     IssueMarker(@NonNull Issue issue, @NonNull CivifyMap map) {
         mIssue = issue;
+        mTag = issue.getIssueAuthToken();
         mMap = map;
-        attachToMap(map.getGoogleMap());
     }
 
     public void attachToMap(@NonNull GoogleMap googleMap) {
         if (isPresent()) mMarker.remove();
         mAttached = googleMap;
-        addToMap();
-    }
-
-    private void addToMap() {
-        mMarker = mAttached.addMarker(new MarkerOptions()
-                .position(LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()))
+        mMarker = mAttached.addMarker(new MarkerOptions().position(
+                LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()))
                 .title(mIssue.getTitle())
                 .draggable(false)
-                .flat(false)
-        );
-        mMarker.setTag(mIssue.getIssueAuthToken());
-        // FIXME: Resize icons
-        // setIcon(mIssue.getCategory().getMarker());
+                .flat(false));
+        mMarker.setTag(mTag);
+        setIcon(mIssue.getCategory().getMarker());
         mPresent = true;
+    }
+
+    public void attachToMap() {
+        attachToMap(mMap.getGoogleMap());
     }
 
     public GoogleMap getAttachedMap() {
@@ -60,10 +56,7 @@ public class IssueMarker {
 
     @NonNull
     public String getTag() {
-        Object tag = mMarker.getTag();
-        if (tag != null) return tag.toString();
-        Log.wtf(TAG, "Marker without tag cannot be referenced!");
-        return "";
+        return mTag;
     }
 
     @NonNull
@@ -142,7 +135,7 @@ public class IssueMarker {
             String thisMarker = getTag();
             CivifyMarkers markers = mMap.getMarkers();
             if (markers != null && markers.get(thisMarker) != null) markers.remove(thisMarker);
-            Log.v(TAG, "Removed marker " + getTag());
+            Log.v(TAG, "Removed marker " + getTag() + '(' + getIssue().getTitle() + ')');
         }
     }
 
@@ -153,11 +146,5 @@ public class IssueMarker {
     @Override
     public String toString() {
         return getTag();
-    }
-
-    public static Collection<IssueMarker> getMarkers(Collection<Issue> issues, CivifyMap map) {
-        Collection<IssueMarker> markers = new LinkedList<>();
-        for (Issue issue : issues) markers.add(new IssueMarker(issue, map));
-        return markers;
     }
 }

@@ -9,6 +9,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InvalidClassException;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -234,5 +235,52 @@ public class Issue implements Serializable {
     public Bitmap getPictureBitmap() {
         byte[] decodedString = Base64.decode(mPicture.getContent(), Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+
+    @Override
+    public String toString() {
+        return '{'
+                + "mTitle='"
+                + mTitle
+                + '\''
+                + ", mDescription='"
+                + mDescription
+                + '\''
+                + ", mCategory="
+                + mCategory
+                + ", mRisk="
+                + mRisk
+                + ", mLongitude="
+                + mLongitude
+                + ", mLatitude="
+                + mLatitude
+                + ", mConfirmVotes="
+                + mConfirmVotes
+                + ", mResolvedVotes="
+                + mResolvedVotes
+                + ", mReports="
+                + mReports
+                + ", mCreatedAt="
+                + mCreatedAt
+                + ", mUpdatedAt="
+                + mUpdatedAt
+                + ", mIssueAuthToken='"
+                + mIssueAuthToken
+                + '\''
+                + ", mUserAuthToken='"
+                + mUserAuthToken
+                + '\''
+                + '}';
+    }
+
+    public void validate() throws InvalidClassException {
+        if (mTitle == null) throw new InvalidClassException("mTime is null");
+        if (mDescription == null) throw new InvalidClassException("mDescription is null");
+        if (mCategory == null) throw new InvalidClassException("mCategory is null");
+        if (mCreatedAt == null) throw new InvalidClassException("mCreatedAt is null");
+        if (mUpdatedAt == null) throw new InvalidClassException("mUpdatedAt is null");
+        if (mIssueAuthToken == null) throw new InvalidClassException("mIssueAuthToken is null");
+        if (mUserAuthToken == null) throw new InvalidClassException("mUserAuthToken is null");
+        if (mPicture == null) throw new InvalidClassException("mPicture is null");
     }
 }

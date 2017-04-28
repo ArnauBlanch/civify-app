@@ -18,6 +18,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.support.annotation.Nullable;
 
@@ -25,6 +26,7 @@ import com.civify.RobolectricTest;
 import com.civify.activity.DrawerActivity;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.issue.IssueAdapter;
+import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
 import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.google.android.gms.maps.CameraUpdate;
@@ -50,6 +52,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
                  GoogleMap.class,
                  UiSettings.class,
                  CameraUpdateFactory.class,
+                 BitmapFactory.class,
                  Marker.class})
 public class CivifyMapTest extends RobolectricTest {
 
@@ -314,6 +317,7 @@ public class CivifyMapTest extends RobolectricTest {
         when(mock.getIssueAuthToken()).thenReturn(ISSUE_MOCK_ID);
         when(mock.getLatitude()).thenReturn(mFakeLocation.getLatitude());
         when(mock.getLongitude()).thenReturn(mFakeLocation.getLongitude());
+        when(mock.getCategory()).thenReturn(Category.ILLUMINATION);
         return mock;
     }
 
@@ -323,5 +327,6 @@ public class CivifyMapTest extends RobolectricTest {
 
     private static void mockStatics() {
         mockStatic(CameraUpdateFactory.class);
+        mockStatic(BitmapFactory.class);
     }
 }
