@@ -29,6 +29,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private static final String TAG = CivifyMap.class.getSimpleName();
 
     private static final int DEFAULT_ZOOM = 18;
+    private static final int DETAILS_ID = 7;
 
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
@@ -142,7 +143,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     public void showIssueDetails(CivifyMarker<?> issueMarker) {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(issueMarker);
-        getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+        getContext().setFragment(issueDetailsFragment, DETAILS_ID);
     }
 
     GoogleMap getGoogleMap() {
