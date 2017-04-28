@@ -27,11 +27,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.text.DateFormat;
@@ -41,9 +36,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -107,8 +107,8 @@ public class IssueAdapterTest {
         assertEquals(mIssue.getDescription(), requestJson.get("description").getAsString());
         assertEquals(mIssue.getCategory().toString().toLowerCase(),
                 requestJson.get("category").getAsString());
-        assertEquals(mIssue.getLongitude(), requestJson.get("longitude").getAsFloat());
-        assertEquals(mIssue.getLatitude(), requestJson.get("latitude").getAsFloat());
+        assertEquals(mIssue.getLongitude(), requestJson.get("longitude").getAsDouble());
+        assertEquals(mIssue.getLatitude(), requestJson.get("latitude").getAsDouble());
         assertEquals(mIssue.isRisk(), requestJson.get("risk").getAsBoolean());
 
         // Test request body (picture)
