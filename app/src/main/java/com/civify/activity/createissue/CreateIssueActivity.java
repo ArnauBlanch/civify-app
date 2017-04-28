@@ -1,7 +1,7 @@
 package com.civify.activity.createissue;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -23,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.activity.CustomViewPager;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
@@ -53,7 +52,7 @@ public class CreateIssueActivity extends CameraGalleryActivity {
         mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(this);
         setContentView(R.layout.create_issue_layout);
 
-        mViewPager = (CustomViewPager) findViewById(R.id.viewpager);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         // Set an Adapter on the ViewPager
         mViewPager.setAdapter(new CreateIssuePagerAdapter(getSupportFragmentManager()));
@@ -100,7 +99,7 @@ public class CreateIssueActivity extends CameraGalleryActivity {
 
     private void hideSoftKeyboard() {
         InputMethodManager inputMethodManager =
-                (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager
                 .hideSoftInputFromWindow(findViewById(android.R.id.content).getWindowToken(), 0);
 
@@ -188,9 +187,8 @@ public class CreateIssueActivity extends CameraGalleryActivity {
 
 
         if (mDescription.isEmpty()) {
-            descLayout.setError(getString(R.string.must_insert_issue_title));
+            descLayout.setError(getString(R.string.must_insert_description));
         } else {
-            showProgressDialog();
             descLayout.setError(null);
             processIssue();
         }
@@ -203,6 +201,7 @@ public class CreateIssueActivity extends CameraGalleryActivity {
         double longitude = currentLocation.getLongitude();
         double latitude = currentLocation.getLatitude();
 
+        showProgressDialog();
         Issue newIssue =
                 new Issue(mTitle, mDescription, mCategory, mRisk, longitude, latitude,
                         mImageBitmap, currentUser.getUserAuthToken());

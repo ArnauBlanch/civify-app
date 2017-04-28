@@ -93,7 +93,7 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
             IssueMarker issueMarker = mMarkers.get(idify(tag));
             if (issueMarker != null) {
                 Log.v(TAG, "Marker " + tag + " clicked.");
-                // TODO: Go to details
+                CivifyMap.getInstance().showIssueDetails(civifyMarker);
                 return true;
             }
         }
