@@ -1,6 +1,7 @@
 package com.civify.activity.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,10 +21,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
+import com.civify.activity.EditIssueActivity;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.model.User;
+import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMarker;
 import com.civify.utils.ServiceGenerator;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -43,6 +49,7 @@ public class IssueDetailsFragment extends Fragment {
     private static final int LEVEL_FAKE_USER = 3;
 
     private CivifyMarker<?> mMarker;
+    private Issue mIssue;
 
     private View mViewDetails;
 
@@ -61,6 +68,7 @@ public class IssueDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -81,6 +89,8 @@ public class IssueDetailsFragment extends Fragment {
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
         mMarker = (CivifyMarker<?>) bundle.getSerializable(TAG_MARKER);
+
+        mIssue = mMarker.getIssue();
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mMarker.getIssue().getTitle());
@@ -237,6 +247,27 @@ public class IssueDetailsFragment extends Fragment {
         //profileImage.setImageIcon(img); // icon
 
         Log.v(DEBUG, "setUser finished");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_issue:
+                Log.d("Ricard", "has clicat a edit issue");
+                Intent intent = new Intent(getActivity(), EditIssueActivity.class);
+                intent.putExtra("issue", mIssue);
+                startActivity(intent);
+                return false;
+            default:
+                break;
+        }
+
+        return false;
     }
 
 }

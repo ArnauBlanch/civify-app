@@ -105,14 +105,6 @@
   <string name="not_implemented_yet">Not implemented yet</string>
   <string name="action">Action</string>
 
-  <string name="share">share</string>
-  <string name="category">Category:</string>
-  <string name="questionRisk">Poses a risk?</string>
-  <string name="yes">Yes</string>
-  <string name="no">No</string>
-  <string name='daysAgo'>days ago</string>
-  <string name='today'>today</string>
-
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="level">Level</string>
@@ -154,4 +146,7 @@
   <string name='today'>today</string>
   <string name='km'>km</string>
   <string name="m">m</string>
+  <string name='daysAgo'>days ago</string>
+  <string name="edit_issue">Edit Issue</string>
+  <string name="delete_issue">Delete Issue</string>
 </resources>

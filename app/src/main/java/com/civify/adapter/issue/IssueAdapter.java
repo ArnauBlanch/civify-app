@@ -62,8 +62,7 @@ public class IssueAdapter {
             public void onResponse(Call<Issue> call, Response<Issue> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
-                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
-                        && getMessageFromError(response.errorBody()).equals(ISSUE_NOT_FOUND)) {
+                } else {
                     callback.onFailure();
                 }
             }
