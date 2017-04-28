@@ -5,26 +5,38 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
-public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickListener {
+public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListener {
 
     public static final String TAG = CivifyMarkers.class.getSimpleName();
 
-    private HashMap<String, CivifyMarker<?>> mMarkers = new HashMap<>();
+    private HashMap<String, IssueMarker> mMarkers = new HashMap<>();
+    private CivifyMap mMap;
 
     CivifyMarkers(@NonNull CivifyMap map) {
+        attachToMap(map);
+    }
+
+    public final void attachToMap(@NonNull CivifyMap map) {
+        mMap = map;
         map.getGoogleMap().setOnMarkerClickListener(this);
+        if (!mMarkers.isEmpty()) {
+            for (IssueMarker marker : this) marker.attachToMap(map.getGoogleMap());
+        }
     }
 
     @Nullable
-    public CivifyMarker<?> get(@NonNull String tag) {
+    public IssueMarker get(@NonNull String tag) {
         String key = idify(tag);
-        CivifyMarker<?> marker = mMarkers.get(key);
+        IssueMarker marker = mMarkers.get(key);
         if (marker != null) {
             if (marker.isPresent()) {
                 return marker;
@@ -34,24 +46,36 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
         return null;
     }
 
-    public void add(@NonNull CivifyMarker<?> civifyMarker) {
-        String tag = civifyMarker.getTag();
-        mMarkers.put(idify(tag), civifyMarker);
-        Log.v(TAG, "Added marker " + tag);
+    public Set<IssueMarker> get(@NonNull LatLng position) {
+        Set<IssueMarker> atSamePosition = new HashSet<>();
+        for (IssueMarker marker : this) {
+            if (marker.getPosition().equals(position)) atSamePosition.add(marker);
+        }
+        return atSamePosition;
     }
 
-    public void addAll(@NonNull Collection<? extends CivifyMarker<?>> civifyMarkers) {
-        for (CivifyMarker<?> marker : civifyMarkers) add(marker);
+    public void add(@NonNull IssueMarker issueMarker) {
+        String tag = issueMarker.getTag();
+        mMarkers.put(idify(tag), issueMarker);
+        issueMarker.attachToMap();
+        Log.v(TAG, "Added marker " + tag + '(' + issueMarker.getIssue().getTitle() + ')');
+    }
+
+    public void addAll(@NonNull Collection<? extends IssueMarker> issueMarkers) {
+        for (IssueMarker marker : issueMarkers) add(marker);
     }
 
     public void remove(@NonNull String tag) {
-        CivifyMarker<?> civifyMarker = mMarkers.remove(idify(tag));
-        if (civifyMarker != null) civifyMarker.remove();
-        else Log.v(TAG, tag + " not found.");
+        IssueMarker issueMarker = mMarkers.remove(idify(tag));
+        if (issueMarker != null && issueMarker.isPresent()) issueMarker.remove();
     }
 
     public void clear() {
-        mMarkers.clear();
+        Iterator<IssueMarker> it = iterator();
+        while (it.hasNext()) {
+            it.next();
+            it.remove();
+        }
     }
 
     public boolean isEmpty() {
@@ -67,11 +91,11 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
         Object markerTag = marker.getTag();
         if (markerTag != null) {
             String tag = markerTag.toString();
-            CivifyMarker<?> civifyMarker = mMarkers.get(idify(tag));
-            if (civifyMarker != null) {
+            IssueMarker issueMarker = mMarkers.get(idify(tag));
+            if (issueMarker != null) {
                 Log.v(TAG, "Marker " + tag + " clicked.");
-                
-                // return true;
+                mMap.showIssueDetails(issueMarker);
+                return true;
             }
         }
         return false;
@@ -83,17 +107,24 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
     }
 
     @Override
-    public Iterator<CivifyMarker<?>> iterator() {
+    public Iterator<IssueMarker> iterator() {
         return new CivifyIssueMarkerIterator(mMarkers.values());
     }
 
-    private static final class CivifyIssueMarkerIterator implements Iterator<CivifyMarker<?>> {
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("{\n");
+        for (IssueMarker marker : this) builder.append(marker).append('\n');
+        return builder.append('}').toString();
+    }
 
-        private final Iterator<CivifyMarker<?>> mOriginal;
-        private CivifyMarker<?> mLast;
+    private static final class CivifyIssueMarkerIterator implements Iterator<IssueMarker> {
 
-        private CivifyIssueMarkerIterator(@NonNull Collection<CivifyMarker<?>> civifyMarkers) {
-            mOriginal = civifyMarkers.iterator();
+        private final Iterator<IssueMarker> mOriginal;
+        private IssueMarker mLast;
+
+        private CivifyIssueMarkerIterator(@NonNull Collection<IssueMarker> issueMarkers) {
+            mOriginal = issueMarkers.iterator();
         }
 
         @Override
@@ -102,7 +133,7 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
         }
 
         @Override
-        public CivifyMarker<?> next() {
+        public IssueMarker next() {
             mLast = mOriginal.next();
             return mLast;
         }

@@ -1,0 +1,71 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IssueService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.service.issue</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IssueService (com.civify.service.issue)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IssueService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.service.issue;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.civify.model.issue.Issue;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;import retrofit2.Call;
+<i>7</i>&nbsp;import retrofit2.http.Body;
+<i>8</i>&nbsp;import retrofit2.http.GET;
+<i>9</i>&nbsp;import retrofit2.http.Header;
+<i>10</i>&nbsp;import retrofit2.http.POST;
+<i>11</i>&nbsp;import retrofit2.http.Path;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;public interface IssueService {
+<i>14</i>&nbsp;    @POST(&quot;/users/{user_auth_token}/issues&quot;)
+<i>15</i>&nbsp;    Call&lt;Issue&gt; createIssue(@Header(&quot;Authorization&quot;) String authToken, @Body Issue issue, @Path
+<i>16</i>&nbsp;            (&quot;user_auth_token&quot;) String userAuthToken);
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    @GET(&quot;/issues&quot;)
+<i>19</i>&nbsp;    Call&lt;List&lt;Issue&gt;&gt; getIssues(@Header(&quot;Authorization&quot;) String authToken);
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    @GET(&quot;/issues/{issue_auth_token}&quot;)
+<i>22</i>&nbsp;    Call&lt;Issue&gt; getIssue(@Header(&quot;Authorization&quot;) String authToken, @Path(&quot;issue_auth_token&quot;)
+<i>23</i>&nbsp;            String issueAuthToken);
+<i>24</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 20:03</div>
+</div>
+</body>
+</html>

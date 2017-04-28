@@ -1,5 +1,9 @@
 package com.civify.adapter.issue;
 
+import static com.civify.adapter.issue.IssueAdapter.CONFIRMED_BY_USER_WITH_AUTH_TOKEN;
+import static com.civify.adapter.issue.IssueAdapter.ISSUE_WITH_AUTH_TOKEN;
+import static com.civify.adapter.issue.IssueAdapter.REPORTED_BY_USER_WITH_AUTH_TOKEN;
+import static com.civify.adapter.issue.IssueAdapter.UN;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.mock;
@@ -7,8 +11,8 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
@@ -251,17 +255,16 @@ public class IssueAdapterTest {
         // Test response body (picture)
         assertEquals(mIssue.getPicture().getContentType(),
                 responseIssue.getPicture().getContentType());
-        assertEquals(mIssue.getPicture().getFileName(),
-                responseIssue.getPicture().getFileName());
+        assertEquals(mIssue.getPicture().getFileName(), responseIssue.getPicture().getFileName());
     }
 
-    @Test
-    public void testInvalidGetIssue() {
+    @Test public void testInvalidGetIssue() throws ParseException {
+        setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
-                .setBody(body.toString());
+        MockResponse mockResponse =
+                new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
+                        .setBody(body.toString());
         mMockWebServer.enqueue(mockResponse);
         IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
 
@@ -271,17 +274,174 @@ public class IssueAdapterTest {
         verify(mockCallback, timeout(1000)).onFailure();
     }
 
+    // Report
+
+    @Test
+    public void testValidReport() {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
+                + ' ' + REPORTED_BY_USER_WITH_AUTH_TOKEN
+                + "user-auth-token";
+
+        JsonObject body = new JsonObject();
+        body.addProperty("message", expMessage);
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body.toString());
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.reportIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onSuccess();
+    }
+
+    @Test
+    public void testInvalidReport() {
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.reportIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void testValidUnreport() {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
+                + UN + REPORTED_BY_USER_WITH_AUTH_TOKEN
+                + "user-auth-token";
+
+        JsonObject body = new JsonObject();
+        body.addProperty("message", expMessage);
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body.toString());
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.unreportIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onSuccess();
+    }
+
+    @Test
+    public void testInvalidUnreport() {
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.unreportIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void testValidConfirm() {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
+                + ' ' + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
+                + "user-auth-token";
+
+        JsonObject body = new JsonObject();
+        body.addProperty("message", expMessage);
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body.toString());
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.confirmIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onSuccess();
+    }
+
+    @Test
+    public void testInvalidConfirm() {
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.confirmIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void testValidUnconfirm() {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
+                + UN + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
+                + "user-auth-token";
+
+        JsonObject body = new JsonObject();
+        body.addProperty("message", expMessage);
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body.toString());
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.unconfirmIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onSuccess();
+    }
+
+    @Test
+    public void testInvalidUnconfirm() {
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.unconfirmIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onFailure();
+    }
+
     private void setUpIssue() throws ParseException {
-        String dateString = "2016-12-21T20:08:11.000Z";
-        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT, Locale
-                .getDefault());
+        String dateString = "2017-04-22T22:11:41.000Z";
+        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT,
+                Locale.getDefault());
         Date date = dateFormat.parse(dateString);
 
-        Picture picture = new Picture("picture-file-name", "picture-content-type",
-                "picture-content");
-        mIssue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true,
-                45.0f, 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token",
-                picture);
+        Picture picture =
+                new Picture("picture-file-name", "picture-content-type", "picture-content");
+        mIssue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true, 45.0f,
+                46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token", picture);
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
         mUser.setUserAuthToken("user-auth-token");
     }

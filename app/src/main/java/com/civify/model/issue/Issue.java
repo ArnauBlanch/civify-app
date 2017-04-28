@@ -2,16 +2,16 @@ package com.civify.model.issue;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Issue {
+public class Issue implements Serializable {
 
     private static final int BITMAP_COMPRESS_VALUE = 70;
 
@@ -67,13 +67,19 @@ public class Issue {
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
+    @Expose(serialize = false)
+    @SerializedName("confirmed_by_auth_user")
+    private boolean mConfirmedByAuthUser;
+
+    @Expose(serialize = false)
+    @SerializedName("reported_by_auth_user")
+    private boolean mReportedByAuthUser;
+
     @Expose
     @SerializedName("picture")
     private Picture mPicture;
 
-    public Issue() {
-
-    }
+    public Issue() { }
 
     public Issue(String title, String description, Category category, boolean risk,
             double longitude, double latitude, Bitmap pictureBitmap, String userAuthToken) {
@@ -230,8 +236,51 @@ public class Issue {
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
     }
 
-    public Bitmap getPictureBitmap() {
-        byte[] decodedString = Base64.decode(mPicture.getContent(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    public boolean getConfirmedByAuthUser() {
+        return mConfirmedByAuthUser;
+    }
+
+    public void setConfirmedByAuthUser(boolean confirmation) {
+        mConfirmedByAuthUser = confirmation;
+    }
+
+    public boolean getReportedByAuthUser() {
+        return mReportedByAuthUser;
+    }
+
+    @Override
+    public String toString() {
+        return '{'
+                + "mTitle='"
+                + mTitle
+                + '\''
+                + ", mDescription='"
+                + mDescription
+                + '\''
+                + ", mCategory="
+                + mCategory
+                + ", mRisk="
+                + mRisk
+                + ", mLongitude="
+                + mLongitude
+                + ", mLatitude="
+                + mLatitude
+                + ", mConfirmVotes="
+                + mConfirmVotes
+                + ", mResolvedVotes="
+                + mResolvedVotes
+                + ", mReports="
+                + mReports
+                + ", mCreatedAt="
+                + mCreatedAt
+                + ", mUpdatedAt="
+                + mUpdatedAt
+                + ", mIssueAuthToken='"
+                + mIssueAuthToken
+                + '\''
+                + ", mUserAuthToken='"
+                + mUserAuthToken
+                + '\''
+                + '}';
     }
 }
