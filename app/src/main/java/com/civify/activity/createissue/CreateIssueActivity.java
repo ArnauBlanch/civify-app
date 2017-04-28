@@ -28,10 +28,11 @@ import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
+import com.civify.model.map.CivifyMap;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
-public class CreateIssueActivity extends CameraGalleryLocationActivity {
+public class CreateIssueActivity extends CameraGalleryActivity {
 
     public static final int ISSUE_CREATION = 10110;
     public static final int ISSUE_CREATED = 3343;
@@ -195,38 +196,33 @@ public class CreateIssueActivity extends CameraGalleryLocationActivity {
 
     private void processIssue() {
         User currentUser = UserAdapter.getCurrentUser();
-        Location currentLocation = getCurrentLocation();
+        Location currentLocation = CivifyMap.getInstance().getCurrentLocation();
 
-        // Initialize the location fields
-        if (currentLocation != null) {
-            float longitude = (float) currentLocation.getLongitude();
-            float latitude = (float) currentLocation.getLatitude();
+        double longitude = currentLocation.getLongitude();
+        double latitude = currentLocation.getLatitude();
 
-            showProgressDialog();
-            Issue newIssue =
-                    new Issue(mTitle, mDescription, mCategory, mRisk, longitude, latitude,
-                            mImageBitmap, currentUser.getUserAuthToken());
-            mIssueAdapter.createIssue(newIssue, new IssueSimpleCallback() {
-                @Override
-                public void onSuccess(Issue issue) {
-                    mProgressDialog.dismiss();
-                    Intent intent = getIntent();
-                    intent.putExtra("issue", issue);
-                    setResult(ISSUE_CREATED, intent);
-                    finish();
-                }
+        showProgressDialog();
+        Issue newIssue =
+                new Issue(mTitle, mDescription, mCategory, mRisk, longitude, latitude,
+                        mImageBitmap, currentUser.getUserAuthToken());
+        mIssueAdapter.createIssue(newIssue, new IssueSimpleCallback() {
+            @Override
+            public void onSuccess(Issue issue) {
+                mProgressDialog.dismiss();
+                Intent intent = getIntent();
+                intent.putExtra("issue", issue);
+                setResult(ISSUE_CREATED, intent);
+                finish();
+            }
 
-                @Override
-                public void onFailure() {
-                    mProgressDialog.dismiss();
-                    Snackbar.make(findViewById(R.id.create_issue_linearlayout),
-                            getString(R.string.couldnt_create_issue), Snackbar.LENGTH_LONG)
-                            .show();
-                }
-            });
-        } else {
-            showError(R.string.couldnt_get_location);
-        }
+            @Override
+            public void onFailure() {
+                mProgressDialog.dismiss();
+                Snackbar.make(findViewById(R.id.create_issue_linearlayout),
+                        getString(R.string.couldnt_create_issue), Snackbar.LENGTH_LONG)
+                        .show();
+            }
+        });
     }
 
     @Override

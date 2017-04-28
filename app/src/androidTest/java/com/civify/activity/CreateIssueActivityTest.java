@@ -27,7 +27,6 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
@@ -37,7 +36,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -63,12 +61,6 @@ import com.civify.utils.ServiceGenerator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -78,15 +70,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@LargeTest @RunWith(AndroidJUnit4.class) public class CreateIssueActivityTest {
+@LargeTest
+@RunWith(AndroidJUnit4.class)
+public class CreateIssueActivityTest {
 
     private static void grantPermission(String permission) {
-        // In M+, trying to call a number will trigger a runtime dialog. Make sure
+        // In M+, trying to do some actions will trigger a runtime dialog. Make sure
         // the permission is granted before running this test.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getInstrumentation().getUiAutomation().executeShellCommand(
@@ -102,23 +102,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
     @Before
     public void setUp() {
         Context context = getInstrumentation().getTargetContext();
-        //SharedPreferences userPreferences =
-        //        PreferenceManager.getDefaultSharedPreferences(context);
         LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
         loginAdapter.logout();
         loginAdapter.login("ArnauBlanch2", "Test1234", new LoginFinishedCallback() {
-            @Override public void onLoginSucceeded(User u) {
-
-            }
-
-            @Override public void onLoginFailed(LoginError t) {
-
-            }
+            @Override
+            public void onLoginSucceeded(User u) {}
+            @Override
+            public void onLoginFailed(LoginError t) {}
         });
-
         setupMockIssueResponse();
-
-
     }
 
     @BeforeClass
@@ -158,7 +150,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
         }
     }
 
-    @Test public void testCreateIssue() {
+    @Test
+    public void testCreateIssue() {
 
         ViewInteraction appCompatEditText5 = onView(allOf(withId(R.id.title_input), isDisplayed()));
         appCompatEditText5.perform(replaceText("IssueTitle"), closeSoftKeyboard());
