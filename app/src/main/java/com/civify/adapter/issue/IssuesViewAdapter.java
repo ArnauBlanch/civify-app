@@ -1,8 +1,7 @@
-package com.civify.adapter;
+package com.civify.adapter.issue;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,7 +54,9 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
         String numConfirms = '+' + Integer.toString(issue.getConfirmVotes());
         holder.getNumConfirms().setText(numConfirms);
         Category issueCategory = issue.getCategory();
+        Drawable drawable = mContext.getResources().getDrawable(issueCategory.getMarker());
         CircularImageView categoryImage = holder.getCategory();
+        categoryImage.setImageDrawable(drawable);
       
         // dist = CivifyMap.getMarkers().get(issue.getIssueAuthToken()).getDistanceFromMe().
 

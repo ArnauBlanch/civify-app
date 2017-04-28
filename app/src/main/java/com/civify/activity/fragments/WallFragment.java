@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class WallFragment extends Fragment {
     private IssueAdapter mIssueAdapter;
     private IssuesViewFragment mIssuesViewFragment;
     private ProgressBar mProgressBar;
+    private String mTitle;
 
     public WallFragment() {
         // Required empty public constructor
@@ -40,6 +42,7 @@ public class WallFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mTitle = getResources().getString(R.string.wall_title);
     }
 
     @Override
@@ -47,6 +50,10 @@ public class WallFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(mTitle);
+
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_wall);
         return view;
     }
@@ -67,7 +74,7 @@ public class WallFragment extends Fragment {
             @Override
             public void onSuccess(List<Issue> issues) {
                 mProgressBar.setVisibility(View.GONE);
-                mIssuesViewFragment.setIssuesList(issues);
+                mIssuesViewFragment.setIssuesList(filterIssues(issues));
             }
 
             @Override
@@ -75,5 +82,9 @@ public class WallFragment extends Fragment {
                 // TODO: do something
             }
         });
+    }
+
+    protected List<Issue> filterIssues(List<Issue> issues) {
+        return issues;
     }
 }

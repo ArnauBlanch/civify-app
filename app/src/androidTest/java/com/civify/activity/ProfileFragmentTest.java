@@ -19,6 +19,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.civify.R;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
