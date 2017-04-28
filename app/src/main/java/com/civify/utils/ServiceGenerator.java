@@ -11,7 +11,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public final class ServiceGenerator {
     public static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    private static final String BASE_URL = "http://staging-api.civify.cf";
+    public static final String BASE_URL = "http://staging-api.civify.cf";
     private static ServiceGenerator sInstance;
 
     private final Retrofit.Builder mBuilder;

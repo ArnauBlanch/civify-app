@@ -1,5 +1,6 @@
 package com.civify.adapter.issue;
 
+import com.google.gson.JsonObject;
 import static com.civify.adapter.issue.IssueAdapter.CONFIRMED_BY_USER_WITH_AUTH_TOKEN;
 import static com.civify.adapter.issue.IssueAdapter.ISSUE_WITH_AUTH_TOKEN;
 import static com.civify.adapter.issue.IssueAdapter.UN;
@@ -47,6 +48,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class IssueAdapterTest {
+
     private IssueAdapter mIssueAdapter;
     private MockWebServer mMockWebServer;
     private Gson mGson;
@@ -57,19 +59,18 @@ public class IssueAdapterTest {
     public void setUp() throws IOException {
         mMockWebServer = new MockWebServer();
         mMockWebServer.start();
-        mGson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
+        mGson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
                 .setDateFormat(ServiceGenerator.RAILS_DATE_FORMAT)
                 .create();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(mMockWebServer.url("").toString())
-                .addConverterFactory(GsonConverterFactory.create(mGson)).build();
+                .addConverterFactory(GsonConverterFactory.create(mGson))
+                .build();
         IssueService issueService = retrofit.create(IssueService.class);
         SharedPreferences sharedPreferences = mock(SharedPreferences.class);
         mIssueAdapter = new IssueAdapter(issueService, sharedPreferences);
     }
 
-    @After
-    public void tearDown() throws IOException {
+    @After public void tearDown() throws IOException {
         mIssueAdapter = null;
         mMockWebServer.shutdown();
     }
@@ -78,9 +79,9 @@ public class IssueAdapterTest {
     public void testValidCreateIssue() throws InterruptedException, ParseException {
         setUpIssue();
         String jsonBody = mGson.toJson(mIssue);
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_CREATED)
-                .setBody(jsonBody);
+        MockResponse mockResponse =
+                new MockResponse().setResponseCode(HttpURLConnection.HTTP_CREATED)
+                        .setBody(jsonBody);
         mMockWebServer.enqueue(mockResponse);
         IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
 
@@ -111,12 +112,12 @@ public class IssueAdapterTest {
         assertEquals(mIssue.isRisk(), requestJson.get("risk").getAsBoolean());
 
         // Test request body (picture)
-        assertEquals(mIssue.getPicture().getContentType(), requestJson.get("picture")
-                .getAsJsonObject().get("content_type").getAsString());
-        assertEquals(mIssue.getPicture().getFileName(), requestJson.get("picture")
-                .getAsJsonObject().get("file_name").getAsString());
-        assertEquals(mIssue.getPicture().getContent(), requestJson.get("picture")
-                .getAsJsonObject().get("content").getAsString());
+        assertEquals(mIssue.getPicture().getContentType(),
+                requestJson.get("picture").getAsJsonObject().get("content_type").getAsString());
+        assertEquals(mIssue.getPicture().getFileName(),
+                requestJson.get("picture").getAsJsonObject().get("file_name").getAsString());
+        assertEquals(mIssue.getPicture().getContent(),
+                requestJson.get("picture").getAsJsonObject().get("content").getAsString());
 
         Issue responseIssue = argument.getValue();
 
@@ -134,8 +135,7 @@ public class IssueAdapterTest {
         // Test response body (picture)
         assertEquals(mIssue.getPicture().getContentType(),
                 responseIssue.getPicture().getContentType());
-        assertEquals(mIssue.getPicture().getFileName(),
-                responseIssue.getPicture().getFileName());
+        assertEquals(mIssue.getPicture().getFileName(), responseIssue.getPicture().getFileName());
     }
 
     @Test
@@ -143,9 +143,9 @@ public class IssueAdapterTest {
         setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
-                .setBody(body.toString());
+        MockResponse mockResponse =
+                new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+                        .setBody(body.toString());
         mMockWebServer.enqueue(mockResponse);
         IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
 
@@ -165,9 +165,8 @@ public class IssueAdapterTest {
         issueList.add(mIssue);
         issueList.add(mIssue);
         String jsonBody = mGson.toJson(issueList);
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(jsonBody);
+        MockResponse mockResponse =
+                new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK).setBody(jsonBody);
         mMockWebServer.enqueue(mockResponse);
         ListIssuesSimpleCallback mockCallback = mock(ListIssuesSimpleCallback.class);
 
@@ -209,9 +208,9 @@ public class IssueAdapterTest {
         setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
-                .setBody(body.toString());
+        MockResponse mockResponse =
+                new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
+                        .setBody(body.toString());
         mMockWebServer.enqueue(mockResponse);
         ListIssuesSimpleCallback mockCallback = mock(ListIssuesSimpleCallback.class);
 
@@ -225,9 +224,8 @@ public class IssueAdapterTest {
     public void testValidGetIssue() throws InterruptedException, ParseException {
         setUpIssue();
         String jsonBody = mGson.toJson(mIssue);
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(jsonBody);
+        MockResponse mockResponse =
+                new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK).setBody(jsonBody);
         mMockWebServer.enqueue(mockResponse);
         IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
 
@@ -240,7 +238,7 @@ public class IssueAdapterTest {
         assertEquals("/issues/" + mIssue.getIssueAuthToken(), request.getPath());
 
         // Test mockCallback.onSuccess() is called;
-        ArgumentCaptor<Issue> argument = ArgumentCaptor.forClass(Issue.class);
+        ArgumentCaptor<Issue> argument = forClass(Issue.class);
         verify(mockCallback, timeout(1000)).onSuccess(argument.capture());
 
         Issue responseIssue = argument.getValue();
@@ -259,18 +257,16 @@ public class IssueAdapterTest {
         // Test response body (picture)
         assertEquals(mIssue.getPicture().getContentType(),
                 responseIssue.getPicture().getContentType());
-        assertEquals(mIssue.getPicture().getFileName(),
-                responseIssue.getPicture().getFileName());
+        assertEquals(mIssue.getPicture().getFileName(), responseIssue.getPicture().getFileName());
     }
 
-    @Test
-    public void testInvalidGetIssue() throws ParseException {
+    @Test public void testInvalidGetIssue() throws ParseException {
         setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
-                .setBody(body.toString());
+        MockResponse mockResponse =
+                new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
+                        .setBody(body.toString());
         mMockWebServer.enqueue(mockResponse);
         IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
 
@@ -364,11 +360,10 @@ public class IssueAdapterTest {
                 Locale.getDefault());
         Date date = dateFormat.parse(dateString);
 
-        Picture picture = new Picture("picture-file-name", "picture-content-type",
-                "picture-content");
-        mIssue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true,
-                45.0f, 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token",
-                picture);
+        Picture picture =
+                new Picture("picture-file-name", "picture-content-type", "picture-content");
+        mIssue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true, 45.0f,
+                46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token", picture);
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
         mUser.setUserAuthToken("user-auth-token");
     }
