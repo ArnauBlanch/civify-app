@@ -135,6 +135,7 @@
   <string name="tab_label_badges">BADGES</string>
   <string name="tab_spec_issues">Issues</string>
   <string name="tab_spec_badges">Badges</string>
+  <string name="wall_title">Wall</string>
 
   <string name="share">share</string>
   <string name="category">Category</string>
