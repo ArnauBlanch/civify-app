@@ -25,10 +25,13 @@ import retrofit2.Response;
 
 public class IssueAdapter {
     static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
-    static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token \"";
+    static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
+    public static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
+    public static final String CONFIRMED_BY_USER_WITH_AUTH_TOKEN =
+            "confirmed by User with auth token ";
     static final String REPORTED_BY_USER_WITH_AUTH_TOKEN =
-            "reported by User with auth token \"";
-    static final String UN = "\" un";
+            "reported by User with auth token ";
+    static final String UN = " un";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -128,9 +131,35 @@ public class IssueAdapter {
         issueReport(issueAuthToken, expMessage, callback);
     }
 
+    // Confirmations
+
+    private void issueConfirmation(String issueAuthToken, final String expectedResponse, final
+            SimpleCallback callback) {
+        JsonObject userToken = new JsonObject();
+        userToken.addProperty("user", UserAdapter.getCurrentUser().getUserAuthToken());
+
+        Call<MessageResponse> call = mIssueService.issueConfirmation(mAuthToken,
+                userToken, issueAuthToken);
+        call.enqueue(new ExpectedResponseCallback(expectedResponse, callback));
+    }
+
+    public void confirmIssue(String issueAuthToken, SimpleCallback callback) {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + issueAuthToken
+                + " " + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
+                + UserAdapter.getCurrentUser().getUserAuthToken();
+        issueConfirmation(issueAuthToken, expMessage, callback);
+    }
+
+    public void unconfirmIssue(String issueAuthToken, SimpleCallback callback) {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + issueAuthToken
+                + UN + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
+                + UserAdapter.getCurrentUser().getUserAuthToken();
+        issueConfirmation(issueAuthToken, expMessage, callback);
+    }
+
     private String getMessageFromError(ResponseBody errorBody) {
         try {
-            return (new JsonParser().parse(errorBody.string()).getAsJsonObject()).get("message")
+            return new JsonParser().parse(errorBody.string()).getAsJsonObject().get("message")
                     .getAsString();
         } catch (IOException e) {
             e.printStackTrace();

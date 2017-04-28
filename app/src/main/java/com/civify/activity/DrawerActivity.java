@@ -65,6 +65,7 @@ public class DrawerActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
@@ -96,7 +97,13 @@ public class DrawerActivity extends BaseActivity
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else super.onBackPressed();
+        } else {
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
+        }
         //        else finish();
     }
 
@@ -148,9 +155,10 @@ public class DrawerActivity extends BaseActivity
         return true;
     }
 
-    private void setFragment(Fragment fragment, int fragmentId) {
+    public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment)
+                .addToBackStack("tag").commit();
         if (fragmentId == PROFILE_ID) mShowMenu = true;
         else mShowMenu = false;
         invalidateOptionsMenu();
