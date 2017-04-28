@@ -204,7 +204,9 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     public void showIssueDetails(IssueMarker issueMarker) {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(issueMarker);
-        getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+        if (issueDetailsFragment != null) {
+            getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+        }
     }
 
     /** @return GoogleMap instance or null if not isMapLoaded() */

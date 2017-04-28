@@ -24,6 +24,7 @@ import android.support.annotation.Nullable;
 
 import com.civify.RobolectricTest;
 import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Category;
@@ -47,12 +48,14 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.robolectric.Robolectric;
 
 @PrepareForTest({CivifyMap.class,
                  GoogleMap.class,
                  UiSettings.class,
                  CameraUpdateFactory.class,
                  BitmapFactory.class,
+                 IssueDetailsFragment.class,
                  Marker.class})
 public class CivifyMapTest extends RobolectricTest {
 
@@ -66,14 +69,14 @@ public class CivifyMapTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        mContext = mock(DrawerActivity.class);
+        mockStatics();
+        initContext();
         mIssueAdapter = mock(IssueAdapter.class);
         initFakeLocation();
         initLocationAdapterMock();
         initCivifyMapSpy();
         initIssueAdapterMock(null);
         setGoogleMapMock();
-        mockStatics();
     }
 
     @Test
@@ -334,5 +337,11 @@ public class CivifyMapTest extends RobolectricTest {
     private static void mockStatics() {
         mockStatic(CameraUpdateFactory.class);
         mockStatic(BitmapFactory.class);
+        mockStatic(IssueDetailsFragment.class);
+    }
+
+    private void initContext() {
+        mContext = Robolectric.buildActivity(DrawerActivity.class).get();
+        //doNothing().when(mContext).setFragment(any(Fragment.class), anyInt());
     }
 }

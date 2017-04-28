@@ -5,10 +5,13 @@ import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.closeTo;
@@ -16,6 +19,7 @@ import static org.hamcrest.core.Is.is;
 
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -49,8 +53,8 @@ public class NavigateFragmentTest {
     private CountDownLatch mLatch;
 
     @Rule
-    public ActivityTestRule<DrawerActivity> mActivityTestRule =
-            new ActivityTestRule<>(DrawerActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule =
+            new ActivityTestRule<>(MainActivity.class);
 
     private static void grantPermission(String permission) {
         // In M+, trying to do some actions will trigger a runtime dialog. Make sure
@@ -62,19 +66,6 @@ public class NavigateFragmentTest {
         }
     }
 
-    @Before
-    public void setUp() {
-        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter
-                (getInstrumentation().getTargetContext());
-        loginAdapter.logout();
-        loginAdapter.login("ArnauBlanch2", "Test1234", new LoginFinishedCallback() {
-            @Override
-            public void onLoginSucceeded(User u) {}
-            @Override
-            public void onLoginFailed(LoginError t) {}
-        });
-    }
-
     @BeforeClass
     public static void setUpPermissions() {
         grantPermission("android.permission.ACCESS_FINE_LOCATION");
@@ -82,6 +73,7 @@ public class NavigateFragmentTest {
 
     @Test
     public void testButtonsWhenMapIsNotReady() {
+        signIn();
         CivifyMap.getInstance().disable();
         CivifyMap.getInstance().outdateToBeRefreshed();
         onView(allOf(withId(R.id.fab_location), isDisplayed())).perform(click());
@@ -95,6 +87,7 @@ public class NavigateFragmentTest {
 
     @Test
     public void testButtonsWhenMapIsReady() {
+        signIn();
         resetLatch();
         CivifyMap.getInstance().setOnMapReadyListener(notifyLatch());
         waitForLatch();
@@ -165,4 +158,43 @@ public class NavigateFragmentTest {
         } catch (InterruptedException ignore) {}
     }
 
+    // Sign In
+
+    @Before
+    public void setUp() {
+        LoginAdapter loginAdapter =
+                AdapterFactory.getInstance().getLoginAdapter(getTargetContext());
+        loginAdapter.logout();
+        loginAdapter.login("ArnauBlanch2", "Test1234", new LoginFinishedCallback() {
+            @Override
+            public void onLoginSucceeded(User u) {}
+            @Override
+            public void onLoginFailed(LoginError t) {}
+        });
+    }
+
+    private void signIn() {
+        ViewInteraction appCompatButton =
+                onView(allOf(withId(R.id.signInButton), withParent(
+                        allOf(withId(R.id.buttonsLayout), withParent(withId(R.id.mainLayout)))),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        ViewInteraction appCompatEditText =
+                onView(allOf(withId(R.id.login_email_input), isDisplayed()));
+        appCompatEditText.perform(click());
+
+        ViewInteraction appCompatEditText2 =
+                onView(allOf(withId(R.id.login_email_input), isDisplayed()));
+        appCompatEditText2.perform(replaceText("arnaublanch2"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText3 =
+                onView(allOf(withId(R.id.login_password_input), isDisplayed()));
+        appCompatEditText3.perform(replaceText("Test1234"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton2 = onView(allOf(withId(R.id.bsignin), withText("Sign in"),
+                withParent(allOf(withId(R.id.intro_background),
+                        withParent(withId(android.R.id.content)))), isDisplayed()));
+        appCompatButton2.perform(click());
+    }
 }
