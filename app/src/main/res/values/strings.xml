@@ -1,5 +1,4 @@
 <resources>
-
   <string name="email_validation_icon">Validation icon for e-mail</string>
   <string name="name_validation_icon">Validation icon for name</string>
   <string name="surname_validation_icon">Validation icon for surname</string>
@@ -137,4 +136,11 @@
   <string name="tab_spec_issues">Issues</string>
   <string name="tab_spec_badges">Badges</string>
 
+  <string name="share">share</string>
+  <string name="category">Category</string>
+  <string name="questionRisk">Poses a risk?</string>
+  <string name='days'>days</string>
+  <string name='today'>today</string>
+  <string name='km'>km</string>
+  <string name="m">m</string>
 </resources>
