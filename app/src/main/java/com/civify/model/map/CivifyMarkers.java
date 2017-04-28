@@ -16,9 +16,18 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
     public static final String TAG = CivifyMarkers.class.getSimpleName();
 
     private HashMap<String, CivifyMarker<?>> mMarkers = new HashMap<>();
+    private CivifyMap mMap;
 
     CivifyMarkers(@NonNull CivifyMap map) {
+        mMap = map;
+        setMap(map);
+    }
+
+    public final void setMap(@NonNull CivifyMap map) {
         map.getGoogleMap().setOnMarkerClickListener(this);
+        if (!mMarkers.isEmpty()) {
+            for (CivifyMarker<?> marker : mMarkers.values()) marker.setMap(map);
+        }
     }
 
     @Nullable
@@ -70,7 +79,7 @@ public class CivifyMarkers implements Iterable<CivifyMarker<?>>, OnMarkerClickLi
             CivifyMarker<?> civifyMarker = mMarkers.get(idify(tag));
             if (civifyMarker != null) {
                 Log.v(TAG, "Marker " + tag + " clicked.");
-                
+                mMap.showIssueDetails(civifyMarker);
                 // return true;
             }
         }

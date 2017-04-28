@@ -35,8 +35,9 @@
         android:text="@string/yes"
         android:textColor="@color/green"
         android:buttonTint="@color/green"
-        android:textSize="26sp"
-        fontPath="fonts/Nunito-SemiBold.ttf"
+        android:paddingLeft="10dp"
+        android:textSize="22sp"
+        android:checked="false"
         android:layout_marginRight="40dp"
         />
     <RadioButton
@@ -44,6 +45,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no"
+        android:checked="false"
+        android:paddingLeft="10dp"
         android:textColor="@color/green"
         android:buttonTint="@color/green"
         android:textSize="22sp"

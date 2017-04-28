@@ -3,9 +3,10 @@ package com.civify.model.issue;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Picture {
+public class Picture implements Serializable {
     @Expose
     @SerializedName("file_name")
     private String mFileName;
@@ -14,7 +15,7 @@ public class Picture {
     @SerializedName("content_type")
     private String mContentType;
 
-    @Expose
+    @Expose(deserialize = false)
     @SerializedName("content")
     private String mContent;
 
@@ -42,15 +43,9 @@ public class Picture {
 
     }
 
-    public Picture(String fileName, String contentType, String content, int fileSize, Date
-            updatedAt, String smallUrl, String medUrl, String largeUrl) {
+    public Picture(String fileName, String contentType, String content) {
         mFileName = fileName;
         mContentType = contentType;
-        mFileSize = fileSize;
-        mUpdatedAt = updatedAt;
-        mSmallUrl = smallUrl;
-        mMedUrl = medUrl;
-        mLargeUrl = largeUrl;
         mContent = content;
     }
 

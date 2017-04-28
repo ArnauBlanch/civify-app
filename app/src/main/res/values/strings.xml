@@ -1,20 +1,46 @@
 <resources>
+  <string name="email_validation_icon">Validation icon for e-mail</string>
+  <string name="name_validation_icon">Validation icon for name</string>
+  <string name="surname_validation_icon">Validation icon for surname</string>
+  <string name="username_validation_icon">Validation icon for username</string>
+  <string name="password_validation_icon">Validation icon for password</string>
+  <string name="app_name">Civify</string>
 
-    <string name="email_validation_icon">Validation icon for e-mail</string>
-    <string name="name_validation_icon">Validation icon for name</string>
-    <string name="surname_validation_icon">Validation icon for surname</string>
-    <string name="username_validation_icon">Validation icon for username</string>
-    <string name="password_validation_icon">Validation icon for password</string>
-    <string name="app_name">Civify</string>
+  <string name="whats_happening">What\'s happening?</string>
+  <string name="issue_title">Issue Title</string>
+  <string name="describe_your_issue">Describe your issue</string>
+  <string name="issue_description">Issue description</string>
+  <string name="what_kind_of_problem">What kind of issue?</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="pose_a_risk">Does it pose a risk to people?</string>
+  <string name="take_a_picture">Do you have a photo of the issue?</string>
+  <string name="report_new_issue">Report new issue</string>
+  <string name="something_went_wrong">Something went wrong</string>
+  <string name="havent_picked_image">You haven\'t picked an image!</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Cancel</string>
+  <string name="need_to_allow_camera_permission">You need to allow camera permission to take a photo</string>
+  <string name="camera_permission_denied">Camera permission denied</string>
+  <string name="select_photo">Select photo</string>
+  <string name="gallery_permission_denied">Read external storage permission denied</string>
+  <string name="need_to_allow_read_storage_permission">You need to allow read external storage permission</string>
+  <string name="must_insert_issue_title">You must insert an issue title</string>
+  <string name="must_choose_photo">You must choose a photo</string>
+  <string name="must_choose_option">You must choose an option</string>
+  <string name="couldnt_create_issue">Couldn\'t create new issue</string>
 
   <string name="valid_unused_username">The username is valid and unused</string>
-  <string name="invalid_username">The username is invalid (Should have 8–20 characters. Special characters allowed: .,)</string>
+  <string name="invalid_username">The username is invalid (Should have 8–20 characters. Special
+        characters allowed: .,)
+    </string>
   <string name="used_username">The username is already used</string>
   <string name="valid_unused_email">The e-mail is valid and unused</string>
   <string name="invalid_email">The e-mail is invalid</string>
   <string name="used_email">The e-mail is already used</string>
   <string name="valid_password">The password is valid</string>
-  <string name="invalid_password"><![CDATA[The password is invalid (Should have 8–40 characters, including at least 1 uppercase and 1 lowercase letter, 1 digit. Special characters allowed: @&#$%)]]></string>
+  <string name="invalid_password">
+        <![CDATA[The password is invalid (Should have 8–40 characters, including at least 1 uppercase and 1 lowercase letter, 1 digit. Special characters allowed: @&#$%)]]></string>
   <string name="matching_passwords">Both passwords match</string>
   <string name="not_matching_passwords">The passwords do not match</string>
   <string name="name">Name</string>
@@ -69,8 +95,12 @@
   <string name="login_password">Password</string>
   <string name="have_you_forgotten_your_password">Have you forgotten your password?</string>
 
-  <string name="user_location_settings_agreed">User agreed to make required location settings changes.</string>
-  <string name="user_location_settings_canceled">User chose not to make required location settings changes.</string>
+  <string name="user_location_settings_agreed">User agreed to make required location settings
+        changes.
+    </string>
+  <string name="user_location_settings_canceled">User chose not to make required location settings
+        changes.
+    </string>
   <string name="location_connection_failed">Location services connection failed.</string>
   <string name="not_implemented_yet">Not implemented yet</string>
   <string name="action">Action</string>
@@ -86,10 +116,10 @@
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="level">Level</string>
+  <string name="sign_out">Sign out</string>
   <string name="issue_name">Issue Name</string>
   <string name="save_changes">Save changes</string>
   <string name="description">Description</string>
-
 
   <!-- Categories -->
   <string name="road_signs">Road signs</string>
@@ -100,28 +130,28 @@
   <string name="public_transport">Public transport</string>
   <string name="suggestion">Suggestion</string>
   <string name="other">Other</string>
+  <string name="select_category">Select category</string>
+  <string name="must_choose_category">You must choose a category</string>
+  <string name="need_to_allow_location_permission">You need to allow location permission</string>
+  <string name="camera_error">Sorry, there was an error with the camera</string>
+  <string name="gallery_error">Sorry, there was an error when getting the image</string>
+  <string name="couldnt_get_location">Couldn\'t get current location</string>
+  <string name="issue_created">Issue created</string>
+  <string name="must_enter_a_description">You must enter a description</string>
+  <string name="creating_new_issue">Creating new issue...</string>
+  <string name="must_insert_description">You must enter a description</string>
+  <string name="profile_title">My profile</string>
 
+  <string name="tab_label_issues">ISSUES</string>
+  <string name="tab_label_badges">BADGES</string>
+  <string name="tab_spec_issues">Issues</string>
+  <string name="tab_spec_badges">Badges</string>
 
-  <string name="whats_happening">What\'s happening?</string>
-  <string name="issue_title">Issue Title</string>
-  <string name="describe_your_problem">Describe your problem</string>
-  <string name="issue_description">Issue description</string>
-  <string name="what_kind_of_problem">What kind of issue?</string>
-  <string name="pose_a_risk">Does it pose a risk to people?</string>
-  <string name="take_a_picture">Do you have a photo of the issue?</string>
-  <string name="report_new_issue">Report new issue</string>
-  <string name="something_went_wrong">Something went wrong</string>
-  <string name="havent_picked_image">You haven\'t picked an image!</string>
-  <string name="ok">OK</string>
-  <string name="cancel">Cancel</string>
-  <string name="need_to_allow_camera_permission">You need to allow camera permission to take a photo</string>
-  <string name="camera_permission_denied">Camera permission denied</string>
-  <string name="select_photo">Select photo</string>
-  <string name="gallery_permission_denied">Read external storage permission denied</string>
-  <string name="need_to_allow_read_storage_permission">You need to allow read external storage permission</string>
-  <string name="must_insert_issue_title">You must insert an issue title</string>
-  <string name="must_choose_photo">You must choose a photo</string>
-  <string name="must_choose_option">You must choose an option</string>
-  <string name="couldnt_create_issue">Couldn\'t create new issue</string>
-
+  <string name="share">share</string>
+  <string name="category">Category</string>
+  <string name="questionRisk">Poses a risk?</string>
+  <string name='days'>days</string>
+  <string name='today'>today</string>
+  <string name='km'>km</string>
+  <string name="m">m</string>
 </resources>
