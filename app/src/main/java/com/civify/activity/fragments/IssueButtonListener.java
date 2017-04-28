@@ -43,13 +43,26 @@ public class IssueButtonListener implements OnClickListener {
         }
     }
 
-    private void undoAction() {
-        mIssueAdapter.confirmIssue(mIssue.getIssueAuthToken(), new IssueButtonCallback(mDoButton));
+    private void doAction() {
+        if (mDoButton == IssueButton.CONFIRM) {
+            mIssueAdapter
+                    .confirmIssue(mIssue.getIssueAuthToken(),
+                            new IssueButtonCallback(mDoButton));
+        } else if (mDoButton == IssueButton.REPORT) {
+            mIssueAdapter
+                    .reportIssue(mIssue.getIssueAuthToken(),
+                            new IssueButtonCallback(mDoButton));
+        }
     }
 
-    private void doAction() {
-        mIssueAdapter
-                .unconfirmIssue(mIssue.getIssueAuthToken(), new IssueButtonCallback(mUndoButton));
+    private void undoAction() {
+        if (mDoButton == IssueButton.CONFIRM) {
+            mIssueAdapter.unconfirmIssue(mIssue.getIssueAuthToken(),
+                    new IssueButtonCallback(mUndoButton));
+        } else if (mDoButton == IssueButton.REPORT) {
+            mIssueAdapter.unreportIssue(mIssue.getIssueAuthToken(),
+                    new IssueButtonCallback(mUndoButton));
+        }
     }
 
     private class IssueButtonCallback implements SimpleCallback {
@@ -61,9 +74,7 @@ public class IssueButtonListener implements OnClickListener {
 
         @Override
         public void onSuccess() {
-
             changeButtonStyle(mButton, mIssueButton);
-            mIssue.setConfirmedByAuthUser(mIssueButton != mDoButton);
             Snackbar.make(mParentView, mIssueButton.getMessage(), Snackbar.LENGTH_SHORT)
                     .show();
         }

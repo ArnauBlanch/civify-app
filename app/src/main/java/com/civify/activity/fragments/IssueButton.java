@@ -12,7 +12,13 @@ enum IssueButton {
             R.string.confirm_error_message, R.color.white),
 
     UNCONFIRM(R.drawable.green_border_button, R.string.unconfirm, R.string.unconfirm_message,
-            R.string.unconfirm_error_message, R.color.green);
+            R.string.unconfirm_error_message, R.color.green),
+
+    REPORT(R.drawable.red_bg_button, R.string.report, R.string.report_message,
+            R.string.report_error_message, R.color.white),
+
+    UNREPORT(R.drawable.red_border_button, R.string.unreport, R.string.unreport_message,
+            R.string.unreport_error_message, R.color.red);
 
     @DrawableRes
     private final int mDrawable;
