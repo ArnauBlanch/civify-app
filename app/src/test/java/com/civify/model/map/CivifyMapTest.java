@@ -342,6 +342,5 @@ public class CivifyMapTest extends RobolectricTest {
 
     private void initContext() {
         mContext = Robolectric.buildActivity(DrawerActivity.class).get();
-        //doNothing().when(mContext).setFragment(any(Fragment.class), anyInt());
     }
 }
