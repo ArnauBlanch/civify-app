@@ -20,8 +20,6 @@ import com.civify.model.map.MapNotReadyException;
 
 public class NavigateFragment extends Fragment {
 
-    private boolean mCreatingIssue;
-
     public NavigateFragment() {
         // Required empty public constructor
     }
@@ -50,7 +48,6 @@ public class NavigateFragment extends Fragment {
     @Override
     public void onPause() {
         CivifyMap.getInstance().disable();
-        if (!mCreatingIssue) CivifyMap.getInstance().outdateToBeRefreshed();
         super.onPause();
     }
 
@@ -73,8 +70,8 @@ public class NavigateFragment extends Fragment {
                 }
                 Snackbar.make(getView(), getString(R.string.issue_created),
                         Snackbar.LENGTH_SHORT).show();
-                mCreatingIssue = false;
             }
+            CivifyMap.getInstance().setCanBeDisabled(true);
         } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
     }
 
@@ -91,7 +88,7 @@ public class NavigateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    CivifyMap.getInstance().center();
+                    CivifyMap.getInstance().center(true);
                 } catch (MapNotReadyException ignore) {
                     showMapLoadingWarning(view);
                 }
@@ -104,7 +101,7 @@ public class NavigateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (CivifyMap.getInstance().isMapReady()) {
-                    mCreatingIssue = true;
+                    CivifyMap.getInstance().setCanBeDisabled(false);
                     Intent intent = new Intent(getActivity().getApplicationContext(),
                             CreateIssueActivity.class);
                     startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
