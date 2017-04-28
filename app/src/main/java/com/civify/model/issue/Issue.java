@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;
@@ -76,7 +75,7 @@ public class Issue implements Serializable {
     @SerializedName("picture")
     private Picture mPicture;
 
-    public Issue() {}
+    public Issue() { }
 
     public Issue(String title, String description, Category category, boolean risk,
             double longitude, double latitude, Bitmap pictureBitmap, String userAuthToken) {

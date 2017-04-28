@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -20,15 +19,17 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
     public static final String TAG = CivifyMarkers.class.getSimpleName();
 
     private HashMap<String, IssueMarker> mMarkers = new HashMap<>();
+    private CivifyMap mMap;
 
     CivifyMarkers(@NonNull CivifyMap map) {
-        attachToMap(map.getGoogleMap());
+        attachToMap(map);
     }
 
-    public final void attachToMap(@NonNull GoogleMap map) {
-        map.setOnMarkerClickListener(this);
+    public final void attachToMap(@NonNull CivifyMap map) {
+        mMap = map;
+        map.getGoogleMap().setOnMarkerClickListener(this);
         if (!mMarkers.isEmpty()) {
-            for (IssueMarker marker : this) marker.attachToMap(map);
+            for (IssueMarker marker : this) marker.attachToMap(map.getGoogleMap());
         }
     }
 
@@ -93,7 +94,7 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
             IssueMarker issueMarker = mMarkers.get(idify(tag));
             if (issueMarker != null) {
                 Log.v(TAG, "Marker " + tag + " clicked.");
-                CivifyMap.getInstance().showIssueDetails(civifyMarker);
+                mMap.showIssueDetails(issueMarker);
                 return true;
             }
         }

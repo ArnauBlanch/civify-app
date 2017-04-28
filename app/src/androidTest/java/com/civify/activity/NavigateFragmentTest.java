@@ -23,12 +23,18 @@ import android.util.Log;
 
 import com.civify.R;
 import com.civify.adapter.LocationAdapter;
+import com.civify.adapter.LoginAdapter;
+import com.civify.adapter.LoginError;
+import com.civify.adapter.LoginFinishedCallback;
+import com.civify.model.User;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotReadyException;
+import com.civify.utils.AdapterFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.concurrent.CountDownLatch;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,6 +60,19 @@ public class NavigateFragmentTest {
                     "pm grant " + getTargetContext().getPackageName()
                             + ' ' + permission);
         }
+    }
+
+    @Before
+    public void setUp() {
+        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter
+                (getInstrumentation().getTargetContext());
+        loginAdapter.logout();
+        loginAdapter.login("ArnauBlanch2", "Test1234", new LoginFinishedCallback() {
+            @Override
+            public void onLoginSucceeded(User u) {}
+            @Override
+            public void onLoginFailed(LoginError t) {}
+        });
     }
 
     @BeforeClass
