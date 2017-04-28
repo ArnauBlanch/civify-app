@@ -59,7 +59,7 @@ public class IssueDetailsFragment extends Fragment {
     public static IssueDetailsFragment newInstance(IssueMarker marker) {
         IssueDetailsFragment fragment = new IssueDetailsFragment();
         Bundle data = new Bundle();
-        //data.putSerializable(TAG_MARKER, marker);
+        //FIXME data.putSerializable(TAG_MARKER, marker);
         fragment.setArguments(data);
 
         sUserAdapter = AdapterFactory.getInstance().getUserAdapter();
@@ -68,15 +68,10 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
-        //init();
+        //FIXME init();
         return mViewDetails;
     }
 
@@ -108,9 +103,7 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     private void getUpdatedIssue() {
-        if (mMarker != null) {
-            mIssue = mMarker.getIssue();
-        }
+        mIssue = mMarker.getIssue();
         AdapterFactory.getInstance().getIssueAdapter(getContext())
                 .getIssue(mIssue.getIssueAuthToken(), new IssueSimpleCallback() {
                     @Override
