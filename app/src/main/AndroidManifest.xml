@@ -40,7 +40,8 @@
             android:name=".activity.MainActivity"
             android:windowSoftInputMode="stateAlwaysVisible|stateHidden"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -51,12 +52,15 @@
     <activity
         android:name=".activity.DrawerActivity"
         android:label="@string/title_activity_drawer"
-        android:theme="@style/AppTheme.NoActionBar"/>
+        android:theme="@style/AppTheme.NoActionBar"
+        android:screenOrientation="portrait"/>
       <activity android:name=".activity.LoginActivity"
-          android:theme="@style/AppTheme.NoActionBar"/>
+          android:theme="@style/AppTheme.NoActionBar"
+          android:screenOrientation="portrait"/>
       <activity android:name=".activity.registration.RegistrationActivity" />
       <activity android:name=".activity.createissue.CreateIssueActivity"
-          android:theme="@style/AppTheme.NoActionBar" />
+          android:theme="@style/AppTheme.NoActionBar"
+          android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
