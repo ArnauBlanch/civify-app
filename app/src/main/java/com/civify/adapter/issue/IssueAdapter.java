@@ -3,12 +3,16 @@ package com.civify.adapter.issue;
 import android.content.SharedPreferences;
 
 import com.civify.adapter.LoginAdapterImpl;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.model.MessageResponse;
 import com.civify.model.issue.Issue;
+import com.civify.service.ExpectedResponseCallback;
 import com.civify.service.issue.IssueService;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.civify.utils.ServiceGenerator;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
@@ -20,7 +24,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IssueAdapter {
-    public static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
+    static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
+    static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
+    static final String CONFIRMED_BY_USER_WITH_AUTH_TOKEN =
+            "confirmed by User with auth token ";
+    static final String REPORTED_BY_USER_WITH_AUTH_TOKEN =
+            "reported by User with auth token ";
+    static final String UN = " un";
+    private static final String USER = "user";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -28,7 +39,7 @@ public class IssueAdapter {
         this(ServiceGenerator.getInstance().createService(IssueService.class), sharedPreferences);
     }
 
-    public IssueAdapter(IssueService service, SharedPreferences sharedPreferences) {
+    IssueAdapter(IssueService service, SharedPreferences sharedPreferences) {
         this.mIssueService = service;
         this.mAuthToken = sharedPreferences.getString(LoginAdapterImpl.AUTH_TOKEN, "");
     }
@@ -94,9 +105,61 @@ public class IssueAdapter {
         });
     }
 
+    // Reports
+
+    private void issueReport(String issueAuthToken, final String expectedResponse,
+            final SimpleCallback callback) {
+        JsonObject userToken = new JsonObject();
+        userToken.addProperty(USER, UserAdapter.getCurrentUser().getUserAuthToken());
+
+        Call<MessageResponse> call = mIssueService.issueReport(mAuthToken,
+                userToken, issueAuthToken);
+        call.enqueue(new ExpectedResponseCallback(expectedResponse, callback));
+    }
+
+    public void reportIssue(String issueAuthToken, SimpleCallback callback) {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + issueAuthToken
+                + ' ' + REPORTED_BY_USER_WITH_AUTH_TOKEN
+                + UserAdapter.getCurrentUser().getUserAuthToken();
+        issueReport(issueAuthToken, expMessage, callback);
+    }
+
+    public void unreportIssue(String issueAuthToken, SimpleCallback callback) {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + issueAuthToken
+                + UN + REPORTED_BY_USER_WITH_AUTH_TOKEN
+                + UserAdapter.getCurrentUser().getUserAuthToken();
+        issueReport(issueAuthToken, expMessage, callback);
+    }
+
+    // Confirmations
+
+    private void issueConfirmation(String issueAuthToken, final String expectedResponse, final
+            SimpleCallback callback) {
+        JsonObject userToken = new JsonObject();
+        userToken.addProperty(USER, UserAdapter.getCurrentUser().getUserAuthToken());
+
+        Call<MessageResponse> call = mIssueService.issueConfirmation(mAuthToken,
+                userToken, issueAuthToken);
+        call.enqueue(new ExpectedResponseCallback(expectedResponse, callback));
+    }
+
+    public void confirmIssue(String issueAuthToken, SimpleCallback callback) {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + issueAuthToken
+                + " " + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
+                + UserAdapter.getCurrentUser().getUserAuthToken();
+        issueConfirmation(issueAuthToken, expMessage, callback);
+    }
+
+    public void unconfirmIssue(String issueAuthToken, SimpleCallback callback) {
+        String expMessage = ISSUE_WITH_AUTH_TOKEN + issueAuthToken
+                + UN + CONFIRMED_BY_USER_WITH_AUTH_TOKEN
+                + UserAdapter.getCurrentUser().getUserAuthToken();
+        issueConfirmation(issueAuthToken, expMessage, callback);
+    }
+
     private String getMessageFromError(ResponseBody errorBody) {
         try {
-            return (new JsonParser().parse(errorBody.string()).getAsJsonObject()).get("message")
+            return new JsonParser().parse(errorBody.string()).getAsJsonObject().get("message")
                     .getAsString();
         } catch (IOException e) {
             e.printStackTrace();
