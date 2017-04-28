@@ -1,14 +1,19 @@
 package com.civify.model.map;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
 import com.civify.model.issue.Issue;
+import com.civify.service.issue.ListIssuesSimpleCallback;
+import com.civify.utils.AdapterFactory;
+import com.civify.utils.ConfirmDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -16,6 +21,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
+
+import java.util.List;
 
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
@@ -29,7 +36,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private boolean mPlayerSet;
     private final LocationAdapter mLocationAdapter;
 
-    public CivifyMap(@NonNull Activity context) {
+    public CivifyMap(@NonNull DrawerActivity context) {
         this(new LocationAdapter(context));
     }
 
@@ -98,7 +105,30 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         settings.setTiltGesturesEnabled(false);
         settings.setMapToolbarEnabled(false);
         settings.setMyLocationButtonEnabled(false);
-        mMarkers = new CivifyMarkers(this);
+        setMarkers();
+    }
+
+    private void setMarkers() {
+        if (mMarkers == null) {
+            mMarkers = new CivifyMarkers(this);
+            refreshIssues();
+        } else mMarkers.setMap(this);
+    }
+
+    public void refreshIssues() {
+        AdapterFactory.getInstance().getIssueAdapter(getContext())
+                .getIssues(new ListIssuesSimpleCallback() {
+                    @Override
+                    public void onSuccess(List<Issue> issues) {
+                        mMarkers.addAll(IssueMarker.getMarkers(issues, CivifyMap.this));
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        ConfirmDialog.show(getContext(), "Error",
+                                "Issues cannot be retrieved, please try again later.");
+                    }
+                });
     }
 
     public void addIssueMarker(@NonNull Issue issue) throws MapNotReadyException {
@@ -110,12 +140,17 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mMarkers;
     }
 
+    public void showIssueDetails(CivifyMarker<?> issueMarker) {
+        Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(issueMarker);
+        getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+    }
+
     GoogleMap getGoogleMap() {
         return mGoogleMap;
     }
 
-    Activity getContext() {
-        return mLocationAdapter.getContext();
+    DrawerActivity getContext() {
+        return (DrawerActivity) mLocationAdapter.getContext();
     }
 
     public void enableLocation() {
@@ -168,16 +203,17 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         mLocationAdapter.setUpdateIntervals(priority, millisPeriod, millisMinimumPeriod);
     }
 
-    public void enableLocationUpdates() {
+    public void disable() {
+        if (!mLocationAdapter.isRequestingPermissions()) mLocationAdapter.disconnect();
+    }
+
+    public void enable() {
         mLocationAdapter.connect();
     }
 
-    public void disableLocationUpdates() {
-        if (!mLocationAdapter.isRequestingPermissions()) {
-            mLocationAdapter.disconnect();
-            mPlayerSet = false;
-            mMapFragment = null;
-        }
+    public void outdateToBeRefreshed() {
+        mPlayerSet = false;
+        mMapFragment = null;
     }
 
     public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
