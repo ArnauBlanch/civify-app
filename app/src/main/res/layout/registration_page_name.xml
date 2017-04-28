@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    tools:ignore="MissingPrefix,Overdraw">
+
+    <TextView
+        android:id="@+id/title0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/whats_your_name"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:textColor="#000000"
+        fontPath="fonts/Nunito-ExtraBold.ttf" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/grey">
+
+            <EditText
+                android:id="@+id/name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="22sp"
+                android:singleLine="true"
+                android:hint="@string/name"
+                tools:ignore="Deprecated"
+                />
+
+            <LinearLayout
+                android:id="@+id/name_validation"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/name_validation_icon"
+                    android:contentDescription="@string/name_validation_icon"
+                    android:src="@drawable/ic_cancel"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/name_validation_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_not_validated"
+                    android:textColor="@color/red"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    fontPath="fonts/Nunito-SemiBold.ttf" />
+            </LinearLayout>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/grey">
+
+            <EditText
+                android:id="@+id/surname_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="22sp"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:hint="@string/surname"
+                tools:ignore="Deprecated"
+                />
+
+            <LinearLayout
+                android:id="@+id/surname_validation"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/surname_validation_icon"
+                    android:contentDescription="@string/surname_validation_icon"
+                    android:src="@drawable/ic_cancel"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/surname_validation_text"
+                    android:text="@string/surname_not_validated"
+                    android:textColor="@color/red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    fontPath="fonts/Nunito-SemiBold.ttf" />
+            </LinearLayout>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/button0"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/green_bg_button"
+        android:text="@string/continue_button"
+        android:layout_marginTop="50dp"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:onClick="nameAndSurnameButtonListener"
+        fontPath="fonts/Nunito-Bold.ttf" />
+
+</LinearLayout>
