@@ -62,15 +62,6 @@ public class IssueButtonListener implements OnClickListener {
 
         @Override
         public void onSuccess() {
-            if (mIssueButton == IssueButton.CONFIRM) {
-                int likes = mIssue.getConfirmVotes() + 1;
-                mIssue.setConfirmVotes(likes);
-                ((TextView) mParentView.findViewById(R.id.likesText)).setText('+' + likes);
-            } else if (mIssueButton == IssueButton.UNCONFIRM) {
-                int likes = mIssue.getConfirmVotes() - 1;
-                mIssue.setConfirmVotes(likes);
-                ((TextView) mParentView.findViewById(R.id.likesText)).setText('+' + likes);
-            }
 
             changeButtonStyle(mButton, mIssueButton);
             mIssue.setConfirmedByAuthUser(mIssueButton != mDoButton);
