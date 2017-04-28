@@ -140,9 +140,8 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.getCurrentLocation(), is(mFakeLocation));
         assertThat(mMap.isPlayerSet(), is(true));
         assertThat(mMap.isMapReady(), is(true));
-        verify(mMap, atLeastOnce()).center();
-        assertThat(LocationAdapter.getLatLng(mMap.getCurrentCameraPosition()),
-                is(mGoogleMap.getCameraPosition().target));
+        verify(mMap, atLeastOnce()).center(false);
+        assertThat(mMap.getCurrentCameraPosition(), is(mGoogleMap.getCameraPosition().target));
         assertThat(mGoogleMap.getCameraPosition().target, is(expectedLocation));
     }
 
@@ -226,13 +225,13 @@ public class CivifyMapTest extends RobolectricTest {
     @Test(expected = MapNotReadyException.class)
     public void testCenterThrowsExceptionIfMapIsNotReady() throws MapNotReadyException {
         assertThat(mMap.isMapReady(), is(false));
-        mMap.center();
+        mMap.center(true);
     }
 
     private void initFakeLocation() {
-        mFakeLocation = LocationAdapter.getLocation(new LatLng(42.87, 8.9));
-        assertThat(mFakeLocation.getLatitude(), is(42.87));
-        assertThat(mFakeLocation.getLongitude(), is(8.9));
+        mFakeLocation = LocationAdapter.getLocation(new LatLng(37.42, -122.084));
+        assertThat(mFakeLocation.getLatitude(), is(37.42));
+        assertThat(mFakeLocation.getLongitude(), is(-122.084));
     }
 
     private void initLocationAdapterMock() {
@@ -255,6 +254,13 @@ public class CivifyMapTest extends RobolectricTest {
                 return null;
             }
         }).when(mGoogleMap).animateCamera(any(CameraUpdate.class));
+        doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) {
+                setCameraPosition(LocationAdapter.getLatLng(mFakeLocation));
+                return null;
+            }
+        }).when(mGoogleMap).moveCamera(any(CameraUpdate.class));
     }
 
     private void initIssueAdapterMock(@Nullable final Collection<Issue> extraIssues) {

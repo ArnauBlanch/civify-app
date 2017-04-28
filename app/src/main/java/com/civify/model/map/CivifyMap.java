@@ -22,22 +22,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 import java.util.Set;
 
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
-    private static final String TAG = CivifyMap.class.getSimpleName();
+    public static final int DEFAULT_ZOOM = 18;
+    public static final int CAMERA_ANIMATION_MILLIS = 2000;
 
-    private static final int DEFAULT_ZOOM = 18;
+    private static final String TAG = CivifyMap.class.getSimpleName();
 
     private static CivifyMap sInstance;
 
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
     private CivifyMarkers mMarkers;
-    private boolean mPlayerSet;
+    private boolean mPlayerSet, mCanBeDisabled;
+    private Runnable mOnMapReadyListener;
     private final LocationAdapter mLocationAdapter;
     private final IssueAdapter mIssueAdapter;
 
@@ -52,6 +55,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         setRefreshMillis(LocationAdapter.Priority.HIGH_ACCURACY,
                 LocationAdapter.Priority.HIGH_ACCURACY.getPeriodMillis(), 0L);
         setRefreshLocations(true);
+        setCanBeDisabled(true);
     }
 
     public static void setContext(@NonNull DrawerActivity context) {
@@ -218,13 +222,19 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mLocationAdapter.getLastLocation();
     }
 
-    public Location getCurrentCameraPosition() {
-        return LocationAdapter.getLocation(mGoogleMap.getCameraPosition().target);
+    public LatLng getCurrentCameraPosition() {
+        return mGoogleMap.getCameraPosition().target;
     }
 
-    public void center() throws MapNotReadyException {
+    public void center(boolean animate) throws MapNotReadyException {
+        center(getCurrentLocation(), animate);
+    }
+
+    public void center(@NonNull Location location, boolean animate) throws MapNotReadyException {
         if (isMapReady()) {
-            mGoogleMap.animateCamera(getCameraUpdate(mLocationAdapter.getLastLocation()));
+            CameraUpdate update = getCameraUpdate(location);
+            if (animate) mGoogleMap.animateCamera(update, CAMERA_ANIMATION_MILLIS, null);
+            else mGoogleMap.moveCamera(update);
         } else throw new MapNotReadyException();
     }
 
@@ -232,15 +242,21 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return CameraUpdateFactory.newLatLng(LocationAdapter.getLatLng(location));
     }
 
+    public void setOnMapReadyListener(@Nullable Runnable onMapReadyListener) {
+        mOnMapReadyListener = onMapReadyListener;
+        if (isMapReady()) mOnMapReadyListener.run();
+    }
+
     @Override
     public void onUpdateLocation(@NonNull Location location) {
         if (!mPlayerSet) {
             mPlayerSet = true;
             try {
-                center();
+                center(false);
             } catch (MapNotReadyException e) {
                 Log.wtf(TAG, e);
             }
+            if (mOnMapReadyListener != null) mOnMapReadyListener.run();
         }
     }
 
@@ -253,8 +269,19 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         mLocationAdapter.setUpdateIntervals(priority, millisPeriod, millisMinimumPeriod);
     }
 
+    public final void setCanBeDisabled(boolean canBeDisabled) {
+        mCanBeDisabled = canBeDisabled;
+    }
+
     public void disable() {
-        if (!mLocationAdapter.isRequestingPermissions()) mLocationAdapter.disconnect();
+        if (mCanBeDisabled && !mLocationAdapter.isRequestingPermissions()) {
+            disableLocation();
+            outdateToBeRefreshed();
+        }
+    }
+
+    public void disableLocation() {
+        mLocationAdapter.disconnect();
     }
 
     public void enable() {
