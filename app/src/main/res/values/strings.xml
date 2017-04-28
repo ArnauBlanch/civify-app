@@ -1,5 +1,4 @@
 <resources>
-
   <string name="email_validation_icon">Validation icon for e-mail</string>
   <string name="name_validation_icon">Validation icon for name</string>
   <string name="surname_validation_icon">Validation icon for surname</string>
@@ -16,7 +15,7 @@
   <string name="no">No</string>
   <string name="pose_a_risk">Does it pose a risk to people?</string>
   <string name="take_a_picture">Do you have a photo of the issue?</string>
-  <string name="report_new_issue">Report new issue</string>
+  <string name="create_new_issue">Change new issue</string>
   <string name="something_went_wrong">Something went wrong</string>
   <string name="havent_picked_image">You haven\'t picked an image!</string>
   <string name="ok">OK</string>
@@ -137,4 +136,19 @@
   <string name="tab_spec_issues">Issues</string>
   <string name="tab_spec_badges">Badges</string>
 
+  <string name="share">share</string>
+  <string name="category">Category</string>
+  <string name="questionRisk">Poses a risk?</string>
+  <string name='days'>days</string>
+  <string name='today'>today</string>
+  <string name='km'>km</string>
+  <string name="m">m</string>
+  <string name="unconfirm">Unconfirm</string>
+  <string name="confirm">Confirm</string>
+  <string name="confirm_message">Issue was confirmed successfully</string>
+  <string name="unconfirm_message">Issue was unconfirmed successfully</string>
+  <string name="confirm_error_message">Couldn\'t confirm the issue</string>
+  <string name="unconfirm_error_message">Couldn\'t unconfirm the issue</string>
+  <string name="couldnt_update_issue_info">Couldn\'t get updated issue info</string>
+  <string name="too_far_from_issue">You\'re too far from this issue</string>
 </resources>

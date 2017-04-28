@@ -3,9 +3,10 @@ package com.civify.model.issue;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Picture {
+public class Picture implements Serializable {
     @Expose
     @SerializedName("file_name")
     private String mFileName;

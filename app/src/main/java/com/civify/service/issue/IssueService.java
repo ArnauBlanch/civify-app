@@ -27,4 +27,8 @@ public interface IssueService {
     @POST("/issues/{issue_auth_token}/report")
     Call<MessageResponse> issueReport(@Header("Authorization") String authToken,
             @Body JsonObject userToken, @Path("issue_auth_token") String issueAuthToken);
+
+    @POST("/issues/{issue_auth_token}/confirm")
+    Call<MessageResponse> issueConfirmation(@Header("Authorization") String authToken,
+            @Body JsonObject userToken, @Path("issue_auth_token") String issueAuthToken);
 }
