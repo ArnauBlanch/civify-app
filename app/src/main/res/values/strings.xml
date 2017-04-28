@@ -149,4 +149,6 @@
   <string name='daysAgo'>days ago</string>
   <string name="edit_issue">Edit Issue</string>
   <string name="delete_issue">Delete Issue</string>
+
+  <string name="delete_sure">Delete Issue?</string>
 </resources>
