@@ -27,6 +27,8 @@ import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Issue;
+import com.civify.service.issue.IssueSimpleCallback;
+import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -51,7 +53,7 @@ public class IssueDetailsFragment extends Fragment {
     private static final int RESULT_OK = 1;
 
     private Issue mIssue;
-    private IssueAdapter  mIssueAdapter;
+    private IssueAdapter mIssueAdapter;
     private float mDistance;
     private String mAddress;
 
@@ -262,43 +264,46 @@ public class IssueDetailsFragment extends Fragment {
         return false;
     }
 
-    public void launchEditActivity() {
-    private void delete_issue(){
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+    private void delete_issue() {
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
+                switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        mIssueAdapter.deleteIssue(mIssue.getIssueAuthToken(), new IssueSimpleCallback() {
-                            @Override
-                            public void onSuccess(Issue issue) {
-                                Log.d("Ricard", "issue borrada");
-                            }
+                        mIssueAdapter.deleteIssue(mIssue.getIssueAuthToken(),
+                                    new IssueSimpleCallback() {
+                                @Override
+                                public void onSuccess(Issue issue) {
+                                        Log.d("Ricard", "issue borrada");
+                                }
 
-                            @Override
-                            public void onFailure() {
-                                Log.d("Ricard", "error borra issue");
+                                @Override
+                                public void onFailure() {
+                                   // Log.d("Ricard", "error borra issue");
 
-                            }
-                        });
+                                }
+                            });
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
                         //No button clicked
+                        break;
+                    default:
                         break;
                 }
             }
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getResources().getString(R.string.delete_sure)).setPositiveButton
-                (getResources().getString(R.string.yes),
+        builder.setMessage(getResources().getString(R.string.delete_sure))
+                .setPositiveButton(getResources().getString(R.string.yes),
                 dialogClickListener)
                 .setNegativeButton(getResources().getString(R.string.no), dialogClickListener)
                 .show();
     }
 
-    public void launchEditActivity(){
+    public void launchEditActivity() {
         DrawerActivity drawerActivity = (DrawerActivity) getActivity();
         Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
         drawerActivity.startActivity(intent);

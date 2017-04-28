@@ -4,9 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -15,7 +12,6 @@ import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.activity.createissue.CameraGalleryActivity;
-import com.civify.activity.createissue.CameraGalleryLocationActivity;
 import com.civify.activity.createissue.CategorySpinnerAdapter;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Category;
