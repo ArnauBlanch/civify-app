@@ -150,5 +150,11 @@
   <string name="confirm_error_message">Couldn\'t confirm the issue</string>
   <string name="unconfirm_error_message">Couldn\'t unconfirm the issue</string>
   <string name="couldnt_update_issue_info">Couldn\'t get updated issue info</string>
+  <string name="unreport">Unreport</string>
+  <string name="report">Report</string>
+  <string name="report_message">Issue was reported successfully</string>
+  <string name="unreport_message">Issue was unreported successfully</string>
+  <string name="report_error_message">Couldn\'t report the issue</string>
+  <string name="unreport_error_message">Couldn\'t unreport the issue</string>
   <string name="too_far_from_issue">You\'re too far from this issue</string>
 </resources>

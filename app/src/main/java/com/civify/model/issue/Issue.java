@@ -72,6 +72,10 @@ public class Issue implements Serializable {
     @SerializedName("confirmed_by_auth_user")
     private boolean mConfirmedByAuthUser;
 
+    @Expose(serialize = false)
+    @SerializedName("reported_by_auth_user")
+    private boolean mReportedByAuthUser;
+
     @Expose
     @SerializedName("picture")
     private Picture mPicture;
@@ -242,6 +246,10 @@ public class Issue implements Serializable {
 
     public void setConfirmedByAuthUser(boolean confirmation) {
         mConfirmedByAuthUser = confirmation;
+    }
+
+    public boolean getReportedByAuthUser() {
+        return mReportedByAuthUser;
     }
 
 }

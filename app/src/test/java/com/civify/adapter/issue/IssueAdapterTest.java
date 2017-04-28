@@ -1,8 +1,8 @@
 package com.civify.adapter.issue;
 
-import com.google.gson.JsonObject;
 import static com.civify.adapter.issue.IssueAdapter.CONFIRMED_BY_USER_WITH_AUTH_TOKEN;
 import static com.civify.adapter.issue.IssueAdapter.ISSUE_WITH_AUTH_TOKEN;
+import static com.civify.adapter.issue.IssueAdapter.REPORTED_BY_USER_WITH_AUTH_TOKEN;
 import static com.civify.adapter.issue.IssueAdapter.UN;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
@@ -11,7 +11,6 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
@@ -280,8 +279,8 @@ public class IssueAdapterTest {
     @Test
     public void testValidReport() {
         String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
-                + "\" " + REPORTED_BY_USER_WITH_AUTH_TOKEN
-                + "user-auth-token" + '"';
+                + ' ' + REPORTED_BY_USER_WITH_AUTH_TOKEN
+                + "user-auth-token";
 
         JsonObject body = new JsonObject();
         body.addProperty("message", expMessage);
@@ -320,7 +319,7 @@ public class IssueAdapterTest {
     public void testValidUnreport() {
         String expMessage = ISSUE_WITH_AUTH_TOKEN + "issue-auth-token"
                 + UN + REPORTED_BY_USER_WITH_AUTH_TOKEN
-                + "user-auth-token" + '"';
+                + "user-auth-token";
 
         JsonObject body = new JsonObject();
         body.addProperty("message", expMessage);

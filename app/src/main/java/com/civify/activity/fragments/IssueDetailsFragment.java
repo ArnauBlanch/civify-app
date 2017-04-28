@@ -272,6 +272,7 @@ public class IssueDetailsFragment extends Fragment {
             mViewDetails.findViewById(R.id.too_far_message).setVisibility(View.VISIBLE);
         } else {
             setupConfirmButton();
+            setupReportButton();
         }
     }
 
@@ -293,6 +294,24 @@ public class IssueDetailsFragment extends Fragment {
             IssueButtonListener buttonListener =
                     new IssueButtonListener(mViewDetails, mIssue, IssueButton.CONFIRM,
                             IssueButton.UNCONFIRM);
+            button.setOnClickListener(buttonListener);
+        }
+    }
+
+    private void setupReportButton() {
+        AppCompatButton button = (AppCompatButton) mViewDetails.findViewById(R.id.reportButton);
+        String issueUserToken = mIssue.getUserAuthToken();
+        String userToken = UserAdapter.getCurrentUser().getUserAuthToken();
+
+        if (issueUserToken.equals(userToken)) {
+            button.setAlpha(DISABLED_ALPHA);
+        } else {
+            if (mIssue.getReportedByAuthUser()) {
+                changeButtonStyle(button, IssueButton.UNREPORT);
+            }
+            IssueButtonListener buttonListener =
+                    new IssueButtonListener(mViewDetails, mIssue, IssueButton.REPORT,
+                            IssueButton.UNREPORT);
             button.setOnClickListener(buttonListener);
         }
     }
