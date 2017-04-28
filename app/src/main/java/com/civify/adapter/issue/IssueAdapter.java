@@ -115,6 +115,26 @@ public class IssueAdapter {
         });
     }
 
+    public void deleteIssue(String issueAuthToken, final IssueSimpleCallback callback) {
+        Call<Issue> call = mIssueService.deleteIssue(mAuthToken, issueAuthToken);
+        call.enqueue(new Callback<Issue>() {
+
+            @Override
+            public void onResponse(Call<Issue> call, Response<Issue> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Issue> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
     private String getMessageFromError(ResponseBody errorBody) {
         try {
             return (new JsonParser().parse(errorBody.string()).getAsJsonObject()).get("message")

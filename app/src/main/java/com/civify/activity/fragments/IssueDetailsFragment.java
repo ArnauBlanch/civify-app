@@ -1,11 +1,13 @@
 package com.civify.activity.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -25,9 +27,12 @@ import com.civify.activity.EditIssueActivity;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserSimpleCallback;
+import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMarker;
+import com.civify.service.issue.IssueSimpleCallback;
+import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -50,6 +55,7 @@ public class IssueDetailsFragment extends Fragment {
 
     private CivifyMarker<?> mMarker;
     private Issue mIssue;
+    private IssueAdapter  mIssueAdapter;
 
     private View mViewDetails;
 
@@ -91,6 +97,7 @@ public class IssueDetailsFragment extends Fragment {
         mMarker = (CivifyMarker<?>) bundle.getSerializable(TAG_MARKER);
 
         mIssue = mMarker.getIssue();
+        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(getActivity());
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mMarker.getIssue().getTitle());
@@ -263,11 +270,49 @@ public class IssueDetailsFragment extends Fragment {
                 intent.putExtra("issue", mIssue);
                 startActivity(intent);
                 return false;
+            case R.id.delete_issue:
+                delete_issue();
+                return false;
             default:
                 break;
         }
 
         return false;
+    }
+
+    private void delete_issue(){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        mIssueAdapter.deleteIssue(mIssue.getIssueAuthToken(), new IssueSimpleCallback() {
+                            @Override
+                            public void onSuccess(Issue issue) {
+                                Log.d("Ricard", "issue borrada");
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Log.d("Ricard", "error borra issue");
+
+                            }
+                        });
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getResources().getString(R.string.delete_sure)).setPositiveButton
+                (getResources().getString(R.string.yes),
+                dialogClickListener)
+                .setNegativeButton(getResources().getString(R.string.no), dialogClickListener)
+                .show();
     }
 
 }
