@@ -135,11 +135,9 @@ public class LoginAdapterImpl implements LoginAdapter {
                         mLoginFinishedCallback.onLoginSucceeded(response.body());
                         UserAdapter.setCurrentUser(response.body());
                     } else {
-                        if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                            mLoginFinishedCallback.onLoginFailed(
-                                    new LoginError(LoginError.ErrorType.NOT_LOGGED_IN,
-                                            NEEDS_LOGIN_MESSAGE));
-                        }
+                        mLoginFinishedCallback.onLoginFailed(
+                                new LoginError(LoginError.ErrorType.NOT_LOGGED_IN,
+                                        NEEDS_LOGIN_MESSAGE));
                     }
                 }
 
