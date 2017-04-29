@@ -10,6 +10,12 @@ import com.civify.service.UserService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +24,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-
-import java.net.HttpURLConnection;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -36,11 +37,11 @@ public class RegisterAdapterTest {
     private ArgumentCaptor<ValidationCallback> mCallbackArgCaptor;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws IOException {
         mMockServer = new MockWebServer();
         mMockServer.start();
-        Retrofit retrofit = (new Retrofit.Builder().baseUrl(mMockServer.url("").toString())
-                .addConverterFactory(GsonConverterFactory.create())).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(mMockServer.url("").toString())
+                .addConverterFactory(GsonConverterFactory.create()).build();
         UserService userService = retrofit.create(UserService.class);
         mUserAdapter = new UserAdapter(userService);
         mUser = new User("username", "name", "surname", "email@email.com", "validPassw0rd",

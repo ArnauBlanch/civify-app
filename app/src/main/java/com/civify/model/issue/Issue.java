@@ -2,8 +2,13 @@ package com.civify.model.issue;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.support.v4.app.Fragment;
 import android.util.Base64;
 
+import com.civify.activity.fragments.IssueDetailsFragment;
+import com.civify.adapter.LocationAdapter;
+import com.civify.model.map.CivifyMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,6 +19,7 @@ import java.util.Date;
 public class Issue implements Serializable {
 
     private static final int BITMAP_COMPRESS_VALUE = 70;
+    private static final int KILOMETER = 1000;
 
     @Expose
     @SerializedName("title")
@@ -250,6 +256,36 @@ public class Issue implements Serializable {
 
     public boolean getResolvedByAuthUser() {
         return mResolvedByAuthUser;
+    }
+
+    public LatLng getPosition() {
+        return LocationAdapter.getLatLng(mLatitude, mLongitude);
+    }
+
+    /** @return distance in meters between the current geolocated position and this marker. */
+    public float getDistanceFromCurrentLocation() {
+        return CivifyMap.getInstance().getCurrentLocation().distanceTo(
+                LocationAdapter.getLocation(getPosition()));
+    }
+
+    public String getDistanceFromCurrentLocationAsString() {
+        float distance = getDistanceFromCurrentLocation();
+        String distanceAsString = "";
+        if (distance > KILOMETER) {
+            int km = (int) Math.floor(distance / KILOMETER);
+            distanceAsString += km + "km ";
+            distance -= km * KILOMETER;
+        }
+        distanceAsString += Math.round(distance) + "m";
+        return distanceAsString.trim();
+    }
+
+    public void showIssueDetails() {
+        Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(this);
+        if (issueDetailsFragment != null) {
+            CivifyMap.getInstance().getContext()
+                    .setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+        }
     }
 
     @Override

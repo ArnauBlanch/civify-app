@@ -29,6 +29,13 @@ public class AdapterFactory {
         return mUserAdapter;
     }
 
+    public UserAdapter getUserAdapter(@NonNull Context context) {
+        if (mUserAdapter == null) {
+            mUserAdapter = new UserAdapter(getSharedPreferences(context));
+        }
+        return mUserAdapter;
+    }
+
     public LoginAdapter getLoginAdapter(@NonNull Context context) {
         if (mLoginAdapter == null) {
             mLoginAdapter = new LoginAdapterImpl(getSharedPreferences(context));

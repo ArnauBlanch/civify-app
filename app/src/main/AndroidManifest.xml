@@ -61,7 +61,6 @@
       <activity android:name=".activity.createissue.CreateIssueActivity"
           android:theme="@style/AppTheme.NoActionBar" />
       <activity android:name=".activity.EditIssueActivity"
-          android:theme="@style/AppTheme.NoActionBar"/>
           android:theme="@style/AppTheme.NoActionBar"
           android:screenOrientation="portrait"/>
     </application>

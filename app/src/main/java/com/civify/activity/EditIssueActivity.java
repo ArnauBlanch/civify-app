@@ -18,18 +18,13 @@ import com.civify.model.issue.Category;
 import com.civify.utils.AdapterFactory;
 
 public class EditIssueActivity extends CameraGalleryActivity {
-    EditText mIssuename;
-    RadioGroup mPosesrisk;
+
+    private EditText mIssuename;
+    private RadioGroup mPosesrisk;
     private Category mCategory;
-    AppCompatButton save;
+    private AppCompatButton mSave;
     private Bitmap mImageBitmap;
     private IssueAdapter mIssueAdapter;
-    private View.OnClickListener lis = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-           // FIXME mIssueAdapter.editIssue();
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +32,13 @@ public class EditIssueActivity extends CameraGalleryActivity {
         setContentView(R.layout.fragment_edit_issue);
         mIssuename = (EditText) findViewById(R.id.IssueName);
         mPosesrisk = (RadioGroup) findViewById(R.id.risk);
-        save = (AppCompatButton) findViewById(R.id.savechangeButton);
-        save.setOnClickListener(lis);
+        mSave = (AppCompatButton) findViewById(R.id.savechangeButton);
+        mSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // FIXME mIssueAdapter.editIssue();
+            }
+        });
         mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(this);
 
         Spinner categorySpinner = (Spinner) findViewById(R.id.nameCategorySpinner);
@@ -50,8 +50,7 @@ public class EditIssueActivity extends CameraGalleryActivity {
     public void categoryButtonListener(View v) {
         Spinner categorySpinner = (Spinner) findViewById(R.id.nameCategorySpinner);
         int categoryId = ((Spinner) findViewById(R.id.category_spinner)).getSelectedItemPosition();
-            mCategory = Category.values()[categoryId];
-
+        mCategory = Category.values()[categoryId];
     }
 
     @Override

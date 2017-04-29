@@ -175,7 +175,7 @@ public class RegistrationActivityTest {
         appCompatButton4.perform(click());
 
         ViewInteraction textView7 =
-                onView(allOf(withId(R.id.title2), withText(R.string.choose_email),
+                onView(allOf(withId(R.id.time), withText(R.string.choose_email),
                         childAtPosition(withParent(withId(R.id.viewpager)), 0), isDisplayed()));
         textView7.check(matches(withText(R.string.choose_email)));
 
