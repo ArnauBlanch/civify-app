@@ -6,17 +6,20 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
+import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
 
 public class NavigateFragment extends Fragment {
-
-    private CivifyMap mCivifyMap;
 
     public NavigateFragment() {
         // Required empty public constructor
@@ -26,15 +29,10 @@ public class NavigateFragment extends Fragment {
         return new NavigateFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     private void setMap() {
-        mCivifyMap = new CivifyMap(getActivity());
-        Fragment mapFragment = mCivifyMap.getMapFragment();
-        mCivifyMap.enableLocationUpdates();
+        CivifyMap.setContext((DrawerActivity) getActivity());
+        Fragment mapFragment = CivifyMap.getInstance().getMapFragment();
+        CivifyMap.getInstance().enable();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.map_fragment_placeholder, mapFragment)
@@ -45,41 +43,48 @@ public class NavigateFragment extends Fragment {
     // Called after onCreate
     public void onResume() {
         super.onResume();
-        mCivifyMap.enableLocationUpdates();
+        CivifyMap.getInstance().enable();
     }
 
     @Override
     public void onPause() {
+        CivifyMap.getInstance().disable();
         super.onPause();
-        mCivifyMap.disableLocationUpdates();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
             @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        mCivifyMap.onRequestPermissionsResult(requestCode, grantResults);
+        CivifyMap.getInstance().onRequestPermissionsResult(requestCode, grantResults);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCivifyMap.onMapSettingsResults(requestCode, resultCode);
+        if (requestCode == CreateIssueActivity.ISSUE_CREATION) {
+            if (resultCode == CreateIssueActivity.ISSUE_CREATED) {
+                Issue issue = (Issue) data.getExtras().getSerializable("issue");
+                try {
+                    CivifyMap.getInstance().addIssueMarker(issue);
+                } catch (MapNotLoadedException ignore) {
+                    // Button to create issues is only enabled if the map is loaded
+                }
+                Snackbar.make(getView(), getString(R.string.issue_created),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+            CivifyMap.getInstance().setCanBeDisabled(true);
+        } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
-        FloatingActionButton fabAdd = (FloatingActionButton) mapView.findViewById(R.id.fab_add);
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, R.string.not_implemented_yet, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.action, null).show();
-            }
-        });
 
         setMap();
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Map");
 
         FloatingActionButton fabLocation = (FloatingActionButton)
                 mapView.findViewById(R.id.fab_location);
@@ -87,13 +92,32 @@ public class NavigateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    mCivifyMap.center();
+                    CivifyMap.getInstance().center(true);
                 } catch (MapNotReadyException ignore) {
-                    Snackbar.make(view, "Map loading, please wait...", Snackbar.LENGTH_LONG)
-                            .setAction(R.string.action, null).show();
+                    showMapLoadingWarning(view);
                 }
             }
         });
+
+        FloatingActionButton fabCreateIssue = (FloatingActionButton)
+                mapView.findViewById(R.id.fab_add);
+        fabCreateIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (CivifyMap.getInstance().isMapReady()) {
+                    CivifyMap.getInstance().setCanBeDisabled(false);
+                    Intent intent = new Intent(getActivity().getApplicationContext(),
+                            CreateIssueActivity.class);
+                    startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
+                } else showMapLoadingWarning(view);
+            }
+        });
+
         return mapView;
+    }
+
+    private static void showMapLoadingWarning(View view) {
+        Snackbar.make(view, "Map loading, please wait...", Snackbar.LENGTH_LONG)
+                .setAction(R.string.action, null).show();
     }
 }

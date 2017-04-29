@@ -18,7 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings({ "deprecation", "JUnitTestMethodWithNoAssertions" }) public class PasswordTextWatcherTest {
+public class PasswordTextWatcherTest {
     private PasswordTextWatcher mPasswordTextWatcher;
     private Context mContext;
     private UserAdapter mUserAdapter;

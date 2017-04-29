@@ -8,7 +8,6 @@ import static android.support.test.espresso.action.ViewActions.pressImeActionBut
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -28,6 +27,10 @@ import com.civify.service.UserService;
 import com.civify.utils.AdapterFactory;
 import com.google.gson.JsonObject;
 
+import java.net.HttpURLConnection;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -36,17 +39,16 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.net.HttpURLConnection;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@LargeTest @RunWith(AndroidJUnit4.class) public class RegistrationActivityTest {
+@LargeTest
+@RunWith(AndroidJUnit4.class)
+public class RegistrationActivityTest {
     private MockWebServer mMockServer;
 
-    @Rule public ActivityTestRule<RegistrationActivity> mActivityTestRule =
+    @Rule
+    public ActivityTestRule<RegistrationActivity> mActivityTestRule =
             new ActivityTestRule<>(RegistrationActivity.class);
 
     @Before
@@ -59,7 +61,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
                 .setService(retrofit.create(UserService.class));
     }
 
-    @Test public void registrationActivityTest() {
+    @Test
+    public void registrationActivityTest() {
         ViewInteraction textView = onView(allOf(withId(R.id.title0), withText(R.string.whats_your_name),
                 childAtPosition(withParent(withId(R.id.viewpager)), 0), isDisplayed()));
         textView.check(matches(withText(R.string.whats_your_name)));
@@ -172,7 +175,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
         appCompatButton4.perform(click());
 
         ViewInteraction textView7 =
-                onView(allOf(withId(R.id.title2), withText(R.string.choose_email),
+                onView(allOf(withId(R.id.time), withText(R.string.choose_email),
                         childAtPosition(withParent(withId(R.id.viewpager)), 0), isDisplayed()));
         textView7.check(matches(withText(R.string.choose_email)));
 
@@ -303,12 +306,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
             final int position) {
 
         return new TypeSafeMatcher<View>() {
-            @Override public void describeTo(Description description) {
+            @Override
+            public void describeTo(Description description) {
                 description.appendText("Child at position " + position + " in parent ");
                 parentMatcher.describeTo(description);
             }
 
-            @Override public boolean matchesSafely(View view) {
+            @Override
+            public boolean matchesSafely(View view) {
                 ViewParent parent = view.getParent();
                 return parent instanceof ViewGroup && parentMatcher.matches(parent) && view.equals(
                         ((ViewGroup) parent).getChildAt(position));

@@ -1,8 +1,6 @@
 package com.civify.activity.registration;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -23,7 +21,6 @@ import com.civify.adapter.ValidationCallback;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
-@SuppressWarnings({ "CyclicClassDependency", "LawOfDemeter" })
 public class RegistrationActivity
         extends BaseActivity {
 
@@ -35,9 +32,7 @@ public class RegistrationActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUserAdapter = AdapterFactory.getInstance().getUserAdapter();
-        SharedPreferences userpreferences =
-                getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(userpreferences);
+        mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(this);
         setContentView(R.layout.registration_layout);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -121,7 +116,6 @@ public class RegistrationActivity
         });
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void nameAndSurnameButtonListener(View v) {
         boolean valid = true;
         if (((EditText) findViewById(R.id.name_input)).getText().length() == 0) {
@@ -143,7 +137,6 @@ public class RegistrationActivity
         }
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void usernameButtonListener(View v) {
         if (((EditText) findViewById(R.id.username_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.username_input)).setText("");
@@ -160,7 +153,6 @@ public class RegistrationActivity
                 });
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void emailButtonListener(View v) {
         if (((EditText) findViewById(R.id.email_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.email_input)).setText("");
@@ -177,7 +169,6 @@ public class RegistrationActivity
                 });
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void passwordButtonListener(View v) {
         if (((EditText) findViewById(R.id.password_input)).getText().length() == 0) {
             ((EditText) findViewById(R.id.password_input)).setText("");

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix,Overdraw"
+    >
+
+  <TextView
+      android:id="@+id/title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/what_kind_of_problem"
+      android:textAlignment="center"
+      android:textColor="#000000"
+      android:textSize="28sp"
+      fontPath="fonts/Nunito-ExtraBold.ttf"
+      />
+
+  <Spinner
+      android:id="@+id/category_spinner"
+      android:contentDescription="spinner category"
+      android:layout_width="300dp"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="20dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="50dp" />
+
+  <TextView
+      android:id="@+id/category_validation"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:textColor="@color/red"
+      android:layout_gravity="center_horizontal"
+      android:text="@string/must_choose_category"
+      android:gravity="center_vertical"
+      fontPath="fonts/Nunito-SemiBold.ttf"
+      android:visibility="invisible"
+      />
+
+  <android.support.v7.widget.AppCompatButton
+      android:id="@+id/button0"
+      android:layout_width="180dp"
+      android:layout_height="50dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="30dp"
+      android:background="@drawable/green_bg_button"
+      android:onClick="categoryButtonListener"
+      android:text="@string/continue_button"
+      android:textAllCaps="false"
+      android:textColor="#ffffff"
+      android:textSize="24sp"
+      fontPath="fonts/Nunito-Bold.ttf"
+      />
+
+</LinearLayout>

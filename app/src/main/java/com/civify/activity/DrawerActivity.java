@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -18,10 +19,11 @@ import com.civify.R;
 import com.civify.activity.fragments.AchievementsFragment;
 import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
-import com.civify.activity.fragments.ProfileFragment;
 import com.civify.activity.fragments.RewardsFragment;
 import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.WallFragment;
+import com.civify.activity.fragments.profile.ProfileFragment;
+import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -35,6 +37,7 @@ public class DrawerActivity extends BaseActivity
     private static final int ACHIEVEMENTS_ID = 4;
     private static final int EVENTS_ID = 5;
     private static final int SETTINGS_ID = 6;
+    private static final int DETAILS_ID = 7;
 
     private static final int COINS = 432;
     private static final int EXPERIENCE = 50;
@@ -44,6 +47,9 @@ public class DrawerActivity extends BaseActivity
     private NavigationView mNavigationView;
     //private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
+    private boolean mShowMenu;
+    private boolean mShowMenuDetails;
+    private User mCurrentUser;
 
     public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
@@ -61,10 +67,11 @@ public class DrawerActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
-
+        mShowMenu = false;
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
@@ -74,26 +81,27 @@ public class DrawerActivity extends BaseActivity
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+        toolbar.setTitle(R.string.app_name);
 
         NavigateFragment navigateFragment = NavigateFragment.newInstance();
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
-        User fakeUser = new User("dsegoviat", "David", "Segovia", "david@civify.app", "password",
-                "password2");
-        fakeUser.setLevel(LEVEL);
-        fakeUser.setCoins(COINS);
-        fakeUser.setExperience(EXPERIENCE);
-        setUserHeader(fakeUser);
+        mCurrentUser = UserAdapter.getCurrentUser();
+
+        mCurrentUser.setLevel(LEVEL);
+        mCurrentUser.setCoins(COINS);
+        mCurrentUser.setExperience(EXPERIENCE);
+        setUserHeader(mCurrentUser);
     }
 
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        } else if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else super.onBackPressed();
     }
 
     /*
@@ -144,10 +152,32 @@ public class DrawerActivity extends BaseActivity
         return true;
     }
 
-    private void setFragment(Fragment fragment, int fragmentId) {
+    public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment)
+                .addToBackStack(String.valueOf(fragmentId)).commit();
+        if (fragmentId == PROFILE_ID) mShowMenu = true;
+        else if (fragmentId == DETAILS_ID) {
+            mShowMenu = true;
+            mShowMenuDetails = true;
+        } else {
+            mShowMenu = false;
+            mShowMenuDetails = false;
+        }
+        invalidateOptionsMenu();
         mCurrentFragment = fragmentId;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+
+        for (int i = 0; i < menu.size(); ++i) {
+            menu.getItem(i).setVisible(mShowMenu);
+        }
+
+        return true;
     }
 
     private void setUserHeader(User user) {

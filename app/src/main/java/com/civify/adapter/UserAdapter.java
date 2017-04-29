@@ -1,5 +1,6 @@
 package com.civify.adapter;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.civify.model.MessageResponse;
@@ -15,6 +16,8 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,16 +31,34 @@ public class UserAdapter {
     public static final String USER_NOT_CREATED = "User not created";
     public static final String USER_EXISTS = "User exists";
     public static final String USER_DOESNT_EXIST = "User not exists";
+    public static final Pattern VALID_PASSWORD = Pattern.compile(
+            "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9@&#$%]{8,40}$");
+    public static final Pattern VALID_EMAIL = Pattern.compile(
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*"
+                    + "@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+    public static final Pattern VALID_USERNAME = Pattern.compile(
+            "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
+
+    private static User sCurrentUser;
+    private String mAuthToken;
 
     private UserService mUserService;
 
-
     public UserAdapter() {
-        this(ServiceGenerator.createService(UserService.class));
+        this(ServiceGenerator.getInstance().createService(UserService.class));
     }
 
     UserAdapter(UserService userService) {
         mUserService = userService;
+    }
+
+    public UserAdapter(SharedPreferences sharedPreferences) {
+        this(ServiceGenerator.getInstance().createService(UserService.class), sharedPreferences);
+    }
+
+    public UserAdapter(UserService service, SharedPreferences sharedPreferences) {
+        this.mUserService = service;
+        this.mAuthToken = sharedPreferences.getString(LoginAdapterImpl.AUTH_TOKEN, "");
     }
 
     public void setService(UserService userService) {
@@ -87,7 +108,7 @@ public class UserAdapter {
     public boolean checkValidPassword(@NonNull String password) {
         // Between 8 and 40 characters long, at least one digit, one lowercase character and
         // one uppercase character (valid special characters: @ & # $ %)
-        return password.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9@&#$%]{8,40}$");
+        return VALID_PASSWORD.matcher(password).matches();
     }
 
     private void checkUnusedUsername(String username, final ValidationCallback callback) {
@@ -139,12 +160,11 @@ public class UserAdapter {
     }
 
     private boolean checkValidEmail(@NonNull String email) {
-        return email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        return VALID_EMAIL.matcher(email).matches();
     }
 
     private boolean checkValidUsername(@NonNull String username) {
-        return username.matches("^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
+        return VALID_USERNAME.matcher(username).matches();
     }
 
     private String getPassHash(String password) {
@@ -160,11 +180,39 @@ public class UserAdapter {
 
     private String getMessageFromError(ResponseBody errorBody) {
         try {
-            return (new JsonParser().parse(errorBody.string()).getAsJsonObject()).get("message")
+            return new JsonParser().parse(errorBody.string()).getAsJsonObject().get("message")
                     .getAsString();
         } catch (IOException e) {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static void setCurrentUser(User user) {
+        sCurrentUser = user;
+    }
+
+    public static User getCurrentUser() {
+        return sCurrentUser;
+    }
+
+    public void getUser(String userAuthToken, final UserSimpleCallback callback) {
+        Call<User> call = mUserService.getUser(mAuthToken, userAuthToken);
+        call.enqueue(new Callback<User>() {
+
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 }
