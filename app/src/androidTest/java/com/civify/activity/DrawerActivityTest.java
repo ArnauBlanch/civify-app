@@ -1,16 +1,13 @@
 package com.civify.activity;
 
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-
 import static org.hamcrest.Matchers.allOf;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
@@ -84,6 +81,4 @@ public class DrawerActivityTest {
         openDrawerAndClickItem("Settings");
         assertEquals(6, mActivityTestRule.getActivity().getCurrentFragment());
     }
-
-
 }

@@ -24,7 +24,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-@SuppressWarnings({ "deprecation", "JUnitTestMethodWithNoAssertions", "CanBeFinal" }) public class UsernameTextWatcherTest {
+public class UsernameTextWatcherTest {
     private UsernameTextWatcher mUsernameTextWatcher;
     @Mock
     private Context mContext;

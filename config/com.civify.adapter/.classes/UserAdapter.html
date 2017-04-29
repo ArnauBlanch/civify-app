@@ -1,0 +1,330 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UserAdapter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.adapter</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UserAdapter (com.civify.adapter)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,8%
+  </span>
+  <span class="absValue">
+    (15/ 16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84%
+  </span>
+  <span class="absValue">
+    (42/ 50)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UserAdapter$$EnhancerByMockitoWithCGLIB$$7ea004e4</td>
+  </tr>
+  <tr>
+    <td class="name">UserAdapter$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (2/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/ 10)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">UserAdapter$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (2/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/ 10)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">UserAdapter$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (2/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/ 10)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    84%
+  </span>
+  <span class="absValue">
+    (21/ 25)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82,5%
+  </span>
+  <span class="absValue">
+    (66/ 80)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.adapter;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.NonNull;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import com.civify.model.MessageResponse;
+<i>6</i>&nbsp;import com.civify.model.User;
+<i>7</i>&nbsp;import com.civify.service.UserService;
+<i>8</i>&nbsp;import com.civify.utils.ServiceGenerator;
+<i>9</i>&nbsp;import com.google.gson.JsonObject;
+<i>10</i>&nbsp;import com.google.gson.JsonParser;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.io.IOException;
+<i>13</i>&nbsp;import java.io.UnsupportedEncodingException;
+<i>14</i>&nbsp;import java.math.BigInteger;
+<i>15</i>&nbsp;import java.net.HttpURLConnection;
+<i>16</i>&nbsp;import java.security.MessageDigest;
+<i>17</i>&nbsp;import java.security.NoSuchAlgorithmException;
+<i>18</i>&nbsp;import okhttp3.ResponseBody;
+<i>19</i>&nbsp;import retrofit2.Call;
+<i>20</i>&nbsp;import retrofit2.Callback;
+<i>21</i>&nbsp;import retrofit2.Response;
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;public class UserAdapter {</b>
+<i>24</i>&nbsp;    public static final int INVALID = 0;
+<i>25</i>&nbsp;    public static final int USED = 1;
+<i>26</i>&nbsp;    public static final int VALID_UNUSED = 2;
+<i>27</i>&nbsp;    public static final String USER_CREATED = &quot;User created&quot;;
+<i>28</i>&nbsp;    public static final String USER_NOT_CREATED = &quot;User not created&quot;;
+<i>29</i>&nbsp;    public static final String USER_EXISTS = &quot;User exists&quot;;
+<i>30</i>&nbsp;    public static final String USER_DOESNT_EXIST = &quot;User not exists&quot;;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    private static User sCurrentUser;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    private UserService mUserService;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public UserAdapter() {
+<b class="fc"><i>38</i>&nbsp;        this(ServiceGenerator.getInstance().createService(UserService.class));</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;    UserAdapter(UserService userService) {</b>
+<b class="fc"><i>42</i>&nbsp;        mUserService = userService;</b>
+<b class="fc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    public void setService(UserService userService) {
+<b class="nc"><i>46</i>&nbsp;        mUserService = userService;</b>
+<b class="nc"><i>47</i>&nbsp;    }</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    public void registerUser(User user, final SimpleCallback callback) {
+<b class="fc"><i>50</i>&nbsp;        user.setPassword(getPassHash(user.getPassword()));</b>
+<b class="fc"><i>51</i>&nbsp;        user.setPasswordConfirmation(getPassHash(user.getPasswordConfirmation()));</b>
+<i>52</i>&nbsp;
+<b class="fc"><i>53</i>&nbsp;        Call&lt;MessageResponse&gt; call = mUserService.registerUser(user);</b>
+<b class="fc"><i>54</i>&nbsp;        call.enqueue(new Callback&lt;MessageResponse&gt;() {</b>
+<i>55</i>&nbsp;            @Override
+<i>56</i>&nbsp;            public void onResponse(Call&lt;MessageResponse&gt; call, Response&lt;MessageResponse&gt; response) {
+<b class="fc"><i>57</i>&nbsp;                if (response.code() == HttpURLConnection.HTTP_CREATED</b>
+<b class="fc"><i>58</i>&nbsp;                        &amp;&amp; response.body().getMessage().equals(USER_CREATED)) {</b>
+<b class="fc"><i>59</i>&nbsp;                    callback.onSuccess();</b>
+<b class="fc"><i>60</i>&nbsp;                } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST</b>
+<b class="fc"><i>61</i>&nbsp;                        &amp;&amp; getMessageFromError(response.errorBody()).equals(USER_NOT_CREATED)) {</b>
+<b class="fc"><i>62</i>&nbsp;                    callback.onFailure();</b>
+<i>63</i>&nbsp;                }
+<b class="fc"><i>64</i>&nbsp;            }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;            @Override
+<i>67</i>&nbsp;            public void onFailure(Call&lt;MessageResponse&gt; call, Throwable t) {
+<b class="nc"><i>68</i>&nbsp;                t.printStackTrace();</b>
+<b class="nc"><i>69</i>&nbsp;            }</b>
+<i>70</i>&nbsp;        });
+<b class="fc"><i>71</i>&nbsp;    }</b>
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    public void checkValidUnusedEmail(String email, final ValidationCallback callback) {
+<b class="fc"><i>74</i>&nbsp;        if (!checkValidEmail(email)) {</b>
+<b class="fc"><i>75</i>&nbsp;            callback.onValidationResponse(INVALID);</b>
+<b class="fc"><i>76</i>&nbsp;            return;</b>
+<i>77</i>&nbsp;        }
+<b class="fc"><i>78</i>&nbsp;        checkUnusedEmail(email, callback);</b>
+<b class="fc"><i>79</i>&nbsp;    }</b>
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    public void checkValidUnusedUsername(String username, final ValidationCallback callback) {
+<b class="fc"><i>82</i>&nbsp;        if (!checkValidUsername(username)) {</b>
+<b class="fc"><i>83</i>&nbsp;            callback.onValidationResponse(INVALID);</b>
+<b class="fc"><i>84</i>&nbsp;            return;</b>
+<i>85</i>&nbsp;        }
+<b class="fc"><i>86</i>&nbsp;        checkUnusedUsername(username, callback);</b>
+<b class="fc"><i>87</i>&nbsp;    }</b>
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    public boolean checkValidPassword(@NonNull String password) {
+<i>90</i>&nbsp;        // Between 8 and 40 characters long, at least one digit, one lowercase character and
+<i>91</i>&nbsp;        // one uppercase character (valid special characters: @ &amp; # $ %)
+<b class="fc"><i>92</i>&nbsp;        return password.matches(&quot;^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9@&amp;#$%]{8,40}$&quot;);</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    private void checkUnusedUsername(String username, final ValidationCallback callback) {
+<b class="fc"><i>96</i>&nbsp;        JsonObject usernameJson = new JsonObject();</b>
+<b class="fc"><i>97</i>&nbsp;        usernameJson.addProperty(&quot;username&quot;, username);</b>
+<i>98</i>&nbsp;
+<b class="fc"><i>99</i>&nbsp;        Call&lt;MessageResponse&gt; call = mUserService.checkUnusedUsername(usernameJson);</b>
+<b class="fc"><i>100</i>&nbsp;        call.enqueue(new Callback&lt;MessageResponse&gt;() {</b>
+<i>101</i>&nbsp;            @Override
+<i>102</i>&nbsp;            public void onResponse(Call&lt;MessageResponse&gt; call, Response&lt;MessageResponse&gt; response) {
+<b class="fc"><i>103</i>&nbsp;                if (response.code() == HttpURLConnection.HTTP_OK</b>
+<b class="fc"><i>104</i>&nbsp;                        &amp;&amp; response.body().getMessage().equals(USER_EXISTS)) {</b>
+<b class="fc"><i>105</i>&nbsp;                    callback.onValidationResponse(USED);</b>
+<b class="fc"><i>106</i>&nbsp;                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND</b>
+<b class="fc"><i>107</i>&nbsp;                        &amp;&amp; getMessageFromError(response.errorBody()).equals(USER_DOESNT_EXIST)) {</b>
+<b class="fc"><i>108</i>&nbsp;                    callback.onValidationResponse(VALID_UNUSED);</b>
+<i>109</i>&nbsp;                }
+<b class="fc"><i>110</i>&nbsp;            }</b>
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;            @Override
+<i>113</i>&nbsp;            public void onFailure(Call&lt;MessageResponse&gt; call, Throwable t) {
+<b class="nc"><i>114</i>&nbsp;                t.printStackTrace();</b>
+<b class="nc"><i>115</i>&nbsp;            }</b>
+<i>116</i>&nbsp;        });
+<b class="fc"><i>117</i>&nbsp;    }</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    private void checkUnusedEmail(String email, final ValidationCallback callback) {
+<b class="fc"><i>120</i>&nbsp;        JsonObject emailJson = new JsonObject();</b>
+<b class="fc"><i>121</i>&nbsp;        emailJson.addProperty(&quot;email&quot;, email);</b>
+<i>122</i>&nbsp;
+<b class="fc"><i>123</i>&nbsp;        Call&lt;MessageResponse&gt; call = mUserService.checkUnusedEmail(emailJson);</b>
+<b class="fc"><i>124</i>&nbsp;        call.enqueue(new Callback&lt;MessageResponse&gt;() {</b>
+<i>125</i>&nbsp;            @Override
+<i>126</i>&nbsp;            public void onResponse(Call&lt;MessageResponse&gt; call, Response&lt;MessageResponse&gt; response) {
+<b class="fc"><i>127</i>&nbsp;                if (response.code() == HttpURLConnection.HTTP_OK</b>
+<b class="fc"><i>128</i>&nbsp;                        &amp;&amp; response.body().getMessage().equals(USER_EXISTS)) {</b>
+<b class="fc"><i>129</i>&nbsp;                    callback.onValidationResponse(USED);</b>
+<b class="fc"><i>130</i>&nbsp;                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND</b>
+<b class="fc"><i>131</i>&nbsp;                        &amp;&amp; getMessageFromError(response.errorBody()).equals(USER_DOESNT_EXIST)) {</b>
+<b class="fc"><i>132</i>&nbsp;                    callback.onValidationResponse(VALID_UNUSED);</b>
+<i>133</i>&nbsp;                }
+<b class="fc"><i>134</i>&nbsp;            }</b>
+<i>135</i>&nbsp;
+<i>136</i>&nbsp;            @Override
+<i>137</i>&nbsp;            public void onFailure(Call&lt;MessageResponse&gt; call, Throwable t) {
+<b class="nc"><i>138</i>&nbsp;                t.printStackTrace();</b>
+<b class="nc"><i>139</i>&nbsp;            }</b>
+<i>140</i>&nbsp;        });
+<b class="fc"><i>141</i>&nbsp;    }</b>
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;    private boolean checkValidEmail(@NonNull String email) {
+<b class="fc"><i>144</i>&nbsp;        return email.matches(&quot;^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@&quot;</b>
+<i>145</i>&nbsp;                + &quot;[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$&quot;);
+<i>146</i>&nbsp;    }
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;    private boolean checkValidUsername(@NonNull String username) {
+<b class="fc"><i>149</i>&nbsp;        return username.matches(&quot;^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?&lt;![_.])$&quot;);</b>
+<i>150</i>&nbsp;    }
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;    private String getPassHash(String password) {
+<i>153</i>&nbsp;        try {
+<b class="fc"><i>154</i>&nbsp;            MessageDigest md = MessageDigest.getInstance(&quot;SHA-256&quot;);</b>
+<b class="fc"><i>155</i>&nbsp;            md.update(String.valueOf(password).getBytes(&quot;UTF-8&quot;));</b>
+<b class="fc"><i>156</i>&nbsp;            return String.format(&quot;%064x&quot;, new BigInteger(1, md.digest()));</b>
+<b class="nc"><i>157</i>&nbsp;        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {</b>
+<b class="nc"><i>158</i>&nbsp;            e.printStackTrace();</b>
+<i>159</i>&nbsp;        }
+<b class="nc"><i>160</i>&nbsp;        return password;</b>
+<i>161</i>&nbsp;    }
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;    private String getMessageFromError(ResponseBody errorBody) {
+<i>164</i>&nbsp;        try {
+<b class="fc"><i>165</i>&nbsp;            return (new JsonParser().parse(errorBody.string()).getAsJsonObject()).get(&quot;message&quot;)</b>
+<b class="fc"><i>166</i>&nbsp;                    .getAsString();</b>
+<b class="nc"><i>167</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>168</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i>169</i>&nbsp;            return &quot;&quot;;</b>
+<i>170</i>&nbsp;        }
+<i>171</i>&nbsp;    }
+<i>172</i>&nbsp;
+<i>173</i>&nbsp;    public static void setCurrentUser(User user) {
+<b class="fc"><i>174</i>&nbsp;        sCurrentUser = user;</b>
+<b class="fc"><i>175</i>&nbsp;    }</b>
+<i>176</i>&nbsp;
+<i>177</i>&nbsp;    public static User getCurrentUser() {
+<b class="fc"><i>178</i>&nbsp;        return sCurrentUser;</b>
+<i>179</i>&nbsp;    }
+<i>180</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 20:03</div>
+</div>
+</body>
+</html>

@@ -10,7 +10,7 @@
     >
 
   <TextView
-      android:id="@+id/title2"
+      android:id="@+id/time"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/choose_email"
@@ -81,7 +81,7 @@
       android:layout_height="50dp"
       android:layout_gravity="center_horizontal"
       android:layout_marginTop="50dp"
-      android:background="@drawable/button_round"
+      android:background="@drawable/green_bg_button"
       android:onClick="emailButtonListener"
       android:text="@string/continue_button"
       android:textAllCaps="false"

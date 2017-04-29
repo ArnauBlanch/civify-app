@@ -24,7 +24,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-@SuppressWarnings({ "deprecation", "JUnitTestMethodWithNoAssertions", "CanBeFinal" }) public class EmailTextWatcherTest {
+public class EmailTextWatcherTest {
     private EmailTextWatcher mEmailTextWatcher;
     @Mock
     private Context mContext;

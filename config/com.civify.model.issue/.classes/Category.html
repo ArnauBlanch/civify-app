@@ -1,0 +1,160 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Category</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.civify.model.issue</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Category (com.civify.model.issue)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Category</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.civify.model.issue;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.DrawableRes;
+<i>4</i>&nbsp;import android.support.annotation.StringRes;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.civify.R;
+<i>7</i>&nbsp;import com.google.gson.annotations.SerializedName;
+<i>8</i>&nbsp;
+<b class="fc"><i>9</i>&nbsp;public enum Category {</b>
+<i>10</i>&nbsp;    // Senyalitació vial
+<b class="fc"><i>11</i>&nbsp;    @SerializedName(&quot;road_signs&quot;)</b>
+<i>12</i>&nbsp;    ROAD_SIGNS(R.drawable.traffic_signs_lights_pin, R.drawable.traffic_signs_lights_icon,
+<i>13</i>&nbsp;            R.string.road_signs),
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    // Il·lumincació
+<b class="fc"><i>16</i>&nbsp;    @SerializedName(&quot;illumination&quot;)</b>
+<i>17</i>&nbsp;    ILLUMINATION(R.drawable.street_lights_pin, R.drawable.street_lights_icon,
+<i>18</i>&nbsp;            R.string.illumination),
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    // Arbres i plantes
+<b class="fc"><i>21</i>&nbsp;    @SerializedName(&quot;grove&quot;)</b>
+<i>22</i>&nbsp;    GROVE(R.drawable.trees_and_plants_pin, R.drawable.trees_and_plants_icon,
+<i>23</i>&nbsp;            R.string.grove),
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    // Mobiliari urbà
+<b class="fc"><i>26</i>&nbsp;    @SerializedName(&quot;street_furniture&quot;)</b>
+<i>27</i>&nbsp;    STREET_FURNITURE(R.drawable.urban_furniture_pin, R.drawable.urban_furniture_icon,
+<i>28</i>&nbsp;            R.string.street_furniture),
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    // Escombraries i neteja
+<b class="fc"><i>31</i>&nbsp;    @SerializedName(&quot;trash_and_cleaning&quot;)</b>
+<i>32</i>&nbsp;    TRASH_AND_CLEANING(R.drawable.trash_and_cleaning_pin, R.drawable.trash_and_cleaning_icon,
+<i>33</i>&nbsp;            R.string.trash_and_cleaning),
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    // Transport públic
+<b class="fc"><i>36</i>&nbsp;    @SerializedName(&quot;public_transport&quot;)</b>
+<i>37</i>&nbsp;    PUBLIC_TANSPORT(R.drawable.public_transportation_pin, R.drawable.public_transportation_icon,
+<i>38</i>&nbsp;            R.string.public_transport),
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    // Suggeriment
+<b class="fc"><i>41</i>&nbsp;    @SerializedName(&quot;suggestion&quot;)</b>
+<i>42</i>&nbsp;    SUGGESTION(R.drawable.suggestion_pin, R.drawable.suggestion_icon,
+<i>43</i>&nbsp;            R.string.suggestion),
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    // Altres
+<b class="fc"><i>46</i>&nbsp;    @SerializedName(&quot;other&quot;)</b>
+<i>47</i>&nbsp;    OTHER(R.drawable.others_pin, R.drawable.others_icon,
+<i>48</i>&nbsp;            R.string.other);
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    @DrawableRes
+<i>51</i>&nbsp;    private final int mMarker;
+<i>52</i>&nbsp;    @DrawableRes
+<i>53</i>&nbsp;    private final int mIcon;
+<i>54</i>&nbsp;    @StringRes
+<i>55</i>&nbsp;    private final int mName;
+<i>56</i>&nbsp;
+<b class="fc"><i>57</i>&nbsp;    Category(@DrawableRes int marker, @DrawableRes int icon, @StringRes int name) {</b>
+<b class="fc"><i>58</i>&nbsp;        this.mMarker = marker;</b>
+<b class="fc"><i>59</i>&nbsp;        this.mIcon = icon;</b>
+<b class="fc"><i>60</i>&nbsp;        this.mName = name;</b>
+<b class="fc"><i>61</i>&nbsp;    }</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    @DrawableRes
+<i>64</i>&nbsp;    public int getMarker() {
+<b class="fc"><i>65</i>&nbsp;        return mMarker;</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;    @DrawableRes
+<i>69</i>&nbsp;    public int getIcon() {
+<b class="fc"><i>70</i>&nbsp;        return mIcon;</b>
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    @StringRes
+<i>74</i>&nbsp;    public int getName() {
+<b class="fc"><i>75</i>&nbsp;        return mName;</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-04-27 20:03</div>
+</div>
+</body>
+</html>

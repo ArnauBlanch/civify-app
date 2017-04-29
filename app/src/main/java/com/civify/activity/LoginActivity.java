@@ -1,8 +1,6 @@
 package com.civify.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
@@ -36,8 +34,11 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void onLoginSucceeded(User u) {
                             Log.d(tag, "login succeed");
-                            startActivity(new Intent(getApplicationContext(),
-                                    DrawerActivity.class));
+                            Intent intent = new Intent(getApplicationContext(),
+                                    DrawerActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
 
                         @Override
@@ -61,6 +62,7 @@ public class LoginActivity extends BaseActivity {
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +73,7 @@ public class LoginActivity extends BaseActivity {
         mPassw = (EditText) findViewById(R.id.login_password_input);
         mPassforgot = (TextView) findViewById(R.id.login_forgot);
         mPassforgot.setOnClickListener(mListen);
-        SharedPreferences userpreferences = getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
-        mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(userpreferences);
+        mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(this);
     }
 
 }
