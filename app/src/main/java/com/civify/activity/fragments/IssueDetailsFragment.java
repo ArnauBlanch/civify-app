@@ -1,14 +1,18 @@
 package com.civify.activity.fragments;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,60 +22,69 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.EditIssueActivity;
+import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
+import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserSimpleCallback;
+import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Issue;
-import com.civify.model.map.IssueMarker;
+import com.civify.model.map.CivifyMap;
+import com.civify.model.map.CivifyMarkers;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
+import com.google.android.gms.maps.model.LatLng;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Date;
-import java.util.StringTokenizer;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 public class IssueDetailsFragment extends Fragment {
 
     private static final String DEBUG = "debug-IssueDetails";
-    private static final String WHITE_SPACE = " ";
-    private static final String TAG_MARKER = "marker";
+    private static final String TAG_ISSUE = "issue";
 
     private static final int DISTANCE_TO_KILOMETERS = 1000;
     private static final int DISTANCE_TO_METERS = 1000000;
-    private static final int LEVEL_FAKE_USER = 3;
     private static final int MIN_METERS_FROM_ISSUE = 70;
     private static final float DISABLED_ALPHA = 0.15f;
-    private static UserAdapter sUserAdapter;
+
+    private UserAdapter mUserAdapter;
+    private IssueAdapter mIssueAdapter;
 
     private Issue mIssue;
+    private float mDistance;
 
     private View mViewDetails;
-    private IssueMarker mMarker;
 
     public IssueDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static IssueDetailsFragment newInstance(IssueMarker marker) {
-        IssueDetailsFragment fragment = new IssueDetailsFragment();
+    public static IssueDetailsFragment newInstance(@NonNull Issue issue) {
         Bundle data = new Bundle();
-        //FIXME data.putSerializable(TAG_MARKER, marker);
+        data.putSerializable(TAG_ISSUE, issue);
+        IssueDetailsFragment fragment = new IssueDetailsFragment();
         fragment.setArguments(data);
-
-        sUserAdapter = AdapterFactory.getInstance().getUserAdapter();
-
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
-        //FIXME init();
+        init();
         return mViewDetails;
     }
 
@@ -80,9 +93,25 @@ public class IssueDetailsFragment extends Fragment {
 
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
-        mMarker = (IssueMarker) bundle.getSerializable(TAG_MARKER);
-        getUpdatedIssue();
+        mIssue = (Issue) bundle.getSerializable(TAG_ISSUE);
+        mDistance = mIssue.getDistanceFromCurrentLocation();
 
+        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(getActivity());
+        mUserAdapter = AdapterFactory.getInstance().getUserAdapter(getActivity());
+        setIssue();
+        setPosition();
+        updateIssue(mIssue.getIssueAuthToken());
+        addUser();
+
+        Log.v(DEBUG, "init finished");
+    }
+
+    private void setPosition() {
+        addDistance();
+        addStreetAsync(mIssue.getPosition());
+    }
+
+    private void setIssue() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mIssue.getTitle());
 
@@ -92,23 +121,20 @@ public class IssueDetailsFragment extends Fragment {
         addCategoryValue();
         addRisk();
         addDescription();
-        addStreet();
-        addDistance();
         addTime();
-        addUser();
 
         setupButtons();
-
-        Log.v(DEBUG, "init finished");
     }
 
-    private void getUpdatedIssue() {
-        mIssue = mMarker.getIssue();
+    private void updateIssue(String token) {
+        final LatLng oldPosition = mIssue.getPosition();
         AdapterFactory.getInstance().getIssueAdapter(getContext())
-                .getIssue(mIssue.getIssueAuthToken(), new IssueSimpleCallback() {
+                .getIssue(token, new IssueSimpleCallback() {
                     @Override
                     public void onSuccess(Issue issue) {
                         mIssue = issue;
+                        setIssue();
+                        if (!oldPosition.equals(issue.getPosition())) setPosition();
                     }
 
                     @Override
@@ -121,8 +147,7 @@ public class IssueDetailsFragment extends Fragment {
 
     private void addUser() {
         Log.v(DEBUG, "Adding user in layout");
-        String authToken = mIssue.getIssueAuthToken();
-        sUserAdapter.getUser(authToken, new UserSimpleCallback() {
+        mUserAdapter.getUser(mIssue.getUserAuthToken(), new UserSimpleCallback() {
             @Override
             public void onSuccess(User user) {
                 setUser(user);
@@ -148,36 +173,32 @@ public class IssueDetailsFragment extends Fragment {
     private void addDistance() {
         Log.v(DEBUG, "Adding distance in layout");
         TextView distanceIssue = (TextView) mViewDetails.findViewById(R.id.distanceText);
-        String point = ".";
-        float distance = mMarker.getDistanceFromCurrentLocation() / DISTANCE_TO_KILOMETERS;
-        String stringDistance = String.valueOf(distance);
-        StringTokenizer token = new StringTokenizer(stringDistance, point);
-        String distanceToken = token.nextToken();
-        if ("0".equals(distanceToken)) {
-            distance = mMarker.getDistanceFromCurrentLocation() / DISTANCE_TO_METERS;
-            stringDistance = String.valueOf(distance);
-            token = new StringTokenizer(stringDistance, point);
-            distanceToken = token.nextToken();
-            distanceIssue.setText(distanceToken + WHITE_SPACE + getText(R.string.m));
-        } else {
-            distanceIssue.setText(distanceToken + WHITE_SPACE + getText(R.string.km));
+        distanceIssue.setText(mIssue.getDistanceFromCurrentLocationAsString());
+    }
+
+    private void addStreetAsync(LatLng position) {
+        if (position != null) {
+            GeocoderAdapter.getLocality(getContext(),
+                    LocationAdapter.getLocation(position), getAddressAsyncCallback());
         }
     }
 
-    private void addStreet() {
-        Log.v(DEBUG, "Adding street in layout");
-        final TextView streetIssue = (TextView) mViewDetails.findViewById(R.id.streetText);
-        mMarker.getAddress(new LocalityCallback() {
+    private LocalityCallback getAddressAsyncCallback() {
+        return new LocalityCallback() {
             @Override
             public void onLocalityResponse(@NonNull String address) {
-                streetIssue.setText(address);
+                addStreet(address);
             }
 
             @Override
-            public void onLocalityError() {
+            public void onLocalityError() { }
+        };
+    }
 
-            }
-        });
+    private void addStreet(String address) {
+        Log.v(DEBUG, "Adding street in layout");
+        TextView streetIssue = (TextView) mViewDetails.findViewById(R.id.streetText);
+        streetIssue.setText(address);
     }
 
     private void addDescription() {
@@ -203,10 +224,10 @@ public class IssueDetailsFragment extends Fragment {
         categoryIssue.setText(getString(idCategory));
     }
 
-    private void addConfirmValue() {
+    void addConfirmValue() {
         Log.v(DEBUG, "Adding confirm value in layout");
         TextView likesIssue = (TextView) mViewDetails.findViewById(R.id.likesText);
-        likesIssue.setText("+" + String.valueOf(mIssue.getConfirmVotes()));
+        likesIssue.setText("+" + mIssue.getConfirmVotes());
     }
 
     private void addIssueTitle() {
@@ -224,11 +245,10 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     private User buildFakeUser() {
-        String password = "ivan1234";
-        User fakeUser = new User("demingo7", "Iván", "de Mingo", "ivanDeMingo@hotmail.com",
-                password, password);
-        fakeUser.setLevel(LEVEL_FAKE_USER);
-
+        String password = "";
+        User fakeUser = new User("", "User couldn't be retrieved", "",
+                "example@mail.com", password, password);
+        fakeUser.setLevel(1);
         return fakeUser;
     }
 
@@ -239,7 +259,7 @@ public class IssueDetailsFragment extends Fragment {
         ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
 
         TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
-        name.setText(user.getName() + WHITE_SPACE + user.getSurname());
+        name.setText(user.getName() + ' ' + user.getSurname());
 
         TextView username = (TextView) mViewDetails.findViewById(R.id.userUsername);
         username.setText(user.getUsername());
@@ -257,6 +277,58 @@ public class IssueDetailsFragment extends Fragment {
         Log.v(DEBUG, "setUser finished");
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_issue:
+                launchEditActivity();
+                return false;
+            case R.id.delete_issue:
+                deleteIssue();
+                return false;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    private void deleteIssue() {
+        if (mIssue.getUserAuthToken().equals(mUserAdapter.getCurrentUser().getUserAuthToken())) {
+            DialogInterface.OnClickListener dialogClickListener =
+                    new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                        mIssueAdapter.deleteIssue(mIssue.getIssueAuthToken(), getDeleteCallback());
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(getResources().getString(R.string.delete_sure))
+                    .setPositiveButton(getResources().getString(R.string.yes), dialogClickListener)
+                    .setNegativeButton(getResources().getString(R.string.no), dialogClickListener)
+                    .show();
+        }
+    }
+
+    public IssueSimpleCallback getDeleteCallback() {
+        return new IssueSimpleCallback() {
+            @Override
+            public void onSuccess(Issue issue) {
+                CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
+                if (markers != null) markers.remove(issue.getIssueAuthToken());
+                getActivity().onBackPressed();
+                Log.d(DEBUG, "issue borrada");
+            }
+
+            @Override
+            public void onFailure() {
+                Snackbar.make(mViewDetails, "Couldn't delete issue", Snackbar.LENGTH_SHORT).show();
+            }
+        };
+    }
+
     private void setupButtons() {
         LinearLayout buttons = (LinearLayout) mViewDetails.findViewById(R.id.buttonsLayout);
 
@@ -271,7 +343,7 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     private boolean isTooFarFromIssue() {
-        return mMarker.getDistanceFromCurrentLocation() > MIN_METERS_FROM_ISSUE;
+        return mDistance > MIN_METERS_FROM_ISSUE;
     }
 
     private void setupConfirmButton() {
@@ -286,8 +358,9 @@ public class IssueDetailsFragment extends Fragment {
                 changeButtonStyle(button, IssueButton.UNCONFIRM);
             }
             IssueButtonListener buttonListener =
-                    new IssueButtonListener(mViewDetails, mIssue, IssueButton.CONFIRM,
-                            IssueButton.UNCONFIRM);
+                    new IssueButtonListener(this, mViewDetails, mIssue,
+                            IssueButton.CONFIRM, IssueButton.UNCONFIRM);
+
             button.setOnClickListener(buttonListener);
         }
     }
@@ -304,8 +377,8 @@ public class IssueDetailsFragment extends Fragment {
                 changeButtonStyle(button, IssueButton.UNREPORT);
             }
             IssueButtonListener buttonListener =
-                    new IssueButtonListener(mViewDetails, mIssue, IssueButton.REPORT,
-                            IssueButton.UNREPORT);
+                    new IssueButtonListener(this, mViewDetails, mIssue,
+                            IssueButton.REPORT, IssueButton.UNREPORT);
             button.setOnClickListener(buttonListener);
         }
     }
@@ -322,8 +395,8 @@ public class IssueDetailsFragment extends Fragment {
                 changeButtonStyle(button, IssueButton.UNRESOLVE);
             }
             IssueButtonListener buttonListener =
-                    new IssueButtonListener(mViewDetails, mIssue, IssueButton.RESOLVE,
-                            IssueButton.UNRESOLVE);
+                    new IssueButtonListener(this, mViewDetails, mIssue,
+                            IssueButton.RESOLVE, IssueButton.UNRESOLVE);
             button.setOnClickListener(buttonListener);
         }
     }
@@ -334,4 +407,9 @@ public class IssueDetailsFragment extends Fragment {
         button.setTextColor(getResources().getColor(issueButton.getTextColor()));
     }
 
+    public void launchEditActivity() {
+        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+        Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
+        drawerActivity.startActivity(intent);
+    }
 }

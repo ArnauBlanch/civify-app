@@ -109,6 +109,9 @@
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="level">Level</string>
   <string name="sign_out">Sign out</string>
+  <string name="issue_name">Issue Name</string>
+  <string name="save_changes">Save changes</string>
+  <string name="description">Description</string>
 
   <!-- Categories -->
   <string name="road_signs">Road signs</string>
@@ -164,4 +167,9 @@
   <string name="resolve_error_message">Couldn\'t mark the issue as resolved</string>
   <string name="unresolve_error_message">Couldn\'t mark the issue as unresolved</string>
   <string name="too_far_from_issue">You\'re too far from this issue</string>
+  <string name='daysAgo'>days ago</string>
+  <string name="edit_issue">Edit Issue</string>
+  <string name="delete_issue">Delete Issue</string>
+
+  <string name="delete_sure">Delete Issue?</string>
 </resources>

@@ -37,6 +37,7 @@ public class DrawerActivity extends BaseActivity
     private static final int ACHIEVEMENTS_ID = 4;
     private static final int EVENTS_ID = 5;
     private static final int SETTINGS_ID = 6;
+    private static final int DETAILS_ID = 7;
 
     private static final int COINS = 432;
     private static final int EXPERIENCE = 50;
@@ -47,6 +48,7 @@ public class DrawerActivity extends BaseActivity
     //private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
     private boolean mShowMenu;
+    private boolean mShowMenuDetails;
     private User mCurrentUser;
 
     public DrawerLayout getDrawerLayout() {
@@ -97,14 +99,9 @@ public class DrawerActivity extends BaseActivity
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            if (getFragmentManager().getBackStackEntryCount() > 0) {
-                getFragmentManager().popBackStack();
-            } else {
-                super.onBackPressed();
-            }
-        }
-        //        else finish();
+        } else if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else super.onBackPressed();
     }
 
     /*
@@ -158,9 +155,15 @@ public class DrawerActivity extends BaseActivity
     public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_content, fragment)
-                .addToBackStack("tag").commit();
+                .addToBackStack(String.valueOf(fragmentId)).commit();
         if (fragmentId == PROFILE_ID) mShowMenu = true;
-        else mShowMenu = false;
+        else if (fragmentId == DETAILS_ID) {
+            mShowMenu = true;
+            mShowMenuDetails = true;
+        } else {
+            mShowMenu = false;
+            mShowMenuDetails = false;
+        }
         invalidateOptionsMenu();
         mCurrentFragment = fragmentId;
     }
@@ -168,7 +171,7 @@ public class DrawerActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.drawer, menu);
+        getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
