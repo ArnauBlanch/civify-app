@@ -4,10 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.GoogleMap;
@@ -64,12 +62,6 @@ public class IssueMarker {
         return mIssue;
     }
 
-    /** @return distance in meters between the current geolocated position and this marker. */
-    public float getDistanceFromCurrentLocation() {
-        return mMap.getCurrentLocation().distanceTo(
-                LocationAdapter.getLocation(getPosition()));
-    }
-
     @NonNull
     public final IssueMarker setIcon(@DrawableRes int markerIcon) {
         Bitmap icon = BitmapFactory.decodeResource(mMap.getContext().getResources(), markerIcon);
@@ -121,27 +113,17 @@ public class IssueMarker {
         return this;
     }
 
-    public void remove() {
+    void remove() {
         if (isPresent()) {
             mMarker.remove();
             mPresent = false;
             mAttached = null;
-            String thisMarker = getTag();
-            CivifyMarkers markers = mMap.getMarkers();
-            if (markers != null && markers.get(thisMarker) != null) markers.remove(thisMarker);
             Log.v(TAG, "Removed marker " + getTag() + '(' + getIssue().getTitle() + ')');
         }
     }
 
     public boolean isPresent() {
         return mPresent;
-    }
-
-    public void showIssueDetails() {
-        Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(this);
-        if (issueDetailsFragment != null) {
-            mMap.getContext().setFragment(issueDetailsFragment, issueDetailsFragment.getId());
-        }
     }
 
     @Override

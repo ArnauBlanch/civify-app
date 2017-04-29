@@ -99,14 +99,9 @@ public class DrawerActivity extends BaseActivity
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            if (getFragmentManager().getBackStackEntryCount() > 0) {
-                getFragmentManager().popBackStack();
-            } else {
-                super.onBackPressed();
-            }
-        }
-        //        else finish();
+        } else if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else super.onBackPressed();
     }
 
     /*
@@ -160,7 +155,7 @@ public class DrawerActivity extends BaseActivity
     public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_content, fragment)
-                .addToBackStack("tag").commit();
+                .addToBackStack(String.valueOf(fragmentId)).commit();
         if (fragmentId == PROFILE_ID) mShowMenu = true;
         else if (fragmentId == DETAILS_ID) {
             mShowMenu = true;
@@ -176,8 +171,7 @@ public class DrawerActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (mShowMenuDetails)getMenuInflater().inflate(R.menu.details, menu);
-        else getMenuInflater().inflate(R.menu.drawer, menu);
+        getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
