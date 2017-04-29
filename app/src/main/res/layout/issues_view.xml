@@ -88,7 +88,7 @@
           android:orientation="horizontal"
           >
         <TextView
-            android:id="@+id/title2"
+            android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Hardcoded desc"
@@ -102,20 +102,20 @@
             android:layout_marginBottom="@dimen/album_title_padding"
             fontPath="fonts/Nunito-Italic.ttf"/>
         <TextView
-            android:id="@+id/title3"
+            android:id="@+id/distance"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="200m"
-            android:textSize="12sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_weight="4"
-            android:gravity="end"
-            android:layout_marginRight="@dimen/album_title_padding"
-            android:layout_marginEnd="@dimen/album_title_padding"
-            android:layout_marginTop="@dimen/album_title_padding"
             android:layout_marginBottom="@dimen/album_title_padding"
+            android:layout_marginEnd="@dimen/album_title_padding"
+            android:layout_marginRight="@dimen/album_title_padding"
+            android:layout_marginTop="@dimen/album_title_padding"
+            android:layout_weight="4"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:text="200m"
             android:textColor="#000000"
+            android:textSize="12sp"
             />
       </LinearLayout>
 

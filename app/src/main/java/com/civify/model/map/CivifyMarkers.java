@@ -11,10 +11,9 @@ import com.google.android.gms.maps.model.Marker;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListener {
+public class CivifyMarkers implements OnMarkerClickListener {
 
     public static final String TAG = CivifyMarkers.class.getSimpleName();
 
@@ -29,7 +28,7 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
         mMap = map;
         map.getGoogleMap().setOnMarkerClickListener(this);
         if (!mMarkers.isEmpty()) {
-            for (IssueMarker marker : this) marker.attachToMap(map.getGoogleMap());
+            for (IssueMarker marker : mMarkers.values()) marker.attachToMap(map.getGoogleMap());
         }
     }
 
@@ -48,7 +47,7 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
 
     public Set<IssueMarker> get(@NonNull LatLng position) {
         Set<IssueMarker> atSamePosition = new HashSet<>();
-        for (IssueMarker marker : this) {
+        for (IssueMarker marker : mMarkers.values()) {
             if (marker.getPosition().equals(position)) atSamePosition.add(marker);
         }
         return atSamePosition;
@@ -71,11 +70,9 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
     }
 
     public void clear() {
-        Iterator<IssueMarker> it = iterator();
-        while (it.hasNext()) {
-            it.next();
-            it.remove();
-        }
+        Collection<IssueMarker> markers = mMarkers.values();
+        for (IssueMarker marker : markers) marker.remove();
+        markers.clear();
     }
 
     public boolean isEmpty() {
@@ -94,7 +91,7 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
             IssueMarker issueMarker = mMarkers.get(idify(tag));
             if (issueMarker != null) {
                 Log.v(TAG, "Marker " + tag + " clicked.");
-                issueMarker.showIssueDetails();
+                issueMarker.getIssue().showIssueDetails();
                 return true;
             }
         }
@@ -107,41 +104,10 @@ public class CivifyMarkers implements Iterable<IssueMarker>, OnMarkerClickListen
     }
 
     @Override
-    public Iterator<IssueMarker> iterator() {
-        return new CivifyIssueMarkerIterator(mMarkers.values());
-    }
-
-    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("{\n");
-        for (IssueMarker marker : this) builder.append(marker).append('\n');
+        for (IssueMarker marker : mMarkers.values()) builder.append(marker).append('\n');
         return builder.append('}').toString();
-    }
-
-    private static final class CivifyIssueMarkerIterator implements Iterator<IssueMarker> {
-
-        private final Iterator<IssueMarker> mOriginal;
-        private IssueMarker mLast;
-
-        private CivifyIssueMarkerIterator(@NonNull Collection<IssueMarker> issueMarkers) {
-            mOriginal = issueMarkers.iterator();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return mOriginal.hasNext();
-        }
-
-        @Override
-        public IssueMarker next() {
-            mLast = mOriginal.next();
-            return mLast;
-        }
-
-        @Override
-        public void remove() {
-            mLast.remove();
-        }
     }
 
 }

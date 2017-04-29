@@ -149,44 +149,47 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void refreshIssues() throws MapNotLoadedException {
-        refreshIssues(null);
-    }
-
-    public void refreshIssues(@Nullable final ListIssuesSimpleCallback callback)
-            throws MapNotLoadedException {
         if (!isMapLoaded()) throw new MapNotLoadedException();
         mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
-                    @Override
-                    public void onSuccess(List<Issue> issues) {
-                        mMarkers.clear();
-                        int i = 0, visibleCount = 0, overlappedCount = 0;
-                        Log.v(TAG, "Issues: " + issues.size() + '\n');
-                        for (Issue issue : issues) {
-                            Log.v(TAG, "Issue[" + i + "] " + issue + '\n');
-                            Set<IssueMarker> overlapped = mMarkers.get(
-                                    LocationAdapter.getLatLng(
-                                            issue.getLatitude(), issue.getLongitude()));
-                            if (overlapped.isEmpty()) visibleCount++;
-                            else {
-                                Log.v(TAG, "Issue overlapped");
-                                overlappedCount++;
-                            }
-                            mMarkers.add(new IssueMarker(issue, CivifyMap.this));
-                            i++;
-                        }
-                        Log.v(TAG, "Overlapped: " + overlappedCount + ", Visible: " + visibleCount);
-                        if (callback != null) callback.onSuccess(issues);
-                    }
+            @Override
+            public void onSuccess(List<Issue> issues) {
+                try {
+                    setIssues(issues);
+                } catch (MapNotLoadedException e) {
+                    Log.wtf(TAG, e);
+                }
+            }
 
-                    @Override
-                    public void onFailure() {
-                        if (callback != null) callback.onFailure();
-                        else {
-                            ConfirmDialog.show(getContext(), "Error",
-                                    "Issues cannot be retrieved, please try again later.");
-                        }
-                    }
-                });
+            @Override
+            public void onFailure() {
+                ConfirmDialog.show(getContext(), "Error",
+                        "Issues cannot be retrieved, please try again later.");
+            }
+        });
+    }
+
+    public void setIssues(List<Issue> issues) throws MapNotLoadedException {
+        mMarkers.clear();
+        addAndLog(issues);
+    }
+
+    private void addAndLog(List<Issue> issues) {
+        int i = 0, visibleCount = 0, overlappedCount = 0;
+        Log.v(TAG, "Issues: " + issues.size() + '\n');
+        for (Issue issue : issues) {
+            Log.v(TAG, "Issue[" + i + "] " + issue + '\n');
+            Set<IssueMarker> overlapped = mMarkers.get(
+                    LocationAdapter.getLatLng(
+                            issue.getLatitude(), issue.getLongitude()));
+            if (overlapped.isEmpty()) visibleCount++;
+            else {
+                Log.v(TAG, "Issue overlapped");
+                overlappedCount++;
+            }
+            mMarkers.add(new IssueMarker(issue, CivifyMap.this));
+            i++;
+        }
+        Log.v(TAG, "Overlapped: " + overlappedCount + ", Visible: " + visibleCount);
     }
 
     public void addIssueMarker(@NonNull Issue issue) throws MapNotLoadedException {

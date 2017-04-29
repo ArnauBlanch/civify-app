@@ -67,6 +67,27 @@ public class IssueAdapter {
         });
     }
 
+    public void editIssue(String issueAuthToken, Issue issue, final IssueSimpleCallback callback) {
+        Call<Issue> call = mIssueService.editIssue(mAuthToken, issue, issueAuthToken);
+        call.enqueue(new Callback<Issue>() {
+
+            @Override
+            public void onResponse(Call<Issue> call, Response<Issue> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Issue> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
     public void getIssues(final ListIssuesSimpleCallback callback) {
         Call<List<Issue>> call = mIssueService.getIssues(mAuthToken);
         call.enqueue(new Callback<List<Issue>>() {
@@ -89,6 +110,26 @@ public class IssueAdapter {
 
     public void getIssue(String issueAuthToken, final IssueSimpleCallback callback) {
         Call<Issue> call = mIssueService.getIssue(mAuthToken, issueAuthToken);
+        call.enqueue(new Callback<Issue>() {
+
+            @Override
+            public void onResponse(Call<Issue> call, Response<Issue> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Issue> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void deleteIssue(String issueAuthToken, final IssueSimpleCallback callback) {
+        Call<Issue> call = mIssueService.deleteIssue(mAuthToken, issueAuthToken);
         call.enqueue(new Callback<Issue>() {
 
             @Override
