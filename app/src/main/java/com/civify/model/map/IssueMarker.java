@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.civify.activity.fragments.IssueDetailsFragment;
-import com.civify.adapter.GeocoderAdapter;
-import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.issue.Issue;
 import com.google.android.gms.maps.GoogleMap;
@@ -64,12 +62,6 @@ public class IssueMarker {
     @NonNull
     public Issue getIssue() {
         return mIssue;
-    }
-
-    public void getAddress(@NonNull LocalityCallback callback) {
-        GeocoderAdapter.getLocality(mMap.getContext(),
-                LocationAdapter.getLocation(getPosition()),
-                callback);
     }
 
     /** @return distance in meters between the current geolocated position and this marker. */
