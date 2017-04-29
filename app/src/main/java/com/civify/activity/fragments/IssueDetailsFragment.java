@@ -240,7 +240,7 @@ public class IssueDetailsFragment extends Fragment {
     private void addImageIssue() {
         Log.v(DEBUG, "Adding image issue in layout");
         ImageView imageIssue = (ImageView) mViewDetails.findViewById(R.id.eventView);
-        String url = ServiceGenerator.BASE_URL + mIssue.getPicture().getLargeUrl();
+        String url = ServiceGenerator.BASE_URL + mIssue.getPicture().getMedUrl();
         Glide.with(this).load(url).into(imageIssue);
     }
 
