@@ -33,8 +33,7 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
     public IssuesViewAdapter(Context context, List<Issue> issueList) {
         this.mContext = context;
         this.mIssueList = issueList;
-        Locale.setDefault(Locale.ENGLISH);
-        mPrettyTime = new PrettyTime();
+        mPrettyTime = new PrettyTime(Locale.ENGLISH);
     }
 
     @Override
