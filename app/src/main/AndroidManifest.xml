@@ -56,9 +56,13 @@ c
       <activity android:name=".activity.LoginActivity"
           android:theme="@style/AppTheme.NoActionBar"
           android:screenOrientation="portrait"/>
-      <activity android:name=".activity.registration.RegistrationActivity" />
-      <activity android:name=".activity.createissue.CreateIssueActivity"
-          android:theme="@style/AppTheme.NoActionBar" />
+      <activity
+          android:name=".activity.registration.RegistrationActivity"
+          android:screenOrientation="portrait"  />
+      <activity
+          android:name=".activity.createissue.CreateIssueActivity"
+          android:theme="@style/AppTheme.NoActionBar"
+          android:screenOrientation="portrait"/>
       <activity android:name=".activity.EditIssueActivity"
           android:theme="@style/AppTheme.NoActionBar"
           android:screenOrientation="portrait"/>
