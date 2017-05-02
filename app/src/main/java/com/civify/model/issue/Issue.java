@@ -250,12 +250,24 @@ public class Issue implements Serializable {
         return mConfirmedByAuthUser;
     }
 
+    public void setConfirmedByAuthUser(boolean confirmedByAuthUser) {
+        mConfirmedByAuthUser = confirmedByAuthUser;
+    }
+
     public boolean getReportedByAuthUser() {
         return mReportedByAuthUser;
     }
 
+    public void setReportedByAuthUser(boolean reportedByAuthUser) {
+        mReportedByAuthUser = reportedByAuthUser;
+    }
+
     public boolean getResolvedByAuthUser() {
         return mResolvedByAuthUser;
+    }
+
+    public void setResolvedByAuthUser(boolean resolvedByAuthUser) {
+        mResolvedByAuthUser = resolvedByAuthUser;
     }
 
     public LatLng getPosition() {

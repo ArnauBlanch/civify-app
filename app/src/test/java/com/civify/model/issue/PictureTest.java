@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.security.Provider.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -78,19 +79,19 @@ public class PictureTest {
     @Test
     public void testPictureSmallUrl() {
         mPicture.setSmallUrl(SMALL_URL);
-        assertEquals(SMALL_URL, mPicture.getSmallUrl());
+        assertEquals(ServiceGenerator.BASE_URL + SMALL_URL, mPicture.getSmallUrl());
     }
 
     @Test
     public void testPictureMedUrl() {
         mPicture.setMedUrl(MED_URL);
-        assertEquals(MED_URL, mPicture.getMedUrl());
+        assertEquals(ServiceGenerator.BASE_URL + MED_URL, mPicture.getMedUrl());
     }
 
     @Test
     public void testPictureLargeUrl() {
         mPicture.setLargeUrl(LARGE_URL);
-        assertEquals(LARGE_URL, mPicture.getLargeUrl());
+        assertEquals(ServiceGenerator.BASE_URL + LARGE_URL, mPicture.getLargeUrl());
     }
 
     @Test

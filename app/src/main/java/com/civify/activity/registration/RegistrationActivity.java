@@ -94,6 +94,7 @@ public class RegistrationActivity
                 mLoginAdapter.login(username, password, new LoginFinishedCallback() {
                     @Override
                     public void onLoginSucceeded(User u) {
+                        finish();
                         startActivity(new Intent(getApplicationContext(),
                                 DrawerActivity.class));
                     }
