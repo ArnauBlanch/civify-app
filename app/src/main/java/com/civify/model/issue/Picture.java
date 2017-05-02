@@ -1,5 +1,6 @@
 package com.civify.model.issue;
 
+import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -38,6 +39,8 @@ public class Picture implements Serializable {
     @Expose(serialize = false)
     @SerializedName("large_url")
     private String mLargeUrl;
+
+    private String mBaseUrl;
 
     public Picture() {
 
@@ -82,7 +85,10 @@ public class Picture implements Serializable {
     }
 
     public String getSmallUrl() {
-        return mSmallUrl;
+        if (mBaseUrl != null) {
+            return mBaseUrl + mSmallUrl;
+        }
+        return ServiceGenerator.BASE_URL + mSmallUrl;
     }
 
     public void setSmallUrl(String smallUrl) {
@@ -90,7 +96,10 @@ public class Picture implements Serializable {
     }
 
     public String getMedUrl() {
-        return mMedUrl;
+        if (mBaseUrl != null) {
+            return mBaseUrl + mMedUrl;
+        }
+        return ServiceGenerator.BASE_URL + mMedUrl;
     }
 
     public void setMedUrl(String medUrl) {
@@ -98,7 +107,10 @@ public class Picture implements Serializable {
     }
 
     public String getLargeUrl() {
-        return mLargeUrl;
+        if (mBaseUrl != null) {
+            return mBaseUrl + mLargeUrl;
+        }
+        return ServiceGenerator.BASE_URL + mLargeUrl;
     }
 
     public void setLargeUrl(String largeUrl) {
@@ -111,5 +123,9 @@ public class Picture implements Serializable {
 
     public void setContent(String content) {
         mContent = content;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        mBaseUrl = baseUrl;
     }
 }
