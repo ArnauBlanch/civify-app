@@ -13,27 +13,24 @@ import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IssueAdapter {
-    static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
-    static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
-    static final String CONFIRMED_BY_USER_WITH_AUTH_TOKEN =
+    public static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
+    public static final String CONFIRMED_BY_USER_WITH_AUTH_TOKEN =
             "confirmed by User with auth token ";
-    static final String REPORTED_BY_USER_WITH_AUTH_TOKEN =
+    public static final String REPORTED_BY_USER_WITH_AUTH_TOKEN =
             "reported by User with auth token ";
-    static final String UN = " un";
-    static final String USER = "user";
-    static final String RESOLUTION_ADDED = "Resolution added";
-    static final String RESOLUTION_DELETED = "Resolution deleted";
+    public static final String UN = " un";
+    public static final String USER = "user";
+    public static final String RESOLUTION_ADDED = "Resolution added";
+    public static final String RESOLUTION_DELETED = "Resolution deleted";
+    static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -200,15 +197,6 @@ public class IssueAdapter {
         issueConfirmation(issueAuthToken, expMessage, callback);
     }
 
-    private String getMessageFromError(ResponseBody errorBody) {
-        try {
-            return new JsonParser().parse(errorBody.string()).getAsJsonObject().get("message")
-                    .getAsString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
     // Resolutions
 
     private void issueResolution(String issueAuthToken, final String expectedResponse,

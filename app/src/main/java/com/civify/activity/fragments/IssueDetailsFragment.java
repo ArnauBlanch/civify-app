@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,7 +37,6 @@ import com.civify.model.map.CivifyMap;
 import com.civify.model.map.CivifyMarkers;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
-import com.civify.utils.ServiceGenerator;
 import com.google.android.gms.maps.model.LatLng;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -240,7 +240,7 @@ public class IssueDetailsFragment extends Fragment {
     private void addImageIssue() {
         Log.v(DEBUG, "Adding image issue in layout");
         ImageView imageIssue = (ImageView) mViewDetails.findViewById(R.id.eventView);
-        String url = ServiceGenerator.BASE_URL + mIssue.getPicture().getMedUrl();
+        String url = mIssue.getPicture().getMedUrl();
         Glide.with(this).load(url).into(imageIssue);
     }
 
@@ -353,6 +353,13 @@ public class IssueDetailsFragment extends Fragment {
 
         if (issueUserToken.equals(userToken)) {
             button.setAlpha(DISABLED_ALPHA);
+            button.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(getView(), R.string.cant_confirm_own_issue, Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            });
         } else {
             if (mIssue.getConfirmedByAuthUser()) {
                 changeButtonStyle(button, IssueButton.UNCONFIRM);
@@ -372,6 +379,13 @@ public class IssueDetailsFragment extends Fragment {
 
         if (issueUserToken.equals(userToken)) {
             button.setAlpha(DISABLED_ALPHA);
+            button.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(getView(), R.string.cant_report_own_issue, Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            });
         } else {
             if (mIssue.getReportedByAuthUser()) {
                 changeButtonStyle(button, IssueButton.UNREPORT);
@@ -388,17 +402,13 @@ public class IssueDetailsFragment extends Fragment {
         String issueUserToken = mIssue.getUserAuthToken();
         String userToken = UserAdapter.getCurrentUser().getUserAuthToken();
 
-        if (issueUserToken.equals(userToken)) {
-            button.setAlpha(DISABLED_ALPHA);
-        } else {
-            if (mIssue.getResolvedByAuthUser()) {
-                changeButtonStyle(button, IssueButton.UNRESOLVE);
-            }
-            IssueButtonListener buttonListener =
-                    new IssueButtonListener(this, mViewDetails, mIssue,
-                            IssueButton.RESOLVE, IssueButton.UNRESOLVE);
-            button.setOnClickListener(buttonListener);
+        if (mIssue.getResolvedByAuthUser()) {
+            changeButtonStyle(button, IssueButton.UNRESOLVE);
         }
+        IssueButtonListener buttonListener =
+                new IssueButtonListener(this, mViewDetails, mIssue,
+                        IssueButton.RESOLVE, IssueButton.UNRESOLVE);
+        button.setOnClickListener(buttonListener);
     }
 
     public void changeButtonStyle(AppCompatButton button, IssueButton issueButton) {
