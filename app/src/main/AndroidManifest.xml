@@ -9,8 +9,7 @@
   <uses-feature android:name="android.hardware.camera" />
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.INTERNET"/>
-
+c
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
@@ -57,9 +56,13 @@
       <activity android:name=".activity.LoginActivity"
           android:theme="@style/AppTheme.NoActionBar"
           android:screenOrientation="portrait"/>
-      <activity android:name=".activity.registration.RegistrationActivity" />
-      <activity android:name=".activity.createissue.CreateIssueActivity"
-          android:theme="@style/AppTheme.NoActionBar" />
+      <activity
+          android:name=".activity.registration.RegistrationActivity"
+          android:screenOrientation="portrait"  />
+      <activity
+          android:name=".activity.createissue.CreateIssueActivity"
+          android:theme="@style/AppTheme.NoActionBar"
+          android:screenOrientation="portrait"/>
       <activity android:name=".activity.EditIssueActivity"
           android:theme="@style/AppTheme.NoActionBar"
           android:screenOrientation="portrait"/>

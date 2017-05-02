@@ -46,6 +46,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private Runnable mOnMapReadyListener;
     private final LocationAdapter mLocationAdapter;
     private final IssueAdapter mIssueAdapter;
+    private Location mMockLocation;
 
     private CivifyMap(@NonNull DrawerActivity context) {
         this(new LocationAdapter(context), AdapterFactory.getInstance().getIssueAdapter(context));
@@ -234,7 +235,14 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public Location getCurrentLocation() {
+        if (mMockLocation != null) {
+            return mMockLocation;
+        }
         return mLocationAdapter.getLastLocation();
+    }
+
+    public void setMockLocation(Location mockLocation) {
+        mMockLocation = mockLocation;
     }
 
     public LatLng getCurrentCameraPosition() {

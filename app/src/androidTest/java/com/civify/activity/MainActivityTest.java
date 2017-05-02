@@ -1,5 +1,6 @@
 package com.civify.activity;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -20,11 +21,13 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.civify.R;
+import com.civify.utils.AdapterFactory;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +39,12 @@ public class MainActivityTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule =
             new ActivityTestRule<>(MainActivity.class);
+
+    @Before
+    public void setUp() {
+        AdapterFactory.getInstance().getLoginAdapter(getInstrumentation().getTargetContext())
+                .logout();
+    }
 
     @Test
     public void mainActivityTest() {
@@ -67,9 +76,7 @@ public class MainActivityTest {
                                 childAtPosition(withId(R.id.mainLayout), 3)), 0), isDisplayed()));
         textView.check(matches(withText("Sign in with:")));
 
-        ViewInteraction button3 = onView(allOf(withId(R.id.buttonGoogle), childAtPosition(
-                allOf(withId(R.id.networkButtonsLayout),
-                        childAtPosition(withId(R.id.networksLayout), 1)), 0), isDisplayed()));
+        ViewInteraction button3 = onView(allOf(withId(R.id.buttonGoogle), isDisplayed()));
         button3.check(matches(isDisplayed()));
 
         ViewInteraction button4 = onView(allOf(withId(R.id.buttonTwitter), childAtPosition(
