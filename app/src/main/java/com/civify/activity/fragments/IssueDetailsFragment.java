@@ -163,11 +163,7 @@ public class IssueDetailsFragment extends Fragment {
     private void addTime() {
         Log.v(DEBUG, "Adding time in layout");
         TextView timeIssue = (TextView) mViewDetails.findViewById(R.id.sinceText);
-        Date dateIssue = mIssue.getCreatedAt();
-        if (mIssue.getUpdatedAt() != null) {
-            dateIssue = mIssue.getUpdatedAt();
-        }
-        timeIssue.setText(new PrettyTime().format(dateIssue));
+        timeIssue.setText(new PrettyTime().format(mIssue.getCreatedAt()));
     }
 
     private void addDistance() {
