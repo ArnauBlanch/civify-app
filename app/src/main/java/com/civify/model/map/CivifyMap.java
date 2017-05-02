@@ -24,6 +24,9 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -171,6 +174,15 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     public void setIssues(List<Issue> issues) throws MapNotLoadedException {
         mMarkers.clear();
         addAndLog(issues);
+    }
+
+    public List<Issue> getIssues() throws MapNotLoadedException {
+        Collection<IssueMarker> markers = mMarkers.getAll();
+        List<Issue> currentIssues = new LinkedList<>();
+        for (IssueMarker marker : markers) {
+            currentIssues.add(marker.getIssue());
+        }
+        return currentIssues;
     }
 
     private void addAndLog(List<Issue> issues) {
