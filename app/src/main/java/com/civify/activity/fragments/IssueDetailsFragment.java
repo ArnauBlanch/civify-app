@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -61,7 +60,6 @@ public class IssueDetailsFragment extends BasicFragment {
     private View mViewDetails;
 
     public IssueDetailsFragment() {
-        mId = DrawerActivity.DETAILS_ID;
     }
 
     public static IssueDetailsFragment newInstance(@NonNull Issue issue) {
@@ -70,6 +68,11 @@ public class IssueDetailsFragment extends BasicFragment {
         IssueDetailsFragment fragment = new IssueDetailsFragment();
         fragment.setArguments(data);
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.DETAILS_ID;
     }
 
     @Override

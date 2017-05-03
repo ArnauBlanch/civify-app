@@ -17,7 +17,6 @@ import com.civify.activity.DrawerActivity;
 public class AchievementsFragment extends BasicFragment {
 
     public AchievementsFragment() {
-        mId = DrawerActivity.ACHIEVEMENTS_ID;
     }
 
     public static AchievementsFragment newInstance() {
@@ -25,6 +24,11 @@ public class AchievementsFragment extends BasicFragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.ACHIEVEMENTS_ID;
     }
 
     @Override

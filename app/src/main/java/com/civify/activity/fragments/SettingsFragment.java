@@ -17,7 +17,6 @@ import com.civify.activity.DrawerActivity;
 public class SettingsFragment extends BasicFragment {
 
     public SettingsFragment() {
-        mId = DrawerActivity.SETTINGS_ID;
     }
 
     /**
@@ -31,6 +30,11 @@ public class SettingsFragment extends BasicFragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.SETTINGS_ID;
     }
 
     @Override
