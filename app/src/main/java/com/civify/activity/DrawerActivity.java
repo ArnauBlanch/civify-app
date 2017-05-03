@@ -5,10 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +29,8 @@ import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.util.Stack;
+
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,6 +46,8 @@ public class DrawerActivity extends BaseActivity
     private static final int COINS = 432;
     private static final int EXPERIENCE = 50;
     private static final int LEVEL = 3;
+
+    private Stack<Fragment> mFragmentStack;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -83,6 +89,8 @@ public class DrawerActivity extends BaseActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         toolbar.setTitle(R.string.app_name);
 
+        mFragmentStack = new Stack<Fragment>();
+
         NavigateFragment navigateFragment = NavigateFragment.newInstance();
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
@@ -99,9 +107,18 @@ public class DrawerActivity extends BaseActivity
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-        } else super.onBackPressed();
+        } else if (mFragmentStack.size() > 1) {
+            Log.d("DrawerActivity", "Stack is <= 1");
+            FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            mFragmentStack.lastElement().onPause();
+            fragmentTransaction.remove(mFragmentStack.pop());
+            mFragmentStack.lastElement().onResume();
+            fragmentTransaction.show(mFragmentStack.lastElement());
+            fragmentTransaction.commit();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /*
@@ -154,10 +171,23 @@ public class DrawerActivity extends BaseActivity
 
     public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame_content, fragment)
-                .addToBackStack(String.valueOf(fragmentId)).commit();
-        if (fragmentId == PROFILE_ID) mShowMenu = true;
-        else if (fragmentId == DETAILS_ID) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //fragmentTransaction
+        //        .replace(R.id.frame_content, fragment)
+        //        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        //        .addToBackStack(String.valueOf(count)).commit();
+
+        fragmentTransaction.add(R.id.frame_content, fragment);
+        if (!mFragmentStack.empty()) {
+            mFragmentStack.lastElement().onPause();
+            fragmentTransaction.hide(mFragmentStack.lastElement());
+        }
+        mFragmentStack.push(fragment);
+        fragmentTransaction.commit();
+
+        if (fragmentId == PROFILE_ID) {
+            mShowMenu = true;
+        } else if (fragmentId == DETAILS_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
         } else {
