@@ -420,6 +420,9 @@ public class IssueDetailsFragment extends Fragment {
     public void launchEditActivity() {
         DrawerActivity drawerActivity = (DrawerActivity) getActivity();
         Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
+        Bundle data = new Bundle();
+        data.putSerializable(TAG_ISSUE, mIssue);
+        intent.putExtra(TAG_ISSUE, data);
         drawerActivity.startActivity(intent);
     }
 }

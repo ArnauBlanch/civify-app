@@ -82,7 +82,7 @@ public class WallFragment extends Fragment {
 
             @Override
             public void onFailure() {
-                // TODO: do something
+                // TUDO: do something
             }
         });
     }
