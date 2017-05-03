@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
@@ -26,15 +27,14 @@ import java.util.List;
  * Use the {@link WallFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WallFragment extends Fragment {
+public class WallFragment extends BasicFragment {
 
     private IssueAdapter mIssueAdapter;
     private IssuesViewFragment mIssuesViewFragment;
     private ProgressBar mProgressBar;
-    private String mTitle;
 
     public WallFragment() {
-        // Required empty public constructor
+        mId = DrawerActivity.WALL_ID;
     }
 
     public static WallFragment newInstance() {
@@ -44,7 +44,6 @@ public class WallFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTitle = getResources().getString(R.string.wall_title);
     }
 
     @Override
@@ -52,9 +51,6 @@ public class WallFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
-
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(mTitle);
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_wall);
         return view;

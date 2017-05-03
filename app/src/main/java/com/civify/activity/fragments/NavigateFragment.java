@@ -19,10 +19,10 @@ import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
 
-public class NavigateFragment extends Fragment {
+public class NavigateFragment extends BasicFragment {
 
     public NavigateFragment() {
-        // Required empty public constructor
+        mId = DrawerActivity.NAVIGATE_ID;
     }
 
     public static NavigateFragment newInstance() {
@@ -33,7 +33,7 @@ public class NavigateFragment extends Fragment {
         CivifyMap.setContext((DrawerActivity) getActivity());
         Fragment mapFragment = CivifyMap.getInstance().getMapFragment();
         CivifyMap.getInstance().enable();
-        getFragmentManager()
+        getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.map_fragment_placeholder, mapFragment)
                 .commit();
@@ -82,9 +82,6 @@ public class NavigateFragment extends Fragment {
         View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
 
         setMap();
-
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Map");
 
         FloatingActionButton fabLocation = (FloatingActionButton)
                 mapView.findViewById(R.id.fab_location);
