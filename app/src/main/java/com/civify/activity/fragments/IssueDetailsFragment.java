@@ -40,8 +40,6 @@ import com.civify.utils.AdapterFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.util.Date;
-
 import org.ocpsoft.prettytime.PrettyTime;
 
 public class IssueDetailsFragment extends Fragment {
