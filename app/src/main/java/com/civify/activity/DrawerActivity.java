@@ -42,6 +42,8 @@ public class DrawerActivity extends BaseActivity
     private static final int COINS = 432;
     private static final int EXPERIENCE = 50;
     private static final int LEVEL = 3;
+    private static final int SHOW_AS_ACTION_IF_ROOM = 1;
+    private static final int SHOW_AS_ACTION_NEVER = 0;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -172,9 +174,17 @@ public class DrawerActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+        int noIcona = 0;
+        if (mShowMenu) {
+            if (!mShowMenuDetails) noIcona = SHOW_AS_ACTION_NEVER;
+            else noIcona = SHOW_AS_ACTION_IF_ROOM;
+        }
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
+            if (mShowMenu) {
+                menu.getItem(i).setShowAsAction(noIcona);
+            }
         }
 
         return true;
