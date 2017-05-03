@@ -1,5 +1,6 @@
 package com.civify.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -15,9 +16,12 @@ import com.civify.activity.createissue.CameraGalleryActivity;
 import com.civify.activity.createissue.CategorySpinnerAdapter;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Category;
+import com.civify.model.issue.Issue;
 import com.civify.utils.AdapterFactory;
 
 public class EditIssueActivity extends CameraGalleryActivity {
+
+    private static final String TAG_ISSUE = "issue";
 
     private EditText mIssuename;
     private RadioGroup mPosesrisk;
@@ -25,6 +29,7 @@ public class EditIssueActivity extends CameraGalleryActivity {
     private AppCompatButton mSave;
     private Bitmap mImageBitmap;
     private IssueAdapter mIssueAdapter;
+    private Issue mIssue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,9 @@ public class EditIssueActivity extends CameraGalleryActivity {
         categorySpinner.setAdapter(new CategorySpinnerAdapter(getApplicationContext(),
                 R.layout.text_and_icon_spinner_tem));
         categorySpinner.setSelection(categorySpinner.getCount());
+        Intent intent = getIntent();
+        Bundle data = intent.getBundleExtra(TAG_ISSUE);
+        mIssue = (Issue) data.getSerializable(TAG_ISSUE);
     }
 
     public void categoryButtonListener(View v) {
