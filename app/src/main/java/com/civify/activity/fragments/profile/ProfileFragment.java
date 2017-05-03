@@ -3,9 +3,7 @@ package com.civify.activity.fragments.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,12 +26,16 @@ public class ProfileFragment extends BasicFragment {
     private FragmentTabHost mTabHost;
 
     public ProfileFragment() {
-        mId = DrawerActivity.PROFILE_ID;
     }
 
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.PROFILE_ID;
     }
 
     @Override

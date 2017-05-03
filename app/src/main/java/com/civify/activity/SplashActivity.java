@@ -4,14 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.civify.R;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
 import com.civify.adapter.LoginFinishedCallback;
 import com.civify.model.User;
-import com.civify.model.map.CivifyMap;
 import com.civify.utils.AdapterFactory;
-import com.google.android.gms.maps.GoogleMap;
 
 import java.util.Timer;
 import java.util.TimerTask;

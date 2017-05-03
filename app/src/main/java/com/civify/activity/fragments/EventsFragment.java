@@ -17,7 +17,6 @@ import com.civify.activity.DrawerActivity;
 public class EventsFragment extends BasicFragment {
 
     public EventsFragment() {
-        mId = DrawerActivity.EVENTS_ID;
     }
 
     /**
@@ -31,6 +30,11 @@ public class EventsFragment extends BasicFragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.EVENTS_ID;
     }
 
     @Override
