@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.activity.fragments.AchievementsFragment;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.RewardsFragment;
@@ -34,14 +34,15 @@ import java.util.Stack;
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int NAVIGATE_ID = 0;
-    private static final int WALL_ID = 1;
-    private static final int PROFILE_ID = 2;
-    private static final int REWARDS_ID = 3;
-    private static final int ACHIEVEMENTS_ID = 4;
-    private static final int EVENTS_ID = 5;
-    private static final int SETTINGS_ID = 6;
-    private static final int DETAILS_ID = 7;
+    public static final int UNDEFINED_ID = -1;
+    public static final int NAVIGATE_ID = 0;
+    public static final int WALL_ID = 1;
+    public static final int PROFILE_ID = 2;
+    public static final int REWARDS_ID = 3;
+    public static final int ACHIEVEMENTS_ID = 4;
+    public static final int EVENTS_ID = 5;
+    public static final int SETTINGS_ID = 6;
+    public static final int DETAILS_ID = 7;
 
     private static final int COINS = 432;
     private static final int EXPERIENCE = 50;
@@ -51,19 +52,12 @@ public class DrawerActivity extends BaseActivity
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private Toolbar mToolbar;
     //private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
     private User mCurrentUser;
-
-    public DrawerLayout getDrawerLayout() {
-        return mDrawerLayout;
-    }
-
-    public NavigationView getNavigationView() {
-        return mNavigationView;
-    }
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -74,22 +68,22 @@ public class DrawerActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle(getResources().getString(R.string.navigate_title));
+        setSupportActionBar(mToolbar);
         //mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
         mShowMenu = false;
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-        toolbar.setTitle(R.string.app_name);
 
-        mFragmentStack = new Stack<Fragment>();
+        mFragmentStack = new Stack<>();
 
         NavigateFragment navigateFragment = NavigateFragment.newInstance();
         setFragment(navigateFragment, NAVIGATE_ID);
@@ -113,8 +107,13 @@ public class DrawerActivity extends BaseActivity
             mFragmentStack.lastElement().onPause();
             fragmentTransaction.remove(mFragmentStack.pop());
             mFragmentStack.lastElement().onResume();
-            fragmentTransaction.show(mFragmentStack.lastElement());
+            BasicFragment restoredFragment = (BasicFragment) mFragmentStack.lastElement();
+            fragmentTransaction.show(restoredFragment);
             fragmentTransaction.commit();
+            mCurrentFragment = restoredFragment.getFragmentId();
+            setToolbarTitle();
+            updateMenu();
+            updateDrawerMenu();
         } else {
             super.onBackPressed();
         }
@@ -180,13 +179,22 @@ public class DrawerActivity extends BaseActivity
         if (!mFragmentStack.empty()) {
             mFragmentStack.lastElement().onPause();
             fragmentTransaction.hide(mFragmentStack.lastElement());
+            if (mCurrentFragment == fragmentId) mFragmentStack.pop();
         }
         mFragmentStack.push(fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
 
-        if (fragmentId == PROFILE_ID) {
+        mCurrentFragment = fragmentId;
+        updateMenu();
+        setToolbarTitle();
+    }
+
+    private void updateMenu() {
+        if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
-        } else if (fragmentId == DETAILS_ID) {
+        } else if (mCurrentFragment == DETAILS_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
         } else {
@@ -194,7 +202,6 @@ public class DrawerActivity extends BaseActivity
             mShowMenuDetails = false;
         }
         invalidateOptionsMenu();
-        mCurrentFragment = fragmentId;
     }
 
     @Override
@@ -238,5 +245,44 @@ public class DrawerActivity extends BaseActivity
                 (CircularImageView) headerView.findViewById(R.id.header_image);
         //profileImage.setImageBitmap(img); // bitmap
         //profileImage.setImageIcon(img); // icon
+    }
+
+    private void setToolbarTitle() {
+        String title;
+        switch (mCurrentFragment) {
+            case NAVIGATE_ID:
+                title = getResources().getString(R.string.navigate_title);
+                break;
+            case WALL_ID:
+                title = getResources().getString(R.string.wall_title);
+                break;
+            case PROFILE_ID:
+                title = getResources().getString(R.string.profile_title);
+                break;
+            case REWARDS_ID:
+                title = getResources().getString(R.string.rewards_title);
+                break;
+            case ACHIEVEMENTS_ID:
+                title = getResources().getString(R.string.achievements_title);
+                break;
+            case EVENTS_ID:
+                title = getResources().getString(R.string.events_title);
+                break;
+            case SETTINGS_ID:
+                title = getResources().getString(R.string.settings_title);
+                break;
+            default:
+                title = getResources().getString(R.string.unspecified_title);
+                break;
+        }
+        mToolbar.setTitle(title);
+    }
+
+    private void updateDrawerMenu() {
+        Menu menu = mNavigationView.getMenu();
+        for (int i = 0; i < menu.size(); ++i) {
+            menu.getItem(i).setChecked(false);
+        }
+        menu.getItem(mCurrentFragment).setChecked(true);
     }
 }

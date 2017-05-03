@@ -7,16 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends BasicFragment {
 
     public SettingsFragment() {
-        // Required empty public constructor
+        mId = DrawerActivity.SETTINGS_ID;
     }
 
     /**

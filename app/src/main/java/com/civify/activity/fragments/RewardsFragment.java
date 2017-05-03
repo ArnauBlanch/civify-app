@@ -7,11 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 
-public class RewardsFragment extends Fragment {
+public class RewardsFragment extends BasicFragment {
 
     public RewardsFragment() {
-        // Required empty public constructor
+        mId = DrawerActivity.REWARDS_ID;
     }
 
     /**

@@ -26,8 +26,6 @@ public class SplashActivity extends BaseActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_splash);
-
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -37,18 +35,14 @@ public class SplashActivity extends BaseActivity {
                 loginAdapter.isLogged(new LoginFinishedCallback() {
                     @Override
                     public void onLoginSucceeded(User u) {
-                        Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
-                        intent.setFlags(
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent intent = new Intent(SplashActivity.this, DrawerActivity.class);
                         startActivity(intent);
                         finish();
                     }
 
                     @Override
                     public void onLoginFailed(LoginError t) {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.setFlags(
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     }
