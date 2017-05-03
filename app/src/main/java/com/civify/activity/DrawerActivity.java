@@ -104,13 +104,28 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            mFragmentStack.lastElement().onPause();
-            fragmentTransaction.remove(mFragmentStack.pop());
-            mFragmentStack.lastElement().onResume();
-            BasicFragment restoredFragment = (BasicFragment) mFragmentStack.lastElement();
-            fragmentTransaction.show(restoredFragment);
-            fragmentTransaction.commit();
-            mCurrentFragment = restoredFragment.getFragmentId();
+            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ID) {
+                BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
+                fragmentTransaction.remove(fragment);
+                while (fragment.getFragmentId() != NAVIGATE_ID) {
+                    fragment = (BasicFragment) mFragmentStack.pop();
+                }
+                mFragmentStack.clear();
+                mFragmentStack.add(fragment);
+                fragment.onResume();
+                fragmentTransaction
+                        .show(fragment)
+                        .commit();
+                mCurrentFragment = NAVIGATE_ID;
+            } else {
+                mFragmentStack.lastElement().onPause();
+                fragmentTransaction.remove(mFragmentStack.pop());
+                mFragmentStack.lastElement().onResume();
+                BasicFragment restoredFragment = (BasicFragment) mFragmentStack.lastElement();
+                fragmentTransaction.show(restoredFragment);
+                fragmentTransaction.commit();
+                mCurrentFragment = restoredFragment.getFragmentId();
+            }
             setToolbarTitle();
             updateMenu();
             updateDrawerMenu();
@@ -170,10 +185,6 @@ public class DrawerActivity extends BaseActivity
     public void setFragment(Fragment fragment, int fragmentId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentTransaction
-        //        .replace(R.id.frame_content, fragment)
-        //        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        //        .addToBackStack(String.valueOf(count)).commit();
 
         fragmentTransaction.add(R.id.frame_content, fragment);
         if (!mFragmentStack.empty()) {
@@ -182,9 +193,7 @@ public class DrawerActivity extends BaseActivity
             if (mCurrentFragment == fragmentId) mFragmentStack.pop();
         }
         mFragmentStack.push(fragment);
-        fragmentTransaction
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
 
         mCurrentFragment = fragmentId;
         updateMenu();
