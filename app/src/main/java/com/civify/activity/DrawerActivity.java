@@ -108,7 +108,6 @@ public class DrawerActivity extends BaseActivity
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else if (mFragmentStack.size() > 1) {
-            Log.d("DrawerActivity", "Stack is <= 1");
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             mFragmentStack.lastElement().onPause();
