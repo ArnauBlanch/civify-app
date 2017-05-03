@@ -44,7 +44,7 @@ import java.util.Date;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
-public class IssueDetailsFragment extends Fragment {
+public class IssueDetailsFragment extends BasicFragment {
 
     private static final String DEBUG = "debug-IssueDetails";
     private static final String TAG_ISSUE = "issue";
@@ -63,7 +63,7 @@ public class IssueDetailsFragment extends Fragment {
     private View mViewDetails;
 
     public IssueDetailsFragment() {
-        // Required empty public constructor
+        mId = DrawerActivity.DETAILS_ID;
     }
 
     public static IssueDetailsFragment newInstance(@NonNull Issue issue) {
@@ -237,7 +237,10 @@ public class IssueDetailsFragment extends Fragment {
         Log.v(DEBUG, "Adding image issue in layout");
         ImageView imageIssue = (ImageView) mViewDetails.findViewById(R.id.eventView);
         String url = mIssue.getPicture().getMedUrl();
-        Glide.with(this).load(url).into(imageIssue);
+        Glide.with(this)
+                .load(url)
+                .centerCrop()
+                .into(imageIssue);
     }
 
     private User buildFakeUser() {
