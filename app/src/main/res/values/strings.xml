@@ -132,13 +132,20 @@
   <string name="must_enter_a_description">You must enter a description</string>
   <string name="creating_new_issue">Creating new issue...</string>
   <string name="must_insert_description">You must enter a description</string>
-  <string name="profile_title">My profile</string>
 
   <string name="tab_label_issues">ISSUES</string>
   <string name="tab_label_badges">BADGES</string>
   <string name="tab_spec_issues">Issues</string>
   <string name="tab_spec_badges">Badges</string>
+
+  <string name="navigate_title">Navigate</string>
   <string name="wall_title">Wall</string>
+  <string name="profile_title">My profile</string>
+  <string name="rewards_title">Rewards</string>
+  <string name="achievements_title">Achievements</string>
+  <string name="events_title">Events</string>
+  <string name="settings_title">Settings</string>
+  <string name="details_title">Details</string>
 
   <string name="share">share</string>
   <string name="category">Category</string>
@@ -175,4 +182,5 @@
   <string name="cant_confirm_own_issue">You can\'t confirm your own issue</string>
   <string name="cant_report_own_issue">You can\'t report your own issue</string>
   <string name="cant_resolve_own_issue">You can\'t resolve your own issue</string>
+  <string name="unspecified_title">Unspecified title</string>
 </resources>
