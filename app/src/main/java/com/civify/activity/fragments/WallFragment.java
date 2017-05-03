@@ -1,6 +1,7 @@
 package com.civify.activity.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -60,7 +61,7 @@ public class WallFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         mIssueAdapter = adapterFactory.getIssueAdapter(getContext());
         mIssuesViewFragment = new IssuesViewFragment();
@@ -75,14 +76,20 @@ public class WallFragment extends Fragment {
                 mIssuesViewFragment.setIssuesList(filterIssues(issues));
                 try {
                     CivifyMap.getInstance().setIssues(issues);
-                } catch (MapNotLoadedException e) {
-                    Log.wtf(WallFragment.class.getSimpleName(), e);
+                } catch (MapNotLoadedException ignore) {
+                    // Don't refresh map
                 }
             }
 
             @Override
             public void onFailure() {
-                // TUDO: do something
+                mProgressBar.setVisibility(View.GONE);
+                try {
+                    mIssuesViewFragment.setIssuesList(CivifyMap.getInstance().getIssues());
+                } catch (MapNotLoadedException e) {
+                    Snackbar.make(view, "Couldn't retrieve updated issues.", Snackbar.LENGTH_LONG)
+                            .setAction(R.string.action, null).show();
+                }
             }
         });
     }
