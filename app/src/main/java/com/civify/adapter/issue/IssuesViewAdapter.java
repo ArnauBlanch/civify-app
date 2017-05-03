@@ -52,14 +52,17 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
         String numConfirms = '+' + Integer.toString(issue.getConfirmVotes());
         holder.getNumConfirms().setText(numConfirms);
         Category issueCategory = issue.getCategory();
-        Drawable drawable = mContext.getResources().getDrawable(issueCategory.getMarker());
+        Drawable drawable = mContext.getResources().getDrawable(issueCategory.getCircleIcon());
         CircularImageView categoryImage = holder.getCategory();
         categoryImage.setImageDrawable(drawable);
         holder.getDistance().setText(issue.getDistanceFromCurrentLocationAsString());
 
         // loading album cover using Glide library
-        String imageUrl = issue.getPicture().getMedUrl();
-        Glide.with(mContext).load(imageUrl).into(holder.getThumbnail());
+        String imageUrl = issue.getPicture().getSmallUrl();
+        Glide.with(mContext)
+                .load(imageUrl)
+                .centerCrop()
+                .into(holder.getThumbnail());
 
         OnClickListener showDetails = new OnClickListener() {
             @Override
