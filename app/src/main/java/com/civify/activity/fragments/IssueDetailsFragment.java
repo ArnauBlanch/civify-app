@@ -100,6 +100,7 @@ public class IssueDetailsFragment extends Fragment {
         mUserAdapter = AdapterFactory.getInstance().getUserAdapter(getActivity());
         setIssue();
         setPosition();
+        setShareOptions();
         updateIssue(mIssue.getIssueAuthToken());
         addUser();
 
@@ -271,6 +272,24 @@ public class IssueDetailsFragment extends Fragment {
         //profileImage.setImageIcon(img); // icon
 
         Log.v(DEBUG, "setUser finished");
+    }
+
+    private void setShareOptions() {
+        ImageView shareIcon = (ImageView) mViewDetails.findViewById(R.id.shareView);
+        TextView shareText = (TextView) mViewDetails.findViewById(R.id.shareText);
+        OnClickListener shareListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, mIssue.getTitle());
+                intent.putExtra(Intent.EXTRA_TEXT, "See this issue: " + mIssue.getTitle());
+                // TODO Add link to web issue details to EXTRA_TEXT message
+                getContext().startActivity(Intent.createChooser(intent, "Share"));
+            }
+        };
+        shareIcon.setOnClickListener(shareListener);
+        shareText.setOnClickListener(shareListener);
     }
 
     @Override
