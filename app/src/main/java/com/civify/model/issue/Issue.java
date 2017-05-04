@@ -5,6 +5,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 
+import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.map.CivifyMap;
@@ -296,7 +297,7 @@ public class Issue implements Serializable {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(this);
         if (issueDetailsFragment != null) {
             CivifyMap.getInstance().getContext()
-                    .setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+                    .setFragment(issueDetailsFragment, DrawerActivity.DETAILS_ID);
         }
     }
 

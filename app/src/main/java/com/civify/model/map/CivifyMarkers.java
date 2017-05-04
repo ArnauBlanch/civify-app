@@ -11,7 +11,6 @@ import com.google.android.gms.maps.model.Marker;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class CivifyMarkers implements OnMarkerClickListener {

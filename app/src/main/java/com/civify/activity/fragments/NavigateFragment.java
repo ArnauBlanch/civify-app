@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +18,25 @@ import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
 
-public class NavigateFragment extends Fragment {
+public class NavigateFragment extends BasicFragment {
 
     public NavigateFragment() {
-        // Required empty public constructor
     }
 
     public static NavigateFragment newInstance() {
         return new NavigateFragment();
     }
 
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.NAVIGATE_ID;
+    }
+
     private void setMap() {
         CivifyMap.setContext((DrawerActivity) getActivity());
         Fragment mapFragment = CivifyMap.getInstance().getMapFragment();
         CivifyMap.getInstance().enable();
-        getFragmentManager()
+        getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.map_fragment_placeholder, mapFragment)
                 .commit();
@@ -82,9 +85,6 @@ public class NavigateFragment extends Fragment {
         View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
 
         setMap();
-
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Map");
 
         FloatingActionButton fabLocation = (FloatingActionButton)
                 mapView.findViewById(R.id.fab_location);

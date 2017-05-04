@@ -1,17 +1,16 @@
 package com.civify.activity.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 
-public class RewardsFragment extends Fragment {
+public class RewardsFragment extends BasicFragment {
 
     public RewardsFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -25,6 +24,11 @@ public class RewardsFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.REWARDS_ID;
     }
 
     @Override

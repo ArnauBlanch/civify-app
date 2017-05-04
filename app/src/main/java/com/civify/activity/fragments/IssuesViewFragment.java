@@ -17,6 +17,7 @@ import com.civify.adapter.issue.IssuesViewAdapter;
 import com.civify.model.issue.Issue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class IssuesViewFragment extends Fragment {
@@ -32,7 +33,9 @@ public class IssuesViewFragment extends Fragment {
 
     public void setIssuesList(List<Issue> issuesList) {
         mIssuesList.clear();
-        mIssuesList.addAll(issuesList);
+        List<Issue> intermediateList = new ArrayList<>(issuesList);
+        Collections.reverse(intermediateList);
+        mIssuesList.addAll(intermediateList);
         mIssuesViewAdapter.notifyDataSetChanged();
     }
 
