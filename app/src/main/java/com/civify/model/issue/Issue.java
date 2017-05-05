@@ -2,6 +2,8 @@ package com.civify.model.issue;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.location.Location;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 
@@ -276,21 +278,28 @@ public class Issue implements Serializable {
     }
 
     /** @return distance in meters between the current geolocated position and this marker. */
-    public float getDistanceFromCurrentLocation() {
-        return CivifyMap.getInstance().getCurrentLocation().distanceTo(
-                LocationAdapter.getLocation(getPosition()));
+    @Nullable
+    public Float getDistanceFromCurrentLocation() {
+        Location currentLocation = CivifyMap.getInstance().getCurrentLocation();
+        if (currentLocation != null) {
+            return currentLocation.distanceTo(LocationAdapter.getLocation(getPosition()));
+        }
+        return null;
     }
 
     public String getDistanceFromCurrentLocationAsString() {
-        float distance = getDistanceFromCurrentLocation();
-        String distanceAsString = "";
-        if (distance > KILOMETER) {
-            int km = (int) Math.floor(distance / KILOMETER);
-            distanceAsString += km + "km ";
-            distance -= km * KILOMETER;
+        Float distance = getDistanceFromCurrentLocation();
+        if (distance != null) {
+            String distanceAsString = "";
+            if (distance > KILOMETER) {
+                int km = (int) Math.floor(distance / KILOMETER);
+                distanceAsString += km + "km ";
+                distance -= km * KILOMETER;
+            }
+            distanceAsString += Math.round(distance) + "m";
+            return distanceAsString.trim();
         }
-        distanceAsString += Math.round(distance) + "m";
-        return distanceAsString.trim();
+        return null;
     }
 
     public void showIssueDetails() {

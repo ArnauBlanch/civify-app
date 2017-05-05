@@ -55,7 +55,7 @@ public class IssueDetailsFragment extends BasicFragment {
     private IssueAdapter mIssueAdapter;
 
     private Issue mIssue;
-    private float mDistance;
+    private Float mDistance;
 
     private View mViewDetails;
 
@@ -95,7 +95,9 @@ public class IssueDetailsFragment extends BasicFragment {
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
         mIssue = (Issue) bundle.getSerializable(TAG_ISSUE);
-        mDistance = mIssue.getDistanceFromCurrentLocation();
+        if (mIssue != null) {
+            mDistance = mIssue.getDistanceFromCurrentLocation();
+        }
 
         mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(getActivity());
         mUserAdapter = AdapterFactory.getInstance().getUserAdapter(getActivity());
@@ -171,7 +173,12 @@ public class IssueDetailsFragment extends BasicFragment {
     private void addDistance() {
         Log.v(DEBUG, "Adding distance in layout");
         TextView distanceIssue = (TextView) mViewDetails.findViewById(R.id.distanceText);
-        distanceIssue.setText(mIssue.getDistanceFromCurrentLocationAsString());
+        String distanceString = mIssue.getDistanceFromCurrentLocationAsString();
+        if (distanceString != null) {
+            distanceIssue.setText(distanceString);
+        } else {
+            distanceIssue.setVisibility(View.GONE);
+        }
     }
 
     private void addStreetAsync(LatLng position) {
@@ -362,7 +369,7 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     private boolean isTooFarFromIssue() {
-        return mDistance > MIN_METERS_FROM_ISSUE;
+        return mDistance == null || mDistance > MIN_METERS_FROM_ISSUE;
     }
 
     private void setupConfirmButton() {
