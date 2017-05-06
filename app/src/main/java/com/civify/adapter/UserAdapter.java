@@ -31,6 +31,7 @@ public class UserAdapter {
     public static final String USER_NOT_CREATED = "User not created";
     public static final String USER_EXISTS = "User exists";
     public static final String USER_DOESNT_EXIST = "User not exists";
+    public static final String USER_NOT_FOUND = "User not found";
     public static final Pattern VALID_PASSWORD = Pattern.compile(
             "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9@&#$%]{8,40}$");
     public static final Pattern VALID_EMAIL = Pattern.compile(
@@ -200,6 +201,28 @@ public class UserAdapter {
         Call<User> call = mUserService.getUser(mAuthToken, userAuthToken);
         call.enqueue(new Callback<User>() {
 
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void addCoins(String userAuthToken, int coins, final UserSimpleCallback callback) {
+        JsonObject body = new JsonObject();
+        body.addProperty("coins", coins);
+
+        Call<User> call = mUserService.addCoins(mAuthToken, userAuthToken, body);
+        call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {

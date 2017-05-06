@@ -47,6 +47,9 @@ public class User implements Serializable {
 
     private int mLevel;
     private int mExperience;
+
+    @Expose(serialize = false)
+    @SerializedName("coins")
     private int mCoins;
 
     public User(@NonNull String username, @NonNull String name,
