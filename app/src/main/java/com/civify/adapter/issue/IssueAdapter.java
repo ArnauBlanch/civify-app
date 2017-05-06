@@ -125,14 +125,14 @@ public class IssueAdapter {
         });
     }
 
-    public void deleteIssue(String issueAuthToken, final IssueSimpleCallback callback) {
+    public void deleteIssue(String issueAuthToken, final SimpleCallback callback) {
         Call<Issue> call = mIssueService.deleteIssue(mAuthToken, issueAuthToken);
         call.enqueue(new Callback<Issue>() {
 
             @Override
             public void onResponse(Call<Issue> call, Response<Issue> response) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    callback.onSuccess(response.body());
+                if (response.code() == HttpURLConnection.HTTP_NO_CONTENT) {
+                    callback.onSuccess();
                 } else {
                     callback.onFailure();
                 }

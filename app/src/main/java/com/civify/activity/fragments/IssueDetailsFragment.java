@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +30,7 @@ import com.civify.activity.EditIssueActivity;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
@@ -39,8 +42,6 @@ import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.mikhaellopez.circularimageview.CircularImageView;
-
-import java.util.Date;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -86,6 +87,11 @@ public class IssueDetailsFragment extends Fragment {
         mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
         init();
         return mViewDetails;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void init() {
@@ -308,12 +314,12 @@ public class IssueDetailsFragment extends Fragment {
         }
     }
 
-    public IssueSimpleCallback getDeleteCallback() {
-        return new IssueSimpleCallback() {
+    public SimpleCallback getDeleteCallback() {
+        return new SimpleCallback() {
             @Override
-            public void onSuccess(Issue issue) {
+            public void onSuccess() {
                 CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
-                if (markers != null) markers.remove(issue.getIssueAuthToken());
+                if (markers != null) markers.remove(mIssue.getIssueAuthToken());
                 getActivity().onBackPressed();
                 Log.d(DEBUG, "issue borrada");
             }

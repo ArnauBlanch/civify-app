@@ -174,17 +174,14 @@ public class DrawerActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
-        int noIcona = 0;
-        if (mShowMenu) {
-            if (!mShowMenuDetails) noIcona = SHOW_AS_ACTION_NEVER;
-            else noIcona = SHOW_AS_ACTION_IF_ROOM;
+        int noIcona = SHOW_AS_ACTION_NEVER;
+        if (mShowMenuDetails) {
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
         }
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
-            if (mShowMenu) {
-                menu.getItem(i).setShowAsAction(noIcona);
-            }
+            menu.getItem(i).setShowAsAction(noIcona);
         }
 
         return true;
