@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginAdapterImpl;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.award.AwardAdapter;
+import com.civify.adapter.award.AwardAdapterImpl;
 import com.civify.adapter.issue.IssueAdapter;
 
 public class AdapterFactory {
@@ -14,6 +16,7 @@ public class AdapterFactory {
     private UserAdapter mUserAdapter;
     private LoginAdapter mLoginAdapter;
     private IssueAdapter mIssueAdapter;
+    private AwardAdapter mAwardAdapter;
 
     public static AdapterFactory getInstance() {
         if (sInstance == null) {
@@ -48,6 +51,13 @@ public class AdapterFactory {
             mIssueAdapter = new IssueAdapter(getSharedPreferences(context));
         }
         return mIssueAdapter;
+    }
+
+    public AwardAdapter getAwardAdapter(@NonNull Context context) {
+        if (mAwardAdapter == null) {
+            mAwardAdapter = new AwardAdapterImpl(getSharedPreferences(context));
+        }
+        return mAwardAdapter;
     }
 
     private SharedPreferences getSharedPreferences(Context context) {
