@@ -31,7 +31,6 @@ public final class ServiceGenerator {
         mRetrofit = mBuilder.build();
         mHttpClient = new OkHttpClient.Builder();
         mLogging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-
     }
 
     public static ServiceGenerator getInstance() {
