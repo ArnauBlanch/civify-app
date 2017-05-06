@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.IssueReward;
+import com.civify.model.Reward;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
@@ -82,7 +83,7 @@ public class IssueAdapterTest {
     @Test
     public void testValidCreateIssue() throws InterruptedException, ParseException {
         setUpIssue();
-        String jsonBody = mGson.toJson(mIssue);
+        String jsonBody = mGson.toJson(getIssueReward());
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_CREATED)
                 .setBody(jsonBody);
@@ -267,7 +268,8 @@ public class IssueAdapterTest {
                 responseIssue.getPicture().getFileName());
     }
 
-    @Test public void testInvalidGetIssue() throws ParseException {
+    @Test
+    public void testInvalidGetIssue() throws ParseException {
         setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
@@ -529,5 +531,9 @@ public class IssueAdapterTest {
                 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token", picture);
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
         mUser.setUserAuthToken("user-auth-token");
+    }
+
+    private IssueReward getIssueReward() {
+        return new IssueReward(mIssue, new Reward(1, 10));
     }
 }
