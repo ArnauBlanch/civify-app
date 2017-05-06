@@ -257,7 +257,7 @@ public class DrawerActivity extends BaseActivity
     }
 
     private void setToolbarTitle() {
-        String title;
+        final String title;
         switch (mCurrentFragment) {
             case NAVIGATE_ID:
                 title = getResources().getString(R.string.navigate_title);
@@ -284,7 +284,12 @@ public class DrawerActivity extends BaseActivity
                 title = getResources().getString(R.string.unspecified_title);
                 break;
         }
-        mToolbar.setTitle(title);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mToolbar.setTitle(title);
+            }
+        });
     }
 
     private void updateDrawerMenu() {
