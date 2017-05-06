@@ -16,10 +16,12 @@ import android.content.SharedPreferences;
 
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.model.IssueReward;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
 import com.civify.model.issue.Picture;
+import com.civify.service.issue.IssueRewardCallback;
 import com.civify.service.issue.IssueService;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.service.issue.ListIssuesSimpleCallback;
@@ -85,7 +87,7 @@ public class IssueAdapterTest {
                 .setResponseCode(HttpURLConnection.HTTP_CREATED)
                 .setBody(jsonBody);
         mMockWebServer.enqueue(mockResponse);
-        IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
+        IssueRewardCallback mockCallback = mock(IssueRewardCallback.class);
 
         UserAdapter.setCurrentUser(mUser);
 
@@ -96,7 +98,7 @@ public class IssueAdapterTest {
         JsonObject requestJson = new JsonParser().parse(json).getAsJsonObject();
 
         // Test mockCallback.onSuccess() is called
-        ArgumentCaptor<Issue> argument = forClass(Issue.class);
+        ArgumentCaptor<IssueReward> argument = forClass(IssueReward.class);
         verify(mockCallback, timeout(1000)).onSuccess(argument.capture());
 
         // Test request
@@ -121,7 +123,7 @@ public class IssueAdapterTest {
         assertEquals(mIssue.getPicture().getContent(), requestJson.get("picture")
                 .getAsJsonObject().get("content").getAsString());
 
-        Issue responseIssue = argument.getValue();
+        Issue responseIssue = argument.getValue().getIssue();
 
         // Test response body (issue)
         assertEquals(mIssue.getTitle(), responseIssue.getTitle());
@@ -150,7 +152,7 @@ public class IssueAdapterTest {
                 .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
                 .setBody(body.toString());
         mMockWebServer.enqueue(mockResponse);
-        IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
+        IssueRewardCallback mockCallback = mock(IssueRewardCallback.class);
 
         UserAdapter.setCurrentUser(mUser);
 
