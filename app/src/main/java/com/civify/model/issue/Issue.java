@@ -2,9 +2,12 @@ package com.civify.model.issue;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.location.Location;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 
+import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.map.CivifyMap;
@@ -20,7 +23,6 @@ public class Issue implements Serializable {
 
     private static final int BITMAP_COMPRESS_VALUE = 70;
     private static final int KILOMETER = 1000;
-    private static final int DETAILS_ID = 7;
 
     @Expose
     @SerializedName("title")
@@ -260,7 +262,6 @@ public class Issue implements Serializable {
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         mPicture = new Picture("issue-picture", "image/jpg",
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
-        int i = 0;
     }
 
     public boolean getConfirmedByAuthUser() {
@@ -292,28 +293,35 @@ public class Issue implements Serializable {
     }
 
     /** @return distance in meters between the current geolocated position and this marker. */
-    public float getDistanceFromCurrentLocation() {
-        return CivifyMap.getInstance().getCurrentLocation().distanceTo(
-                LocationAdapter.getLocation(getPosition()));
+    @Nullable
+    public Float getDistanceFromCurrentLocation() {
+        Location currentLocation = CivifyMap.getInstance().getCurrentLocation();
+        if (currentLocation != null) {
+            return currentLocation.distanceTo(LocationAdapter.getLocation(getPosition()));
+        }
+        return null;
     }
 
     public String getDistanceFromCurrentLocationAsString() {
-        float distance = getDistanceFromCurrentLocation();
-        String distanceAsString = "";
-        if (distance > KILOMETER) {
-            int km = (int) Math.floor(distance / KILOMETER);
-            distanceAsString += km + "km ";
-            distance -= km * KILOMETER;
+        Float distance = getDistanceFromCurrentLocation();
+        if (distance != null) {
+            String distanceAsString = "";
+            if (distance > KILOMETER) {
+                int km = (int) Math.floor(distance / KILOMETER);
+                distanceAsString += km + "km ";
+                distance -= km * KILOMETER;
+            }
+            distanceAsString += Math.round(distance) + "m";
+            return distanceAsString.trim();
         }
-        distanceAsString += Math.round(distance) + "m";
-        return distanceAsString.trim();
+        return null;
     }
 
     public void showIssueDetails() {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(this);
         if (issueDetailsFragment != null) {
             CivifyMap.getInstance().getContext()
-                    .setFragment(issueDetailsFragment, DETAILS_ID);
+                    .setFragment(issueDetailsFragment, DrawerActivity.DETAILS_ID);
         }
     }
 

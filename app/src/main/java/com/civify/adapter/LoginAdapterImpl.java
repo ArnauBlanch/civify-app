@@ -1,7 +1,6 @@
 package com.civify.adapter;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.civify.model.CivifyEmailCredentials;
 import com.civify.model.CivifyUsernameCredentials;
@@ -105,10 +104,8 @@ public class LoginAdapterImpl implements LoginAdapter {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
                     fetchToken(response.body());
-                    Log.e("LoginAdapter1", "LOGIN SUCCEDED");
                     callMeService();
                 } else {
-                    Log.e("LoginAdapter", "LOGIN FAILED");
                     mLoginFinishedCallback.onLoginFailed(generateException(response.code()));
                 }
             }
@@ -135,7 +132,6 @@ public class LoginAdapterImpl implements LoginAdapter {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
-                        Log.e("LoginAdapter11", "LOGIN SUCCEDED2");
                         mLoginFinishedCallback.onLoginSucceeded(response.body());
                         UserAdapter.setCurrentUser(response.body());
                     } else {

@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    style="@style/CustomTheme"
     android:background="#eaecee">
 
   <TextView

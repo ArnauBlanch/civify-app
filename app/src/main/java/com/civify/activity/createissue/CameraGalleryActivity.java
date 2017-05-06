@@ -98,6 +98,7 @@ public abstract class CameraGalleryActivity extends BaseActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
+                ex.printStackTrace();
                 showError(R.string.camera_error);
                 return;
             }
@@ -122,6 +123,7 @@ public abstract class CameraGalleryActivity extends BaseActivity {
         File storageDir = new File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
                 "Camera");
+        storageDir.mkdirs();
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         // Save a file: path for use with ACTION_VIEW intents
