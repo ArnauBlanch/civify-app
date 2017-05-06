@@ -34,7 +34,6 @@ import java.util.Stack;
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int UNDEFINED_ID = -1;
     public static final int NAVIGATE_ID = 0;
     public static final int WALL_ID = 1;
     public static final int PROFILE_ID = 2;
@@ -44,8 +43,6 @@ public class DrawerActivity extends BaseActivity
     public static final int SETTINGS_ID = 6;
     public static final int DETAILS_ID = 7;
 
-    private static final int COINS = 432;
-    private static final int EXPERIENCE = 50;
     private static final int LEVEL = 3;
 
     private Stack<Fragment> mFragmentStack;
@@ -92,8 +89,6 @@ public class DrawerActivity extends BaseActivity
         mCurrentUser = UserAdapter.getCurrentUser();
 
         mCurrentUser.setLevel(LEVEL);
-        mCurrentUser.setCoins(COINS);
-        mCurrentUser.setExperience(EXPERIENCE);
         setUserHeader(mCurrentUser);
     }
 
