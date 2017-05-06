@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.widget.RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     >
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
   <LinearLayout
       android:id="@+id/mainLayout"
-      android:layout_width="344dp"
-      android:layout_height="495dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       android:orientation="vertical"
       tools:layout_editor_absoluteY="8dp"
       tools:layout_editor_absoluteX="8dp"
@@ -18,8 +22,9 @@
     <ImageView
         android:id="@+id/eventView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="270dp"
         android:layout_weight="40"
+        android:background="#eee"
         />
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/savechangeButton"
@@ -60,7 +65,6 @@
             android:textSize="22sp"
             android:textColor="#000"
             android:maxLines="1"
-            android:maxLength="20"
             android:inputType="text"
             android:imeOptions="actionDone"
           />
@@ -159,7 +163,7 @@
         android:id="@+id/descriptionTex"
         android:layout_width="match_parent"
         android:hint="@string/description"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:maxLength="500"
         android:inputType="textMultiLine"
         />
@@ -178,4 +182,5 @@
 
     </LinearLayout>
   </LinearLayout>
-</android.widget.RelativeLayout>
+  </ScrollView>
+</LinearLayout>
