@@ -20,6 +20,7 @@ public class Issue implements Serializable {
 
     private static final int BITMAP_COMPRESS_VALUE = 70;
     private static final int KILOMETER = 1000;
+    private static final int DETAILS_ID = 7;
 
     @Expose
     @SerializedName("title")
@@ -296,7 +297,7 @@ public class Issue implements Serializable {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(this);
         if (issueDetailsFragment != null) {
             CivifyMap.getInstance().getContext()
-                    .setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+                    .setFragment(issueDetailsFragment, DETAILS_ID);
         }
     }
 
