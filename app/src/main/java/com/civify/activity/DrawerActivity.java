@@ -89,7 +89,7 @@ public class DrawerActivity extends BaseActivity
         mCurrentUser = UserAdapter.getCurrentUser();
 
         mCurrentUser.setLevel(LEVEL);
-        setUserHeader(mCurrentUser);
+        setUserHeader();
     }
 
     @Override
@@ -220,7 +220,8 @@ public class DrawerActivity extends BaseActivity
         return true;
     }
 
-    private void setUserHeader(User user) {
+    public void setUserHeader() {
+        User user = mCurrentUser;
         View headerView = mNavigationView.getHeaderView(0);
         // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
