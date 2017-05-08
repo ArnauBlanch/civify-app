@@ -261,10 +261,10 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     private void setUser(User user) {
-        Log.v(DEBUG, "setUser");
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
+        Log.v(DEBUG, "setUser: init");
 
         ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
+        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
         TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
         name.setText(user.getName() + ' ' + user.getSurname());

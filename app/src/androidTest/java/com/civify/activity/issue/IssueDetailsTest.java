@@ -1,4 +1,4 @@
-package com.civify.activity;
+package com.civify.activity.issue;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
@@ -21,11 +21,13 @@ import static org.hamcrest.Matchers.allOf;
 import android.content.Context;
 import android.location.Location;
 import android.os.Build;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
@@ -45,14 +47,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.text.DateFormat;
@@ -60,12 +54,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@LargeTest @RunWith(AndroidJUnit4.class) public class IssueButtonsTest {
+@RunWith(AndroidJUnit4.class) public class IssueDetailsTest {
 
     private static final double MOCK_LATITUDE = 41.678307;
     private static final double MOCK_LONGITUDE = 2.7796739;
@@ -117,7 +118,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
         loginAdapter.logout();
     }
 
-    @BeforeClass public static void setUpBeforeClass() throws InterruptedException {
+    @BeforeClass
+    public static void setUpBeforeClass() throws InterruptedException {
         grantPermission("android.permission.ACCESS_FINE_LOCATION");
 
         Context context = getInstrumentation().getTargetContext();
@@ -137,6 +139,66 @@ import retrofit2.converter.gson.GsonConverterFactory;
         while (!ended[0]) {
             sleep(200);
         }
+    }
+
+    @Test
+    public void componentsAreShownCorrectly() throws ParseException, InterruptedException {
+        Location mockLocation =
+                LocationAdapter.getLocation(new LatLng(MOCK_LATITUDE, MOCK_LONGITUDE));
+        CivifyMap.getInstance().setMockLocation(mockLocation);
+        Issue mockIssue = mockIssue(USER_AUTH_TOKEN);
+        mockIssue.showIssueDetails();
+
+        sleep(2250);
+
+        onView(withId(R.id.details_scrollview)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.eventView)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.nameText)).check(matches(isDisplayed()));
+        onView(withId(R.id.nameText)).check(matches(withText(mockIssue.getTitle())));
+        onView(withId(R.id.likesText)).check(matches(isDisplayed()));
+        onView(withId(R.id.likesText)).check(matches(withText("+" + mockIssue.getConfirmVotes())));
+        onView(withId(R.id.shareView)).check(matches(isDisplayed()));
+        onView(withId(R.id.shareText)).check(matches(isDisplayed()));
+        onView(withId(R.id.shareText)).check(matches(withText("share")));
+
+        onView(withId(R.id.categoryText)).check(matches(isDisplayed()));
+        onView(withId(R.id.categoryView)).check(matches(isDisplayed()));
+        //onView(withId(R.id.nameCategoryText)).check(matches(withText(
+        //        InstrumentationRegistry.getContext().getResources().getString(mockIssue
+        //        .getCategory().getName()))));
+
+        onView(withId(R.id.riskQuestion)).check(matches(isDisplayed()));
+        onView(withId(R.id.riskAnswer)).check(matches(isDisplayed()));
+        onView(withId(R.id.riskAnswer)).check(matches(withText(mockIssue.isRisk()? "Yes" : "No")));
+
+        onView(withId(R.id.descriptionText)).check(matches(isDisplayed()));
+        onView(withId(R.id.descriptionText)).check(matches(withText(mockIssue.getDescription())));
+
+        onView(withId(R.id.streetText)).check(matches(isDisplayed()));
+        //String street
+        //onView(withId(R.id.streetText)).check(matches(withText(street)));
+        onView(withId(R.id.sinceText)).check(matches(isDisplayed()));
+        //String since
+        //onView(withId(R.id.sinceText)).check(matches(withText(street)));
+        onView(withId(R.id.distanceText)).check(matches(isDisplayed()));
+        //String distance
+        //onView(withId(R.id.distanceText)).check(matches(withText(street)));
+
+        onView(withId(R.id.confirmButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.resolveButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.reportButton)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.details_scrollview)).perform(swipeUp());
+
+        onView(withId(R.id.userImage)).check(matches(isDisplayed()));
+        onView(withId(R.id.userName)).check(matches(isDisplayed()));
+        //onView(withId(R.id.userUsername)).check(matches(isDisplayed()));
+        //onView(withId(R.id.distanceText)).check(matches(withText(street)));
+        onView(withId(R.id.userProgress)).check(matches(isDisplayed()));
+        onView(withId(R.id.userLevel)).check(matches(isDisplayed()));
+        //onView(withId(R.id.distanceText)).check(matches(withText(street)));
     }
 
     @Test
