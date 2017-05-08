@@ -25,6 +25,7 @@ import com.civify.activity.fragments.RewardsFragment;
 import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
+import com.civify.activity.fragments.rewards.RewardDetailsFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -164,8 +165,11 @@ public class DrawerActivity extends BaseActivity
             setFragment(profileFragment, PROFILE_ID);
         } else if (id == R.id.nav_rewards) {
             // paint fragment
+            /*
             RewardsFragment rewardsFragment = RewardsFragment.newInstance();
-            setFragment(rewardsFragment, REWARDS_ID);
+            setFragment(rewardsFragment, REWARDS_ID);*/
+            RewardDetailsFragment rewardDetailsFragment = RewardDetailsFragment.newInstance();
+            setFragment(rewardDetailsFragment, REWARDS_ID);
         } else if (id == R.id.nav_achievements) {
             AchievementsFragment achievementsFragment = AchievementsFragment.newInstance();
             setFragment(achievementsFragment, ACHIEVEMENTS_ID);

@@ -183,4 +183,6 @@
   <string name="cant_report_own_issue">You can\'t report your own issue</string>
   <string name="cant_resolve_own_issue">You can\'t resolve your own issue</string>
   <string name="unspecified_title">Unspecified title</string>
+
+  <string name="reward_image_is_not_available_yet">Reward image is not available yet</string>
 </resources>
