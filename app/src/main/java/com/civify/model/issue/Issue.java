@@ -108,21 +108,6 @@ public class Issue implements Serializable {
     }
 
     public Issue(String title, String description, Category category, boolean risk,
-            double longitude, double latitude, Picture picture, String userAuthToken) {
-        mTitle = title;
-        mDescription = description;
-        mCategory = category;
-        mRisk = risk;
-        mLongitude = longitude;
-        mLatitude = latitude;
-        mResolvedVotes = 0;
-        mConfirmVotes = 0;
-        mReports = 0;
-        mUserAuthToken = userAuthToken;
-        setPicture(picture);
-    }
-
-    public Issue(String title, String description, Category category, boolean risk,
             double longitude, double latitude, int confirmVotes, int resolvedVotes, int reports,
             Date createdAt, Date updatedAt, String issueAuthToken, String userAuthToken,
             Picture picture) {
@@ -140,6 +125,21 @@ public class Issue implements Serializable {
         mIssueAuthToken = issueAuthToken;
         mUserAuthToken = userAuthToken;
         mPicture = picture;
+    }
+
+    public Issue(String title, String description, Category category, boolean risk,
+            double longitude, double latitude, Picture picture, String userAuthToken) {
+        mTitle = title;
+        mDescription = description;
+        mCategory = category;
+        mRisk = risk;
+        mLongitude = longitude;
+        mLatitude = latitude;
+        mResolvedVotes = 0;
+        mConfirmVotes = 0;
+        mReports = 0;
+        mUserAuthToken = userAuthToken;
+        setPicture(picture);
     }
 
     public String getTitle() {
