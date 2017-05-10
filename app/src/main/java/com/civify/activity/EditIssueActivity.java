@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -161,11 +160,14 @@ public class EditIssueActivity extends CameraGalleryActivity {
         mCategory = Category.values()[categoryId];
         final Issue editedIssue;
         if (mPictureUpdated) {
-            editedIssue = new Issue(mIssuename.getText().toString(), mIssueDesc.getText().toString(),
-                    mCategory, mRisk, mIssue.getLongitude(), mIssue.getLatitude(), mImageBitmap, mIssue.getUserAuthToken());
+            editedIssue = new Issue(mIssuename.getText().toString(),
+                    mIssueDesc.getText().toString(), mCategory, mRisk,
+                    mIssue.getLongitude(), mIssue.getLatitude(), mImageBitmap,
+                    mIssue.getUserAuthToken());
         } else {
-            editedIssue = new Issue(mIssuename.getText().toString(), mIssueDesc.getText().toString(),
-                    mCategory, mRisk, mIssue.getLongitude(), mIssue.getLatitude(), mIssue.getPicture(),
+            editedIssue = new Issue(mIssuename.getText().toString(),
+                    mIssueDesc.getText().toString(), mCategory, mRisk,
+                    mIssue.getLongitude(), mIssue.getLatitude(), mIssue.getPicture(),
                     mIssue.getUserAuthToken());
         }
         mIssueAdapter.editIssue(mIssue.getIssueAuthToken(), editedIssue,
@@ -175,9 +177,10 @@ public class EditIssueActivity extends CameraGalleryActivity {
 
                     FragmentManager fm = getSupportFragmentManager();
                     int index = fm.getBackStackEntryCount() - 1;
-                    FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
+                    FragmentManager.BackStackEntry backEntry = getSupportFragmentManager()
+                            .getBackStackEntryAt(index);
                     String tag = backEntry.getName();
-                    IssueDetailsFragment fragment = (IssueDetailsFragment)fm
+                    IssueDetailsFragment fragment = (IssueDetailsFragment) fm
                             .findFragmentByTag(tag);
                     fragment.setIssue(issue);
                     onBackPressed();
