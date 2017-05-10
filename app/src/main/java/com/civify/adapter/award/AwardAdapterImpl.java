@@ -18,7 +18,6 @@ import retrofit2.Response;
 
 public class AwardAdapterImpl implements AwardAdapter {
 
-    private int test;
     private AwardService mAwardService;
     private AwardSimpleCallback mAwardSimpleCallback;
     private SharedPreferences mSharedPreferences;
