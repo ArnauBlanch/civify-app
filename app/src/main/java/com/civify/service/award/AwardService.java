@@ -25,23 +25,7 @@ public interface AwardService {
     @GET("/awards")
     Call<List<Award>> getAwards(@Header("Authorization") String authToken);
 
-    @GET("/users/{user_auth_token}/offered_awards")
-    Call<List<Award>> getCommerceOfferedAwards(@Header("Authorization") String authToken,
-            @Path("user_auth_token") String userAuthToken);
-
     @GET("/awards/{award_auth_token}")
     Call<Award> getAward(@Header("Authorization") String authToken, @Path("award_auth_token")
             String awardAuthToken);
-
-    @POST("/users/{user_auth_token}/offered_awards")
-    Call<MessageResponse> offerAward(@Header("Authorization") String authToken,
-            @Path("user_auth_token") String userAuthToken, @Body Award award);
-
-    @PATCH("/awards/{award_auth_token}")
-    Call<Award> editAward(@Header("Authorization") String authToken, @Path("award_auth_token")
-            String awardAuthToken, @Body Award award);
-
-    @DELETE("/awards/{award_auth_token}")
-    Call<MessageResponse> deleteAward(@Header("Authorization") String authToken,
-            @Path("award_auth_token") String awardAuthToken);
 }
