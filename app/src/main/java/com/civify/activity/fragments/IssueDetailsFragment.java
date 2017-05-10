@@ -54,6 +54,7 @@ public class IssueDetailsFragment extends Fragment {
     private static final int DISTANCE_TO_METERS = 1000000;
     private static final int MIN_METERS_FROM_ISSUE = 70;
     private static final float DISABLED_ALPHA = 0.15f;
+    private static final int SHOW_AS_ACTION_NEVER = 0;
 
     private UserAdapter mUserAdapter;
     private IssueAdapter mIssueAdapter;
@@ -92,6 +93,12 @@ public class IssueDetailsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        if (!mIssue.getUserAuthToken().equals(mUserAdapter.getCurrentUser().getUserAuthToken())) {
+            for (int i = 0; i < menu.size(); ++i) {
+                menu.getItem(i).setVisible(false);
+                menu.getItem(i).setShowAsAction(SHOW_AS_ACTION_NEVER);
+            }
+        }
     }
 
     private void init() {

@@ -160,6 +160,7 @@ public class DrawerActivity extends BaseActivity
                 .addToBackStack(String.valueOf(fragmentId)).commit();
         if (fragmentId == PROFILE_ID) mShowMenu = true;
         else if (fragmentId == DETAILS_ID) {
+
             mShowMenu = true;
             mShowMenuDetails = true;
         } else {
