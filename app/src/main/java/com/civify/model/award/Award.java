@@ -41,7 +41,7 @@ public class Award implements Serializable {
     @SerializedName("picture")
     private Picture mPicture;
 
-    public Award() {}
+    public Award() { }
 
     public Award(String title, String description, int price, Date createdAt, Date updatedAt,
             String awardAuthToken, String commerceOffering, Picture picture) {
@@ -85,5 +85,37 @@ public class Award implements Serializable {
 
     public Picture getPicture() {
         return mPicture;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
+    public void setPrice(int price) {
+        mPrice = price;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        mCreatedAt = createdAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        mUpdatedAt = updatedAt;
+    }
+
+    public void setAwardAuthToken(String awardAuthToken) {
+        mAwardAuthToken = awardAuthToken;
+    }
+
+    public void setCommerceOffering(String commerceOffering) {
+        mCommerceOffering = commerceOffering;
+    }
+
+    public void setPicture(Picture picture) {
+        mPicture = picture;
     }
 }
