@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.createissue.CameraGalleryActivity;
 import com.civify.activity.createissue.CategorySpinnerAdapter;
+import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
@@ -41,6 +44,7 @@ public class EditIssueActivity extends CameraGalleryActivity {
     private IssueAdapter mIssueAdapter;
     private Issue mIssue;
     private Boolean mRisk;
+    private Boolean mPictureUpdated;
     private RadioGroup.OnCheckedChangeListener mRadioListener =
             new RadioGroup.OnCheckedChangeListener() {
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -95,11 +99,13 @@ public class EditIssueActivity extends CameraGalleryActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.edit_issue));
         mPosesrisk.setOnCheckedChangeListener(mRadioListener);
+        mPictureUpdated = false;
         setupCloseKeyboard(findViewById(android.R.id.content));
     }
 
     @Override
     protected void handlePhotoResult(Bitmap imageBitmap) {
+        mPictureUpdated = true;
         ImageView imageView = (ImageView) findViewById(R.id.eventView);
         imageView.setImageBitmap(imageBitmap);
         mImageBitmap = imageBitmap;
@@ -153,14 +159,27 @@ public class EditIssueActivity extends CameraGalleryActivity {
         int categoryId = ((Spinner) findViewById(R.id.nameCategorySpinner))
                 .getSelectedItemPosition();
         mCategory = Category.values()[categoryId];
-        Issue editedIssue = new Issue(mIssuename.getText().toString(), mIssueDesc.getText()
-                .toString(), mCategory,
-                mRisk, mIssue.getLongitude(), mIssue.getLatitude(), mImageBitmap, mIssue
-                .getUserAuthToken());
+        final Issue editedIssue;
+        if (mPictureUpdated) {
+            editedIssue = new Issue(mIssuename.getText().toString(), mIssueDesc.getText().toString(),
+                    mCategory, mRisk, mIssue.getLongitude(), mIssue.getLatitude(), mImageBitmap, mIssue.getUserAuthToken());
+        } else {
+            editedIssue = new Issue(mIssuename.getText().toString(), mIssueDesc.getText().toString(),
+                    mCategory, mRisk, mIssue.getLongitude(), mIssue.getLatitude(), mIssue.getPicture(),
+                    mIssue.getUserAuthToken());
+        }
         mIssueAdapter.editIssue(mIssue.getIssueAuthToken(), editedIssue,
                 new IssueSimpleCallback() {
                 @Override
                 public void onSuccess(Issue issue) {
+
+                    FragmentManager fm = getSupportFragmentManager();
+                    int index = fm.getBackStackEntryCount() - 1;
+                    FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
+                    String tag = backEntry.getName();
+                    IssueDetailsFragment fragment = (IssueDetailsFragment)fm
+                            .findFragmentByTag(tag);
+                    fragment.setIssue(issue);
                     onBackPressed();
                 }
 

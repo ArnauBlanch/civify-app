@@ -124,6 +124,11 @@ public class IssueDetailsFragment extends Fragment {
         addStreetAsync(mIssue.getPosition());
     }
 
+    public void setIssue(Issue issue) {
+        mIssue = issue;
+        setIssue();
+    }
+
     private void setIssue() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mIssue.getTitle());
