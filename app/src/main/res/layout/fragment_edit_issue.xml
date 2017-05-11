@@ -7,7 +7,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     >
+  <android.support.v7.widget.Toolbar
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="#ffffff"
+      android:id="@+id/create_issue_toolbar"
+      app:popupTheme="@style/AppTheme" />
+
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -20,12 +28,7 @@
       tools:layout_editor_absoluteY="8dp"
       tools:layout_editor_absoluteX="8dp"
       >
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#ffffff"
-        android:id="@+id/create_issue_toolbar"
-        app:popupTheme="@style/AppTheme" />
+
     <ImageView
         android:id="@+id/eventView"
         android:layout_width="match_parent"
@@ -33,54 +36,46 @@
         android:layout_weight="40"
         android:background="#eee"
         />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="10dp"
+        android:orientation="vertical"
         >
-      <ImageButton
-          android:id="@+id/camera_button"
-          android:layout_width="60dp"
-          android:layout_height="60dp"
-          android:layout_marginLeft="20dp"
-          android:layout_marginTop="10dp"
-          android:layout_gravity="center_horizontal"
-          android:background="@drawable/green_border_button"
-          android:onClick="cameraButtonListener"
-          android:src="@drawable/ic_photo_camera"
-          android:foregroundGravity="center"
-          android:gravity="center"
-          />
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_gravity="center_horizontal">
 
-      <ImageButton
-          android:id="@+id/gallery_button"
-          android:layout_width="60dp"
-          android:layout_height="60dp"
-          android:layout_gravity="center_horizontal"
-          android:layout_marginLeft="30dp"
-          android:layout_marginTop="10dp"
-          android:background="@drawable/green_border_button"
-          android:gravity="center"
-          android:onClick="galleryButtonListener"
-          android:src="@drawable/ic_gallery"
-          />
-      <android.support.v7.widget.AppCompatButton
-          android:id="@+id/savechangeButton"
-          android:layout_width="match_parent"
-          android:layout_gravity="center_vertical"
-          android:layout_height="35dp"
-          android:background="@drawable/green_bg_button"
-          android:text="@string/save_changes"
-          android:textAllCaps="false"
-          android:onClick="saveListener"
-          android:layout_marginLeft="30dp"
-          android:layout_marginRight="20dp"
-          android:textColor="#ffffff"
-          android:textSize="20sp"
-          fontPath="fonts/Nunito-Bold.ttf"
-          />
+        <ImageButton
+            android:id="@+id/camera_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/green_border_button"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:onClick="cameraButtonListener"
+            android:src="@drawable/ic_photo_camera" />
+
+        <ImageButton
+            android:id="@+id/gallery_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/green_border_button"
+            android:gravity="center"
+            android:onClick="galleryButtonListener"
+            android:src="@drawable/ic_gallery" />
+
+      </LinearLayout>
+
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/nameLikesShareLayout"
         android:layout_width="match_parent"
