@@ -4,8 +4,9 @@
 
   <item
       android:title="@string/delete_issue"
-      android:id="@+id/delete_issue"
-      android:icon="@drawable/ic_confirm"
-      app:showAsAction="ifRoom" />
+      android:id="@+id/confirm"
+      android:icon="@drawable/ic_check2"
+      app:showAsAction="ifRoom"
+      />
 
 </menu>

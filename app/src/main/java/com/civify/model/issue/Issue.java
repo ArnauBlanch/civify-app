@@ -128,7 +128,7 @@ public class Issue implements Serializable {
     }
 
     public Issue(String title, String description, Category category, boolean risk,
-            double longitude, double latitude, Picture picture, String userAuthToken) {
+            double longitude, double latitude, Picture pic, String userAuthToken) {
         mTitle = title;
         mDescription = description;
         mCategory = category;
@@ -139,7 +139,7 @@ public class Issue implements Serializable {
         mConfirmVotes = 0;
         mReports = 0;
         mUserAuthToken = userAuthToken;
-        setPicture(picture);
+        mPicture = pic;
     }
 
     public String getTitle() {
@@ -260,6 +260,7 @@ public class Issue implements Serializable {
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         mPicture = new Picture("issue-picture", "image/jpg",
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
+        int i = 0;
     }
 
     public boolean getConfirmedByAuthUser() {

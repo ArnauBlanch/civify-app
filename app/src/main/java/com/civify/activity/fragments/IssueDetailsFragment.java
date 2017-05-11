@@ -45,6 +45,8 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
+import static android.app.Activity.RESULT_OK;
+
 public class IssueDetailsFragment extends Fragment {
 
     private static final String DEBUG = "debug-IssueDetails";
@@ -55,6 +57,7 @@ public class IssueDetailsFragment extends Fragment {
     private static final int MIN_METERS_FROM_ISSUE = 70;
     private static final float DISABLED_ALPHA = 0.15f;
     private static final int SHOW_AS_ACTION_NEVER = 0;
+    private static final int REQUEST_CODE = 0;
 
     private UserAdapter mUserAdapter;
     private IssueAdapter mIssueAdapter;
@@ -338,7 +341,7 @@ public class IssueDetailsFragment extends Fragment {
 
             @Override
             public void onFailure() {
-                Snackbar.make(mViewDetails, "Couldn't delete issue", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mViewDetails, R.string.couldnt_delete_issue, Snackbar.LENGTH_SHORT).show();
             }
         };
     }
@@ -437,6 +440,26 @@ public class IssueDetailsFragment extends Fragment {
         Bundle data = new Bundle();
         data.putSerializable(TAG_ISSUE, mIssue);
         intent.putExtra(TAG_ISSUE, data);
-        drawerActivity.startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch(requestCode) {
+            case REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    Bundle editedBundle = data.getBundleExtra(TAG_ISSUE);
+                    Issue issue = (Issue) editedBundle.getSerializable(TAG_ISSUE);
+                    setIssue(issue);
+                    CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
+                    markers.get(mIssue.getIssueAuthToken()).setIcon(mIssue.getCategory()
+                            .getMarker());
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 }

@@ -3,7 +3,9 @@ package com.civify.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
@@ -26,6 +29,7 @@ import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
+import com.civify.model.issue.Picture;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
@@ -68,7 +72,6 @@ public class EditIssueActivity extends CameraGalleryActivity {
         mIssueDesc = (EditText) findViewById(R.id.descriptionTex);
         mPosesrisk = (RadioGroup) findViewById(R.id.risk);
         mImageView = (ImageView) findViewById(R.id.eventView);
-        mSave = (AppCompatButton) findViewById(R.id.savechangeButton);
         mRisk = false;
         mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(this);
         Spinner categorySpinner = (Spinner) findViewById(R.id.nameCategorySpinner);
@@ -143,7 +146,9 @@ public class EditIssueActivity extends CameraGalleryActivity {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
-
+        else if (item.getItemId() == R.id.confirm) {
+            saveListener(findViewById(android.R.id.content));
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -157,7 +162,10 @@ public class EditIssueActivity extends CameraGalleryActivity {
     public void saveListener(View v) {
         int categoryId = ((Spinner) findViewById(R.id.nameCategorySpinner))
                 .getSelectedItemPosition();
+        final View vi = v;
         mCategory = Category.values()[categoryId];
+        Picture picture =  mIssue.getPicture();
+
         final Issue editedIssue;
         if (mPictureUpdated) {
             editedIssue = new Issue(mIssuename.getText().toString(),
@@ -167,7 +175,7 @@ public class EditIssueActivity extends CameraGalleryActivity {
         } else {
             editedIssue = new Issue(mIssuename.getText().toString(),
                     mIssueDesc.getText().toString(), mCategory, mRisk,
-                    mIssue.getLongitude(), mIssue.getLatitude(), mIssue.getPicture(),
+                    mIssue.getLongitude(), mIssue.getLatitude(), picture,
                     mIssue.getUserAuthToken());
         }
         mIssueAdapter.editIssue(mIssue.getIssueAuthToken(), editedIssue,
@@ -175,20 +183,17 @@ public class EditIssueActivity extends CameraGalleryActivity {
                 @Override
                 public void onSuccess(Issue issue) {
 
-                    FragmentManager fm = getSupportFragmentManager();
-                    int index = fm.getBackStackEntryCount() - 1;
-                    FragmentManager.BackStackEntry backEntry = getSupportFragmentManager()
-                            .getBackStackEntryAt(index);
-                    String tag = backEntry.getName();
-                    IssueDetailsFragment fragment = (IssueDetailsFragment) fm
-                            .findFragmentByTag(tag);
-                    fragment.setIssue(issue);
-                    onBackPressed();
+                    Intent intent = new Intent();
+                    Bundle data = new Bundle();
+                    data.putSerializable(TAG_ISSUE, issue);
+                    intent.putExtra(TAG_ISSUE, data);
+                    setResult(RESULT_OK,intent );
+                    finish();
                 }
 
                 @Override
                 public void onFailure() {
-
+                    Snackbar.make(vi, R.string.couldnt_edit_issue, Snackbar.LENGTH_SHORT).show();
                 }
             });
     }
