@@ -453,8 +453,7 @@ public class IssueDetailsFragment extends Fragment {
                     Issue issue = (Issue) editedBundle.getSerializable(TAG_ISSUE);
                     setIssue(issue);
                     CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
-                    markers.get(mIssue.getIssueAuthToken()).setIcon(mIssue.getCategory()
-                            .getMarker());
+                    markers.get(mIssue.getIssueAuthToken()).setIssue(mIssue);
                 }
                 break;
 

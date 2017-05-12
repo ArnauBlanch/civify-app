@@ -62,6 +62,10 @@ public class IssueMarker {
         return mIssue;
     }
 
+    public void setIssue(@NonNull Issue issue) {
+        mIssue = issue;
+    }
+
     @NonNull
     public final IssueMarker setIcon(@DrawableRes int markerIcon) {
         Bitmap icon = BitmapFactory.decodeResource(mMap.getContext().getResources(), markerIcon);
