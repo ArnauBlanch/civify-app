@@ -32,6 +32,11 @@ import com.civify.model.issue.Issue;
 import com.civify.model.issue.Picture;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
+import com.civify.utils.ServiceGenerator;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class EditIssueActivity extends CameraGalleryActivity {
 
@@ -164,21 +169,8 @@ public class EditIssueActivity extends CameraGalleryActivity {
                 .getSelectedItemPosition();
         final View vi = v;
         mCategory = Category.values()[categoryId];
-        Picture picture =  mIssue.getPicture();
 
-        final Issue editedIssue;
-        if (mPictureUpdated) {
-            editedIssue = new Issue(mIssuename.getText().toString(),
-                    mIssueDesc.getText().toString(), mCategory, mRisk,
-                    mIssue.getLongitude(), mIssue.getLatitude(), mImageBitmap,
-                    mIssue.getUserAuthToken());
-        } else {
-            editedIssue = new Issue(mIssuename.getText().toString(),
-                    mIssueDesc.getText().toString(), mCategory, mRisk,
-                    mIssue.getLongitude(), mIssue.getLatitude(), picture,
-                    mIssue.getUserAuthToken());
-        }
-        mIssueAdapter.editIssue(mIssue.getIssueAuthToken(), editedIssue,
+        mIssueAdapter.editIssue(mIssue.getIssueAuthToken(), getUpdatedFields(),
                 new IssueSimpleCallback() {
                 @Override
                 public void onSuccess(Issue issue) {
@@ -196,5 +188,41 @@ public class EditIssueActivity extends CameraGalleryActivity {
                     Snackbar.make(vi, R.string.couldnt_edit_issue, Snackbar.LENGTH_SHORT).show();
                 }
             });
+    }
+    private JsonObject getUpdatedFields() {
+        Gson gson = ServiceGenerator.getInstance().getGson();
+        final Issue editedIssue;
+        if (mPictureUpdated) {
+            editedIssue = new Issue(mIssuename.getText().toString(),
+                    mIssueDesc.getText().toString(), mCategory, mRisk,
+                    mIssue.getLongitude(), mIssue.getLatitude(), mImageBitmap,
+                    mIssue.getUserAuthToken());
+        } else {
+            editedIssue = new Issue(mIssuename.getText().toString(),
+                    mIssueDesc.getText().toString(), mCategory, mRisk,
+                    mIssue.getLongitude(), mIssue.getLatitude(), mIssue.getPicture(),
+                    mIssue.getUserAuthToken());
+        }
+
+        JsonObject editedIssueParams = gson.toJsonTree(editedIssue).getAsJsonObject();
+
+        if (mCategory == mIssue.getCategory()) {
+            editedIssueParams.remove("category");
+        }
+        String issuename = mIssuename.getText().toString();
+        if (issuename.equals(mIssue.getTitle())) {
+            editedIssueParams.remove("title");
+        }
+        String issuedesc = mIssueDesc.getText().toString();
+        if (issuedesc.equals(mIssue.getDescription())) {
+            editedIssueParams.remove("description");
+        }
+        if (mRisk == mIssue.isRisk()) {
+            editedIssueParams.remove("risk");
+        }
+        if (!mPictureUpdated) {
+            editedIssueParams.remove("picture");
+        }
+        return editedIssueParams;
     }
 }

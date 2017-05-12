@@ -64,7 +64,7 @@ public class IssueAdapter {
         });
     }
 
-    public void editIssue(String issueAuthToken, Issue issue, final IssueSimpleCallback callback) {
+    public void editIssue(String issueAuthToken, JsonObject issue, final IssueSimpleCallback callback) {
         Call<Issue> call = mIssueService.editIssue(mAuthToken, issue, issueAuthToken);
         call.enqueue(new Callback<Issue>() {
 
