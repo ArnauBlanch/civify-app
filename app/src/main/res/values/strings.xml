@@ -187,4 +187,6 @@
   <string name="coins_image_description">Coins icon</string>
   <string name="congratulations">Congratulations!</string>
   <string name="couldnt_add_coins">Couldn\'t add the coins to your account.</string>
+  <string name="available_rewards_tab">AVAILABLE</string>
+  <string name="exchanged_rewards_tab">EXCHANGED</string>
 </resources>

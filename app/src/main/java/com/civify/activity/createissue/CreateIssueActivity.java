@@ -25,11 +25,12 @@ import android.widget.TextView;
 import com.civify.R;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.issue.IssueAdapter;
+import com.civify.model.IssueReward;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
-import com.civify.service.issue.IssueSimpleCallback;
+import com.civify.service.issue.IssueRewardCallback;
 import com.civify.utils.AdapterFactory;
 
 public class CreateIssueActivity extends CameraGalleryActivity {
@@ -205,12 +206,12 @@ public class CreateIssueActivity extends CameraGalleryActivity {
         Issue newIssue =
                 new Issue(mTitle, mDescription, mCategory, mRisk, longitude, latitude,
                         mImageBitmap, currentUser.getUserAuthToken());
-        mIssueAdapter.createIssue(newIssue, new IssueSimpleCallback() {
+        mIssueAdapter.createIssue(newIssue, new IssueRewardCallback() {
             @Override
-            public void onSuccess(Issue issue) {
+            public void onSuccess(IssueReward issueReward) {
                 mProgressDialog.dismiss();
                 Intent intent = getIntent();
-                intent.putExtra("issue", issue);
+                intent.putExtra("issueReward", issueReward);
                 setResult(ISSUE_CREATED, intent);
                 finish();
             }

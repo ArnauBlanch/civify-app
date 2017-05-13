@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+  <android.support.v7.widget.CardView
+      android:id="@+id/card_view_rewards"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/single_card_margin"
+      android:elevation="3dp"
+      card_view:cardCornerRadius="@dimen/card_album_radius"
+      card_view:cardElevation="4dp"
+      card_view:cardUseCompatPadding="true"
+      >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+    
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/album_cover_height"
+          android:layout_gravity="top"
+          android:clickable="true"
+          >
+
+        <ImageView
+            android:id="@+id/card_view_rewards_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/album_cover_height"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            />
+
+      </RelativeLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          >
+
+        <LinearLayout
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@drawable/ic_coins"
+              />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="3dp"
+              android:textSize="16sp"
+              android:id="@+id/card_view_rewards_coins"
+              />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+          <TextView
+              android:id="@+id/card_view_rewards_title"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="@dimen/album_title_padding"
+              android:layout_marginStart="@dimen/album_title_padding"
+              android:layout_marginTop="@dimen/album_title_padding"
+              android:layout_marginRight="@dimen/album_title_padding"
+              android:layout_marginEnd="@dimen/album_title_padding"
+              android:textColor="#000000"
+              android:maxLines="1"
+              android:ellipsize="end"
+              android:textSize="16sp"
+              />
+
+          <TextView
+              android:id="@+id/card_view_rewards_subtitle"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:maxLines="1"
+              android:ellipsize="end"
+              android:layout_weight="2"
+              android:layout_marginLeft="@dimen/album_title_padding"
+              android:layout_marginStart="@dimen/album_title_padding"
+              android:layout_marginTop="4dp"
+              android:layout_marginBottom="@dimen/album_title_padding"
+              android:textSize="12sp" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>
