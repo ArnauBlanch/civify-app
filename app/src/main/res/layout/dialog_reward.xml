@@ -27,6 +27,7 @@
         android:gravity="center_horizontal"
         android:src="@mipmap/ic_coins"
         android:contentDescription="@string/coins_image_description"
+        android:id="@+id/dialog_coins_icon"
         />
 
     <TextView
@@ -36,6 +37,27 @@
         android:gravity="center_horizontal"
         android:textSize="24sp"
         android:id="@+id/dialog_num_coins"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/blue"
+        android:textSize="40sp"
+        android:id="@+id/dialog_xp_num"
+        android:paddingLeft="40dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="xp"
+        android:textSize="24sp"
+        android:paddingLeft="4dp"
+        android:id="@+id/dialog_xp"
+        android:layout_gravity="bottom"
+        android:paddingBottom="5dp"
         />
   </LinearLayout>
 
