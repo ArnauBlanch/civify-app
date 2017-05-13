@@ -75,7 +75,10 @@ public class NavigateFragment extends BasicFragment {
                     // Button to create issues is only enabled if the map is loaded
                 }
 
-                RewardDialogFragment.showDialog(getActivity(), issueReward.getReward());
+                if (issueReward.getReward().getCoins() > 0 || issueReward.getReward()
+                        .getExperience() > 0) {
+                    RewardDialogFragment.showDialog(getActivity(), issueReward.getReward());
+                }
 
                 Snackbar.make(getView(), getString(R.string.issue_created),
                         Snackbar.LENGTH_SHORT).show();
