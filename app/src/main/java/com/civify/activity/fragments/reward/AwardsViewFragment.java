@@ -11,31 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
-import com.civify.adapter.reward.RewardsViewAdapter;
-import com.civify.model.reward.RewardStub;
+import com.civify.adapter.award.AwardsViewAdapter;
+import com.civify.model.award.Award;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RewardsViewFragment extends Fragment {
-    private List<RewardStub> mRewardList;
-    private RewardsViewAdapter mRewardsViewAdapter;
+public class AwardsViewFragment extends Fragment {
+    private List<Award> mRewardList;
+    private AwardsViewAdapter mAwardsViewAdapter;
 
-    public RewardsViewFragment() {
+    public AwardsViewFragment() {
         mRewardList = new ArrayList<>();
     }
 
-    public void setRewardList(List<RewardStub> rewardsList) {
+    public void setRewardList(List<Award> rewardsList) {
         mRewardList.clear();
-        List<RewardStub> intermediateList = new ArrayList<>(rewardsList);
+        ArrayList<Award> intermediateList = new ArrayList<>(rewardsList);
         Collections.reverse(intermediateList);
         mRewardList.addAll(intermediateList);
 
-        // TODO: Delete the next line
-        mRewardsViewAdapter = new RewardsViewAdapter(getContext(), mRewardList);
-
-        mRewardsViewAdapter.notifyDataSetChanged();
+        mAwardsViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -48,12 +45,12 @@ public class RewardsViewFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rewards_view, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_rewards);
-        mRewardsViewAdapter = new RewardsViewAdapter(getContext(), mRewardList);
+        mAwardsViewAdapter = new AwardsViewAdapter(getContext(), mRewardList);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mRewardsViewAdapter);
+        recyclerView.setAdapter(mAwardsViewAdapter);
 
         return view;
     }
