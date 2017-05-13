@@ -103,7 +103,7 @@
 <i>19</i>&nbsp;import com.civify.activity.fragments.EventsFragment;
 <i>20</i>&nbsp;import com.civify.activity.fragments.NavigateFragment;
 <i>21</i>&nbsp;import com.civify.activity.fragments.ProfileFragment;
-<i>22</i>&nbsp;import com.civify.activity.fragments.RewardsFragment;
+<i>22</i>&nbsp;import com.civify.activity.fragments.reward.AvailableAwardsFragment;
 <i>23</i>&nbsp;import com.civify.activity.fragments.SettingsFragment;
 <i>24</i>&nbsp;import com.civify.activity.fragments.WallFragment;
 <i>25</i>&nbsp;import com.civify.model.User;
@@ -212,8 +212,8 @@
 <b class="nc"><i>128</i>&nbsp;            setFragment(profileFragment, PROFILE_ID);</b>
 <b class="nc"><i>129</i>&nbsp;        } else if (id == R.id.nav_rewards) {</b>
 <i>130</i>&nbsp;            // paint fragment
-<b class="nc"><i>131</i>&nbsp;            RewardsFragment rewardsFragment = RewardsFragment.newInstance();</b>
-<b class="nc"><i>132</i>&nbsp;            setFragment(rewardsFragment, REWARDS_ID);</b>
+<b class="nc"><i>131</i>&nbsp;            RewardsFragment awardsFragment = RewardsFragment.newInstance();</b>
+<b class="nc"><i>132</i>&nbsp;            setFragment(awardsFragment, REWARDS_ID);</b>
 <b class="nc"><i>133</i>&nbsp;        } else if (id == R.id.nav_achievements) {</b>
 <b class="nc"><i>134</i>&nbsp;            AchievementsFragment achievementsFragment = AchievementsFragment.newInstance();</b>
 <b class="nc"><i>135</i>&nbsp;            setFragment(achievementsFragment, ACHIEVEMENTS_ID);</b>
