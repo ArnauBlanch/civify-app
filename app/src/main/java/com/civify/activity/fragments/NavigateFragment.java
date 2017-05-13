@@ -74,10 +74,17 @@ public class NavigateFragment extends BasicFragment {
                 } catch (MapNotLoadedException ignore) {
                     // Button to create issues is only enabled if the map is loaded
                 }
+
+                if (issueReward.getReward().getCoins() > 0 || issueReward.getReward()
+                        .getExperience() > 0) {
+                    RewardDialogFragment.showDialog(getActivity(), issueReward.getReward());
+                }
+
                 Snackbar.make(getView(), getString(R.string.issue_created),
                         Snackbar.LENGTH_SHORT).show();
             }
             CivifyMap.getInstance().setCanBeDisabled(true);
+
         } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
     }
 
