@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
-import com.civify.model.issue.Issue;
+import com.civify.model.IssueReward;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
@@ -66,9 +66,11 @@ public class NavigateFragment extends BasicFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CreateIssueActivity.ISSUE_CREATION) {
             if (resultCode == CreateIssueActivity.ISSUE_CREATED) {
-                Issue issue = (Issue) data.getExtras().getSerializable("issue");
+                IssueReward issueReward =
+                        (IssueReward) data.getExtras().getSerializable("issueReward");
                 try {
-                    CivifyMap.getInstance().addIssueMarker(issue);
+                    CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
+                    // TODO: Show reward dialog
                 } catch (MapNotLoadedException ignore) {
                     // Button to create issues is only enabled if the map is loaded
                 }

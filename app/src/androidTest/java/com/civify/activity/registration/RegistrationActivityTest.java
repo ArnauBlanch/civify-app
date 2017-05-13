@@ -11,6 +11,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.allOf;
 
 import android.support.design.widget.TextInputLayout;
@@ -63,7 +64,7 @@ public class RegistrationActivityTest {
     }
 
     @Test
-    public void registrationActivityTest() {
+    public void registrationActivityTest() throws InterruptedException {
         ViewInteraction textView = onView(allOf(withId(R.id.title0), withText(R.string.whats_your_name),
                 childAtPosition(withParent(withId(R.id.viewpager)), 0), isDisplayed()));
         textView.check(matches(withText(R.string.whats_your_name)));
@@ -138,8 +139,9 @@ public class RegistrationActivityTest {
                 onView(allOf(withId(R.id.button1), withText(R.string.continue_button), isDisplayed()));
         appCompatButton3.perform(click());
 
-        ViewInteraction textView5 = onView(allOf(withId(R.id.username_validation_text), withText(
-                R.string.invalid_username),
+        sleep(200);
+
+        ViewInteraction textView5 = onView(allOf(withId(R.id.username_validation_text),
                 childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
@@ -158,8 +160,10 @@ public class RegistrationActivityTest {
                         isDisplayed()));
         appCompatEditText12.perform(replaceText("testUsername"), closeSoftKeyboard());
 
+        sleep(200);
+
         ViewInteraction textView6 = onView(allOf(withId(R.id.username_validation_text),
-                withText(R.string.valid_unused_username), childAtPosition(
+                childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
         textView6.check(matches(withText(R.string.valid_unused_username)));
@@ -193,8 +197,10 @@ public class RegistrationActivityTest {
                 onView(allOf(withId(R.id.email_input), isDisplayed()));
         appCompatEditText15.perform(replaceText("testemail.com"), closeSoftKeyboard());
 
+        sleep(200);
+
         ViewInteraction textView8 =
-                onView(allOf(withId(R.id.email_validation_text), withText(R.string.invalid_email),
+                onView(allOf(withId(R.id.email_validation_text),
                         childAtPosition(childAtPosition(
                                 IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1), 1),
                         isDisplayed()));
@@ -210,6 +216,8 @@ public class RegistrationActivityTest {
         ViewInteraction appCompatEditText16 =
                 onView(allOf(withId(R.id.email_input), isDisplayed()));
         appCompatEditText16.perform(replaceText("test@email.com"), closeSoftKeyboard());
+
+        sleep(200);
 
         ViewInteraction textView9 = onView(allOf(withId(R.id.email_validation_text), childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
@@ -236,16 +244,19 @@ public class RegistrationActivityTest {
                 onView(allOf(withId(R.id.button3), isDisplayed()));
         appCompatButton7.perform(click());
 
-        ViewInteraction textView11 = onView(allOf(withId(R.id.password_validation_text), withText(
-                R.string.invalid_password),
+        sleep(200);
+
+        ViewInteraction textView11 = onView(allOf(withId(R.id.password_validation_text),
                 childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
         textView11.check(matches(withText(
                 R.string.invalid_password)));
 
+        sleep(200);
+
         ViewInteraction textView12 = onView(allOf(withId(R.id.password2_validation_text),
-                withText(R.string.matching_passwords), childAtPosition(
+                childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
         textView12.check(matches(withText(R.string.matching_passwords)));
@@ -262,8 +273,10 @@ public class RegistrationActivityTest {
                 onView(allOf(withId(R.id.password_input), isDisplayed()));
         appCompatEditText21.perform(replaceText("Test1234"), closeSoftKeyboard());
 
+        sleep(200);
+
         ViewInteraction textView13 = onView(allOf(withId(R.id.password_validation_text),
-                withText(R.string.valid_password), childAtPosition(
+                childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
         textView13.check(matches(withText(R.string.valid_password)));
@@ -272,14 +285,16 @@ public class RegistrationActivityTest {
                 onView(allOf(withId(R.id.password2_input), isDisplayed()));
         appCompatEditText22.perform(replaceText("Test"), closeSoftKeyboard());
 
+        sleep(200);
+
         ViewInteraction textView14 = onView(allOf(withId(R.id.password_validation_text),
-                withText(R.string.valid_password), childAtPosition(
+                childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
         textView14.check(matches(withText(R.string.valid_password)));
 
         ViewInteraction textView15 = onView(allOf(withId(R.id.password2_validation_text),
-                withText(R.string.not_matching_passwords), childAtPosition(
+                childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
         textView15.check(matches(withText(R.string.not_matching_passwords)));
@@ -289,8 +304,10 @@ public class RegistrationActivityTest {
         appCompatEditText23.perform(replaceText("Test1234"), closeSoftKeyboard());
         appCompatEditText23.perform(pressImeActionButton());
 
+        sleep(200);
+
         ViewInteraction textView16 = onView(allOf(withId(R.id.password2_validation_text),
-                withText(R.string.matching_passwords), childAtPosition(
+                childAtPosition(
                         childAtPosition(IsInstanceOf.<View>instanceOf(TextInputLayout.class), 1),
                         1), isDisplayed()));
         textView16.check(matches(withText(R.string.matching_passwords)));
