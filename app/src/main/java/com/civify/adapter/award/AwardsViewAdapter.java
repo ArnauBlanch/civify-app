@@ -1,4 +1,4 @@
-package com.civify.adapter.reward;
+package com.civify.adapter.award;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -11,16 +11,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
-import com.civify.model.reward.RewardStub;
+import com.civify.model.award.Award;
 
 import java.util.List;
 
-public class RewardsViewAdapter extends RecyclerView.Adapter<RewardsViewAdapter.MyViewHolder> {
+public class AwardsViewAdapter extends RecyclerView.Adapter<AwardsViewAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<RewardStub> mRewardList;
+    private List<Award> mRewardList;
 
-    public RewardsViewAdapter(Context context, List<RewardStub> rewardList) {
+    public AwardsViewAdapter(Context context, List<Award> rewardList) {
         this.mContext = context;
         this.mRewardList = rewardList;
     }
@@ -34,27 +34,25 @@ public class RewardsViewAdapter extends RecyclerView.Adapter<RewardsViewAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        final RewardStub reward = mRewardList.get(position);
-        holder.getTitle().setText(reward.getTitle());
-        holder.getBusiness().setText(reward.getBusiness());
-        holder.getCoins().setText(String.valueOf(reward.getCoins()));
+        final Award award = mRewardList.get(position);
+        holder.getTitle().setText(award.getTitle());
+        holder.getCommerceOffering().setText(award.getCommerceOffering());
+        holder.getPrice().setText(String.valueOf(award.getPrice()));
 
-        String imageUrl = "http://www.sportlife"
-                + ".es/media/cache/original/upload/images/article/10489/article-swolf-eficiencia"
-                + "-natacion-55632e1909028.jpg";
+        String imageUrl = award.getPicture().getSmallUrl();
         Glide.with(mContext)
                 .load(imageUrl)
                 .centerCrop()
-                .into(holder.getRewardImage());
+                .into(holder.getAwardImage());
 
         OnClickListener showDetails = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                reward.showRewardDetails();
+                // TODO: show award details
             }
         };
 
-        holder.getRewardImage().setOnClickListener(showDetails);
+        holder.getAwardImage().setOnClickListener(showDetails);
         holder.getView().setOnClickListener(showDetails);
     }
 
@@ -82,15 +80,15 @@ public class RewardsViewAdapter extends RecyclerView.Adapter<RewardsViewAdapter.
             return mTitle;
         }
 
-        public TextView getBusiness() {
+        public TextView getCommerceOffering() {
             return mBusiness;
         }
 
-        public TextView getCoins() {
+        public TextView getPrice() {
             return mCoins;
         }
 
-        public ImageView getRewardImage() {
+        public ImageView getAwardImage() {
             return mRewardImage;
         }
 

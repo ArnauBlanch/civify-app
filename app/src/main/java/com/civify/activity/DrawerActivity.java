@@ -3,7 +3,6 @@ package com.civify.activity;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -14,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +28,7 @@ import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
-import com.civify.activity.fragments.reward.RewardsFragment;
+import com.civify.activity.fragments.reward.AwardsFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -63,7 +63,6 @@ public class DrawerActivity extends BaseActivity
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
     private User mCurrentUser;
-    private int mToolbarElevation;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -158,7 +157,6 @@ public class DrawerActivity extends BaseActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        int elevation = DEFAULT_ELEVATION;
 
         if (id == R.id.nav_navigate) {
             NavigateFragment navigateFragment = NavigateFragment.newInstance();
@@ -171,9 +169,8 @@ public class DrawerActivity extends BaseActivity
             setFragment(profileFragment, PROFILE_ID);
         } else if (id == R.id.nav_rewards) {
             // paint fragment
-            RewardsFragment rewardsFragment = RewardsFragment.newInstance();
-            setFragment(rewardsFragment, REWARDS_ID);
-            elevation = 0;
+            AwardsFragment awardsFragment = AwardsFragment.newInstance();
+            setFragment(awardsFragment, REWARDS_ID);
         } else if (id == R.id.nav_achievements) {
             AchievementsFragment achievementsFragment = AchievementsFragment.newInstance();
             setFragment(achievementsFragment, ACHIEVEMENTS_ID);
@@ -184,8 +181,6 @@ public class DrawerActivity extends BaseActivity
             SettingsFragment settingsFragment = SettingsFragment.newInstance();
             setFragment(settingsFragment, SETTINGS_ID);
         }
-
-        setToolbarElevation(elevation);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -268,6 +263,8 @@ public class DrawerActivity extends BaseActivity
 
     private void setToolbarTitle() {
         final String title;
+        removeCoinsFromToolbar();
+        int elevation = DEFAULT_ELEVATION;
         switch (mCurrentFragment) {
             case NAVIGATE_ID:
                 title = getResources().getString(R.string.navigate_title);
@@ -280,6 +277,8 @@ public class DrawerActivity extends BaseActivity
                 break;
             case REWARDS_ID:
                 title = getResources().getString(R.string.rewards_title);
+                showCoinsOnToolbar();
+                elevation = 0;
                 break;
             case ACHIEVEMENTS_ID:
                 title = getResources().getString(R.string.achievements_title);
@@ -300,6 +299,7 @@ public class DrawerActivity extends BaseActivity
                 mToolbar.setTitle(title);
             }
         });
+        setToolbarElevation(elevation);
     }
 
     private void updateDrawerMenu() {
@@ -314,5 +314,20 @@ public class DrawerActivity extends BaseActivity
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             mAppBarLayout.setElevation(elevation);
         }
+    }
+
+    private void removeCoinsFromToolbar() {
+        View coins = mToolbar.findViewById(R.id.coins_with_number);
+        if (coins != null) {
+            mToolbar.removeView(coins);
+        }
+    }
+
+    private void showCoinsOnToolbar() {
+        View coins = getLayoutInflater().inflate(R.layout.coins_with_number, null);
+        Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.END);
+        ((TextView) coins.findViewById(R.id.num_coins)).setText(
+                String.valueOf(UserAdapter.getCurrentUser().getCoins()));
+        mToolbar.addView(coins, layoutParams);
     }
 }

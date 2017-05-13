@@ -1,23 +1,23 @@
-package com.civify.adapter.reward;
+package com.civify.adapter.award;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.civify.activity.fragments.reward.AvailableRewardsFragment;
+import com.civify.activity.fragments.reward.AvailableAwardsFragment;
 import com.civify.activity.fragments.reward.ExchangedRewardsFragment;
 
-public class RewardsFragmentPagerAdapter extends FragmentPagerAdapter {
+public class AwardsFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private static final int NUM_TABS = 2;
 
-    private AvailableRewardsFragment mAvailableRewardsFragment;
+    private AvailableAwardsFragment mAvailableAwardsFragment;
 
-    public RewardsFragmentPagerAdapter(FragmentManager fm) {
+    public AwardsFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
 
-        if (mAvailableRewardsFragment == null) {
-            mAvailableRewardsFragment = AvailableRewardsFragment.newInstance();
+        if (mAvailableAwardsFragment == null) {
+            mAvailableAwardsFragment = AvailableAwardsFragment.newInstance();
         }
     }
 
@@ -25,7 +25,7 @@ public class RewardsFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new AvailableRewardsFragment();
+                return new AvailableAwardsFragment();
             default:
                 return new ExchangedRewardsFragment();
         }

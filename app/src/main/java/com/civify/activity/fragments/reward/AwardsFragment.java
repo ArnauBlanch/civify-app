@@ -15,14 +15,11 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
-import com.civify.adapter.reward.RewardsFragmentPagerAdapter;
+import com.civify.adapter.award.AwardsFragmentPagerAdapter;
 
-public class RewardsFragment extends BasicFragment {
+public class AwardsFragment extends BasicFragment {
 
-    private static final String TAB_AVAILABLE = "AVAILABLE";
-    private static final String TAB_EXCHANGED = "EXCHANGED";
-
-    public RewardsFragment() {
+    public AwardsFragment() {
     }
 
     @Override
@@ -30,8 +27,8 @@ public class RewardsFragment extends BasicFragment {
         return DrawerActivity.REWARDS_ID;
     }
 
-    public static RewardsFragment newInstance() {
-        return new RewardsFragment();
+    public static AwardsFragment newInstance() {
+        return new AwardsFragment();
     }
 
     @Nullable
@@ -43,8 +40,8 @@ public class RewardsFragment extends BasicFragment {
         TabLayout tabLayout = setTabLayout(view);
 
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager_rewards);
-        RewardsFragmentPagerAdapter pagerAdapter =
-                new RewardsFragmentPagerAdapter(getChildFragmentManager());
+        AwardsFragmentPagerAdapter pagerAdapter =
+                new AwardsFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -71,8 +68,8 @@ public class RewardsFragment extends BasicFragment {
     private TabLayout setTabLayout(View view) {
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout_rewards);
 
-        tabLayout.addTab(tabLayout.newTab().setText(TAB_AVAILABLE));
-        tabLayout.addTab(tabLayout.newTab().setText(TAB_EXCHANGED));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.available_rewards_tab)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.exchanged_rewards_tab)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         Typeface typeface = Typeface.createFromAsset(getContext().getAssets(),
