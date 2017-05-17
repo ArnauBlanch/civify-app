@@ -99,7 +99,7 @@ public class DrawerActivity extends BaseActivity
         mCurrentUser = UserAdapter.getCurrentUser();
 
         mCurrentUser.setLevel(LEVEL);
-        mCurrentUser.setCoins(COINS);
+        //mCurrentUser.setCoins(COINS);
         mCurrentUser.setExperience(EXPERIENCE);
         setUserHeader(mCurrentUser);
     }
