@@ -183,6 +183,12 @@
   <string name="cant_report_own_issue">You can\'t report your own issue</string>
   <string name="cant_resolve_own_issue">You can\'t resolve your own issue</string>
   <string name="unspecified_title">Unspecified title</string>
+  <string name="you_have_won">You have earned:</string>
+  <string name="coins_image_description">Coins icon</string>
+  <string name="congratulations">Congratulations!</string>
+  <string name="couldnt_add_coins">Couldn\'t add the coins to your account.</string>
+  <string name="available_rewards_tab">AVAILABLE</string>
+  <string name="exchanged_rewards_tab">EXCHANGED</string>
 
   <string name="reward_image_is_not_available_yet">Reward image is not available yet</string>
   <string name="get_it"> Get it!</string>

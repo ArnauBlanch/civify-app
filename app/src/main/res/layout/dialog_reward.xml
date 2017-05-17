@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="12dp">
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="24dp"
+      android:layout_marginRight="10dp"
+      android:text="@string/you_have_won"
+      />
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:gravity="center"
+      android:paddingTop="12dp"
+      android:id="@+id/dialog_coins_content"
+      >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:src="@mipmap/ic_coins"
+        android:contentDescription="@string/coins_image_description"
+        android:id="@+id/dialog_coins_icon"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:gravity="center_horizontal"
+        android:textSize="24sp"
+        android:id="@+id/dialog_num_coins"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/blue"
+        android:textSize="40sp"
+        android:id="@+id/dialog_xp_num"
+        android:paddingLeft="40dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="xp"
+        android:textSize="24sp"
+        android:paddingLeft="4dp"
+        android:id="@+id/dialog_xp"
+        android:layout_gravity="bottom"
+        android:paddingBottom="5dp"
+        />
+  </LinearLayout>
+
+</LinearLayout>
