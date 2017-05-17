@@ -562,15 +562,10 @@ public class IssueAdapterTest {
 
     @Test
     public void testInvalidEditIssue() throws InterruptedException, ParseException {
-        ArgumentCaptor<Issue> argument = forClass(Issue.class);
         Issue editedIssue = setUpEditedIssue();
         JsonObject edited = mGson.toJsonTree(editedIssue).getAsJsonObject();
-        JsonObject body = new JsonObject();
-        body.addProperty("message", IssueAdapter
-                .RECORD_DOES_NOT_EXIST);
         MockResponse mockResponse = new MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
-                .setBody(body.toString());
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
         mMockWebServer.enqueue(mockResponse);
         IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
 
@@ -579,6 +574,40 @@ public class IssueAdapterTest {
         mIssueAdapter.editIssue("issue-auth-token", edited, mockCallback);
 
         // Test mockCallback.onFailure() is called
+        verify(mockCallback, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void ValidDeleteIssue() {
+        JsonObject body = new JsonObject();
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_NO_CONTENT);
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.deleteIssue("issue-auth-token", mockCallback);
+
+        verify(mockCallback, timeout(1000)).onSuccess();
+    }
+
+    @Test
+    public void invalidDeleteIssue() {
+        JsonObject body = new JsonObject();
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        mMockWebServer.enqueue(mockResponse);
+        SimpleCallback mockCallback = mock(SimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.deleteIssue("issue-auth-token", mockCallback);
+
         verify(mockCallback, timeout(1000)).onFailure();
     }
 
