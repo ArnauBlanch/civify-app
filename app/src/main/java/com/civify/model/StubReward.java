@@ -8,13 +8,11 @@ public class StubReward {
 
     private static final int FAKE_COINS = 35;
     private static final String FAKE_COMPANY = "Decathlon";
-    private static final String FAKE_TITLE = "10% descompte en alpinisme, un gran descompte "
-            + "gracies a Civify, la millor app del mon mundial";
+    private static final String FAKE_TITLE = "10% descompte en alpinisme";
     private static final String FAKE_DESCRIPTION = "Aquest descompte et permetre anar a la "
             + "muntanya mes alta del teu poble i caminar amb unes botes carisimes que et "
             + "servirien igual que unes botes comprades al senyor xines de les rambles, pero "
-            + "posem que son de marca i ens forrem. No se que més dir, nomes volia tenir una "
-            + "descripcio prou llarga per veure si es veu be.";
+            + "posem que son de marca i ens forrem.";
     private static final String FAKE_URL = "http://corporate.decathlon" + ".com/wp-content/uploads/2014/02/Simond_alpinisme.jpg";
 
     private int mCoins;
