@@ -51,11 +51,11 @@ public class User implements Serializable {
 
     @Expose(serialize = false)
     @SerializedName("xp")
-    private int mExperience;
+    private long mExperience;
 
     @Expose(serialize = false)
     @SerializedName("xp_max")
-    private int mExperienceMax;
+    private long mExperienceMax;
 
     @Expose(serialize = false)
     @SerializedName("coins")
@@ -70,6 +70,9 @@ public class User implements Serializable {
         mEmail = email;
         mPassword = password;
         mPasswordConfirmation = passwordConfirmation;
+        mLevel = 1;
+        mExperience = 0;
+        mExperienceMax = 0;
     }
 
     public String getUsername() {
@@ -124,40 +127,24 @@ public class User implements Serializable {
         return mCreatedAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.mCreatedAt = createdAt;
-    }
-
     public String getUpdatedAt() {
         return mUpdatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.mUpdatedAt = updatedAt;
     }
 
     public int getLevel() {
         return mLevel;
     }
 
-    public void setLevel(int level) {
-        mLevel = level;
-    }
-
-    public int getExperience() {
+    public long getExperience() {
         return mExperience;
     }
 
-    public void setExperience(int experience) {
-        mExperience = experience;
+    public long getExperienceMax() {
+        return mExperienceMax;
     }
 
     public int getCoins() {
         return mCoins;
-    }
-
-    public void setCoins(int coins) {
-        mCoins = coins;
     }
 
     public String getUserAuthToken() {
@@ -169,7 +156,7 @@ public class User implements Serializable {
     }
 
     public void update(Reward reward) {
-        setCoins(getCoins() + reward.getCoins());
-        setExperience(getExperience() + reward.getExperience());
+        mCoins = getCoins() + reward.getCoins();
+        mExperience = getExperience() + reward.getExperience();
     }
 }
