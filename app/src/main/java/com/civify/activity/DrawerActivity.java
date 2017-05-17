@@ -325,7 +325,7 @@ public class DrawerActivity extends BaseActivity
         }
     }
 
-    private void showCoinsOnToolbar() {
+    public void showCoinsOnToolbar() {
         View coins = getLayoutInflater().inflate(R.layout.coins_with_number, null);
         Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.END);
         ((TextView) coins.findViewById(R.id.num_coins)).setText(

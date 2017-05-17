@@ -1,12 +1,12 @@
 package com.civify.activity.fragments.award;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Typeface;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,16 +17,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.award.Award;
 
 public class AwardDetailsFragment extends Fragment {
 
+    public static final float ALPHA = 0.3f;
     private static final String TAG_AWARD = "award";
 
-    private static final int GREEN_BUTTON_WHITE_TEXT = 1;
-    private static final int GREEN_BUTTON_RED_TEXT = 2;
-    private static final int WHITE_BUTTON = 3;
+    private static final int ENABLE_BUTTON = 1;
+    private static final int DISABLE_BUTTON = 0;
 
     private View mViewDetails;
     private Award mAward;
@@ -60,6 +61,11 @@ public class AwardDetailsFragment extends Fragment {
     private void init() {
         Bundle bundle = getArguments();
         mAward = (Award) bundle.getSerializable(TAG_AWARD);
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        ((DrawerActivity) getActivity()).showCoinsOnToolbar();
+        toolbar.setTitle(mAward.getTitle());
+
         addImage();
         addCoins();
         addTitle();
@@ -99,48 +105,37 @@ public class AwardDetailsFragment extends Fragment {
 
     @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
     private void addButton() {
-        final Button button = (Button) mViewDetails.findViewById(R.id.reward_details_buy_button);
+        Button button = (Button) mViewDetails.findViewById(R.id.reward_details_buy_button);
+        button.setTypeface(null, Typeface.BOLD);
         changeTypeButton(button,
-                mAward.getPrice() > UserAdapter.getCurrentUser().getCoins() ? GREEN_BUTTON_RED_TEXT
-                        : GREEN_BUTTON_WHITE_TEXT);
+                mAward.getPrice() > UserAdapter.getCurrentUser().getCoins() ? DISABLE_BUTTON
+                        : ENABLE_BUTTON);
         button.setOnClickListener(new OnClickListener() {
             @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                    changeTypeButton(button, WHITE_BUTTON);
+                    //changeTypeButton(button, WHITE_BUTTON);
             }
         });
     }
 
-    @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
     private void changeTypeButton(Button button, int type) {
-        Drawable drawable;
-        int color;
-        boolean enable;
+        ImageView coins = (ImageView) mViewDetails.findViewById(R.id
+                .reward_coins_icon);
         switch (type) {
-            case GREEN_BUTTON_RED_TEXT:
-                drawable = ContextCompat.getDrawable(getContext(), R.drawable.green_bg_button);
-                color = ContextCompat.getColor(getActivity(), R.color.red);
-                enable = false;
+            case ENABLE_BUTTON:
+                coins.setAlpha(1);
+                button.setAlpha(1);
+                button.setEnabled(true);
                 break;
-            case WHITE_BUTTON:
-                drawable = ContextCompat.getDrawable(getContext(), R.drawable.green_border_button);
-                color = ContextCompat.getColor(getActivity(), R.color.green);
-                enable = false;
-                break;
-            case GREEN_BUTTON_WHITE_TEXT:
-                drawable = ContextCompat.getDrawable(getContext(), R.drawable.green_bg_button);
-                color = ContextCompat.getColor(getActivity(), R.color.white);
-                enable = true;
+            case DISABLE_BUTTON:
+                coins.setAlpha(ALPHA);
+                button.setAlpha(ALPHA);
+                button.setEnabled(false);
                 break;
             default:
-                drawable = null;
-                color = 0;
-                enable = false;
                 break;
+
         }
-        button.setBackground(drawable);
-        button.setTextColor(color);
-        button.setEnabled(enable);
     }
 }
