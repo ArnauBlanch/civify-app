@@ -52,6 +52,8 @@ public class DrawerActivity extends BaseActivity
     private static final int EXPERIENCE = 50;
     private static final int LEVEL = 3;
     private static final int DEFAULT_ELEVATION = 6;
+    private static final int SHOW_AS_ACTION_IF_ROOM = 1;
+    private static final int SHOW_AS_ACTION_NEVER = 0;
 
     private Stack<Fragment> mFragmentStack;
 
@@ -222,9 +224,14 @@ public class DrawerActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+        int noIcona = SHOW_AS_ACTION_NEVER;
+        if (mShowMenuDetails) {
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+        }
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
+            menu.getItem(i).setShowAsAction(noIcona);
         }
 
         return true;

@@ -5,12 +5,10 @@
   <item
       android:title="@string/delete_issue"
       android:id="@+id/delete_issue"
-      android:icon="@android:drawable/ic_menu_delete"
-      app:showAsAction="ifRoom" />
+      android:icon="@android:drawable/ic_menu_delete" />
   <item
       android:title="@string/edit_issue"
       android:id="@+id/edit_issue"
-      android:icon="@android:drawable/ic_menu_edit"
-      app:showAsAction="ifRoom" />
+      android:icon="@android:drawable/ic_menu_edit" />
 
 </menu>
