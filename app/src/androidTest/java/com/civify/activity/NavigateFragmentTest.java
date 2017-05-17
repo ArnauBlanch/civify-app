@@ -86,7 +86,7 @@ public class NavigateFragmentTest {
         onView(allOf(withId(android.support.design.R.id.snackbar_text),
                 withText("Map loading, please wait..."))).check(matches(isDisplayed()));
     }
-/*
+
     @Test
     public void testButtonsWhenMapIsReady() {
         resetLatch();
@@ -102,7 +102,7 @@ public class NavigateFragmentTest {
 
         onView(allOf(withId(R.id.fab_add), isDisplayed())).perform(click());
         pressBack();
-    }*/
+    }
 
     private void moveTo(@NonNull final LatLng fake) {
         runOnMain(new Runnable() {

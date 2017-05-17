@@ -3,9 +3,7 @@ package com.civify.activity.fragments.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,25 +12,30 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 import com.civify.activity.MainActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.LoginAdapter;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends BasicFragment {
 
-    private String mTitle;
     private User mCurrentUser;
     private LoginAdapter mLoginAdapter;
     private FragmentTabHost mTabHost;
 
     public ProfileFragment() {
-        // Required empty public constructor
     }
 
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.PROFILE_ID;
     }
 
     @Override
@@ -45,16 +48,12 @@ public class ProfileFragment extends Fragment {
         //mLoginAdapter = adapterFactory.getLoginAdapter(sharedPreferences);
         mLoginAdapter = adapterFactory.getLoginAdapter(getContext());
         setHasOptionsMenu(true);
-        mTitle = getResources().getString(R.string.profile_title);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(mTitle);
 
         mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);

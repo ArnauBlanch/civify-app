@@ -16,10 +16,13 @@ import android.content.SharedPreferences;
 
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.model.IssueReward;
+import com.civify.model.Reward;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
 import com.civify.model.issue.Picture;
+import com.civify.service.issue.IssueRewardCallback;
 import com.civify.service.issue.IssueService;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.service.issue.ListIssuesSimpleCallback;
@@ -80,12 +83,12 @@ public class IssueAdapterTest {
     @Test
     public void testValidCreateIssue() throws InterruptedException, ParseException {
         setUpIssue();
-        String jsonBody = mGson.toJson(mIssue);
+        String jsonBody = mGson.toJson(getIssueReward());
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_CREATED)
                 .setBody(jsonBody);
         mMockWebServer.enqueue(mockResponse);
-        IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
+        IssueRewardCallback mockCallback = mock(IssueRewardCallback.class);
 
         UserAdapter.setCurrentUser(mUser);
 
@@ -96,7 +99,7 @@ public class IssueAdapterTest {
         JsonObject requestJson = new JsonParser().parse(json).getAsJsonObject();
 
         // Test mockCallback.onSuccess() is called
-        ArgumentCaptor<Issue> argument = forClass(Issue.class);
+        ArgumentCaptor<IssueReward> argument = forClass(IssueReward.class);
         verify(mockCallback, timeout(1000)).onSuccess(argument.capture());
 
         // Test request
@@ -121,7 +124,7 @@ public class IssueAdapterTest {
         assertEquals(mIssue.getPicture().getContent(), requestJson.get("picture")
                 .getAsJsonObject().get("content").getAsString());
 
-        Issue responseIssue = argument.getValue();
+        Issue responseIssue = argument.getValue().getIssue();
 
         // Test response body (issue)
         assertEquals(mIssue.getTitle(), responseIssue.getTitle());
@@ -150,7 +153,7 @@ public class IssueAdapterTest {
                 .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
                 .setBody(body.toString());
         mMockWebServer.enqueue(mockResponse);
-        IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
+        IssueRewardCallback mockCallback = mock(IssueRewardCallback.class);
 
         UserAdapter.setCurrentUser(mUser);
 
@@ -265,7 +268,8 @@ public class IssueAdapterTest {
                 responseIssue.getPicture().getFileName());
     }
 
-    @Test public void testInvalidGetIssue() throws ParseException {
+    @Test
+    public void testInvalidGetIssue() throws ParseException {
         setUpIssue();
         JsonObject body = new JsonObject();
         body.addProperty("message", IssueAdapter.RECORD_DOES_NOT_EXIST);
@@ -590,6 +594,10 @@ public class IssueAdapterTest {
                 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token", picture);
         mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
         mUser.setUserAuthToken("user-auth-token");
+    }
+
+    private IssueReward getIssueReward() {
+        return new IssueReward(mIssue, new Reward(1, 10));
     }
 
     private Issue setUpEditedIssue() throws ParseException {
