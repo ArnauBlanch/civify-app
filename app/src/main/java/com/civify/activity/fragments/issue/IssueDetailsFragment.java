@@ -1,4 +1,4 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.issue;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.EditIssueActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
@@ -72,7 +73,7 @@ public class IssueDetailsFragment extends BasicFragment {
 
     @Override
     public int getFragmentId() {
-        return DrawerActivity.DETAILS_ID;
+        return DrawerActivity.DETAILS_ISSUE_ID;
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rewards_fragments"
-    tools:context="com.civify.activity.fragments.reward.AwardsViewFragment"
+    tools:context="com.civify.activity.fragments.award.AwardsViewFragment"
     >
 
   <android.support.v7.widget.RecyclerView
