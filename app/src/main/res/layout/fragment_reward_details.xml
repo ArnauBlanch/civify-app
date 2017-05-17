@@ -5,22 +5,25 @@
     tools:context="com.civify.activity.fragments.rewards.RewardDetailsFragment"
     tools:ignore="missingPrefix"
     >
-
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/details_scrollview"
+      >
   <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:orientation="vertical"
       >
     <RelativeLayout
         android:id="@+id/reward_details_layout_image"
         android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="45"
+        android:layout_height="wrap_content"
         >
       <ImageView
           android:id="@+id/reward_details_image"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
+          android:layout_height="270dp"
           android:background="#eee"
           android:contentDescription="@string/reward_image_is_not_available_yet"
           />
@@ -28,8 +31,7 @@
     <RelativeLayout
         android:id="@+id/reward_details_layout_coins"
         android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="5"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_marginTop="5dp"
         android:layout_marginRight="15dp"
@@ -43,7 +45,7 @@
           >
         <ImageView
           android:layout_width="wrap_content"
-          android:layout_height="match_parent"
+          android:layout_height="wrap_content"
           android:layout_marginRight="5dp"
           android:src="@drawable/ic_coins"
           />
@@ -62,8 +64,7 @@
     <RelativeLayout
         android:id="@+id/reward_details_layout_title"
         android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="13"
+        android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         >
@@ -76,22 +77,19 @@
           android:textSize="22sp"
           android:textStyle="bold"
           fontPath="fonts/Nunito-Bold.ttf"
-          android:maxLines="2"
-          android:scrollbars="horizontal"
           />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/reward_details_layout_company"
         android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="7"
+        android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         >
       <TextView
           android:id="@+id/reward_details_company"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
+          android:layout_height="wrap_content"
           android:gravity="center_vertical"
           android:textColor="#959595"
           android:textStyle="bold"
@@ -100,8 +98,7 @@
     <RelativeLayout
         android:id="@+id/reward_details_layout_description"
         android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="30"
+        android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="15dp"
@@ -109,11 +106,40 @@
       <TextView
           android:id="@+id/reward_details_description"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
+          android:layout_height="wrap_content"
           android:gravity="center_vertical"
           android:scrollbars="vertical"
           android:textSize="16sp"
           />
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+      <ImageView
+          android:id="@+id/reward_coins_icon"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/ic_coins"
+          android:layout_marginRight="115dp"
+          android:layout_marginEnd="115dp"
+          android:elevation="5dp"
+          android:layout_centerVertical="true"
+          android:layout_alignRight="@+id/reward_details_buy_button"
+          android:layout_alignEnd="@+id/reward_details_buy_button"
+          />
+      <android.support.v7.widget.AppCompatButton
+          android:id="@+id/reward_details_buy_button"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_margin="15dp"
+          android:text="@string/get_it"
+          android:textStyle="bold"
+          android:background="@drawable/green_bg_button"
+          android:textColor="@color/white"
+          android:drawablePadding="10dp"
+          />
+    </RelativeLayout>
   </LinearLayout>
+  </ScrollView>
 </FrameLayout>
