@@ -51,9 +51,9 @@ public class DrawerActivity extends BaseActivity
     private static final int COINS = 432;
     private static final int EXPERIENCE = 50;
     private static final int LEVEL = 3;
+    private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
     private static final int SHOW_AS_ACTION_NEVER = 0;
-    private static final int DEFAULT_ELEVATION = 6;
 
     private Stack<Fragment> mFragmentStack;
 
@@ -99,7 +99,7 @@ public class DrawerActivity extends BaseActivity
         mCurrentUser = UserAdapter.getCurrentUser();
 
         mCurrentUser.setLevel(LEVEL);
-        //mCurrentUser.setCoins(COINS);
+        mCurrentUser.setCoins(COINS);
         mCurrentUser.setExperience(EXPERIENCE);
         setUserHeader(mCurrentUser);
     }
@@ -211,13 +211,19 @@ public class DrawerActivity extends BaseActivity
         if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
         } else if (mCurrentFragment == DETAILS_ID) {
-
+            mShowMenu = true;
+            mShowMenuDetails = true;
+        } else {
+            mShowMenu = false;
+            mShowMenuDetails = false;
+        }
+        invalidateOptionsMenu();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+        getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
         int noIcona = SHOW_AS_ACTION_NEVER;
         if (mShowMenuDetails) {
             noIcona = SHOW_AS_ACTION_IF_ROOM;
