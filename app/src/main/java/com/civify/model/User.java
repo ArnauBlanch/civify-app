@@ -45,8 +45,17 @@ public class User implements Serializable {
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
+    @Expose(serialize = false)
+    @SerializedName("lv")
     private int mLevel;
+
+    @Expose(serialize = false)
+    @SerializedName("xp")
     private int mExperience;
+
+    @Expose(serialize = false)
+    @SerializedName("xp_max")
+    private int mExperienceMax;
 
     @Expose(serialize = false)
     @SerializedName("coins")
