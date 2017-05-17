@@ -1,11 +1,15 @@
 package com.civify.activity.fragments.award;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,13 +112,13 @@ public class AwardDetailsFragment extends Fragment {
         Button button = (Button) mViewDetails.findViewById(R.id.reward_details_buy_button);
         button.setTypeface(null, Typeface.BOLD);
         changeTypeButton(button,
-                mAward.getPrice() > UserAdapter.getCurrentUser().getCoins() ? DISABLE_BUTTON
+                mAward.getPrice() < UserAdapter.getCurrentUser().getCoins() ? DISABLE_BUTTON
                         : ENABLE_BUTTON);
         button.setOnClickListener(new OnClickListener() {
             @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                    //changeTypeButton(button, WHITE_BUTTON);
+                   createDialog().show();
             }
         });
     }
@@ -135,7 +139,32 @@ public class AwardDetailsFragment extends Fragment {
                 break;
             default:
                 break;
+        }
+    }
 
+    private AlertDialog createDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.dialog_award_bought)
+                .setPositiveButton(R.string.ok_award, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        return builder.create();
+    }
+    public static class buyAwardDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.dialog_award_bought)
+                    .setPositiveButton(R.string.ok_award, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dismiss();
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
         }
     }
 }

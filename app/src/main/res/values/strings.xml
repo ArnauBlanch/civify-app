@@ -192,4 +192,6 @@
 
   <string name="reward_image_is_not_available_yet">Reward image is not available yet</string>
   <string name="get_it"> Get it!</string>
+  <string name="dialog_award_bought">Congratulations! You have a new award avaliable now</string>
+  <string name="ok_award">Ok!</string>
 </resources>
