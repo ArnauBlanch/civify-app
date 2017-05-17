@@ -519,6 +519,69 @@ public class IssueAdapterTest {
         verify(mockCallback, timeout(1000)).onFailure();
     }
 
+    @Test
+    public void testValidEditIssue() throws  ParseException {
+
+        ArgumentCaptor<Issue> argument = forClass(Issue.class);
+        Issue editedIssue = setUpEditedIssue();
+        JsonObject body = mGson.toJsonTree(editedIssue).getAsJsonObject();
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body.toString());
+        mMockWebServer.enqueue(mockResponse);
+        IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
+
+        mUser = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        mUser.setUserAuthToken("user-auth-token");
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.editIssue("issue-auth-token", body, mockCallback);
+
+        //test request
+        verify(mockCallback, timeout(1000)).onSuccess(argument.capture());
+
+        Issue responseIssue = argument.getValue();
+
+        // Test response body (issue)
+        assertEquals(editedIssue.getTitle(), responseIssue.getTitle());
+        assertEquals(editedIssue.getDescription(), responseIssue.getDescription());
+        assertEquals(editedIssue.getCategory(), responseIssue.getCategory());
+        assertEquals(editedIssue.getLongitude(), responseIssue.getLongitude());
+        assertEquals(editedIssue.getLatitude(), responseIssue.getLatitude());
+        assertEquals(editedIssue.isRisk(), responseIssue.isRisk());
+        assertEquals(editedIssue.getConfirmVotes(), responseIssue.getConfirmVotes());
+        assertEquals(editedIssue.getReports(), responseIssue.getReports());
+        assertEquals(editedIssue.getResolvedVotes(), responseIssue.getResolvedVotes());
+
+        // Test response body (picture)
+        assertEquals(editedIssue.getPicture().getContentType(),
+                responseIssue.getPicture().getContentType());
+        assertEquals(editedIssue.getPicture().getFileName(),
+                responseIssue.getPicture().getFileName());
+    }
+
+    @Test
+    public void testInvalidEditIssue() throws InterruptedException, ParseException {
+        ArgumentCaptor<Issue> argument = forClass(Issue.class);
+        Issue editedIssue = setUpEditedIssue();
+        JsonObject edited = mGson.toJsonTree(editedIssue).getAsJsonObject();
+        JsonObject body = new JsonObject();
+        body.addProperty("message", IssueAdapter
+                .RECORD_DOES_NOT_EXIST);
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+                .setBody(body.toString());
+        mMockWebServer.enqueue(mockResponse);
+        IssueSimpleCallback mockCallback = mock(IssueSimpleCallback.class);
+
+        UserAdapter.setCurrentUser(mUser);
+
+        mIssueAdapter.editIssue("issue-auth-token", edited, mockCallback);
+
+        // Test mockCallback.onFailure() is called
+        verify(mockCallback, timeout(1000)).onFailure();
+    }
+
     private void setUpIssue() throws ParseException {
         String dateString = "2017-04-22T22:11:41.000Z";
         DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT,
@@ -535,5 +598,13 @@ public class IssueAdapterTest {
 
     private IssueReward getIssueReward() {
         return new IssueReward(mIssue, new Reward(1, 10));
+    }
+
+    private Issue setUpEditedIssue() throws ParseException {
+        Picture picture =
+                new Picture("picture-file-name2", "picture-content-type", "picture-content2");
+        return new Issue("EditedIssue-title", "EditedIssue-description", Category
+                .ILLUMINATION,
+                false, 45.0f, 46.0f, picture, "user-auth-token");
     }
 }
