@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.civify.adapter.LoginAdapterImpl;
+import com.civify.adapter.UserAdapter;
 import com.civify.model.award.Award;
 import com.civify.service.award.AwardService;
 import com.civify.service.award.AwardSimpleCallback;
@@ -51,6 +52,7 @@ public class AwardAdapterImpl implements AwardAdapter {
         });
     }
 
+    @Override
     public void getOfferedAward(@NonNull String awardAuthToken, @NonNull final AwardSimpleCallback
             callback) {
         Call<Award> serviceCall = mAwardService.getAward(getToken(), awardAuthToken);
@@ -66,6 +68,28 @@ public class AwardAdapterImpl implements AwardAdapter {
 
             @Override
             public void onFailure(Call<Award> call, Throwable t) {
+                callback.onFailure();
+            }
+        });
+    }
+
+    @Override
+    public void getExchangedAwards(@NonNull String authToken, @NonNull final
+            ListAwardsSimpleCallback callback) {
+        Call<List<Award>> call = mAwardService.getExchangedAwards(getToken(), UserAdapter
+                .getCurrentUser().getUserAuthToken());
+        call.enqueue(new Callback<List<Award>>() {
+            @Override
+            public void onResponse(Call<List<Award>> call, Response<List<Award>> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Award>> call, Throwable t) {
                 callback.onFailure();
             }
         });

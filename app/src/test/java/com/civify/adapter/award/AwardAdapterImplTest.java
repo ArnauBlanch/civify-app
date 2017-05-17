@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 
 import android.content.SharedPreferences;
 
+import com.civify.adapter.UserAdapter;
+import com.civify.model.User;
 import com.civify.model.award.Award;
 import com.civify.model.issue.Picture;
 import com.civify.service.award.AwardService;
@@ -160,6 +162,68 @@ public class AwardAdapterImplTest {
         mMockWebServer.enqueue(mockResponse);
         mAwardAdapter.getOfferedAward(mAward.getAwardAuthToken(), mAwardSimpleCallbackMock);
         verify(mAwardSimpleCallbackMock, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void getExchangedAwardsValid() throws InterruptedException {
+        User user = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        user.setUserAuthToken("user-auth-token");
+
+        List<Award> fetchedAwards = new ArrayList<>();
+        fetchedAwards.add(mAward);
+        fetchedAwards.add(mAward);
+        fetchedAwards.add(mAward);
+        String jsonBody = mGson.toJson(fetchedAwards);
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(jsonBody);
+        mMockWebServer.enqueue(mockResponse);
+
+        UserAdapter.setCurrentUser(user);
+
+        mAwardAdapter.getExchangedAwards(UserAdapter.getCurrentUser().getUserAuthToken(),
+                mListAwardsSimpleCallbackMock);
+        RecordedRequest request = mMockWebServer.takeRequest();
+
+        assertEquals("GET", request.getMethod());
+        assertEquals("/users/" + UserAdapter.getCurrentUser().getUserAuthToken() +
+                "/exchanged_awards", request.getPath());
+
+        verify(mListAwardsSimpleCallbackMock, timeout(1000))
+                .onSuccess(mListOfAwardsCallbackCaptor.capture());
+
+        for (Award responseAward : mListOfAwardsCallbackCaptor.getValue()) {
+            assertEquals(mAward.getTitle(), responseAward.getTitle());
+            assertEquals(mAward.getDescription(), responseAward.getDescription());
+            assertEquals(mAward.getAwardAuthToken(), responseAward.getAwardAuthToken());
+            assertEquals(mAward.getCommerceOffering(), responseAward.getCommerceOffering());
+            assertEquals(mAward.getCreatedAt(), responseAward.getCreatedAt());
+            assertEquals(mAward.getUpdatedAt(), responseAward.getUpdatedAt());
+            assertEquals(mAward.getPrice(), responseAward.getPrice());
+            assertEquals(mAward.getPicture().getContentType(), responseAward.getPicture()
+                    .getContentType());
+        }
+    }
+
+    @Test
+    public void getExchangedAwardsInvalid() {
+        User user = new User("username", "name", "surname", "email@email.com", "mypass", "mypass");
+        user.setUserAuthToken("user-auth-token");
+
+        UserAdapter.setCurrentUser(user);
+
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        mMockWebServer.enqueue(mockResponse);
+        mAwardAdapter.getExchangedAwards(UserAdapter.getCurrentUser().getUserAuthToken(),
+                mListAwardsSimpleCallbackMock);
+        verify(mListAwardsSimpleCallbackMock, timeout(1000)).onFailure();
+
+        mockResponse.setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
+        mMockWebServer.enqueue(mockResponse);
+        mAwardAdapter.getExchangedAwards(UserAdapter.getCurrentUser().getUserAuthToken(),
+                mListAwardsSimpleCallbackMock);
+        verify(mListAwardsSimpleCallbackMock, timeout(1000)).onFailure();
     }
 
     private void setUpAward() throws ParseException {
