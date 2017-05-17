@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.civify.activity.fragments.rewards.RewardDetailsFragment"
+    tools:context="com.civify.activity.fragments.award.AwardDetailsFragment"
     tools:ignore="missingPrefix"
     >
   <ScrollView

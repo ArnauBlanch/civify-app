@@ -48,7 +48,7 @@ public class AwardsViewAdapter extends RecyclerView.Adapter<AwardsViewAdapter.My
         OnClickListener showDetails = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: show award details
+                award.showRewardDetails();
             }
         };
 

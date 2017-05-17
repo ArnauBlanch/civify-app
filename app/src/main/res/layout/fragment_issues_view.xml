@@ -3,7 +3,7 @@
     android:id="@+id/wall_fragments"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.civify.activity.fragments.IssuesViewFragment"
+    tools:context="com.civify.activity.fragments.issue.IssuesViewFragment"
     android:orientation="vertical"
     >
 

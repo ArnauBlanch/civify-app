@@ -1,4 +1,4 @@
-package com.civify.activity.fragments.reward;
+package com.civify.activity.fragments.award;
 
 import android.graphics.Typeface;
 import android.os.Bundle;

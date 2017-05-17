@@ -1,4 +1,4 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.issue;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;

@@ -26,10 +26,9 @@ import com.civify.activity.fragments.BasicFragment;
 import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.SettingsFragment;
-import com.civify.activity.fragments.WallFragment;
+import com.civify.activity.fragments.award.AwardsFragment;
+import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
-import com.civify.activity.fragments.rewards.RewardDetailsFragment;
-import com.civify.activity.fragments.reward.AwardsFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -47,7 +46,8 @@ public class DrawerActivity extends BaseActivity
     public static final int ACHIEVEMENTS_ID = 4;
     public static final int EVENTS_ID = 5;
     public static final int SETTINGS_ID = 6;
-    public static final int DETAILS_ID = 7;
+    public static final int DETAILS_ISSUE_ID = 7;
+    public static final int DETAILS_AWARD_ID = 8;
 
     private static final int COINS = 432;
     private static final int EXPERIENCE = 50;
@@ -110,7 +110,8 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ID) {
+            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
+                    && mCurrentFragment != DETAILS_AWARD_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
                 while (fragment.getFragmentId() != NAVIGATE_ID) {
@@ -209,7 +210,7 @@ public class DrawerActivity extends BaseActivity
     private void updateMenu() {
         if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
-        } else if (mCurrentFragment == DETAILS_ID) {
+        } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
         } else {
