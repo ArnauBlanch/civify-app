@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -157,6 +158,17 @@ public class EditIssueActivity extends CameraGalleryActivity {
     }
 
     public void saveListener(View v) {
+        TextInputLayout descLayout = (TextInputLayout) findViewById(R.id.description_layout);
+        String description = mIssueDesc.getText().toString();
+        String title = mIssuename.getText().toString();
+        if (description.isEmpty() || title.isEmpty()) {
+            Snackbar.make(v, R.string.must_write_title_description, Snackbar.LENGTH_SHORT).show();
+        } else {
+            editIssue(v);
+        }
+    }
+
+    private void editIssue(View v) {
         int categoryId = ((Spinner) findViewById(R.id.nameCategorySpinner))
                 .getSelectedItemPosition();
         final View vi = v;
@@ -164,22 +176,23 @@ public class EditIssueActivity extends CameraGalleryActivity {
 
         mIssueAdapter.editIssue(mIssue.getIssueAuthToken(), getUpdatedFields(),
                 new IssueSimpleCallback() {
-                @Override
-                public void onSuccess(Issue issue) {
+                    @Override
+                    public void onSuccess(Issue issue) {
 
-                    Intent intent = new Intent();
-                    Bundle data = new Bundle();
-                    data.putSerializable(TAG_ISSUE, issue);
-                    intent.putExtra(TAG_ISSUE, data);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
+                        Intent intent = new Intent();
+                        Bundle data = new Bundle();
+                        data.putSerializable(TAG_ISSUE, issue);
+                        intent.putExtra(TAG_ISSUE, data);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
 
-                @Override
-                public void onFailure() {
-                    Snackbar.make(vi, R.string.couldnt_edit_issue, Snackbar.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure() {
+                        Snackbar.make(vi, R.string.couldnt_edit_issue, Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                });
     }
 
     private JsonObject getUpdatedFields() {
