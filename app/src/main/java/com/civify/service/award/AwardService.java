@@ -22,4 +22,8 @@ public interface AwardService {
     @GET("/awards/{award_auth_token}")
     Call<Award> getAward(@Header("Authorization") String authToken, @Path("award_auth_token")
             String awardAuthToken);
+
+    @GET("/users/{user_auth_token}/exchanged_awards")
+    Call<List<Award>> getExchangedAwards(@Header("Authorization") String authToken, @Path
+            ("user_auth_token") String userAuthToken);
 }

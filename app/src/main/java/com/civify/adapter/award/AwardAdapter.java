@@ -11,4 +11,7 @@ public interface AwardAdapter {
 
     void getOfferedAward(@NonNull String awardAuthToken, @NonNull AwardSimpleCallback
             callback);
+
+    void getExchangedAwards(@NonNull String authToken, @NonNull ListAwardsSimpleCallback
+            callback);
 }
