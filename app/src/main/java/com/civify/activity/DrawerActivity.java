@@ -31,7 +31,6 @@ import com.civify.activity.fragments.profile.ProfileFragment;
 import com.civify.activity.fragments.reward.AwardsFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Stack;
 
@@ -47,7 +46,6 @@ public class DrawerActivity extends BaseActivity
     public static final int SETTINGS_ID = 6;
     public static final int DETAILS_ID = 7;
 
-    private static final int LEVEL = 3;
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
     private static final int SHOW_AS_ACTION_NEVER = 0;
@@ -93,9 +91,6 @@ public class DrawerActivity extends BaseActivity
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
-        mCurrentUser = UserAdapter.getCurrentUser();
-
-        mCurrentUser.setLevel(LEVEL);
         setUserHeader();
     }
 
@@ -233,33 +228,33 @@ public class DrawerActivity extends BaseActivity
     }
 
     public void setUserHeader() {
-        User user = mCurrentUser;
+        mCurrentUser = UserAdapter.getCurrentUser();
         View headerView = mNavigationView.getHeaderView(0);
         // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
         ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
 
         TextView name = (TextView) headerView.findViewById(R.id.header_name);
-        name.setText(user.getName() + " " + user.getSurname());
+        name.setText(mCurrentUser.getName() + ' ' + mCurrentUser.getSurname());
 
         TextView username = (TextView) headerView.findViewById(R.id.header_username);
-        username.setText(user.getUsername());
+        username.setText(mCurrentUser.getUsername());
 
         TextView level = (TextView) headerView.findViewById(R.id.header_level);
-        String userLevel = Integer.toString(user.getLevel());
+        String userLevel = Integer.toString(mCurrentUser.getLevel());
         String showLevel = getString(R.string.level) + ' ' + userLevel;
         level.setText(showLevel);
 
         TextView xp = (TextView) headerView.findViewById(R.id.header_xp);
-        String userExperience = Integer.toString(user.getExperience());
-        //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
+        String userExperience = Long.toString(mCurrentUser.getExperience());
+        xp.setText(userExperience + '/' + mCurrentUser.getExperienceMax());
 
         TextView coins = (TextView) headerView.findViewById(R.id.header_coins);
-        String userCoins = Integer.toString(user.getCoins());
+        String userCoins = Integer.toString(mCurrentUser.getCoins());
         coins.setText(userCoins);
 
-        CircularImageView profileImage =
-                (CircularImageView) headerView.findViewById(R.id.header_image);
+        //CircularImageView profileImage =
+        //        (CircularImageView) headerView.findViewById(R.id.header_image);
         //profileImage.setImageBitmap(img); // bitmap
         //profileImage.setImageIcon(img); // icon
     }

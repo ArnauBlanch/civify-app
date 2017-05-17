@@ -73,7 +73,6 @@ public class NavigateFragment extends BasicFragment {
                     CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
                     UserAdapter.getCurrentUser().update(issueReward.getReward());
                     ((DrawerActivity) getActivity()).setUserHeader();
-                    // TODO: Show reward dialog
                 } catch (MapNotLoadedException ignore) {
                     // Button to create issues is only enabled if the map is loaded
                 }

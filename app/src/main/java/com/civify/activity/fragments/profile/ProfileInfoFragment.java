@@ -56,7 +56,7 @@ public class ProfileInfoFragment extends Fragment {
             level.setText(showLevel);
 
             TextView xp = (TextView) view.findViewById(R.id.user_info_xp);
-            String userExperience = Integer.toString(user.getExperience());
+            String userExperience = Long.toString(user.getExperience());
             //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
 
             ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.user_info_progress);
