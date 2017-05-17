@@ -52,10 +52,10 @@ public class DrawerActivity extends BaseActivity
     private static final int EXPERIENCE = 50;
     private static final int LEVEL = 3;
     private static final int DEFAULT_ELEVATION = 6;
-
-    private Stack<Fragment> mFragmentStack;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
     private static final int SHOW_AS_ACTION_NEVER = 0;
+
+    private Stack<Fragment> mFragmentStack;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
