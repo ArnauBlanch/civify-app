@@ -177,4 +177,5 @@
   <string name="cant_resolve_own_issue">You can\'t resolve your own issue</string>
     <string name="couldnt_delete_issue">Couldn\'t delete issue</string>
     <string name="couldnt_edit_issue">Couldn\'t edit issue</string>
+    <string name="must_write_title_description">You must write a title and a description</string>
 </resources>
