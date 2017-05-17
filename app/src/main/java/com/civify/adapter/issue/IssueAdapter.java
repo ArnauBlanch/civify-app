@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import com.civify.adapter.LoginAdapterImpl;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.model.IssueReward;
 import com.civify.model.MessageResponse;
 import com.civify.model.issue.Issue;
 import com.civify.service.ExpectedResponseCallback;
+import com.civify.service.issue.IssueRewardCallback;
 import com.civify.service.issue.IssueService;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.service.issue.ListIssuesSimpleCallback;
@@ -16,6 +18,7 @@ import com.google.gson.JsonObject;
 
 import java.net.HttpURLConnection;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,13 +46,13 @@ public class IssueAdapter {
         this.mAuthToken = sharedPreferences.getString(LoginAdapterImpl.AUTH_TOKEN, "");
     }
 
-    public void createIssue(Issue issue, final IssueSimpleCallback callback) {
-        Call<Issue> call = mIssueService.createIssue(mAuthToken, issue, UserAdapter
+    public void createIssue(Issue issue, final IssueRewardCallback callback) {
+        Call<IssueReward> call = mIssueService.createIssue(mAuthToken, issue, UserAdapter
                 .getCurrentUser().getUserAuthToken());
-        call.enqueue(new Callback<Issue>() {
+        call.enqueue(new Callback<IssueReward>() {
 
             @Override
-            public void onResponse(Call<Issue> call, Response<Issue> response) {
+            public void onResponse(Call<IssueReward> call, Response<IssueReward> response) {
                 if (response.code() == HttpURLConnection.HTTP_CREATED) {
                     callback.onSuccess(response.body());
                 } else {
@@ -58,7 +61,7 @@ public class IssueAdapter {
             }
 
             @Override
-            public void onFailure(Call<Issue> call, Throwable t) {
+            public void onFailure(Call<IssueReward> call, Throwable t) {
                 t.printStackTrace();
             }
         });

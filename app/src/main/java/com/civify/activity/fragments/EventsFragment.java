@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EventsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventsFragment extends Fragment {
+public class EventsFragment extends BasicFragment {
 
     public EventsFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -30,6 +30,11 @@ public class EventsFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.EVENTS_ID;
     }
 
     @Override

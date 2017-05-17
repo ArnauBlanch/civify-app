@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AchievementsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AchievementsFragment extends Fragment {
+public class AchievementsFragment extends BasicFragment {
 
     public AchievementsFragment() {
-        // Required empty public constructor
     }
 
     public static AchievementsFragment newInstance() {
@@ -24,6 +24,11 @@ public class AchievementsFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.ACHIEVEMENTS_ID;
     }
 
     @Override
