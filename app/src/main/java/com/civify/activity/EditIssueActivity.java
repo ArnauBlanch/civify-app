@@ -3,10 +3,8 @@ package com.civify.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,24 +17,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.createissue.CameraGalleryActivity;
 import com.civify.activity.createissue.CategorySpinnerAdapter;
-import com.civify.activity.fragments.IssueDetailsFragment;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
-import com.civify.model.issue.Picture;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class EditIssueActivity extends CameraGalleryActivity {
 
@@ -150,8 +143,7 @@ public class EditIssueActivity extends CameraGalleryActivity {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
-        }
-        else if (item.getItemId() == R.id.confirm) {
+        } else if (item.getItemId() == R.id.confirm) {
             saveListener(findViewById(android.R.id.content));
         }
         return super.onOptionsItemSelected(item);
@@ -179,7 +171,7 @@ public class EditIssueActivity extends CameraGalleryActivity {
                     Bundle data = new Bundle();
                     data.putSerializable(TAG_ISSUE, issue);
                     intent.putExtra(TAG_ISSUE, data);
-                    setResult(RESULT_OK,intent );
+                    setResult(RESULT_OK, intent);
                     finish();
                 }
 
@@ -189,6 +181,7 @@ public class EditIssueActivity extends CameraGalleryActivity {
                 }
             });
     }
+
     private JsonObject getUpdatedFields() {
         Gson gson = ServiceGenerator.getInstance().getGson();
         final Issue editedIssue;

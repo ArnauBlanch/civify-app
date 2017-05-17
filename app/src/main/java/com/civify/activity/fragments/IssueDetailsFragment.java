@@ -1,5 +1,7 @@
 package com.civify.activity.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,8 +46,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.ocpsoft.prettytime.PrettyTime;
-
-import static android.app.Activity.RESULT_OK;
 
 public class IssueDetailsFragment extends Fragment {
 
@@ -341,7 +341,8 @@ public class IssueDetailsFragment extends Fragment {
 
             @Override
             public void onFailure() {
-                Snackbar.make(mViewDetails, R.string.couldnt_delete_issue, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mViewDetails, R.string.couldnt_delete_issue, Snackbar.LENGTH_SHORT)
+                        .show();
             }
         };
     }
@@ -444,9 +445,8 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        switch(requestCode) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
             case REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     Bundle editedBundle = data.getBundleExtra(TAG_ISSUE);
