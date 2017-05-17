@@ -38,7 +38,6 @@ import java.util.Stack;
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int UNDEFINED_ID = -1;
     public static final int NAVIGATE_ID = 0;
     public static final int WALL_ID = 1;
     public static final int PROFILE_ID = 2;
@@ -48,10 +47,10 @@ public class DrawerActivity extends BaseActivity
     public static final int SETTINGS_ID = 6;
     public static final int DETAILS_ID = 7;
 
-    private static final int COINS = 432;
-    private static final int EXPERIENCE = 50;
     private static final int LEVEL = 3;
     private static final int DEFAULT_ELEVATION = 6;
+    private static final int SHOW_AS_ACTION_IF_ROOM = 1;
+    private static final int SHOW_AS_ACTION_NEVER = 0;
 
     private Stack<Fragment> mFragmentStack;
 
@@ -97,9 +96,7 @@ public class DrawerActivity extends BaseActivity
         mCurrentUser = UserAdapter.getCurrentUser();
 
         mCurrentUser.setLevel(LEVEL);
-        //mCurrentUser.setCoins(COINS);
-        mCurrentUser.setExperience(EXPERIENCE);
-        setUserHeader(mCurrentUser);
+        setUserHeader();
     }
 
     @Override
@@ -222,15 +219,21 @@ public class DrawerActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+        int noIcona = SHOW_AS_ACTION_NEVER;
+        if (mShowMenuDetails) {
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+        }
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
+            menu.getItem(i).setShowAsAction(noIcona);
         }
 
         return true;
     }
 
-    private void setUserHeader(User user) {
+    public void setUserHeader() {
+        User user = mCurrentUser;
         View headerView = mNavigationView.getHeaderView(0);
         // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
