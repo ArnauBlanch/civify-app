@@ -277,7 +277,6 @@ public class Issue implements Serializable {
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         mPicture = new Picture("issue-picture", "image/jpg",
                 Base64.encodeToString(byteArray, Base64.DEFAULT));
-        int i = 0;
     }
 
     public boolean getConfirmedByAuthUser() {
