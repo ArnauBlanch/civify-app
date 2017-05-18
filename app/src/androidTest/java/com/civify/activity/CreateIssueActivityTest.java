@@ -92,12 +92,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@LargeTest @RunWith(AndroidJUnit4.class) public class CreateIssueActivityTest {
+@LargeTest
+@RunWith(AndroidJUnit4.class)
+public class CreateIssueActivityTest {
 
     public static final String DROPDOWN_LISTVIEW = "android.widget.DropDownListView";
     public static final String NAVIGATE_UP = "Navigate up";
@@ -112,25 +115,30 @@ import retrofit2.converter.gson.GsonConverterFactory;
         }
     }
 
-    @Rule public IntentsTestRule<DrawerActivity> intentsRule =
+    @Rule
+    public IntentsTestRule<DrawerActivity> intentsRule =
             new IntentsTestRule<>(DrawerActivity.class);
 
-    @BeforeClass public static void setUpBeforeClass() throws InterruptedException {
+    @BeforeClass
+    public static void setUpBeforeClass() throws InterruptedException {
         Context context = getInstrumentation().getTargetContext();
         LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
         loginAdapter.logout();
         loginAdapter.login("TestUser001", "Test1234", new LoginFinishedCallback() {
-            @Override public void onLoginSucceeded(User u) {
+            @Override
+            public void onLoginSucceeded(User u) {
             }
 
-            @Override public void onLoginFailed(LoginError t) {
+            @Override
+            public void onLoginFailed(LoginError t) {
             }
         });
 
         sleep(5000);
     }
 
-    @Before public void setUp() {
+    @Before
+    public void setUp() {
         intentsRule.getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 CivifyMap.setContext(intentsRule.getActivity());
@@ -145,13 +153,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
         setupMockIssueResponse();
     }
 
-    @After public void tearDown() {
+    @After
+    public void tearDown() {
         Context context = getInstrumentation().getTargetContext();
         LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
         loginAdapter.logout();
     }
 
-    @BeforeClass public static void setUpPermissions() throws InterruptedException {
+    @BeforeClass
+    public static void setUpPermissions() throws InterruptedException {
         grantPermission("android.permission.ACCESS_FINE_LOCATION");
         grantPermission("android.permission.CAMERA");
         grantPermission("android.permission.READ_EXTERNAL_STORAGE");
@@ -162,11 +172,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
         loginAdapter.logout();
         final boolean[] ended = { false };
         loginAdapter.login("TestUser001", "Test1234", new LoginFinishedCallback() {
-            @Override public void onLoginSucceeded(User u) {
+            @Override
+            public void onLoginSucceeded(User u) {
                 ended[0] = true;
             }
 
-            @Override public void onLoginFailed(LoginError t) {
+            @Override
+            public void onLoginFailed(LoginError t) {
                 ended[0] = true;
             }
         });
@@ -206,14 +218,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
         }
     }
 
-    @Test public void testCreateIssue() throws IOException, UiObjectNotFoundException {
+    @Test
+    public void testCreateIssue() throws IOException, UiObjectNotFoundException {
         // Title
         onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
 
-        onView(allOf(isDescendantOfA(withId(R.id.title_input_layout)), not(isAssignableFrom(EditText
-                        .class)),
-                isAssignableFrom(TextView.class))).check(matches(withText(R.string
-                .must_insert_issue_title)));
+        onView(allOf(isDescendantOfA(withId(R.id.title_input_layout)),
+                not(isAssignableFrom(EditText.class)), isAssignableFrom(TextView.class))).check(
+                matches(withText(R.string.must_insert_issue_title)));
 
         onView(allOf(withId(R.id.title_input), isDisplayed())).perform(replaceText("IssueTitle"),
                 closeSoftKeyboard());
@@ -271,15 +283,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
         // Description
         onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
 
-        onView(allOf(isDescendantOfA(withId(R.id.description_layout)), not(isAssignableFrom(EditText
-                        .class)),
-                isAssignableFrom(TextView.class))).check(matches(withText(R.string
-                .must_insert_description)));
+        onView(allOf(isDescendantOfA(withId(R.id.description_layout)),
+                not(isAssignableFrom(EditText.class)), isAssignableFrom(TextView.class))).check(
+                matches(withText(R.string.must_insert_description)));
 
         onView(allOf(withId(R.id.description_input), isDisplayed())).perform(
                 replaceText("Test description."), closeSoftKeyboard());
 
         onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
+
+        // Rewards Dialog
+        onView(allOf(withId(android.R.id.button1), isDisplayed())).perform(click());
     }
 
     private static void takeCameraPhoto() throws UiObjectNotFoundException {
