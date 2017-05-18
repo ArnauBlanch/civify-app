@@ -139,8 +139,16 @@ public class User implements Serializable {
         return mExperience;
     }
 
+    public void setExperience(int experience) {
+        mExperience = experience;
+    }
+
     public int getExperienceMax() {
         return mExperienceMax;
+    }
+
+    public void setExperienceMax(int experienceMax) {
+        mExperienceMax = experienceMax;
     }
 
     public int getCoins() {

@@ -33,6 +33,7 @@ import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.UserAttacher;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
@@ -42,7 +43,6 @@ import com.civify.model.map.CivifyMarkers;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -283,25 +283,12 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private void setUser(User user) {
         Log.v(DEBUG, "setUser");
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
-        ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
-
-        TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
-        name.setText(user.getName() + ' ' + user.getSurname());
-
-        TextView username = (TextView) mViewDetails.findViewById(R.id.userUsername);
-        username.setText(user.getUsername());
-
-        TextView level = (TextView) mViewDetails.findViewById(R.id.userLevel);
-        String userLevel = Integer.toString(user.getLevel());
-        String showLevel = getString(R.string.level) + ' ' + userLevel;
-        level.setText(showLevel);
-
-        CircularImageView profileImage =
-                (CircularImageView) mViewDetails.findViewById(R.id.userImage);
-        //profileImage.setImageBitmap(img); // bitmap
-        //profileImage.setImageIcon(img); // icon
+        UserAttacher.get(getContext(), user)
+                .setFullName((TextView) mViewDetails.findViewById(R.id.userName))
+                .setUsername((TextView) mViewDetails.findViewById(R.id.userUsername))
+                .setLevel((TextView) mViewDetails.findViewById(R.id.userLevel))
+                .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress));
 
         Log.v(DEBUG, "setUser finished");
     }
