@@ -1,7 +1,6 @@
 package com.civify.activity.fragments;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.civify.R;
+import com.civify.adapter.UserAdapter;
 import com.civify.model.Reward;
 
 public class RewardDialogFragment extends DialogFragment {
@@ -20,16 +20,17 @@ public class RewardDialogFragment extends DialogFragment {
     private static final String COINS = "coins";
     private static final String EXPERIENCE = "experience";
 
-    public static RewardDialogFragment showDialog(FragmentActivity activity, Reward reward) {
-        RewardDialogFragment fragment = new RewardDialogFragment();
+    public static void showDialog(FragmentActivity activity, Reward reward) {
+        if (!reward.empty()) {
+            RewardDialogFragment fragment = new RewardDialogFragment();
 
-        Bundle args = new Bundle();
-        args.putInt(COINS, reward.getCoins());
-        args.putInt(EXPERIENCE, reward.getExperience());
-        fragment.setArguments(args);
-        fragment.show(activity.getSupportFragmentManager(), DIALOG_TAG);
-
-        return fragment;
+            Bundle args = new Bundle();
+            args.putInt(COINS, reward.getCoins());
+            int exp = reward.getExperience();
+            args.putInt(EXPERIENCE, exp);
+            fragment.setArguments(args);
+            fragment.show(activity.getSupportFragmentManager(), DIALOG_TAG);
+        }
     }
 
     @NonNull
@@ -43,13 +44,7 @@ public class RewardDialogFragment extends DialogFragment {
 
         builder.setView(view)
                 .setTitle(getString(R.string.congratulations))
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
+                .setPositiveButton(android.R.string.ok, null);
 
         return builder.create();
     }
@@ -76,6 +71,15 @@ public class RewardDialogFragment extends DialogFragment {
         } else {
             view.findViewById(R.id.dialog_xp).setVisibility(View.GONE);
             xp.setVisibility(View.GONE);
+        }
+
+        TextView levelUp = (TextView) view.findViewById(R.id.level_up);
+        if (UserAdapter.getCurrentUser().willLevelUp(experience)) {
+            levelUp.setText(String.valueOf(UserAdapter.getCurrentUser().getLevel() + 1));
+        } else {
+            levelUp.setVisibility(View.GONE);
+            view.findViewById(R.id.level_tag).setVisibility(View.GONE);
+            view.findViewById(R.id.star_icon).setVisibility(View.GONE);
         }
         
         return view;

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,15 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
-import com.civify.adapter.UserAdapter;
 import com.civify.model.IssueReward;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
+import com.civify.utils.AdapterFactory;
 
 public class NavigateFragment extends BasicFragment {
 
-    public NavigateFragment() {
-    }
+    public NavigateFragment() { }
 
     public static NavigateFragment newInstance() {
         return new NavigateFragment();
@@ -71,20 +71,16 @@ public class NavigateFragment extends BasicFragment {
                         (IssueReward) data.getExtras().getSerializable("issueReward");
                 try {
                     CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
-                    UserAdapter.getCurrentUser().update(issueReward.getReward());
-                    ((DrawerActivity) getActivity()).setUserHeader();
-                    // TODO: Show reward dialog
+
+                    AdapterFactory.getInstance().getUserAdapter(getContext())
+                            .showReward((DrawerActivity) getActivity(), issueReward.getReward());
+
+                    Snackbar.make(getView(), getString(R.string.issue_created),
+                            Snackbar.LENGTH_SHORT).show();
                 } catch (MapNotLoadedException ignore) {
-                    // Button to create issues is only enabled if the map is loaded
+                    Log.wtf(NavigateFragment.class.getSimpleName(), "Creating issues must be "
+                            + "only enabled if the map is loaded");
                 }
-
-                if (issueReward.getReward().getCoins() > 0 || issueReward.getReward()
-                        .getExperience() > 0) {
-                    RewardDialogFragment.showDialog(getActivity(), issueReward.getReward());
-                }
-
-                Snackbar.make(getView(), getString(R.string.issue_created),
-                        Snackbar.LENGTH_SHORT).show();
             }
             CivifyMap.getInstance().setCanBeDisabled(true);
 

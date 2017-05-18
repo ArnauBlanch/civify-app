@@ -31,7 +31,6 @@ import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Stack;
 
@@ -48,7 +47,7 @@ public class DrawerActivity extends BaseActivity
     public static final int DETAILS_ISSUE_ID = 7;
     public static final int DETAILS_AWARD_ID = 8;
 
-    private static final int LEVEL = 3;
+    private static final int PERCENT = 100;
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
     private static final int SHOW_AS_ACTION_NEVER = 0;
@@ -62,7 +61,6 @@ public class DrawerActivity extends BaseActivity
     private int mCurrentFragment;
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
-    private User mCurrentUser;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -94,9 +92,6 @@ public class DrawerActivity extends BaseActivity
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
-        mCurrentUser = UserAdapter.getCurrentUser();
-
-        mCurrentUser.setLevel(LEVEL);
         setUserHeader();
     }
 
@@ -235,33 +230,35 @@ public class DrawerActivity extends BaseActivity
     }
 
     public void setUserHeader() {
-        User user = mCurrentUser;
+        User currentUser = UserAdapter.getCurrentUser();
         View headerView = mNavigationView.getHeaderView(0);
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
-
-        ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
 
         TextView name = (TextView) headerView.findViewById(R.id.header_name);
-        name.setText(user.getName() + " " + user.getSurname());
+        name.setText(currentUser.getName() + ' ' + currentUser.getSurname());
 
         TextView username = (TextView) headerView.findViewById(R.id.header_username);
-        username.setText(user.getUsername());
+        username.setText(currentUser.getUsername());
 
         TextView level = (TextView) headerView.findViewById(R.id.header_level);
-        String userLevel = Integer.toString(user.getLevel());
+        String userLevel = Integer.toString(currentUser.getLevel());
         String showLevel = getString(R.string.level) + ' ' + userLevel;
         level.setText(showLevel);
 
         TextView xp = (TextView) headerView.findViewById(R.id.header_xp);
-        String userExperience = Integer.toString(user.getExperience());
-        //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
+        String userExperience = Integer.toString(currentUser.getExperience());
+        xp.setText(userExperience + '/' + currentUser.getExperienceMax());
+
+        ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
+        int progress = (int)
+                (((double) currentUser.getExperience() / currentUser.getExperienceMax()) * PERCENT);
+        progressBar.setProgress(progress);
 
         TextView coins = (TextView) headerView.findViewById(R.id.header_coins);
-        String userCoins = Integer.toString(user.getCoins());
+        String userCoins = Integer.toString(currentUser.getCoins());
         coins.setText(userCoins);
 
-        CircularImageView profileImage =
-                (CircularImageView) headerView.findViewById(R.id.header_image);
+        //CircularImageView profileImage =
+        //        (CircularImageView) headerView.findViewById(R.id.header_image);
         //profileImage.setImageBitmap(img); // bitmap
         //profileImage.setImageIcon(img); // icon
     }

@@ -278,17 +278,15 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private User buildFakeUser() {
         String password = "";
-        User fakeUser = new User("", "User couldn't be retrieved", "",
+        return new User("", "User couldn't be retrieved", "",
                 "example@mail.com", password, password);
-        fakeUser.setLevel(1);
-        return fakeUser;
     }
 
     private void setUser(User user) {
-        Log.v(DEBUG, "setUser");
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
+        Log.v(DEBUG, "setUser: init");
 
         ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
+        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
         TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
         name.setText(user.getName() + ' ' + user.getSurname());
