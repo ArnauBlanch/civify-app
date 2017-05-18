@@ -46,14 +46,20 @@ public class User implements Serializable {
     private String mUserAuthToken;
 
     @Expose(serialize = false)
-    @SerializedName("coins")
-    private int mCoins;
+    @SerializedName("lv")
+    private int mLevel;
 
     @Expose(serialize = false)
     @SerializedName("xp")
     private int mExperience;
 
-    private int mLevel;
+    @Expose(serialize = false)
+    @SerializedName("xp_max")
+    private int mExperienceMax;
+
+    @Expose(serialize = false)
+    @SerializedName("coins")
+    private int mCoins;
 
     public User(@NonNull String username, @NonNull String name,
                 @NonNull String surname, @NonNull String email,
@@ -64,6 +70,9 @@ public class User implements Serializable {
         mEmail = email;
         mPassword = password;
         mPasswordConfirmation = passwordConfirmation;
+        mLevel = 1;
+        mExperience = 0;
+        mExperienceMax = 0;
     }
 
     public String getUsername() {
@@ -118,40 +127,24 @@ public class User implements Serializable {
         return mCreatedAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.mCreatedAt = createdAt;
-    }
-
     public String getUpdatedAt() {
         return mUpdatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.mUpdatedAt = updatedAt;
     }
 
     public int getLevel() {
         return mLevel;
     }
 
-    public void setLevel(int level) {
-        mLevel = level;
-    }
-
     public int getExperience() {
         return mExperience;
     }
 
-    public void setExperience(int experience) {
-        mExperience = experience;
+    public int getExperienceMax() {
+        return mExperienceMax;
     }
 
     public int getCoins() {
         return mCoins;
-    }
-
-    public void setCoins(int coins) {
-        mCoins = coins;
     }
 
     public String getUserAuthToken() {
@@ -162,8 +155,7 @@ public class User implements Serializable {
         mUserAuthToken = userAuthToken;
     }
 
-    public void update(Reward reward) {
-        setCoins(getCoins() + reward.getCoins());
-        setExperience(getExperience() + reward.getExperience());
+    public boolean willLevelUp(int experience) {
+        return experience + getExperience() >= getExperienceMax();
     }
 }
