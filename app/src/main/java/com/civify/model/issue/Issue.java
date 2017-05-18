@@ -129,6 +129,21 @@ public class Issue implements Serializable {
         mPicture = picture;
     }
 
+    public Issue(String title, String description, Category category, boolean risk,
+            double longitude, double latitude, Picture pic, String userAuthToken) {
+        mTitle = title;
+        mDescription = description;
+        mCategory = category;
+        mRisk = risk;
+        mLongitude = longitude;
+        mLatitude = latitude;
+        mResolvedVotes = 0;
+        mConfirmVotes = 0;
+        mReports = 0;
+        mUserAuthToken = userAuthToken;
+        mPicture = pic;
+    }
+
     public String getTitle() {
         return mTitle;
     }

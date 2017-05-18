@@ -1,5 +1,7 @@
 package com.civify.activity.fragments.issue;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +32,7 @@ import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
@@ -51,6 +56,8 @@ public class IssueDetailsFragment extends BasicFragment {
     private static final int DISTANCE_TO_METERS = 1000000;
     private static final int MIN_METERS_FROM_ISSUE = 70;
     private static final float DISABLED_ALPHA = 0.15f;
+    private static final int SHOW_AS_ACTION_NEVER = 0;
+    private static final int REQUEST_CODE = 0;
 
     private UserAdapter mUserAdapter;
     private IssueAdapter mIssueAdapter;
@@ -90,6 +97,17 @@ public class IssueDetailsFragment extends BasicFragment {
         return mViewDetails;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (!mIssue.getUserAuthToken().equals(mUserAdapter.getCurrentUser().getUserAuthToken())) {
+            for (int i = 0; i < menu.size(); ++i) {
+                menu.getItem(i).setVisible(false);
+                menu.getItem(i).setShowAsAction(SHOW_AS_ACTION_NEVER);
+            }
+        }
+    }
+
     private void init() {
         Log.v(DEBUG, "init");
 
@@ -114,6 +132,11 @@ public class IssueDetailsFragment extends BasicFragment {
     private void setPosition() {
         addDistance();
         addStreetAsync(mIssue.getPosition());
+    }
+
+    public void setIssue(Issue issue) {
+        mIssue = issue;
+        setIssue();
     }
 
     private void setIssue() {
@@ -339,19 +362,20 @@ public class IssueDetailsFragment extends BasicFragment {
         }
     }
 
-    public IssueSimpleCallback getDeleteCallback() {
-        return new IssueSimpleCallback() {
+    public SimpleCallback getDeleteCallback() {
+        return new SimpleCallback() {
             @Override
-            public void onSuccess(Issue issue) {
+            public void onSuccess() {
                 CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
-                if (markers != null) markers.remove(issue.getIssueAuthToken());
+                if (markers != null) markers.remove(mIssue.getIssueAuthToken());
                 getActivity().onBackPressed();
                 Log.d(DEBUG, "issue borrada");
             }
 
             @Override
             public void onFailure() {
-                Snackbar.make(mViewDetails, "Couldn't delete issue", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mViewDetails, R.string.couldnt_delete_issue, Snackbar.LENGTH_SHORT)
+                        .show();
             }
         };
     }
@@ -447,6 +471,27 @@ public class IssueDetailsFragment extends BasicFragment {
     public void launchEditActivity() {
         DrawerActivity drawerActivity = (DrawerActivity) getActivity();
         Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
-        drawerActivity.startActivity(intent);
+        Bundle data = new Bundle();
+        data.putSerializable(TAG_ISSUE, mIssue);
+        intent.putExtra(TAG_ISSUE, data);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    Bundle editedBundle = data.getBundleExtra(TAG_ISSUE);
+                    Issue issue = (Issue) editedBundle.getSerializable(TAG_ISSUE);
+                    setIssue(issue);
+                    CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
+                    markers.get(mIssue.getIssueAuthToken()).setIssue(mIssue);
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 }

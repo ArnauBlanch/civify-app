@@ -35,22 +35,25 @@ public class User implements Serializable {
 
     @Expose(serialize = false)
     @SerializedName("created_at")
-    private String mCreatedat;
+    private String mCreatedAt;
 
     @Expose(serialize = false, deserialize = false)
     @SerializedName("updated_at")
-    private String mUpdatedat;
+    private String mUpdatedAt;
 
     @Expose(serialize = false)
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
-    private int mLevel;
-    private int mExperience;
-
     @Expose(serialize = false)
     @SerializedName("coins")
     private int mCoins;
+
+    @Expose(serialize = false)
+    @SerializedName("xp")
+    private int mExperience;
+
+    private int mLevel;
 
     public User(@NonNull String username, @NonNull String name,
                 @NonNull String surname, @NonNull String email,
@@ -111,20 +114,20 @@ public class User implements Serializable {
         mPasswordConfirmation = passwordConfirmation;
     }
 
-    public String getCreatedat() {
-        return mCreatedat;
+    public String getCreatedAt() {
+        return mCreatedAt;
     }
 
-    public void setCreatedat(String createdat) {
-        this.mCreatedat = createdat;
+    public void setCreatedAt(String createdAt) {
+        this.mCreatedAt = createdAt;
     }
 
-    public String getUpdatedat() {
-        return mUpdatedat;
+    public String getUpdatedAt() {
+        return mUpdatedAt;
     }
 
-    public void setUpdatedat(String updatedat) {
-        this.mUpdatedat = updatedat;
+    public void setUpdatedAt(String updatedAt) {
+        this.mUpdatedAt = updatedAt;
     }
 
     public int getLevel() {
@@ -157,5 +160,10 @@ public class User implements Serializable {
 
     public void setUserAuthToken(String userAuthToken) {
         mUserAuthToken = userAuthToken;
+    }
+
+    public void update(Reward reward) {
+        setCoins(getCoins() + reward.getCoins());
+        setExperience(getExperience() + reward.getExperience());
     }
 }
