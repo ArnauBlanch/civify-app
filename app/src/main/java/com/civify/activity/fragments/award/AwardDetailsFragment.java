@@ -1,13 +1,11 @@
 package com.civify.activity.fragments.award;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -22,8 +20,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.award.AwardAdapter;
 import com.civify.model.award.Award;
+import com.civify.utils.AdapterFactory;
 
 public class AwardDetailsFragment extends Fragment {
 
@@ -35,6 +36,7 @@ public class AwardDetailsFragment extends Fragment {
 
     private View mViewDetails;
     private Award mAward;
+    private AwardAdapter mAwardAdapter;
 
     public AwardDetailsFragment() {
     }
@@ -56,6 +58,7 @@ public class AwardDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        mAwardAdapter = AdapterFactory.getInstance().getAwardAdapter(getContext());
         mViewDetails = inflater.inflate(R.layout.fragment_award_details, container, false);
         init();
         return mViewDetails;
@@ -112,13 +115,25 @@ public class AwardDetailsFragment extends Fragment {
         Button button = (Button) mViewDetails.findViewById(R.id.reward_details_buy_button);
         button.setTypeface(null, Typeface.BOLD);
         changeTypeButton(button,
-                mAward.getPrice() < UserAdapter.getCurrentUser().getCoins() ? DISABLE_BUTTON
+                mAward.getPrice() > UserAdapter.getCurrentUser().getCoins() ? DISABLE_BUTTON
                         : ENABLE_BUTTON);
         button.setOnClickListener(new OnClickListener() {
             @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                   createDialog().show();
+                mAwardAdapter.exchangeAward(mAward.getAwardAuthToken(), new SimpleCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+                        ((DrawerActivity) getActivity()).showCoinsOnToolbar();
+                        createDialog(getResources().getString(R.string.dialog_award_bought)).show();
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        createDialog(getResources().getString(R.string.problem_award)).show();
+                    }
+                });
             }
         });
     }
@@ -142,29 +157,14 @@ public class AwardDetailsFragment extends Fragment {
         }
     }
 
-    private AlertDialog createDialog(){
+    private AlertDialog createDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.dialog_award_bought)
+        builder.setMessage(msg)
                 .setPositiveButton(R.string.ok_award, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        dialog.dismiss();
                     }
                 });
         return builder.create();
-    }
-    public static class buyAwardDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.dialog_award_bought)
-                    .setPositiveButton(R.string.ok_award, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dismiss();
-                        }
-                    });
-            // Create the AlertDialog object and return it
-            return builder.create();
-        }
     }
 }
