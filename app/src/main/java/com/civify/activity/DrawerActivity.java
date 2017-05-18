@@ -1,7 +1,10 @@
 package com.civify.activity;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,20 +25,18 @@ import com.civify.activity.fragments.AchievementsFragment;
 import com.civify.activity.fragments.BasicFragment;
 import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
-import com.civify.activity.fragments.RewardsFragment;
 import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
+import com.civify.activity.fragments.reward.AwardsFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Stack;
 
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int UNDEFINED_ID = -1;
     public static final int NAVIGATE_ID = 0;
     public static final int WALL_ID = 1;
     public static final int PROFILE_ID = 2;
@@ -44,20 +46,20 @@ public class DrawerActivity extends BaseActivity
     public static final int SETTINGS_ID = 6;
     public static final int DETAILS_ID = 7;
 
-    private static final int COINS = 432;
-    private static final int EXPERIENCE = 50;
-    private static final int LEVEL = 3;
+    private static final int PERCENT = 100;
+    private static final int DEFAULT_ELEVATION = 6;
+    private static final int SHOW_AS_ACTION_IF_ROOM = 1;
+    private static final int SHOW_AS_ACTION_NEVER = 0;
 
     private Stack<Fragment> mFragmentStack;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private Toolbar mToolbar;
-    //private AppBarLayout mAppBarLayout;
+    private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
-    private User mCurrentUser;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -71,7 +73,7 @@ public class DrawerActivity extends BaseActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(getResources().getString(R.string.navigate_title));
         setSupportActionBar(mToolbar);
-        //mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.bar_layout);
         mShowMenu = false;
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -89,12 +91,7 @@ public class DrawerActivity extends BaseActivity
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
-        mCurrentUser = UserAdapter.getCurrentUser();
-
-        mCurrentUser.setLevel(LEVEL);
-        mCurrentUser.setCoins(COINS);
-        mCurrentUser.setExperience(EXPERIENCE);
-        setUserHeader(mCurrentUser);
+        setUserHeader();
     }
 
     @Override
@@ -164,8 +161,8 @@ public class DrawerActivity extends BaseActivity
             setFragment(profileFragment, PROFILE_ID);
         } else if (id == R.id.nav_rewards) {
             // paint fragment
-            RewardsFragment rewardsFragment = RewardsFragment.newInstance();
-            setFragment(rewardsFragment, REWARDS_ID);
+            AwardsFragment awardsFragment = AwardsFragment.newInstance();
+            setFragment(awardsFragment, REWARDS_ID);
         } else if (id == R.id.nav_achievements) {
             AchievementsFragment achievementsFragment = AchievementsFragment.newInstance();
             setFragment(achievementsFragment, ACHIEVEMENTS_ID);
@@ -217,47 +214,57 @@ public class DrawerActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+        int noIcona = SHOW_AS_ACTION_NEVER;
+        if (mShowMenuDetails) {
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+        }
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
+            menu.getItem(i).setShowAsAction(noIcona);
         }
 
         return true;
     }
 
-    private void setUserHeader(User user) {
+    public void setUserHeader() {
+        User currentUser = UserAdapter.getCurrentUser();
         View headerView = mNavigationView.getHeaderView(0);
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
-
-        ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
 
         TextView name = (TextView) headerView.findViewById(R.id.header_name);
-        name.setText(user.getName() + " " + user.getSurname());
+        name.setText(currentUser.getName() + ' ' + currentUser.getSurname());
 
         TextView username = (TextView) headerView.findViewById(R.id.header_username);
-        username.setText(user.getUsername());
+        username.setText(currentUser.getUsername());
 
         TextView level = (TextView) headerView.findViewById(R.id.header_level);
-        String userLevel = Integer.toString(user.getLevel());
+        String userLevel = Integer.toString(currentUser.getLevel());
         String showLevel = getString(R.string.level) + ' ' + userLevel;
         level.setText(showLevel);
 
         TextView xp = (TextView) headerView.findViewById(R.id.header_xp);
-        String userExperience = Integer.toString(user.getExperience());
-        //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
+        String userExperience = Integer.toString(currentUser.getExperience());
+        xp.setText(userExperience + '/' + currentUser.getExperienceMax());
+
+        ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
+        int progress = (int)
+                (((double) currentUser.getExperience() / currentUser.getExperienceMax()) * PERCENT);
+        progressBar.setProgress(progress);
 
         TextView coins = (TextView) headerView.findViewById(R.id.header_coins);
-        String userCoins = Integer.toString(user.getCoins());
+        String userCoins = Integer.toString(currentUser.getCoins());
         coins.setText(userCoins);
 
-        CircularImageView profileImage =
-                (CircularImageView) headerView.findViewById(R.id.header_image);
+        //CircularImageView profileImage =
+        //        (CircularImageView) headerView.findViewById(R.id.header_image);
         //profileImage.setImageBitmap(img); // bitmap
         //profileImage.setImageIcon(img); // icon
     }
 
     private void setToolbarTitle() {
         final String title;
+        removeCoinsFromToolbar();
+        int elevation = DEFAULT_ELEVATION;
         switch (mCurrentFragment) {
             case NAVIGATE_ID:
                 title = getResources().getString(R.string.navigate_title);
@@ -270,6 +277,8 @@ public class DrawerActivity extends BaseActivity
                 break;
             case REWARDS_ID:
                 title = getResources().getString(R.string.rewards_title);
+                showCoinsOnToolbar();
+                elevation = 0;
                 break;
             case ACHIEVEMENTS_ID:
                 title = getResources().getString(R.string.achievements_title);
@@ -290,6 +299,7 @@ public class DrawerActivity extends BaseActivity
                 mToolbar.setTitle(title);
             }
         });
+        setToolbarElevation(elevation);
     }
 
     private void updateDrawerMenu() {
@@ -298,5 +308,26 @@ public class DrawerActivity extends BaseActivity
             menu.getItem(i).setChecked(false);
         }
         menu.getItem(mCurrentFragment).setChecked(true);
+    }
+
+    private void setToolbarElevation(int elevation) {
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            mAppBarLayout.setElevation(elevation);
+        }
+    }
+
+    private void removeCoinsFromToolbar() {
+        View coins = mToolbar.findViewById(R.id.coins_with_number);
+        if (coins != null) {
+            mToolbar.removeView(coins);
+        }
+    }
+
+    private void showCoinsOnToolbar() {
+        View coins = getLayoutInflater().inflate(R.layout.coins_with_number, null);
+        Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.END);
+        ((TextView) coins.findViewById(R.id.num_coins)).setText(
+                String.valueOf(UserAdapter.getCurrentUser().getCoins()));
+        mToolbar.addView(coins, layoutParams);
     }
 }
