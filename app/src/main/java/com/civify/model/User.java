@@ -51,11 +51,11 @@ public class User implements Serializable {
 
     @Expose(serialize = false)
     @SerializedName("xp")
-    private long mExperience;
+    private int mExperience;
 
     @Expose(serialize = false)
     @SerializedName("xp_max")
-    private long mExperienceMax;
+    private int mExperienceMax;
 
     @Expose(serialize = false)
     @SerializedName("coins")
@@ -135,11 +135,11 @@ public class User implements Serializable {
         return mLevel;
     }
 
-    public long getExperience() {
+    public int getExperience() {
         return mExperience;
     }
 
-    public long getExperienceMax() {
+    public int getExperienceMax() {
         return mExperienceMax;
     }
 
@@ -155,8 +155,7 @@ public class User implements Serializable {
         mUserAuthToken = userAuthToken;
     }
 
-    public void update(Reward reward) {
-        mCoins = getCoins() + reward.getCoins();
-        mExperience = getExperience() + reward.getExperience();
+    public boolean willLevelUp(int experience) {
+        return experience + getExperience() >= getExperienceMax();
     }
 }

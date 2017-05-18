@@ -2,8 +2,12 @@ package com.civify.adapter;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.RewardDialogFragment;
 import com.civify.model.MessageResponse;
+import com.civify.model.Reward;
 import com.civify.model.User;
 import com.civify.service.UserService;
 import com.civify.utils.ServiceGenerator;
@@ -24,9 +28,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserAdapter {
+
     public static final int INVALID = 0;
     public static final int USED = 1;
     public static final int VALID_UNUSED = 2;
+    public static final String TAG = UserAdapter.class.getSimpleName();
     public static final String USER_CREATED = "User created";
     public static final String USER_NOT_CREATED = "User not created";
     public static final String USER_EXISTS = "User exists";
@@ -189,6 +195,22 @@ public class UserAdapter {
         }
     }
 
+    public void updateCurrentUser(final UserSimpleCallback callback) {
+        getUser(getCurrentUser().getUserAuthToken(), new UserSimpleCallback() {
+            @Override
+            public void onSuccess(User user) {
+                setCurrentUser(user);
+                callback.onSuccess(user);
+            }
+
+            @Override
+            public void onFailure() {
+                Log.w(TAG, "Cannot update current user");
+                callback.onFailure();
+            }
+        });
+    }
+
     public static void setCurrentUser(User user) {
         sCurrentUser = user;
     }
@@ -217,25 +239,18 @@ public class UserAdapter {
         });
     }
 
-    public void addCoins(String userAuthToken, int coins, final UserSimpleCallback callback) {
-        JsonObject body = new JsonObject();
-        body.addProperty("coins", coins);
+    public void showReward(@NonNull final DrawerActivity activity, @NonNull Reward reward) {
+        RewardDialogFragment.showDialog(activity, reward);
+        updateCurrentUser(
+                new UserSimpleCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                        activity.setUserHeader();
+                    }
 
-        Call<User> call = mUserService.addCoins(mAuthToken, userAuthToken, body);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    callback.onSuccess(response.body());
-                } else {
-                    callback.onFailure();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+                    @Override
+                    public void onFailure() { }
+                });
     }
+
 }
