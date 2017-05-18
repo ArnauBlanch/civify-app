@@ -40,9 +40,9 @@ public interface IssueService {
             @Body JsonObject userToken, @Path("issue_auth_token") String issueAuthToken);
 
     @PATCH("/issues/{issue_auth_token}")
-    Call<Issue> editIssue(@Header("Authorization") String authToken, @Body Issue issue, @Path
-            ("issue_auth_token")
-            String issueAuthToken);
+    Call<Issue> editIssue(@Header("Authorization") String authToken, @Body JsonObject editedIssue,
+            @Path
+            ("issue_auth_token") String issueAuthToken);
 
     @DELETE("/issues/{issue_auth_token}")
     Call<Issue> deleteIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")
