@@ -194,4 +194,5 @@
   <string name="get_it"> Get it!</string>
   <string name="dialog_award_bought">Congratulations! You have a new award avaliable now</string>
   <string name="ok_award">Ok!</string>
+  <string name="problem_award">Ups! Impossible exchange it. Try it again</string>
 </resources>

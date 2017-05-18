@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.civify.adapter.LoginAdapterImpl;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.award.Award;
 import com.civify.service.award.AwardService;
@@ -74,7 +75,7 @@ public class AwardAdapterImpl implements AwardAdapter {
     }
 
     @Override
-    public void getExchangedAwards(@NonNull String authToken, @NonNull final
+    public void getExchangedAwards(@NonNull final
             ListAwardsSimpleCallback callback) {
         Call<List<Award>> call = mAwardService.getExchangedAwards(getToken(), UserAdapter
                 .getCurrentUser().getUserAuthToken());
@@ -95,7 +96,28 @@ public class AwardAdapterImpl implements AwardAdapter {
         });
     }
 
+    @Override
+    public void exchangeAward(@NonNull String awardToken, @NonNull final SimpleCallback callback) {
+        Call<Void> call = mAwardService.exchangeAward(getToken(), awardToken);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure();
+            }
+        });
+    }
+
     private String getToken() {
         return mSharedPreferences.getString(LoginAdapterImpl.AUTH_TOKEN, "");
     }
+
 }
