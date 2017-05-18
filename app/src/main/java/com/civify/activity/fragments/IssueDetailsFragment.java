@@ -282,7 +282,7 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     private void setUser(User user) {
-        Log.v(DEBUG, "setUser");
+        Log.v(DEBUG, "setUser: init");
 
         UserAttacher.get(getContext(), user)
                 .setFullName((TextView) mViewDetails.findViewById(R.id.userName))
