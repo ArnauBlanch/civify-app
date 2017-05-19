@@ -1,6 +1,7 @@
 package com.civify.model.award;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.reward.ShowQrFragment;
@@ -49,6 +50,7 @@ public class ExchangedAward extends Award {
     }
 
     public void showDetails() {
+        Log.v("DEBUG3", "" + getCode());
         Fragment awardDetailsFragment = ShowQrFragment.newInstance(this);
         if (awardDetailsFragment != null) {
             CivifyMap.getInstance().getContext()
