@@ -21,7 +21,7 @@ public class RewardDialogFragment extends DialogFragment {
     private static final String EXPERIENCE = "experience";
     private static final String LEVEL = "level";
 
-    public static void showDialog(FragmentActivity activity, Reward reward) {
+    public static void show(FragmentActivity activity, Reward reward) {
         if (!reward.empty()) {
             RewardDialogFragment fragment = new RewardDialogFragment();
 
@@ -34,7 +34,7 @@ public class RewardDialogFragment extends DialogFragment {
         }
     }
 
-    public static void showDialog(FragmentActivity activity, int level) {
+    public static void show(FragmentActivity activity, int level) {
         RewardDialogFragment fragment = new RewardDialogFragment();
         Bundle args = new Bundle();
         args.putInt(LEVEL, level);

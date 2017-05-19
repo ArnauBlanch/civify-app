@@ -303,6 +303,7 @@ public class Issue implements Serializable {
         return null;
     }
 
+    @Nullable
     public String getDistanceFromCurrentLocationAsString() {
         Float distance = getDistanceFromCurrentLocation();
         if (distance != null) {

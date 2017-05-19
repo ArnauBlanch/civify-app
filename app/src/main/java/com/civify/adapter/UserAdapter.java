@@ -1,7 +1,10 @@
 package com.civify.adapter;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.civify.activity.DrawerActivity;
@@ -239,21 +242,24 @@ public class UserAdapter {
         });
     }
 
-    public void showReward(@NonNull final DrawerActivity activity, @NonNull Reward reward) {
-        RewardDialogFragment.showDialog(activity, reward);
+    public void showRewardDialog(@NonNull final FragmentActivity context,
+            @NonNull Reward reward, @Nullable final UserSimpleCallback updateCallback) {
+        RewardDialogFragment.show(context, reward);
         final int oldLevel = UserAdapter.getCurrentUser().getLevel();
         updateCurrentUser(
                 new UserSimpleCallback() {
                     @Override
                     public void onSuccess(User user) {
-                        activity.setUserHeader();
+                        if (updateCallback != null) updateCallback.onSuccess(user);
                         if (user.getLevel() > oldLevel) {
-                            RewardDialogFragment.showDialog(activity, user.getLevel());
+                            RewardDialogFragment.show(context, user.getLevel());
                         }
                     }
 
                     @Override
-                    public void onFailure() { }
+                    public void onFailure() {
+                        if (updateCallback != null) updateCallback.onFailure();
+                    }
                 });
     }
 
