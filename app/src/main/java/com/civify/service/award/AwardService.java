@@ -1,6 +1,7 @@
 package com.civify.service.award;
 
 import com.civify.model.award.Award;
+import com.civify.model.award.ExchangedAward;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface AwardService {
             String awardAuthToken);
 
     @GET("/users/{user_auth_token}/exchanged_awards")
-    Call<List<Award>> getExchangedAwards(@Header("Authorization") String authToken, @Path
+    Call<List<ExchangedAward>> getExchangedAwards(@Header("Authorization") String authToken, @Path
             ("user_auth_token") String userAuthToken);
 
     @POST("/awards/{award_auth_token}/exchange")

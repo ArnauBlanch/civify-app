@@ -30,7 +30,7 @@ import com.civify.activity.fragments.award.AwardsFragment;
 import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
 import com.civify.adapter.UserAdapter;
-import com.civify.model.User;
+import com.civify.adapter.UserAttacher;
 import java.util.Stack;
 
 public class DrawerActivity extends BaseActivity
@@ -45,8 +45,8 @@ public class DrawerActivity extends BaseActivity
     public static final int SETTINGS_ID = 6;
     public static final int DETAILS_ISSUE_ID = 7;
     public static final int DETAILS_AWARD_ID = 8;
+    public static final int DETAILS_QR_ID = 8;
 
-    private static final int PERCENT = 100;
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
     private static final int SHOW_AS_ACTION_NEVER = 0;
@@ -101,8 +101,8 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
-                    && mCurrentFragment != DETAILS_AWARD_ID) {
+            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ID
+                    && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
                 while (fragment.getFragmentId() != NAVIGATE_ID) {
@@ -229,37 +229,15 @@ public class DrawerActivity extends BaseActivity
     }
 
     public void setUserHeader() {
-        User currentUser = UserAdapter.getCurrentUser();
         View headerView = mNavigationView.getHeaderView(0);
 
-        TextView name = (TextView) headerView.findViewById(R.id.header_name);
-        name.setText(currentUser.getName() + ' ' + currentUser.getSurname());
-
-        TextView username = (TextView) headerView.findViewById(R.id.header_username);
-        username.setText(currentUser.getUsername());
-
-        TextView level = (TextView) headerView.findViewById(R.id.header_level);
-        String userLevel = Integer.toString(currentUser.getLevel());
-        String showLevel = getString(R.string.level) + ' ' + userLevel;
-        level.setText(showLevel);
-
-        TextView xp = (TextView) headerView.findViewById(R.id.header_xp);
-        String userExperience = Integer.toString(currentUser.getExperience());
-        xp.setText(userExperience + '/' + currentUser.getExperienceMax());
-
-        ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
-        int progress = (int)
-                (((double) currentUser.getExperience() / currentUser.getExperienceMax()) * PERCENT);
-        progressBar.setProgress(progress);
-
-        TextView coins = (TextView) headerView.findViewById(R.id.header_coins);
-        String userCoins = Integer.toString(currentUser.getCoins());
-        coins.setText(userCoins);
-
-        //CircularImageView profileImage =
-        //        (CircularImageView) headerView.findViewById(R.id.header_image);
-        //profileImage.setImageBitmap(img); // bitmap
-        //profileImage.setImageIcon(img); // icon
+        UserAttacher.getFromCurrentUser(this)
+                .setFullName((TextView) headerView.findViewById(R.id.header_name))
+                .setUsername((TextView) headerView.findViewById(R.id.header_username))
+                .setLevel((TextView) headerView.findViewById(R.id.header_level))
+                .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
+                .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
+                .setCoins((TextView) headerView.findViewById(R.id.header_coins));
     }
 
     private void setToolbarTitle() {
