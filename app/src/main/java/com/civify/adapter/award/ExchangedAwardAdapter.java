@@ -86,6 +86,9 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
             mCommerce = (TextView) itemView.findViewById(R.id.reward_exchanged_commerce_name);
             mExchangedDate = (TextView) itemView.findViewById(R.id.reward_exchanged_date);
             mExchanged = (TextView) itemView.findViewById(R.id.reward_exchanged_indicator);
+            // On click listener
+            itemView.setClickable(true);
+            itemView.setOnClickListener(this);
         }
 
         public TextView getTitle() {
