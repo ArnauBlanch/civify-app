@@ -29,4 +29,8 @@ public class Reward implements Serializable {
     public int getExperience() {
         return mExperience;
     }
+
+    public boolean empty() {
+        return getCoins() == 0 && getExperience() == 0;
+    }
 }

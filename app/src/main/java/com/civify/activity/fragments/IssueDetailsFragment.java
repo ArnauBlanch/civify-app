@@ -33,6 +33,7 @@ import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.UserAttacher;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
@@ -42,17 +43,14 @@ import com.civify.model.map.CivifyMarkers;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 public class IssueDetailsFragment extends BasicFragment {
 
     private static final String DEBUG = "debug-IssueDetails";
-    private static final String TAG_ISSUE = "issue";
 
-    private static final int DISTANCE_TO_KILOMETERS = 1000;
-    private static final int DISTANCE_TO_METERS = 1000000;
+    private static final String TAG_ISSUE = "issue";
     private static final int MIN_METERS_FROM_ISSUE = 70;
     private static final float DISABLED_ALPHA = 0.15f;
     private static final int SHOW_AS_ACTION_NEVER = 0;
@@ -277,33 +275,18 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private User buildFakeUser() {
         String password = "";
-        User fakeUser = new User("", "User couldn't be retrieved", "",
+        return new User("", "User couldn't be retrieved", "",
                 "example@mail.com", password, password);
-        fakeUser.setLevel(1);
-        return fakeUser;
     }
 
     private void setUser(User user) {
-        Log.v(DEBUG, "setUser");
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
+        Log.v(DEBUG, "setUser: init");
 
-        ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
-
-        TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
-        name.setText(user.getName() + ' ' + user.getSurname());
-
-        TextView username = (TextView) mViewDetails.findViewById(R.id.userUsername);
-        username.setText(user.getUsername());
-
-        TextView level = (TextView) mViewDetails.findViewById(R.id.userLevel);
-        String userLevel = Integer.toString(user.getLevel());
-        String showLevel = getString(R.string.level) + ' ' + userLevel;
-        level.setText(showLevel);
-
-        CircularImageView profileImage =
-                (CircularImageView) mViewDetails.findViewById(R.id.userImage);
-        //profileImage.setImageBitmap(img); // bitmap
-        //profileImage.setImageIcon(img); // icon
+        UserAttacher.get(getContext(), user)
+                .setFullName((TextView) mViewDetails.findViewById(R.id.userName))
+                .setUsername((TextView) mViewDetails.findViewById(R.id.userUsername))
+                .setLevel((TextView) mViewDetails.findViewById(R.id.userLevel))
+                .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress));
 
         Log.v(DEBUG, "setUser finished");
     }

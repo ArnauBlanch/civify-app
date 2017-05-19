@@ -198,7 +198,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
                 Log.v(TAG, "Issue overlapped");
                 overlappedCount++;
             }
-            mMarkers.add(new IssueMarker(issue, CivifyMap.this));
+            mMarkers.add(new IssueMarker(issue, this));
             i++;
         }
         Log.v(TAG, "Overlapped: " + overlappedCount + ", Visible: " + visibleCount);
