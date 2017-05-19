@@ -125,10 +125,7 @@ public class AwardDetailsFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-                        int coins = UserAdapter.getCurrentUser().getCoins() - mAward.getPrice();
-                        ((DrawerActivity) getActivity()).updateCoinsOnToolbar(coins);
-                        AdapterFactory.getInstance().getUserAdapter(getContext())
-                                .updateRewards((DrawerActivity) getActivity());
+
                         createDialog(getResources().getString(R.string.dialog_award_bought)).show();
                     }
 
