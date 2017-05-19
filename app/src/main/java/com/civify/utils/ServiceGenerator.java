@@ -11,6 +11,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public final class ServiceGenerator {
     public static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    // Alternative: http://34.210.6.67:3000
     public static final String BASE_URL = "http://staging-api.civify.cf";
     private static ServiceGenerator sInstance;
 
@@ -18,19 +19,24 @@ public final class ServiceGenerator {
     private Retrofit mRetrofit;
     private final OkHttpClient.Builder mHttpClient;
     private final HttpLoggingInterceptor mLogging;
+    private final Gson mGson;
 
     private ServiceGenerator() {
-        Gson gson = new GsonBuilder()
+        mGson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .setDateFormat(RAILS_DATE_FORMAT)
                 .create();
         mBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson));
+                .addConverterFactory(GsonConverterFactory.create(mGson));
         mRetrofit = mBuilder.build();
         mHttpClient = new OkHttpClient.Builder();
         mLogging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+    }
+
+    public Gson getGson() {
+        return mGson;
     }
 
     public static ServiceGenerator getInstance() {

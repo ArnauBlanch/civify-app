@@ -183,4 +183,20 @@ public class IssueTest {
         assertEquals(mUpdatedAt, mIssue.getUpdatedAt());
     }
 
+    @Test
+    public void testThirdConstructor() {
+        mIssue = new Issue(TITLE, DESCRIPTION, CATEGORY, RISK, LONGITUDE, LATITUDE,
+                mock(Picture.class), USER_AUTH_TOKEN);
+        assertEquals(TITLE, mIssue.getTitle());
+        assertEquals(DESCRIPTION, mIssue.getDescription());
+        assertEquals(CATEGORY, mIssue.getCategory());
+        assertEquals(RISK, mIssue.isRisk());
+        assertTrue(LONGITUDE == mIssue.getLongitude());
+        assertTrue(LATITUDE == mIssue.getLatitude());
+        assertEquals(0, mIssue.getConfirmVotes());
+        assertEquals(0, mIssue.getResolvedVotes());
+        assertEquals(0, mIssue.getReports());
+        assertEquals(USER_AUTH_TOKEN, mIssue.getUserAuthToken());
+    }
+
 }
