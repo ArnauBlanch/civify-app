@@ -162,8 +162,4 @@ public class User implements Serializable {
     public void setUserAuthToken(String userAuthToken) {
         mUserAuthToken = userAuthToken;
     }
-
-    public boolean willLevelUp(int experience) {
-        return experience + getExperience() >= getExperienceMax();
-    }
 }

@@ -76,12 +76,4 @@ public class UserTest {
     public void testXPDefault0() {
         assertThat(0, is(mUser.getExperience()));
     }
-
-    @Test
-    public void testWillLevelUp() {
-        int max = 100;
-        mUser.setExperience(max/2);
-        mUser.setExperienceMax(max);
-        assertThat(mUser.willLevelUp(max/2), is(true));
-    }
 }
