@@ -45,6 +45,7 @@ public class DrawerActivity extends BaseActivity
     public static final int EVENTS_ID = 5;
     public static final int SETTINGS_ID = 6;
     public static final int DETAILS_ID = 7;
+    public static final int DETAILS_QR_ID = 8;
 
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
@@ -100,7 +101,8 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ID) {
+            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ID
+                    && mCurrentFragment != DETAILS_QR_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
                 while (fragment.getFragmentId() != NAVIGATE_ID) {
