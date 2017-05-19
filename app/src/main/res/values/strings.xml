@@ -189,4 +189,7 @@
   <string name="couldnt_add_coins">Couldn\'t add the coins to your account.</string>
   <string name="available_rewards_tab">AVAILABLE</string>
   <string name="exchanged_rewards_tab">EXCHANGED</string>
+  <string name="exchanged_award_used">USED</string>
+  <string name="exchanged_award_valid">VALID</string>
+  <string name="exchanged_on">Exchanged on</string>
 </resources>
