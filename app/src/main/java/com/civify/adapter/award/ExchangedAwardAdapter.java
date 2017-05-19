@@ -50,8 +50,6 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.setExchangedAward(mExchangedAwards.get(position));
 
-        Log.v("DEBUG", String.valueOf(mExchangedAwards.get(position).isUsed()));
-
         ExchangedAward exchangedAward = mExchangedAwards.get(position);
         // Title
         holder.getTitle().setText(exchangedAward.getTitle());
