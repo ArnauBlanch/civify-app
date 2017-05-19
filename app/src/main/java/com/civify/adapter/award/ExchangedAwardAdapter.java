@@ -15,7 +15,6 @@ import com.civify.R;
 import com.civify.model.award.ExchangedAward;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,12 +28,12 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
     private static final int EXCHANGED_ON = R.string.exchanged_on;
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
-    private ArrayList<ExchangedAward> mExchangedAwards;
+    private List<ExchangedAward> mExchangedAwards;
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormat;
 
     public ExchangedAwardAdapter(List<ExchangedAward> awards, Context context) {
-        mExchangedAwards = new ArrayList<>(awards);
+        mExchangedAwards = awards;
         mContext = context;
         mSimpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
     }
@@ -66,7 +65,7 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
             holder.getExchanged()
                     .setBackground(ContextCompat.getDrawable(mContext,
-                            exchangedAward.isUsed() ? COLOR_USED : COLOR_VALID));
+                            exchangedAward.isUsed() ? COLOR_VALID : COLOR_USED));
         }
     }
 
