@@ -161,6 +161,7 @@ public class Issue implements Serializable {
     }
 
     public Category getCategory() {
+        if (mCategory == null) mCategory = Category.OTHER;
         return mCategory;
     }
 
@@ -302,6 +303,7 @@ public class Issue implements Serializable {
         return null;
     }
 
+    @Nullable
     public String getDistanceFromCurrentLocationAsString() {
         Float distance = getDistanceFromCurrentLocation();
         if (distance != null) {
