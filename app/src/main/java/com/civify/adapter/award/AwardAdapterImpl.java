@@ -7,9 +7,11 @@ import com.civify.adapter.LoginAdapterImpl;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.award.Award;
+import com.civify.model.award.ExchangedAward;
 import com.civify.service.award.AwardService;
 import com.civify.service.award.AwardSimpleCallback;
 import com.civify.service.award.ListAwardsSimpleCallback;
+import com.civify.service.award.ListExchangedAwardSimpleCallback;
 import com.civify.utils.ServiceGenerator;
 
 import java.util.List;
@@ -75,13 +77,14 @@ public class AwardAdapterImpl implements AwardAdapter {
     }
 
     @Override
-    public void getExchangedAwards(@NonNull final
-            ListAwardsSimpleCallback callback) {
-        Call<List<Award>> call = mAwardService.getExchangedAwards(getToken(), UserAdapter
+    public void getExchangedAwards(@NonNull String authToken, @NonNull final
+            ListExchangedAwardSimpleCallback callback) {
+        Call<List<ExchangedAward>> call = mAwardService.getExchangedAwards(getToken(), UserAdapter
                 .getCurrentUser().getUserAuthToken());
-        call.enqueue(new Callback<List<Award>>() {
+        call.enqueue(new Callback<List<ExchangedAward>>() {
             @Override
-            public void onResponse(Call<List<Award>> call, Response<List<Award>> response) {
+            public void onResponse(Call<List<ExchangedAward>> call, Response<List<ExchangedAward>>
+                    response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
                 } else {
@@ -90,7 +93,7 @@ public class AwardAdapterImpl implements AwardAdapter {
             }
 
             @Override
-            public void onFailure(Call<List<Award>> call, Throwable t) {
+            public void onFailure(Call<List<ExchangedAward>> call, Throwable t) {
                 callback.onFailure();
             }
         });

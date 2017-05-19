@@ -9,14 +9,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.adapter.UserAdapter;
+import com.civify.adapter.UserAttacher;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
 public class ProfileInfoFragment extends Fragment {
-
-    private static final int PERCENT = 100;
 
     public ProfileInfoFragment() {
         // Required empty public constructor
@@ -51,36 +49,14 @@ public class ProfileInfoFragment extends Fragment {
     }
 
     private void setUserInfo(View view) {
-        User user = UserAdapter.getCurrentUser();
         if (view != null) {
-            TextView name = (TextView) view.findViewById(R.id.user_info_name);
-            name.setText(user.getName() + ' ' + user.getSurname());
-
-            TextView username = (TextView) view.findViewById(R.id.user_info_username);
-            username.setText(user.getUsername());
-
-            TextView level = (TextView) view.findViewById(R.id.user_info_level);
-            String userLevel = Integer.toString(user.getLevel());
-            String showLevel = getString(R.string.level) + ' ' + userLevel;
-            level.setText(showLevel);
-
-            TextView xp = (TextView) view.findViewById(R.id.user_info_xp);
-            String userExperience = Integer.toString(user.getExperience());
-            xp.setText(userExperience + '/' + user.getExperienceMax());
-
-            ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.user_info_progress);
-            int progress = (int)
-                    (((double) user.getExperience() / user.getExperienceMax()) * PERCENT);
-            progressBar.setProgress(progress);
-
-            TextView coins = (TextView) view.findViewById(R.id.user_info_coins);
-            String userCoins = Integer.toString(user.getCoins());
-            coins.setText(userCoins);
-
-            //CircularImageView profileImage =
-            //        (CircularImageView) view.findViewById(R.id.user_info_image);
-            //profileImage.setImageBitmap(img); // bitmap
-            //profileImage.setImageIcon(img); // icon
+            UserAttacher.getFromCurrentUser(getContext())
+                    .setFullName((TextView) view.findViewById(R.id.user_info_name))
+                    .setUsername((TextView) view.findViewById(R.id.user_info_username))
+                    .setLevel((TextView) view.findViewById(R.id.user_info_level))
+                    .setExperienceWithMax((TextView) view.findViewById(R.id.user_info_xp))
+                    .setProgress((ProgressBar) view.findViewById(R.id.user_info_progress))
+                    .setCoins((TextView) view.findViewById(R.id.user_info_coins));
         }
     }
 }
