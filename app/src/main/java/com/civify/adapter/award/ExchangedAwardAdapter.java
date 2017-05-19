@@ -5,6 +5,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,6 +50,8 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.setExchangedAward(mExchangedAwards.get(position));
 
+        Log.v("DEBUG", String.valueOf(mExchangedAwards.get(position).isUsed()));
+
         ExchangedAward exchangedAward = mExchangedAwards.get(position);
         // Title
         holder.getTitle().setText(exchangedAward.getTitle());
@@ -60,12 +63,12 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
         holder.getExchangedDate().setText(exchangedDate);
         // USED/VALID indicator
         holder.getExchanged().setText(mContext.getString(exchangedAward.isUsed()
-                ? AWARD_VALID : AWARD_USED));
+                ? AWARD_USED : AWARD_VALID));
         // Indicator background
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
             holder.getExchanged()
                     .setBackground(ContextCompat.getDrawable(mContext,
-                            exchangedAward.isUsed() ? COLOR_VALID : COLOR_USED));
+                            exchangedAward.isUsed() ? COLOR_USED : COLOR_VALID));
         }
     }
 
