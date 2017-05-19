@@ -75,17 +75,17 @@ public class NavigateFragment extends BasicFragment {
                     CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
 
                     final DrawerActivity activity = (DrawerActivity) getActivity();
-                    AdapterFactory.getInstance().getUserAdapter(getContext()).
-                            showRewardDialog(activity, issueReward.getReward(),
+                    AdapterFactory.getInstance().getUserAdapter(getContext())
+                            .showRewardDialog(activity, issueReward.getReward(),
                                     new UserSimpleCallback() {
-                        @Override
-                        public void onSuccess(User user) {
-                            activity.setUserHeader();
-                        }
+                                        @Override
+                                        public void onSuccess(User user) {
+                                            activity.setUserHeader();
+                                        }
 
-                        @Override
-                        public void onFailure() { }
-                    });
+                                        @Override
+                                        public void onFailure() { }
+                                    });
 
                     Snackbar.make(getView(), getString(R.string.issue_created),
                             Snackbar.LENGTH_SHORT).show();
