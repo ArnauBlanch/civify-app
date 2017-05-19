@@ -77,14 +77,13 @@
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="0px"
-          android:layout_weight="6"
+          android:layout_weight="5"
           android:gravity="center"
           >
         <ImageView
             android:id="@+id/qr_qrcode"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@mipmap/ic_test_qr"            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"          />
       </LinearLayout>
       <LinearLayout
           android:layout_width="match_parent"
@@ -97,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="26sp"
+            android:textSize="16sp"
             android:text="J4G345H32JK7JK7"
             />
       </LinearLayout>
@@ -108,6 +107,7 @@
           android:gravity="center"
           >
         <LinearLayout
+            android:id="@+id/qr_state_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00FF80"
@@ -118,7 +118,7 @@
             android:paddingTop="8dp"
             >
           <TextView
-              android:id="@+id/qr_state"
+              android:id="@+id/qr_state_text"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textColor="@color/white"
