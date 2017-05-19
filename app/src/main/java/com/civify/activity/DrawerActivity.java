@@ -31,7 +31,6 @@ import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
-
 import java.util.Stack;
 
 public class DrawerActivity extends BaseActivity
@@ -332,4 +331,11 @@ public class DrawerActivity extends BaseActivity
                 String.valueOf(UserAdapter.getCurrentUser().getCoins()));
         mToolbar.addView(coins, layoutParams);
     }
+
+    public void updateCoinsOnToolbar(int coins) {
+        removeCoinsFromToolbar();
+        UserAdapter.getCurrentUser().setCoins(coins);
+        showCoinsOnToolbar();
+    }
+
 }
