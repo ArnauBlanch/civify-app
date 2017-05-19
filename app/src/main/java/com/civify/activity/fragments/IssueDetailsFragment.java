@@ -49,10 +49,8 @@ import org.ocpsoft.prettytime.PrettyTime;
 public class IssueDetailsFragment extends BasicFragment {
 
     private static final String DEBUG = "debug-IssueDetails";
-    private static final String TAG_ISSUE = "issue";
 
-    private static final int DISTANCE_TO_KILOMETERS = 1000;
-    private static final int DISTANCE_TO_METERS = 1000000;
+    private static final String TAG_ISSUE = "issue";
     private static final int MIN_METERS_FROM_ISSUE = 70;
     private static final float DISABLED_ALPHA = 0.15f;
     private static final int SHOW_AS_ACTION_NEVER = 0;

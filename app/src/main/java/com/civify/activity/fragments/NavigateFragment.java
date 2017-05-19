@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.adapter.UserSimpleCallback;
 import com.civify.model.IssueReward;
+import com.civify.model.User;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
@@ -72,8 +74,18 @@ public class NavigateFragment extends BasicFragment {
                 try {
                     CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
 
-                    AdapterFactory.getInstance().getUserAdapter(getContext())
-                            .showReward((DrawerActivity) getActivity(), issueReward.getReward());
+                    final DrawerActivity activity = (DrawerActivity) getActivity();
+                    AdapterFactory.getInstance().getUserAdapter(getContext()).
+                            showRewardDialog(activity, issueReward.getReward(),
+                                    new UserSimpleCallback() {
+                        @Override
+                        public void onSuccess(User user) {
+                            activity.setUserHeader();
+                        }
+
+                        @Override
+                        public void onFailure() { }
+                    });
 
                     Snackbar.make(getView(), getString(R.string.issue_created),
                             Snackbar.LENGTH_SHORT).show();

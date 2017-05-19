@@ -3,6 +3,7 @@ package com.civify.adapter.award;
 import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,11 +64,9 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
                 ? AWARD_VALID : AWARD_USED));
         // Indicator background
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-                holder.getExchanged()
-                        .setBackground(mContext.getDrawable(
-                                exchangedAward.isUsed() ? COLOR_VALID : COLOR_USED));
-            }
+            holder.getExchanged()
+                    .setBackground(ContextCompat.getDrawable(mContext,
+                            exchangedAward.isUsed() ? COLOR_USED : COLOR_VALID));
         }
     }
 
@@ -76,7 +75,7 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
         return mExchangedAwards.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
         private TextView mTitle, mCommerce, mExchangedDate, mExchanged;
         private ExchangedAward mExchangedAward;
