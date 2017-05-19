@@ -1,16 +1,17 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.issue;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
@@ -25,15 +26,18 @@ import java.util.List;
  * Use the {@link WallFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WallFragment extends Fragment {
+public class WallFragment extends BasicFragment {
 
     private IssueAdapter mIssueAdapter;
     private IssuesViewFragment mIssuesViewFragment;
     private ProgressBar mProgressBar;
-    private String mTitle;
 
     public WallFragment() {
-        // Required empty public constructor
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.WALL_ID;
     }
 
     public static WallFragment newInstance() {
@@ -43,7 +47,6 @@ public class WallFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTitle = getResources().getString(R.string.wall_title);
     }
 
     @Override
@@ -52,15 +55,12 @@ public class WallFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
 
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(mTitle);
-
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_wall);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         mIssueAdapter = adapterFactory.getIssueAdapter(getContext());
         mIssuesViewFragment = new IssuesViewFragment();
@@ -75,14 +75,20 @@ public class WallFragment extends Fragment {
                 mIssuesViewFragment.setIssuesList(filterIssues(issues));
                 try {
                     CivifyMap.getInstance().setIssues(issues);
-                } catch (MapNotLoadedException e) {
-                    Log.wtf(WallFragment.class.getSimpleName(), e);
+                } catch (MapNotLoadedException ignore) {
+                    // Don't refresh map
                 }
             }
 
             @Override
             public void onFailure() {
-                // TODO: do something
+                mProgressBar.setVisibility(View.GONE);
+                try {
+                    mIssuesViewFragment.setIssuesList(CivifyMap.getInstance().getIssues());
+                } catch (MapNotLoadedException e) {
+                    Snackbar.make(view, "Couldn't retrieve updated issues.", Snackbar.LENGTH_LONG)
+                            .setAction(R.string.action, null).show();
+                }
             }
         });
     }

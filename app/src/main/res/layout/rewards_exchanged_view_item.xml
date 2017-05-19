@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    tools:ignore="MissingPrefix">
+  
+  <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_weight="8"
+      android:layout_marginRight="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/album_title"
+        android:id="@+id/reward_exchanged_title"
+        fontPath="fonts/Nunito-Bold.ttf"
+        android:maxLines="2"
+        android:ellipsize="end"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <TextView
+          android:id="@+id/reward_exchanged_commerce_name"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:textColor="@color/greyText"
+          android:maxLines="1"
+          android:ellipsize="end"
+          android:layout_weight="1"
+          />
+
+      <TextView
+          android:id="@+id/reward_exchanged_date"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingLeft="3dp"
+          fontPath="fonts/Nunito-Italic.ttf"
+          android:textColor="@color/grey"
+          android:maxLines="1"
+          android:ellipsize="none"
+          android:textSize="12sp"
+          />
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="2"
+      android:gravity="center"
+      android:layout_gravity="center"
+      >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/green_bg_button"
+        android:textSize="16sp"
+        android:id="@+id/reward_exchanged_indicator"
+        android:padding="2dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        fontPath="fonts/Nunito-Bold.ttf"
+        />
+
+  </LinearLayout>
+
+</LinearLayout>

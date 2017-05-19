@@ -24,6 +24,8 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +45,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private Runnable mOnMapReadyListener;
     private final LocationAdapter mLocationAdapter;
     private final IssueAdapter mIssueAdapter;
+    private Location mMockLocation;
 
     private CivifyMap(@NonNull DrawerActivity context) {
         this(new LocationAdapter(context), AdapterFactory.getInstance().getIssueAdapter(context));
@@ -173,6 +176,15 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         addAndLog(issues);
     }
 
+    public List<Issue> getIssues() throws MapNotLoadedException {
+        Collection<IssueMarker> markers = mMarkers.getAll();
+        List<Issue> currentIssues = new LinkedList<>();
+        for (IssueMarker marker : markers) {
+            currentIssues.add(marker.getIssue());
+        }
+        return currentIssues;
+    }
+
     private void addAndLog(List<Issue> issues) {
         int i = 0, visibleCount = 0, overlappedCount = 0;
         Log.v(TAG, "Issues: " + issues.size() + '\n');
@@ -186,7 +198,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
                 Log.v(TAG, "Issue overlapped");
                 overlappedCount++;
             }
-            mMarkers.add(new IssueMarker(issue, CivifyMap.this));
+            mMarkers.add(new IssueMarker(issue, this));
             i++;
         }
         Log.v(TAG, "Overlapped: " + overlappedCount + ", Visible: " + visibleCount);
@@ -222,7 +234,14 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public Location getCurrentLocation() {
+        if (mMockLocation != null) {
+            return mMockLocation;
+        }
         return mLocationAdapter.getLastLocation();
+    }
+
+    public void setMockLocation(Location mockLocation) {
+        mMockLocation = mockLocation;
     }
 
     public LatLng getCurrentCameraPosition() {

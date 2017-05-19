@@ -11,15 +11,30 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.allOf;
 
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.civify.R;
+import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.adapter.LocationAdapter;
+import com.civify.adapter.LoginAdapter;
+import com.civify.adapter.LoginError;
+import com.civify.adapter.LoginFinishedCallback;
+import com.civify.model.User;
+import com.civify.model.map.CivifyMap;
+import com.civify.utils.AdapterFactory;
+import com.google.android.gms.maps.model.LatLng;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,34 +44,32 @@ import org.junit.runner.RunWith;
 public class ProfileFragmentTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule =
-            new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<DrawerActivity> mActivityTestRule =
+            new ActivityTestRule<>(DrawerActivity.class);
+
+    @BeforeClass
+    public static void setUp() throws InterruptedException {
+        Context context = getInstrumentation().getTargetContext();
+        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
+        loginAdapter.logout();
+        final boolean[] ended = { false };
+        loginAdapter.login("TestUser001", "Test1234", new LoginFinishedCallback() {
+            @Override public void onLoginSucceeded(User u) {
+                ended[0] = true;
+            }
+
+            @Override public void onLoginFailed(LoginError t) {
+                ended[0] = true;
+            }
+        });
+
+        while (!ended[0]) {
+            sleep(200);
+        }
+    }
 
     @Test
     public void profileFragmentTest() {
-
-        ViewInteraction appCompatButton =
-                onView(allOf(withId(R.id.signInButton), withText("Sign in"), withParent(
-                        allOf(withId(R.id.buttonsLayout), withParent(withId(R.id.mainLayout)))),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        ViewInteraction appCompatEditText =
-                onView(allOf(withId(R.id.login_email_input), isDisplayed()));
-        appCompatEditText.perform(click());
-
-        ViewInteraction appCompatEditText2 =
-                onView(allOf(withId(R.id.login_email_input), isDisplayed()));
-        appCompatEditText2.perform(replaceText("arnaublanch2"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText3 =
-                onView(allOf(withId(R.id.login_password_input), isDisplayed()));
-        appCompatEditText3.perform(replaceText("Test1234"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton2 = onView(allOf(withId(R.id.bsignin), withText("Sign in"),
-                withParent(allOf(withId(R.id.intro_background),
-                        withParent(withId(android.R.id.content)))), isDisplayed()));
-        appCompatButton2.perform(click());
 
         ViewInteraction appCompatImageButton =
                 onView(allOf(withContentDescription("Open navigation drawer"), withParent(

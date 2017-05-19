@@ -8,18 +8,24 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.core.deps.guava.base.Preconditions.checkNotNull;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
+import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsAnything.anything;
 
 import android.app.Activity;
@@ -32,20 +38,26 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.test.espresso.ViewInteraction;
+import android.support.design.widget.TextInputLayout;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
 import com.civify.adapter.LoginFinishedCallback;
@@ -54,11 +66,22 @@ import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
 import com.civify.model.issue.Picture;
+import com.civify.model.map.CivifyMap;
 import com.civify.service.issue.IssueService;
 import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,11 +95,6 @@ import java.util.Locale;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -84,43 +102,93 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @RunWith(AndroidJUnit4.class)
 public class CreateIssueActivityTest {
 
+    public static final String DROPDOWN_LISTVIEW = "android.widget.DropDownListView";
+    public static final String NAVIGATE_UP = "Navigate up";
+
     private static void grantPermission(String permission) {
         // In M+, trying to do some actions will trigger a runtime dialog. Make sure
         // the permission is granted before running this test.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getInstrumentation().getUiAutomation().executeShellCommand(
-                    "pm grant " + getTargetContext().getPackageName()
-                            + ' ' + permission);
+            getInstrumentation().getUiAutomation()
+                    .executeShellCommand(
+                            "pm grant " + getTargetContext().getPackageName() + ' ' + permission);
         }
     }
 
     @Rule
-    public IntentsTestRule<CreateIssueActivity> intentsRule =
-            new IntentsTestRule<>(CreateIssueActivity.class);
+    public IntentsTestRule<DrawerActivity> intentsRule =
+            new IntentsTestRule<>(DrawerActivity.class);
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUpBeforeClass() throws InterruptedException {
         Context context = getInstrumentation().getTargetContext();
         LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
         loginAdapter.logout();
-        loginAdapter.login("ArnauBlanch2", "Test1234", new LoginFinishedCallback() {
+        loginAdapter.login("TestUser001", "Test1234", new LoginFinishedCallback() {
             @Override
-            public void onLoginSucceeded(User u) {}
+            public void onLoginSucceeded(User u) {
+            }
+
             @Override
-            public void onLoginFailed(LoginError t) {}
+            public void onLoginFailed(LoginError t) {
+            }
         });
+
+        sleep(5000);
+    }
+
+    @Before
+    public void setUp() {
+        intentsRule.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                CivifyMap.setContext(intentsRule.getActivity());
+                Location mockLocation = LocationAdapter.getLocation(new LatLng(0.0, 0.0));
+                CivifyMap.getInstance().setMockLocation(mockLocation);
+            }
+        });
+        Intent intent = new Intent(intentsRule.getActivity().getApplicationContext(),
+                CreateIssueActivity.class);
+        intentsRule.getActivity().startActivity(intent);
+
         setupMockIssueResponse();
     }
 
+    @After
+    public void tearDown() {
+        Context context = getInstrumentation().getTargetContext();
+        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
+        loginAdapter.logout();
+    }
+
     @BeforeClass
-    public static void setUpPermissions() {
+    public static void setUpPermissions() throws InterruptedException {
         grantPermission("android.permission.ACCESS_FINE_LOCATION");
         grantPermission("android.permission.CAMERA");
         grantPermission("android.permission.READ_EXTERNAL_STORAGE");
         grantPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+
+        Context context = getInstrumentation().getTargetContext();
+        LoginAdapter loginAdapter = AdapterFactory.getInstance().getLoginAdapter(context);
+        loginAdapter.logout();
+        final boolean[] ended = { false };
+        loginAdapter.login("TestUser001", "Test1234", new LoginFinishedCallback() {
+            @Override
+            public void onLoginSucceeded(User u) {
+                ended[0] = true;
+            }
+
+            @Override
+            public void onLoginFailed(LoginError t) {
+                ended[0] = true;
+            }
+        });
+
+        while (!ended[0]) {
+            sleep(200);
+        }
     }
 
-    private void setupMockIssueResponse() {
+    private static void setupMockIssueResponse() {
         MockWebServer mockWebServer = new MockWebServer();
         try {
             mockWebServer.start();
@@ -131,7 +199,8 @@ public class CreateIssueActivityTest {
                 .setDateFormat(ServiceGenerator.RAILS_DATE_FORMAT)
                 .create();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(mockWebServer.url("").toString())
-                .addConverterFactory(GsonConverterFactory.create(gson)).build();
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
         IssueService issueService = retrofit.create(IssueService.class);
         IssueAdapter issueAdapter =
                 AdapterFactory.getInstance().getIssueAdapter(getTargetContext());
@@ -140,9 +209,9 @@ public class CreateIssueActivityTest {
         String jsonBody;
         try {
             jsonBody = gson.toJson(mockIssue());
-            MockResponse mockResponse = new MockResponse()
-                    .setResponseCode(HttpURLConnection.HTTP_CREATED)
-                    .setBody(jsonBody);
+            MockResponse mockResponse =
+                    new MockResponse().setResponseCode(HttpURLConnection.HTTP_CREATED)
+                            .setBody(jsonBody);
             mockWebServer.enqueue(mockResponse);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -150,103 +219,103 @@ public class CreateIssueActivityTest {
     }
 
     @Test
-    public void testCreateIssue() {
+    public void testCreateIssue() throws IOException, UiObjectNotFoundException {
+        // Title
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
 
-        ViewInteraction appCompatEditText5 = onView(allOf(withId(R.id.title_input), isDisplayed()));
-        appCompatEditText5.perform(replaceText("IssueTitle"), closeSoftKeyboard());
+        onView(allOf(isDescendantOfA(withId(R.id.title_input_layout)),
+                not(isAssignableFrom(EditText.class)), isAssignableFrom(TextView.class))).check(
+                matches(withText(R.string.must_insert_issue_title)));
 
-        ViewInteraction appCompatButton3 =
-                onView(allOf(withId(R.id.button0), isDisplayed()));
-        appCompatButton3.perform(click());
+        onView(allOf(withId(R.id.title_input), isDisplayed())).perform(replaceText("IssueTitle"),
+                closeSoftKeyboard());
+
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
+
+        // Category
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
+
+        onView(allOf(withId(R.id.category_validation), withText(R.string.must_choose_category),
+                isDisplayed()));
 
         onView(withId(R.id.category_spinner)).perform(click());
 
-        onData(anything()).inAdapterView(withClassName(equalTo(
-                "android.widget.DropDownListView"))).atPosition(0)
-                .perform
-                (click
-                ());
+        onData(anything()).inAdapterView(withClassName(equalTo(DROPDOWN_LISTVIEW)))
+                .atPosition(0)
+                .perform(click());
 
-        ViewInteraction appCompatButton4 =
-                onView(allOf(withId(R.id.button0), isDisplayed()));
-        appCompatButton4.perform(click());
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
+
+        // Photo
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
+
+        onView(allOf(withId(R.id.photo_validation), withText(R.string.must_choose_photo),
+                isDisplayed()));
 
         onView(allOf(withId(R.id.camera_button), isDisplayed())).perform(click());
-        
+
         takeCameraPhoto();
 
-        ViewInteraction appCompatButton7 =
-                onView(allOf(withId(R.id.button0), isDisplayed()));
-        appCompatButton7.perform(click());
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
 
-        ViewInteraction appCompatImageButton4 = onView(allOf(withContentDescription("Navigate up"),
-                withParent(allOf(withId(R.id.create_issue_toolbar),
-                        withParent(withId(R.id.create_issue_linearlayout)))), isDisplayed()));
-        appCompatImageButton4.perform(click());
+        onView(allOf(withContentDescription(NAVIGATE_UP), withParent(
+                allOf(withId(R.id.create_issue_toolbar),
+                        withParent(withId(R.id.create_issue_linearlayout)))),
+                isDisplayed())).perform(click());
 
-        try {
-            pickGalleryPhoto();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        pickGalleryPhoto();
 
-        ViewInteraction appCompatImageButton5 =
-                onView(allOf(withId(R.id.gallery_button), isDisplayed()));
-        appCompatImageButton5.perform(click());
+        onView(allOf(withId(R.id.gallery_button), isDisplayed())).perform(click());
 
-        ViewInteraction appCompatButton8 =
-                onView(allOf(withId(R.id.button0), isDisplayed()));
-        appCompatButton8.perform(click());
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
 
-        ViewInteraction appCompatRadioButton = onView(allOf(withId(R.id.radio_yes),
-                withParent(withId(R.id.radio_group)), isDisplayed()));
-        appCompatRadioButton.perform(click());
+        // Risk
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
 
-        ViewInteraction appCompatButton9 =
-                onView(allOf(withId(R.id.button0), isDisplayed()));
-        appCompatButton9.perform(click());
+        onView(allOf(withId(R.id.risk_validation), withText(R.string.must_choose_option),
+                isDisplayed()));
 
-        ViewInteraction appCompatEditText6 =
-                onView(allOf(withId(R.id.description_input), isDisplayed()));
-        appCompatEditText6.perform(replaceText("Test description."), closeSoftKeyboard());
+        onView(allOf(withId(R.id.radio_yes), withParent(withId(R.id.radio_group)),
+                isDisplayed())).perform(click());
 
-        ViewInteraction appCompatButton10 =
-                onView(allOf(withId(R.id.button0), isDisplayed()));
-        appCompatButton10.perform(click());
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
 
-        onView(withText(R.string.creating_new_issue))
-                .inRoot(isDialog()).check(matches(isDisplayed()));
+        // Description
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
+
+        onView(allOf(isDescendantOfA(withId(R.id.description_layout)),
+                not(isAssignableFrom(EditText.class)), isAssignableFrom(TextView.class))).check(
+                matches(withText(R.string.must_insert_description)));
+
+        onView(allOf(withId(R.id.description_input), isDisplayed())).perform(
+                replaceText("Test description."), closeSoftKeyboard());
+
+        onView(allOf(withId(R.id.button0), isDisplayed())).perform(click());
+
+        // Rewards Dialog
+        onView(allOf(withId(android.R.id.button1), isDisplayed())).perform(click());
     }
 
-    private void takeCameraPhoto() {
-
+    private static void takeCameraPhoto() throws UiObjectNotFoundException {
         UiDevice device = UiDevice.getInstance(getInstrumentation());
         UiSelector shutterSelector =
                 new UiSelector().resourceId("com.android.camera:id/shutter_button");
         UiObject shutterButton = device.findObject(shutterSelector);
-        try {
-            shutterButton.click();
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        shutterButton.click();
 
         UiSelector doneSelector = new UiSelector().resourceId("com.android.camera:id/btn_done");
         UiObject doneButton = device.findObject(doneSelector);
-        try {
-            doneButton.click();
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
+        doneButton.click();
     }
 
     private static void pickGalleryPhoto() throws IOException {
 
-        Drawable drawable = getTargetContext().getResources().getDrawable(R.drawable.civify);
+        Drawable drawable = getTargetContext().getResources().getDrawable(R.drawable.upc_library);
         Bitmap bmp = drawableToBitmap(drawable);
 
-        File storageDir = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
-                "Camera");
+        File storageDir =
+                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+                        "Camera");
         File image = File.createTempFile("testImage", ".jpg", storageDir);
 
         FileOutputStream out = new FileOutputStream(image);
@@ -264,14 +333,15 @@ public class CreateIssueActivityTest {
         intended(not(isInternal()));
     }
 
-    private static Bitmap drawableToBitmap (Drawable drawable) {
+    private static Bitmap drawableToBitmap(Drawable drawable) {
 
         if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable)drawable).getBitmap();
+            return ((BitmapDrawable) drawable).getBitmap();
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(), Config.ARGB_8888);
+        Bitmap bitmap =
+                Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
+                        Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
@@ -281,15 +351,15 @@ public class CreateIssueActivityTest {
 
     private static Issue mockIssue() throws ParseException {
         String dateString = "2016-12-21T20:08:11.000Z";
-        DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT, Locale
-                .getDefault());
+        DateFormat dateFormat =
+                new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT, Locale.getDefault());
         Date date = dateFormat.parse(dateString);
 
-        Picture picture = new Picture("picture-file-name", "picture-content-type",
-                "picture-content");
-        Issue issue = new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true,
-                45.0f, 46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token",
-                picture);
+        Picture picture =
+                new Picture("picture-file-name", "picture-content-type", "picture-content");
+        Issue issue =
+                new Issue("issue-title", "issue-description", Category.ROAD_SIGNS, true, 45.0f,
+                        46.0f, 0, 0, 0, date, date, "issue-auth-token", "user-auth-token", picture);
         return issue;
     }
 }

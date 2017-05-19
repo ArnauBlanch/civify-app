@@ -2,10 +2,13 @@ package com.civify.model.issue;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.location.Location;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 
-import com.civify.activity.fragments.IssueDetailsFragment;
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.issue.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.map.CivifyMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -126,6 +129,21 @@ public class Issue implements Serializable {
         mPicture = picture;
     }
 
+    public Issue(String title, String description, Category category, boolean risk,
+            double longitude, double latitude, Picture pic, String userAuthToken) {
+        mTitle = title;
+        mDescription = description;
+        mCategory = category;
+        mRisk = risk;
+        mLongitude = longitude;
+        mLatitude = latitude;
+        mResolvedVotes = 0;
+        mConfirmVotes = 0;
+        mReports = 0;
+        mUserAuthToken = userAuthToken;
+        mPicture = pic;
+    }
+
     public String getTitle() {
         return mTitle;
     }
@@ -143,6 +161,7 @@ public class Issue implements Serializable {
     }
 
     public Category getCategory() {
+        if (mCategory == null) mCategory = Category.OTHER;
         return mCategory;
     }
 
@@ -250,12 +269,24 @@ public class Issue implements Serializable {
         return mConfirmedByAuthUser;
     }
 
+    public void setConfirmedByAuthUser(boolean confirmedByAuthUser) {
+        mConfirmedByAuthUser = confirmedByAuthUser;
+    }
+
     public boolean getReportedByAuthUser() {
         return mReportedByAuthUser;
     }
 
+    public void setReportedByAuthUser(boolean reportedByAuthUser) {
+        mReportedByAuthUser = reportedByAuthUser;
+    }
+
     public boolean getResolvedByAuthUser() {
         return mResolvedByAuthUser;
+    }
+
+    public void setResolvedByAuthUser(boolean resolvedByAuthUser) {
+        mResolvedByAuthUser = resolvedByAuthUser;
     }
 
     public LatLng getPosition() {
@@ -263,28 +294,36 @@ public class Issue implements Serializable {
     }
 
     /** @return distance in meters between the current geolocated position and this marker. */
-    public float getDistanceFromCurrentLocation() {
-        return CivifyMap.getInstance().getCurrentLocation().distanceTo(
-                LocationAdapter.getLocation(getPosition()));
+    @Nullable
+    public Float getDistanceFromCurrentLocation() {
+        Location currentLocation = CivifyMap.getInstance().getCurrentLocation();
+        if (currentLocation != null) {
+            return currentLocation.distanceTo(LocationAdapter.getLocation(getPosition()));
+        }
+        return null;
     }
 
+    @Nullable
     public String getDistanceFromCurrentLocationAsString() {
-        float distance = getDistanceFromCurrentLocation();
-        String distanceAsString = "";
-        if (distance > KILOMETER) {
-            int km = (int) Math.floor(distance / KILOMETER);
-            distanceAsString += km + "km ";
-            distance -= km * KILOMETER;
+        Float distance = getDistanceFromCurrentLocation();
+        if (distance != null) {
+            String distanceAsString = "";
+            if (distance > KILOMETER) {
+                int km = (int) Math.floor(distance / KILOMETER);
+                distanceAsString += km + "km ";
+                distance -= km * KILOMETER;
+            }
+            distanceAsString += Math.round(distance) + "m";
+            return distanceAsString.trim();
         }
-        distanceAsString += Math.round(distance) + "m";
-        return distanceAsString.trim();
+        return null;
     }
 
     public void showIssueDetails() {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(this);
         if (issueDetailsFragment != null) {
             CivifyMap.getInstance().getContext()
-                    .setFragment(issueDetailsFragment, issueDetailsFragment.getId());
+                    .setFragment(issueDetailsFragment, DrawerActivity.DETAILS_ISSUE_ID);
         }
     }
 

@@ -24,7 +24,7 @@ import android.support.annotation.Nullable;
 
 import com.civify.RobolectricTest;
 import com.civify.activity.DrawerActivity;
-import com.civify.activity.fragments.IssueDetailsFragment;
+import com.civify.activity.fragments.issue.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Category;

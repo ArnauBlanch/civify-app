@@ -2,67 +2,76 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.civify">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
   <uses-feature android:name="android.hardware.camera" />
+
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.INTERNET"/>
 
-    <application
-        android:allowBackup="true"
-        android:fullBackupContent="@xml/backup_descriptor"
-        android:icon="@drawable/logo_planeta"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
-      <provider
-          android:name="android.support.v4.content.FileProvider"
-          android:authorities="com.civify.provider"
-          android:exported="false"
-          android:grantUriPermissions="true">
-        <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/provider_paths"/>
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-      </provider>
-
+  <application
+      android:allowBackup="true"
+      android:fullBackupContent="@xml/backup_descriptor"
+      android:icon="@drawable/logo_planeta"
+      android:label="@string/app_name"
+      android:supportsRtl="true"
+      android:theme="@style/AppTheme">
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="com.civify.provider"
+        android:exported="false"
+        android:grantUriPermissions="true">
       <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/provider_paths" />
+      <meta-data
+          android:name="com.google.android.gms.version"
+          android:value="@integer/google_play_services_version" />
+    </provider>
+
+    <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyDjpm9TrHNHNcLWkvMRZh_QihtrDhzFuUU"/>
+        android:value="AIzaSyDjpm9TrHNHNcLWkvMRZh_QihtrDhzFuUU" />
 
-        <activity
-            android:name=".activity.MainActivity"
-            android:windowSoftInputMode="stateAlwaysVisible|stateHidden"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+    <activity
+        android:name=".activity.MainActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar"
+        android:windowSoftInputMode="stateAlwaysVisible|stateHidden">
 
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
     </activity>
     <activity android:name=".activity.BaseActivity" />
     <activity
         android:name=".activity.DrawerActivity"
-        android:label="@string/title_activity_drawer"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:screenOrientation="portrait"/>
-      <activity android:name=".activity.LoginActivity"
-          android:theme="@style/AppTheme.NoActionBar"
-          android:screenOrientation="portrait"/>
-      <activity android:name=".activity.registration.RegistrationActivity" />
-      <activity android:name=".activity.createissue.CreateIssueActivity"
-          android:theme="@style/AppTheme.NoActionBar" />
-      <activity android:name=".activity.EditIssueActivity"
-          android:theme="@style/AppTheme.NoActionBar"
-          android:screenOrientation="portrait"/>
-    </application>
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+        android:name=".activity.LoginActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+        android:name=".activity.registration.RegistrationActivity"
+        android:screenOrientation="portrait" />
+    <activity
+        android:name=".activity.createissue.CreateIssueActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+        android:name=".activity.EditIssueActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+        android:name=".activity.SplashActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/SplashScreen"
+        android:windowSoftInputMode="stateAlwaysVisible|stateHidden">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
 
 </manifest>
