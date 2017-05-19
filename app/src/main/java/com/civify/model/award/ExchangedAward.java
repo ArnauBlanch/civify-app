@@ -42,4 +42,8 @@ public class ExchangedAward extends Award {
     public void setCode(String code) {
         mCode = code;
     }
+
+    public void showDetails() {
+        
+    }
 }

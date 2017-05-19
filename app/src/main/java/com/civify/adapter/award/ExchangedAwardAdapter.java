@@ -113,7 +113,7 @@ public class ExchangedAwardAdapter extends RecyclerView.Adapter<ExchangedAwardAd
         @Override
         public void onClick(View v) {
             // TODO: show exchanged award details (code)
-            //mExchangedAward.showDetails();
+            mExchangedAward.showDetails();
         }
     }
 }
