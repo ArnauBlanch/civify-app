@@ -1,5 +1,6 @@
 package com.civify.service.award;
 
+import com.civify.model.RewardContainer;
 import com.civify.model.award.Award;
 import com.civify.model.award.ExchangedAward;
 
@@ -30,6 +31,6 @@ public interface AwardService {
             ("user_auth_token") String userAuthToken);
 
     @POST("/awards/{award_auth_token}/exchange")
-    Call<Void> exchangeAward(@Header("Authorization") String authToken, @Path("award_auth_token")
-            String authTokenAward);
+    Call<RewardContainer> exchangeAward(@Header("Authorization") String authToken,
+            @Path("award_auth_token") String authTokenAward);
 }

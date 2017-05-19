@@ -6,7 +6,6 @@ import static android.graphics.Color.WHITE;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,13 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.model.award.ExchangedAward;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-public class ShowQrFragment extends Fragment {
+public class ShowQrFragment extends BasicFragment {
 
     private static final String TAG_EXCHANGE_AWARD = "exchange_award";
     private static final int WIDTH = 1000;
@@ -129,5 +130,10 @@ public class ShowQrFragment extends Fragment {
         Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
         return bitmap;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.DETAILS_QR_ID;
     }
 }

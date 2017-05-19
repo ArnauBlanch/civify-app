@@ -1,14 +1,13 @@
 package com.civify.activity.fragments.award;
 
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,13 +19,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
-import com.civify.adapter.SimpleCallback;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.award.AwardAdapter;
+import com.civify.model.Reward;
+import com.civify.model.User;
 import com.civify.model.award.Award;
+import com.civify.service.award.RewardCallback;
 import com.civify.utils.AdapterFactory;
 
-public class AwardDetailsFragment extends Fragment {
+public class AwardDetailsFragment extends BasicFragment {
 
     public static final float ALPHA = 0.3f;
     private static final String TAG_AWARD = "award";
@@ -121,21 +124,39 @@ public class AwardDetailsFragment extends Fragment {
             @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                mAwardAdapter.exchangeAward(mAward.getAwardAuthToken(), new SimpleCallback() {
+                mAwardAdapter.exchangeAward(mAward.getAwardAuthToken(), new RewardCallback() {
                     @Override
-                    public void onSuccess() {
-                        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-
-                        createDialog(getResources().getString(R.string.dialog_award_bought)).show();
+                    public void onSuccess(Reward reward) {
+                        showRewardDialog(reward);
+                        Snackbar.make(mViewDetails, getString(R.string.dialog_award_bought),
+                                Snackbar.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure() {
-                        createDialog(getResources().getString(R.string.problem_award)).show();
+                        Snackbar.make(mViewDetails, getString(R.string.problem_award),
+                                Snackbar.LENGTH_SHORT).show();
                     }
                 });
             }
         });
+    }
+
+    private void showRewardDialog(Reward reward) {
+        final DrawerActivity activity = (DrawerActivity) getActivity();
+        AdapterFactory.getInstance().getUserAdapter(getContext())
+                .showRewardDialog(activity, reward,
+                        new UserSimpleCallback() {
+                            @Override
+                            public void onSuccess(User user) {
+                                activity.setUserHeader();
+                                activity.removeCoinsFromToolbar();
+                                activity.showCoinsOnToolbar();
+                            }
+
+                            @Override
+                            public void onFailure() { }
+                        });
     }
 
     private void changeTypeButton(Button button, int type) {
@@ -157,14 +178,8 @@ public class AwardDetailsFragment extends Fragment {
         }
     }
 
-    private AlertDialog createDialog(String msg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(msg)
-                .setPositiveButton(R.string.ok_award, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        return builder.create();
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.DETAILS_AWARD_ID;
     }
 }

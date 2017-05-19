@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.civify.activity.fragments.reward.AvailableAwardsFragment;
+import com.civify.activity.fragments.award.AvailableAwardsFragment;
 import com.civify.activity.fragments.reward.ExchangedAwardsFragment;
 
 public class AwardsFragmentPagerAdapter extends FragmentPagerAdapter {

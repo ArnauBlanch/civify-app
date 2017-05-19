@@ -31,6 +31,7 @@ import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserAttacher;
+
 import java.util.Stack;
 
 public class DrawerActivity extends BaseActivity
@@ -45,7 +46,8 @@ public class DrawerActivity extends BaseActivity
     public static final int SETTINGS_ID = 6;
     public static final int DETAILS_ISSUE_ID = 7;
     public static final int DETAILS_AWARD_ID = 8;
-    public static final int DETAILS_QR_ID = 8;
+    public static final int DETAILS_QR_ID = 9;
+    public static final int EXCHANGED_AWARDS = 10;
 
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
@@ -101,7 +103,7 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ID
+            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
                     && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
@@ -295,7 +297,7 @@ public class DrawerActivity extends BaseActivity
         }
     }
 
-    private void removeCoinsFromToolbar() {
+    public void removeCoinsFromToolbar() {
         View coins = mToolbar.findViewById(R.id.coins_with_number);
         if (coins != null) {
             mToolbar.removeView(coins);
