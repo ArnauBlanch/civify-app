@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
-import com.civify.utils.ServiceGenerator;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Date;
@@ -34,8 +33,7 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
     public IssuesViewAdapter(Context context, List<Issue> issueList) {
         this.mContext = context;
         this.mIssueList = issueList;
-        Locale.setDefault(Locale.ENGLISH);
-        mPrettyTime = new PrettyTime();
+        mPrettyTime = new PrettyTime(Locale.ENGLISH);
     }
 
     @Override
@@ -54,14 +52,17 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
         String numConfirms = '+' + Integer.toString(issue.getConfirmVotes());
         holder.getNumConfirms().setText(numConfirms);
         Category issueCategory = issue.getCategory();
-        Drawable drawable = mContext.getResources().getDrawable(issueCategory.getMarker());
+        Drawable drawable = mContext.getResources().getDrawable(issueCategory.getCircleIcon());
         CircularImageView categoryImage = holder.getCategory();
         categoryImage.setImageDrawable(drawable);
         holder.getDistance().setText(issue.getDistanceFromCurrentLocationAsString());
 
         // loading album cover using Glide library
-        String imageUrl = ServiceGenerator.BASE_URL + issue.getPicture().getMedUrl();
-        Glide.with(mContext).load(imageUrl).into(holder.getThumbnail());
+        String imageUrl = issue.getPicture().getSmallUrl();
+        Glide.with(mContext)
+                .load(imageUrl)
+                .centerCrop()
+                .into(holder.getThumbnail());
 
         OnClickListener showDetails = new OnClickListener() {
             @Override

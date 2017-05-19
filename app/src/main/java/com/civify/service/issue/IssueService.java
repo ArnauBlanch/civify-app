@@ -1,5 +1,6 @@
 package com.civify.service.issue;
 
+import com.civify.model.IssueReward;
 import com.civify.model.MessageResponse;
 import com.civify.model.issue.Issue;
 import com.google.gson.JsonObject;
@@ -16,8 +17,8 @@ import retrofit2.http.Path;
 
 public interface IssueService {
     @POST("/users/{user_auth_token}/issues")
-    Call<Issue> createIssue(@Header("Authorization") String authToken, @Body Issue issue, @Path
-            ("user_auth_token") String userAuthToken);
+    Call<IssueReward> createIssue(@Header("Authorization") String authToken, @Body Issue issue,
+            @Path("user_auth_token") String userAuthToken);
 
     @GET("/issues")
     Call<List<Issue>> getIssues(@Header("Authorization") String authToken);
@@ -39,9 +40,9 @@ public interface IssueService {
             @Body JsonObject userToken, @Path("issue_auth_token") String issueAuthToken);
 
     @PATCH("/issues/{issue_auth_token}")
-    Call<Issue> editIssue(@Header("Authorization") String authToken, @Body Issue issue, @Path
-            ("issue_auth_token")
-            String issueAuthToken);
+    Call<Issue> editIssue(@Header("Authorization") String authToken, @Body JsonObject editedIssue,
+            @Path
+            ("issue_auth_token") String issueAuthToken);
 
     @DELETE("/issues/{issue_auth_token}")
     Call<Issue> deleteIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")

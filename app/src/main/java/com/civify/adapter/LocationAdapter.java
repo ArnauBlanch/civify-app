@@ -1,13 +1,16 @@
 package com.civify.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -85,6 +88,7 @@ public class LocationAdapter implements
             Log.i(TAG, "Connecting location services...");
             mGoogleApiClient.connect();
         }
+        checkForPermissions();
     }
 
     @Override
@@ -234,24 +238,28 @@ public class LocationAdapter implements
     }
 
     public void onMapSettingsResults(int requestCode, int resultCode) {
-        if (requestCode == CONNECTION_FAILURE_RESOLUTION) {
-            if (resultCode == Activity.RESULT_OK) {
-                Log.i(TAG, mContext.getString(
-                        R.string.user_location_settings_agreed));
-                // Reconnect
-                connect();
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Log.w(TAG, mContext.getString(R.string.location_connection_failed));
-                rescheduleLocationUpdateTimeout();
-            }
-        } else if (requestCode == REQUEST_CHECK_SETTINGS) {
-            if (resultCode == Activity.RESULT_OK) {
-                Log.i(TAG, mContext.getString(R.string.user_location_settings_agreed));
-                updateLocation();
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i(TAG, mContext.getString(R.string.user_location_settings_canceled));
-                updateLocation();
-            }
+        switch (requestCode) {
+            case CONNECTION_FAILURE_RESOLUTION:
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.i(TAG, mContext.getString(
+                            R.string.user_location_settings_agreed));
+                    // Reconnect
+                    connect();
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    Log.w(TAG, mContext.getString(R.string.location_connection_failed));
+                    rescheduleLocationUpdateTimeout();
+                }
+                break;
+            case REQUEST_CHECK_SETTINGS:
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.i(TAG, mContext.getString(R.string.user_location_settings_agreed));
+                    updateLocation();
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    Log.i(TAG, mContext.getString(R.string.user_location_settings_canceled));
+                    updateLocation();
+                }
+                break;
+            default:
         }
     }
 
@@ -304,21 +312,58 @@ public class LocationAdapter implements
         if (!isRequestingPermissions()) {
             mHasPermissions = false;
             setRequestingPermissions(true);
-            // If we don't have permissions we request them on runtime
-            if (ContextCompat.checkSelfPermission(mContext,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                Log.i(TAG, TAG + " without permissions! Requesting them if available.");
-                ActivityCompat.requestPermissions(mContext, new String[]
-                        {android.Manifest.permission.ACCESS_FINE_LOCATION},
-                        PERMISSION_ACCESS_LOCATION);
-            } else if (checkNetwork()) {
-                Log.i(TAG, TAG + " with permissions.");
-                mHasPermissions = true;
-                setRequestingPermissions(false);
-                if (mGoogleApiClient.isConnected()) updateLocation();
+            if (!checkMockedGps()) {
+                // If we don't have permissions we request them on runtime
+                if (ContextCompat.checkSelfPermission(mContext,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, TAG + " without permissions! Requesting them if available.");
+                    ActivityCompat.requestPermissions(mContext,
+                            new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION},
+                            PERMISSION_ACCESS_LOCATION);
+                } else if (checkNetwork()) {
+                    Log.i(TAG, TAG + " with permissions.");
+                    mHasPermissions = true;
+                    setRequestingPermissions(false);
+                    if (mGoogleApiClient.isConnected()) updateLocation();
+                }
             }
         }
+    }
+
+    public static boolean isMockSettingsEnabled(Context context) {
+        return !"0".equals(Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ALLOW_MOCK_LOCATION));
+    }
+
+    private boolean checkMockedGps() {
+        boolean mockGps = isMockSettingsEnabled(getContext());
+        if (mockGps) showMockSettingsDialog();
+        return mockGps;
+    }
+
+    private void showMockSettingsDialog() {
+        String title = "Fake locations prohibited";
+        ConfirmDialog mockLocationsDialog = new ConfirmDialog(getContext(), title,
+                "Civify does not allow using mocked GPS. Please, disable mock locations.");
+        mockLocationsDialog.setPositiveButton("DONE", new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface d, int w) {
+                if (!checkMockedGps()) {
+                    setRequestingPermissions(false);
+                    checkForPermissions();
+                }
+            }
+        });
+        mockLocationsDialog.setNegativeButton("SETTINGS", new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface d, int w) {
+                setRequestingPermissions(false);
+                getContext().startActivityForResult(new Intent(
+                        Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS), 0);
+            }
+        });
+        mockLocationsDialog.show();
     }
 
     private boolean checkNetwork() {

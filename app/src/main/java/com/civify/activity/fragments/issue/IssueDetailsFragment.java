@@ -1,19 +1,23 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.issue;
+
+import static android.app.Activity.RESULT_OK;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,10 +28,13 @@ import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.EditIssueActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.UserAttacher;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
@@ -38,32 +45,28 @@ import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
 import com.google.android.gms.maps.model.LatLng;
-import com.mikhaellopez.circularimageview.CircularImageView;
-
-import java.util.Date;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
-public class IssueDetailsFragment extends Fragment {
+public class IssueDetailsFragment extends BasicFragment {
 
     private static final String DEBUG = "debug-IssueDetails";
-    private static final String TAG_ISSUE = "issue";
 
-    private static final int DISTANCE_TO_KILOMETERS = 1000;
-    private static final int DISTANCE_TO_METERS = 1000000;
+    private static final String TAG_ISSUE = "issue";
     private static final int MIN_METERS_FROM_ISSUE = 70;
     private static final float DISABLED_ALPHA = 0.15f;
+    private static final int SHOW_AS_ACTION_NEVER = 0;
+    private static final int REQUEST_CODE = 0;
 
     private UserAdapter mUserAdapter;
     private IssueAdapter mIssueAdapter;
 
     private Issue mIssue;
-    private float mDistance;
+    private Float mDistance;
 
     private View mViewDetails;
 
     public IssueDetailsFragment() {
-        // Required empty public constructor
     }
 
     public static IssueDetailsFragment newInstance(@NonNull Issue issue) {
@@ -72,6 +75,11 @@ public class IssueDetailsFragment extends Fragment {
         IssueDetailsFragment fragment = new IssueDetailsFragment();
         fragment.setArguments(data);
         return fragment;
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.DETAILS_ISSUE_ID;
     }
 
     @Override
@@ -88,18 +96,32 @@ public class IssueDetailsFragment extends Fragment {
         return mViewDetails;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (!mIssue.getUserAuthToken().equals(mUserAdapter.getCurrentUser().getUserAuthToken())) {
+            for (int i = 0; i < menu.size(); ++i) {
+                menu.getItem(i).setVisible(false);
+                menu.getItem(i).setShowAsAction(SHOW_AS_ACTION_NEVER);
+            }
+        }
+    }
+
     private void init() {
         Log.v(DEBUG, "init");
 
         Log.v(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
         mIssue = (Issue) bundle.getSerializable(TAG_ISSUE);
-        mDistance = mIssue.getDistanceFromCurrentLocation();
+        if (mIssue != null) {
+            mDistance = mIssue.getDistanceFromCurrentLocation();
+        }
 
         mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(getActivity());
         mUserAdapter = AdapterFactory.getInstance().getUserAdapter(getActivity());
         setIssue();
         setPosition();
+        setShareOptions();
         updateIssue(mIssue.getIssueAuthToken());
         addUser();
 
@@ -109,6 +131,11 @@ public class IssueDetailsFragment extends Fragment {
     private void setPosition() {
         addDistance();
         addStreetAsync(mIssue.getPosition());
+    }
+
+    public void setIssue(Issue issue) {
+        mIssue = issue;
+        setIssue();
     }
 
     private void setIssue() {
@@ -163,17 +190,18 @@ public class IssueDetailsFragment extends Fragment {
     private void addTime() {
         Log.v(DEBUG, "Adding time in layout");
         TextView timeIssue = (TextView) mViewDetails.findViewById(R.id.sinceText);
-        Date dateIssue = mIssue.getCreatedAt();
-        if (mIssue.getUpdatedAt() != null) {
-            dateIssue = mIssue.getUpdatedAt();
-        }
-        timeIssue.setText(new PrettyTime().format(dateIssue));
+        timeIssue.setText(new PrettyTime().format(mIssue.getCreatedAt()));
     }
 
     private void addDistance() {
         Log.v(DEBUG, "Adding distance in layout");
         TextView distanceIssue = (TextView) mViewDetails.findViewById(R.id.distanceText);
-        distanceIssue.setText(mIssue.getDistanceFromCurrentLocationAsString());
+        String distanceString = mIssue.getDistanceFromCurrentLocationAsString();
+        if (distanceString != null) {
+            distanceIssue.setText(distanceString);
+        } else {
+            distanceIssue.setVisibility(View.GONE);
+        }
     }
 
     private void addStreetAsync(LatLng position) {
@@ -240,41 +268,47 @@ public class IssueDetailsFragment extends Fragment {
     private void addImageIssue() {
         Log.v(DEBUG, "Adding image issue in layout");
         ImageView imageIssue = (ImageView) mViewDetails.findViewById(R.id.eventView);
-        String url = ServiceGenerator.BASE_URL + mIssue.getPicture().getMedUrl();
-        Glide.with(this).load(url).into(imageIssue);
+        String url = mIssue.getPicture().getMedUrl();
+        Glide.with(this)
+                .load(url)
+                .centerCrop()
+                .into(imageIssue);
     }
 
     private User buildFakeUser() {
         String password = "";
-        User fakeUser = new User("", "User couldn't be retrieved", "",
+        return new User("", "User couldn't be retrieved", "",
                 "example@mail.com", password, password);
-        fakeUser.setLevel(1);
-        return fakeUser;
     }
 
     private void setUser(User user) {
-        Log.v(DEBUG, "setUser");
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
+        Log.v(DEBUG, "setUser: init");
 
-        ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
-
-        TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
-        name.setText(user.getName() + ' ' + user.getSurname());
-
-        TextView username = (TextView) mViewDetails.findViewById(R.id.userUsername);
-        username.setText(user.getUsername());
-
-        TextView level = (TextView) mViewDetails.findViewById(R.id.userLevel);
-        String userLevel = Integer.toString(user.getLevel());
-        String showLevel = getString(R.string.level) + ' ' + userLevel;
-        level.setText(showLevel);
-
-        CircularImageView profileImage =
-                (CircularImageView) mViewDetails.findViewById(R.id.userImage);
-        //profileImage.setImageBitmap(img); // bitmap
-        //profileImage.setImageIcon(img); // icon
+        UserAttacher.get(getContext(), user)
+                .setFullName((TextView) mViewDetails.findViewById(R.id.userName))
+                .setUsername((TextView) mViewDetails.findViewById(R.id.userUsername))
+                .setLevel((TextView) mViewDetails.findViewById(R.id.userLevel))
+                .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress));
 
         Log.v(DEBUG, "setUser finished");
+    }
+
+    private void setShareOptions() {
+        ImageView shareIcon = (ImageView) mViewDetails.findViewById(R.id.shareView);
+        TextView shareText = (TextView) mViewDetails.findViewById(R.id.shareText);
+        OnClickListener shareListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, mIssue.getTitle());
+                intent.putExtra(Intent.EXTRA_TEXT, "See this issue: " + mIssue.getTitle() + '\n'
+                        + ServiceGenerator.BASE_WEB_URL + "/issues/" + mIssue.getIssueAuthToken());
+                getContext().startActivity(Intent.createChooser(intent, "Share"));
+            }
+        };
+        shareIcon.setOnClickListener(shareListener);
+        shareText.setOnClickListener(shareListener);
     }
 
     @Override
@@ -312,19 +346,20 @@ public class IssueDetailsFragment extends Fragment {
         }
     }
 
-    public IssueSimpleCallback getDeleteCallback() {
-        return new IssueSimpleCallback() {
+    public SimpleCallback getDeleteCallback() {
+        return new SimpleCallback() {
             @Override
-            public void onSuccess(Issue issue) {
+            public void onSuccess() {
                 CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
-                if (markers != null) markers.remove(issue.getIssueAuthToken());
+                if (markers != null) markers.remove(mIssue.getIssueAuthToken());
                 getActivity().onBackPressed();
                 Log.d(DEBUG, "issue borrada");
             }
 
             @Override
             public void onFailure() {
-                Snackbar.make(mViewDetails, "Couldn't delete issue", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mViewDetails, R.string.couldnt_delete_issue, Snackbar.LENGTH_SHORT)
+                        .show();
             }
         };
     }
@@ -343,7 +378,7 @@ public class IssueDetailsFragment extends Fragment {
     }
 
     private boolean isTooFarFromIssue() {
-        return mDistance > MIN_METERS_FROM_ISSUE;
+        return mDistance == null || mDistance > MIN_METERS_FROM_ISSUE;
     }
 
     private void setupConfirmButton() {
@@ -353,6 +388,13 @@ public class IssueDetailsFragment extends Fragment {
 
         if (issueUserToken.equals(userToken)) {
             button.setAlpha(DISABLED_ALPHA);
+            button.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(getView(), R.string.cant_confirm_own_issue, Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            });
         } else {
             if (mIssue.getConfirmedByAuthUser()) {
                 changeButtonStyle(button, IssueButton.UNCONFIRM);
@@ -372,6 +414,13 @@ public class IssueDetailsFragment extends Fragment {
 
         if (issueUserToken.equals(userToken)) {
             button.setAlpha(DISABLED_ALPHA);
+            button.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(getView(), R.string.cant_report_own_issue, Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            });
         } else {
             if (mIssue.getReportedByAuthUser()) {
                 changeButtonStyle(button, IssueButton.UNREPORT);
@@ -388,17 +437,13 @@ public class IssueDetailsFragment extends Fragment {
         String issueUserToken = mIssue.getUserAuthToken();
         String userToken = UserAdapter.getCurrentUser().getUserAuthToken();
 
-        if (issueUserToken.equals(userToken)) {
-            button.setAlpha(DISABLED_ALPHA);
-        } else {
-            if (mIssue.getResolvedByAuthUser()) {
-                changeButtonStyle(button, IssueButton.UNRESOLVE);
-            }
-            IssueButtonListener buttonListener =
-                    new IssueButtonListener(this, mViewDetails, mIssue,
-                            IssueButton.RESOLVE, IssueButton.UNRESOLVE);
-            button.setOnClickListener(buttonListener);
+        if (mIssue.getResolvedByAuthUser()) {
+            changeButtonStyle(button, IssueButton.UNRESOLVE);
         }
+        IssueButtonListener buttonListener =
+                new IssueButtonListener(this, mViewDetails, mIssue,
+                        IssueButton.RESOLVE, IssueButton.UNRESOLVE);
+        button.setOnClickListener(buttonListener);
     }
 
     public void changeButtonStyle(AppCompatButton button, IssueButton issueButton) {
@@ -410,6 +455,27 @@ public class IssueDetailsFragment extends Fragment {
     public void launchEditActivity() {
         DrawerActivity drawerActivity = (DrawerActivity) getActivity();
         Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
-        drawerActivity.startActivity(intent);
+        Bundle data = new Bundle();
+        data.putSerializable(TAG_ISSUE, mIssue);
+        intent.putExtra(TAG_ISSUE, data);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    Bundle editedBundle = data.getBundleExtra(TAG_ISSUE);
+                    Issue issue = (Issue) editedBundle.getSerializable(TAG_ISSUE);
+                    setIssue(issue);
+                    CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
+                    markers.get(mIssue.getIssueAuthToken()).setIssue(mIssue);
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 }

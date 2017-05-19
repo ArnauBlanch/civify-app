@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,26 +14,32 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
-import com.civify.model.issue.Issue;
+import com.civify.adapter.UserSimpleCallback;
+import com.civify.model.IssueReward;
+import com.civify.model.User;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
+import com.civify.utils.AdapterFactory;
 
-public class NavigateFragment extends Fragment {
+public class NavigateFragment extends BasicFragment {
 
-    public NavigateFragment() {
-        // Required empty public constructor
-    }
+    public NavigateFragment() { }
 
     public static NavigateFragment newInstance() {
         return new NavigateFragment();
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.NAVIGATE_ID;
     }
 
     private void setMap() {
         CivifyMap.setContext((DrawerActivity) getActivity());
         Fragment mapFragment = CivifyMap.getInstance().getMapFragment();
         CivifyMap.getInstance().enable();
-        getFragmentManager()
+        getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.map_fragment_placeholder, mapFragment)
                 .commit();
@@ -63,16 +69,33 @@ public class NavigateFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CreateIssueActivity.ISSUE_CREATION) {
             if (resultCode == CreateIssueActivity.ISSUE_CREATED) {
-                Issue issue = (Issue) data.getExtras().getSerializable("issue");
+                IssueReward issueReward =
+                        (IssueReward) data.getExtras().getSerializable("issueReward");
                 try {
-                    CivifyMap.getInstance().addIssueMarker(issue);
+                    CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
+
+                    final DrawerActivity activity = (DrawerActivity) getActivity();
+                    AdapterFactory.getInstance().getUserAdapter(getContext())
+                            .showRewardDialog(activity, issueReward.getReward(),
+                                    new UserSimpleCallback() {
+                                        @Override
+                                        public void onSuccess(User user) {
+                                            activity.setUserHeader();
+                                        }
+
+                                        @Override
+                                        public void onFailure() { }
+                                    });
+
+                    Snackbar.make(getView(), getString(R.string.issue_created),
+                            Snackbar.LENGTH_SHORT).show();
                 } catch (MapNotLoadedException ignore) {
-                    // Button to create issues is only enabled if the map is loaded
+                    Log.wtf(NavigateFragment.class.getSimpleName(), "Creating issues must be "
+                            + "only enabled if the map is loaded");
                 }
-                Snackbar.make(getView(), getString(R.string.issue_created),
-                        Snackbar.LENGTH_SHORT).show();
             }
             CivifyMap.getInstance().setCanBeDisabled(true);
+
         } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
     }
 
@@ -82,9 +105,6 @@ public class NavigateFragment extends Fragment {
         View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
 
         setMap();
-
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Map");
 
         FloatingActionButton fabLocation = (FloatingActionButton)
                 mapView.findViewById(R.id.fab_location);

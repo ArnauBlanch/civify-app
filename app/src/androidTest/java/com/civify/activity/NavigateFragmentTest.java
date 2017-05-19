@@ -13,10 +13,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.core.Is.is;
 
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.ViewInteraction;
@@ -38,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.concurrent.CountDownLatch;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -53,8 +56,8 @@ public class NavigateFragmentTest {
     private CountDownLatch mLatch;
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule =
-            new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<DrawerActivity> mActivityTestRule =
+            new ActivityTestRule<>(DrawerActivity.class);
 
     private static void grantPermission(String permission) {
         // In M+, trying to do some actions will trigger a runtime dialog. Make sure
@@ -73,7 +76,6 @@ public class NavigateFragmentTest {
 
     @Test
     public void testButtonsWhenMapIsNotReady() {
-        signIn();
         CivifyMap.getInstance().disable();
         CivifyMap.getInstance().outdateToBeRefreshed();
         onView(allOf(withId(R.id.fab_location), isDisplayed())).perform(click());
@@ -87,7 +89,6 @@ public class NavigateFragmentTest {
 
     @Test
     public void testButtonsWhenMapIsReady() {
-        signIn();
         resetLatch();
         CivifyMap.getInstance().setOnMapReadyListener(notifyLatch());
         waitForLatch();
@@ -154,47 +155,30 @@ public class NavigateFragmentTest {
 
     private void waitFor(long millis) {
         try {
-            Thread.sleep(millis);
+            sleep(millis);
         } catch (InterruptedException ignore) {}
     }
 
     // Sign In
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() throws InterruptedException {
         LoginAdapter loginAdapter =
                 AdapterFactory.getInstance().getLoginAdapter(getTargetContext());
         loginAdapter.logout();
-        loginAdapter.login("ArnauBlanch2", "Test1234", new LoginFinishedCallback() {
-            @Override
-            public void onLoginSucceeded(User u) {}
-            @Override
-            public void onLoginFailed(LoginError t) {}
+        final boolean[] ended = { false };
+        loginAdapter.login("TestUser001", "Test1234", new LoginFinishedCallback() {
+            @Override public void onLoginSucceeded(User u) {
+                ended[0] = true;
+            }
+
+            @Override public void onLoginFailed(LoginError t) {
+                ended[0] = true;
+            }
         });
-    }
 
-    private void signIn() {
-        ViewInteraction appCompatButton =
-                onView(allOf(withId(R.id.signInButton), withParent(
-                        allOf(withId(R.id.buttonsLayout), withParent(withId(R.id.mainLayout)))),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        ViewInteraction appCompatEditText =
-                onView(allOf(withId(R.id.login_email_input), isDisplayed()));
-        appCompatEditText.perform(click());
-
-        ViewInteraction appCompatEditText2 =
-                onView(allOf(withId(R.id.login_email_input), isDisplayed()));
-        appCompatEditText2.perform(replaceText("arnaublanch2"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText3 =
-                onView(allOf(withId(R.id.login_password_input), isDisplayed()));
-        appCompatEditText3.perform(replaceText("Test1234"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton2 = onView(allOf(withId(R.id.bsignin), withText("Sign in"),
-                withParent(allOf(withId(R.id.intro_background),
-                        withParent(withId(android.R.id.content)))), isDisplayed()));
-        appCompatButton2.perform(click());
+        while (!ended[0]) {
+            sleep(200);
+        }
     }
 }

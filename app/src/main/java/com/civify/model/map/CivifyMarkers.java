@@ -28,7 +28,7 @@ public class CivifyMarkers implements OnMarkerClickListener {
         mMap = map;
         map.getGoogleMap().setOnMarkerClickListener(this);
         if (!mMarkers.isEmpty()) {
-            for (IssueMarker marker : mMarkers.values()) marker.attachToMap(map.getGoogleMap());
+            for (IssueMarker marker : getAll()) marker.attachToMap(map.getGoogleMap());
         }
     }
 
@@ -47,7 +47,7 @@ public class CivifyMarkers implements OnMarkerClickListener {
 
     public Set<IssueMarker> get(@NonNull LatLng position) {
         Set<IssueMarker> atSamePosition = new HashSet<>();
-        for (IssueMarker marker : mMarkers.values()) {
+        for (IssueMarker marker : getAll()) {
             if (marker.getPosition().equals(position)) atSamePosition.add(marker);
         }
         return atSamePosition;
@@ -70,7 +70,7 @@ public class CivifyMarkers implements OnMarkerClickListener {
     }
 
     public void clear() {
-        Collection<IssueMarker> markers = mMarkers.values();
+        Collection<IssueMarker> markers = getAll();
         for (IssueMarker marker : markers) marker.remove();
         markers.clear();
     }
@@ -98,6 +98,10 @@ public class CivifyMarkers implements OnMarkerClickListener {
         return false;
     }
 
+    public Collection<IssueMarker> getAll() {
+        return mMarkers.values();
+    }
+
     @NonNull
     private static String idify(@NonNull String possibleKey) {
         return possibleKey.toLowerCase();
@@ -106,7 +110,7 @@ public class CivifyMarkers implements OnMarkerClickListener {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("{\n");
-        for (IssueMarker marker : mMarkers.values()) builder.append(marker).append('\n');
+        for (IssueMarker marker : getAll()) builder.append(marker).append('\n');
         return builder.append('}').toString();
     }
 
