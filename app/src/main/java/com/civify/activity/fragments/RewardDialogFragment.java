@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,16 +65,18 @@ public class RewardDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_reward, null);
 
         TextView numCoins = (TextView) view.findViewById(R.id.dialog_num_coins);
-        if (coins > 0) {
+        if (coins != 0) {
             numCoins.setText(String.valueOf(coins));
+            if (coins < 0) numCoins.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         } else {
             view.findViewById(R.id.dialog_coins_icon).setVisibility(View.GONE);
             numCoins.setVisibility(View.GONE);
         }
 
         TextView xp = (TextView) view.findViewById(R.id.dialog_xp_num);
-        if (experience > 0) {
+        if (experience != 0) {
             xp.setText(String.valueOf(experience));
+            if (experience < 0) xp.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
             if (coins == 0) {
                 xp.setPadding(0, 0, 0, 0);
             }
