@@ -1,6 +1,11 @@
 package com.civify.model.award;
 
+import android.support.v4.app.Fragment;
+
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.reward.ShowQrFragment;
 import com.civify.model.issue.Picture;
+import com.civify.model.map.CivifyMap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -44,6 +49,10 @@ public class ExchangedAward extends Award {
     }
 
     public void showDetails() {
-        
+        Fragment awardDetailsFragment = ShowQrFragment.newInstance(this);
+        if (awardDetailsFragment != null) {
+            CivifyMap.getInstance().getContext()
+                    .setFragment(awardDetailsFragment, DrawerActivity.DETAILS_QR_ID);
+        }
     }
 }
