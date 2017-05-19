@@ -161,6 +161,7 @@ public class Issue implements Serializable {
     }
 
     public Category getCategory() {
+        if (mCategory == null) mCategory = Category.OTHER;
         return mCategory;
     }
 

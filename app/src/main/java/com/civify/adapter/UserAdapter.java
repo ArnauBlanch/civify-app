@@ -241,11 +241,15 @@ public class UserAdapter {
 
     public void showReward(@NonNull final DrawerActivity activity, @NonNull Reward reward) {
         RewardDialogFragment.showDialog(activity, reward);
+        final int oldLevel = UserAdapter.getCurrentUser().getLevel();
         updateCurrentUser(
                 new UserSimpleCallback() {
                     @Override
                     public void onSuccess(User user) {
                         activity.setUserHeader();
+                        if (user.getLevel() > oldLevel) {
+                            RewardDialogFragment.showDialog(activity, user.getLevel());
+                        }
                     }
 
                     @Override
