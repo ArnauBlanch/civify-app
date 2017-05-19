@@ -43,6 +43,7 @@ import com.civify.model.map.CivifyMap;
 import com.civify.model.map.CivifyMarkers;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
+import com.civify.utils.ServiceGenerator;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.ocpsoft.prettytime.PrettyTime;
@@ -301,8 +302,8 @@ public class IssueDetailsFragment extends BasicFragment {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, mIssue.getTitle());
-                intent.putExtra(Intent.EXTRA_TEXT, "See this issue: " + mIssue.getTitle());
-                // TODO Add link to web issue details to EXTRA_TEXT message
+                intent.putExtra(Intent.EXTRA_TEXT, "See this issue: " + mIssue.getTitle() + '\n'
+                        + ServiceGenerator.BASE_WEB_URL + "/issues/" + mIssue.getIssueAuthToken());
                 getContext().startActivity(Intent.createChooser(intent, "Share"));
             }
         };
