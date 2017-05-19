@@ -253,4 +253,16 @@ public class UserAdapter {
                 });
     }
 
+    public void updateRewards(@NonNull final DrawerActivity activity) {
+        updateCurrentUser(
+                new UserSimpleCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                    }
+
+                    @Override
+                    public void onFailure() { }
+                });
+    }
+
 }

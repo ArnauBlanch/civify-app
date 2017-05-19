@@ -147,6 +147,10 @@ public class User implements Serializable {
         return mCoins;
     }
 
+    public void setCoins(int coins) {
+        mCoins = coins;
+    }
+
     public String getUserAuthToken() {
         return mUserAuthToken;
     }

@@ -181,7 +181,7 @@ public class AwardAdapterImplTest {
 
         UserAdapter.setCurrentUser(user);
 
-        mAwardAdapter.getExchangedAwards(UserAdapter.getCurrentUser().getUserAuthToken(),
+        mAwardAdapter.getExchangedAwards(
                 mListAwardsSimpleCallbackMock);
         RecordedRequest request = mMockWebServer.takeRequest();
 
@@ -215,13 +215,13 @@ public class AwardAdapterImplTest {
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
         mMockWebServer.enqueue(mockResponse);
-        mAwardAdapter.getExchangedAwards(UserAdapter.getCurrentUser().getUserAuthToken(),
+        mAwardAdapter.getExchangedAwards(
                 mListAwardsSimpleCallbackMock);
         verify(mListAwardsSimpleCallbackMock, timeout(1000)).onFailure();
 
         mockResponse.setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
         mMockWebServer.enqueue(mockResponse);
-        mAwardAdapter.getExchangedAwards(UserAdapter.getCurrentUser().getUserAuthToken(),
+        mAwardAdapter.getExchangedAwards(
                 mListAwardsSimpleCallbackMock);
         verify(mListAwardsSimpleCallbackMock, timeout(1000)).onFailure();
     }
