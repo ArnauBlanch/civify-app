@@ -10,6 +10,7 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
     tools:ignore="MissingPrefix">
   
   <LinearLayout
