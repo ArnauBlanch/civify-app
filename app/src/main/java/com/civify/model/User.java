@@ -35,18 +35,27 @@ public class User implements Serializable {
 
     @Expose(serialize = false)
     @SerializedName("created_at")
-    private String mCreatedat;
+    private String mCreatedAt;
 
     @Expose(serialize = false, deserialize = false)
     @SerializedName("updated_at")
-    private String mUpdatedat;
+    private String mUpdatedAt;
 
     @Expose(serialize = false)
     @SerializedName("user_auth_token")
     private String mUserAuthToken;
 
+    @Expose(serialize = false)
+    @SerializedName("lv")
     private int mLevel;
+
+    @Expose(serialize = false)
+    @SerializedName("xp")
     private int mExperience;
+
+    @Expose(serialize = false)
+    @SerializedName("xp_max")
+    private int mExperienceMax;
 
     @Expose(serialize = false)
     @SerializedName("coins")
@@ -61,6 +70,9 @@ public class User implements Serializable {
         mEmail = email;
         mPassword = password;
         mPasswordConfirmation = passwordConfirmation;
+        mLevel = 1;
+        mExperience = 0;
+        mExperienceMax = 0;
     }
 
     public String getUsername() {
@@ -111,28 +123,16 @@ public class User implements Serializable {
         mPasswordConfirmation = passwordConfirmation;
     }
 
-    public String getCreatedat() {
-        return mCreatedat;
+    public String getCreatedAt() {
+        return mCreatedAt;
     }
 
-    public void setCreatedat(String createdat) {
-        this.mCreatedat = createdat;
-    }
-
-    public String getUpdatedat() {
-        return mUpdatedat;
-    }
-
-    public void setUpdatedat(String updatedat) {
-        this.mUpdatedat = updatedat;
+    public String getUpdatedAt() {
+        return mUpdatedAt;
     }
 
     public int getLevel() {
         return mLevel;
-    }
-
-    public void setLevel(int level) {
-        mLevel = level;
     }
 
     public int getExperience() {
@@ -143,12 +143,16 @@ public class User implements Serializable {
         mExperience = experience;
     }
 
-    public int getCoins() {
-        return mCoins;
+    public int getExperienceMax() {
+        return mExperienceMax;
     }
 
-    public void setCoins(int coins) {
-        mCoins = coins;
+    public void setExperienceMax(int experienceMax) {
+        mExperienceMax = experienceMax;
+    }
+
+    public int getCoins() {
+        return mCoins;
     }
 
     public String getUserAuthToken() {
@@ -157,5 +161,9 @@ public class User implements Serializable {
 
     public void setUserAuthToken(String userAuthToken) {
         mUserAuthToken = userAuthToken;
+    }
+
+    public boolean willLevelUp(int experience) {
+        return experience + getExperience() >= getExperienceMax();
     }
 }
