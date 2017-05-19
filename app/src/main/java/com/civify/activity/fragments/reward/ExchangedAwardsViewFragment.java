@@ -2,7 +2,6 @@ package com.civify.activity.fragments.reward;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.civify.R;
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.award.ExchangedAwardAdapter;
 import com.civify.model.award.ExchangedAward;
 
@@ -20,7 +21,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ExchangedAwardsViewFragment extends Fragment {
+public class ExchangedAwardsViewFragment extends BasicFragment {
 
     private List<ExchangedAward> mRewardList;
     private ExchangedAwardAdapter mExchangedAwardAdapter;
@@ -74,5 +75,10 @@ public class ExchangedAwardsViewFragment extends Fragment {
                 return o2.getCreatedAt().compareTo(o1.getCreatedAt());
             }
         });
+    }
+
+    @Override
+    public int getFragmentId() {
+        return DrawerActivity.EXCHANGED_AWARDS;
     }
 }

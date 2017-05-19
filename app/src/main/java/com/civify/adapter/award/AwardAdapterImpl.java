@@ -4,14 +4,15 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.civify.adapter.LoginAdapterImpl;
-import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.model.RewardContainer;
 import com.civify.model.award.Award;
 import com.civify.model.award.ExchangedAward;
 import com.civify.service.award.AwardService;
 import com.civify.service.award.AwardSimpleCallback;
 import com.civify.service.award.ListAwardsSimpleCallback;
 import com.civify.service.award.ListExchangedAwardSimpleCallback;
+import com.civify.service.award.RewardCallback;
 import com.civify.utils.ServiceGenerator;
 
 import java.util.List;
@@ -100,20 +101,20 @@ public class AwardAdapterImpl implements AwardAdapter {
     }
 
     @Override
-    public void exchangeAward(@NonNull String awardToken, @NonNull final SimpleCallback callback) {
-        Call<Void> call = mAwardService.exchangeAward(getToken(), awardToken);
-        call.enqueue(new Callback<Void>() {
+    public void exchangeAward(@NonNull String awardToken, @NonNull final RewardCallback callback) {
+        Call<RewardContainer> call = mAwardService.exchangeAward(getToken(), awardToken);
+        call.enqueue(new Callback<RewardContainer>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<RewardContainer> call, Response<RewardContainer> response) {
                 if (response.isSuccessful()) {
-                    callback.onSuccess();
+                    callback.onSuccess(response.body().getReward());
                 } else {
                     callback.onFailure();
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<RewardContainer> call, Throwable t) {
                 callback.onFailure();
             }
         });
