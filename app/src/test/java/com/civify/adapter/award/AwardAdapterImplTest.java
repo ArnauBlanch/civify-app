@@ -14,6 +14,7 @@ import com.civify.model.issue.Picture;
 import com.civify.service.award.AwardService;
 import com.civify.service.award.AwardSimpleCallback;
 import com.civify.service.award.ListAwardsSimpleCallback;
+import com.civify.service.award.ListExchangedAwardSimpleCallback;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -51,6 +52,7 @@ public class AwardAdapterImplTest {
     private AwardAdapter mAwardAdapter;
     private MockWebServer mMockWebServer;
     private ListAwardsSimpleCallback mListAwardsSimpleCallbackMock;
+    private ListExchangedAwardSimpleCallback mListExchangedAwardSimpleCallback;
     private AwardSimpleCallback mAwardSimpleCallbackMock;
     private Gson mGson;
     private Award mAward;
@@ -73,6 +75,7 @@ public class AwardAdapterImplTest {
         mListAwardsSimpleCallbackMock = mock(ListAwardsSimpleCallback.class);
         mAwardSimpleCallbackMock = mock(AwardSimpleCallback.class);
         mAwardAdapter = new AwardAdapterImpl(awardService, sharedPreferences);
+        mListExchangedAwardSimpleCallback = mock(ListExchangedAwardSimpleCallback.class);
     }
 
     @Test
@@ -182,7 +185,8 @@ public class AwardAdapterImplTest {
         UserAdapter.setCurrentUser(user);
 
         mAwardAdapter.getExchangedAwards(
-                mListAwardsSimpleCallbackMock);
+                UserAdapter.getCurrentUser().getUserAuthToken(),
+                mListExchangedAwardSimpleCallback);
         RecordedRequest request = mMockWebServer.takeRequest();
 
         assertEquals("GET", request.getMethod());
@@ -216,13 +220,15 @@ public class AwardAdapterImplTest {
                 .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
         mMockWebServer.enqueue(mockResponse);
         mAwardAdapter.getExchangedAwards(
-                mListAwardsSimpleCallbackMock);
+                UserAdapter.getCurrentUser().getUserAuthToken(),
+                mListExchangedAwardSimpleCallback);
         verify(mListAwardsSimpleCallbackMock, timeout(1000)).onFailure();
 
         mockResponse.setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
         mMockWebServer.enqueue(mockResponse);
         mAwardAdapter.getExchangedAwards(
-                mListAwardsSimpleCallbackMock);
+                UserAdapter.getCurrentUser().getUserAuthToken(),
+                mListExchangedAwardSimpleCallback);
         verify(mListAwardsSimpleCallbackMock, timeout(1000)).onFailure();
     }
 
