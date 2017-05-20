@@ -80,4 +80,19 @@ public class AvailableAwardsFragment extends BasicFragment {
                     }
                 });
     }
+
+    public void updateList() {
+        AdapterFactory.getInstance().getAwardAdapter(getContext())
+                .getOfferedAwards(new ListAwardsSimpleCallback() {
+                    @Override
+                    public void onSuccess(List<Award> awards) {
+                        mAwardsViewFragment.setRewardList(awards);
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
+    }
 }

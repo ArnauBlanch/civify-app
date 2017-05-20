@@ -1,4 +1,4 @@
-package com.civify.activity.fragments.reward;
+package com.civify.activity.fragments.award;
 
 import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
