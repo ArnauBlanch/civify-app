@@ -1,4 +1,4 @@
-package com.civify.activity.fragments.reward;
+package com.civify.activity.fragments.award;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -74,6 +74,22 @@ public class ExchangedAwardsFragment extends BasicFragment {
                             public void onFailure() {
                                 Snackbar.make(view, "Couldn't retrieve rewards.",
                                         Snackbar.LENGTH_SHORT);
+                            }
+                        });
+    }
+
+    public void updateList() {
+        AdapterFactory.getInstance().getAwardAdapter(getContext())
+                .getExchangedAwards(UserAdapter.getCurrentUser().getUserAuthToken(),
+                        new ListExchangedAwardSimpleCallback() {
+                            @Override
+                            public void onSuccess(List<ExchangedAward> exchangedAwards) {
+                                mExchangedAwardsViewFragment.setRewardList(exchangedAwards);
+                            }
+
+                            @Override
+                            public void onFailure() {
+
                             }
                         });
     }

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.civify.activity.DrawerActivity;
-import com.civify.activity.fragments.reward.ShowQrFragment;
+import com.civify.activity.fragments.award.ShowQrFragment;
 import com.civify.model.issue.Picture;
 import com.civify.model.map.CivifyMap;
 import com.google.gson.annotations.Expose;
