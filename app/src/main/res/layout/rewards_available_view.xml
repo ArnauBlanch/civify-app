@@ -108,6 +108,8 @@
               android:layout_marginStart="@dimen/album_title_padding"
               android:layout_marginTop="4dp"
               android:layout_marginBottom="@dimen/album_title_padding"
+              android:layout_marginRight="@dimen/album_title_padding"
+              android:layout_marginEnd="@dimen/album_title_padding"
               android:textSize="12sp" />
 
         </LinearLayout>
