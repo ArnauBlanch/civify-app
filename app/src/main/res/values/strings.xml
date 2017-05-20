@@ -200,4 +200,7 @@
   <string name="exchanged_award_used">USED</string>
   <string name="exchanged_award_valid">VALID</string>
   <string name="exchanged_on">Exchanged on</string>
+  <string name="qr_instructions">Show the QR code to the commerce that offers this reward and obtain your prize.</string>
+  <string name="more_info">+info</string>
+  <string name="close">CLOSE</string>
 </resources>
