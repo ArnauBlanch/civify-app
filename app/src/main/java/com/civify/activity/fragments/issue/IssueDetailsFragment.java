@@ -5,6 +5,8 @@ import static android.app.Activity.RESULT_OK;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -241,7 +243,12 @@ public class IssueDetailsFragment extends BasicFragment {
         Log.v(DEBUG, "Adding risk in layout");
         TextView riskIssue = (TextView) mViewDetails.findViewById(R.id.riskAnswer);
         riskIssue.setText((mIssue.isRisk()) ? R.string.yes : R.string.no);
-        riskIssue.setTextColor((mIssue.isRisk()) ? Color.RED : Color.GREEN);
+
+        int green = VERSION.SDK_INT >= VERSION_CODES.M
+                ? getResources().getColor(R.color.colorPrimary, getContext().getTheme())
+                : getResources().getColor(R.color.colorPrimary);
+
+        riskIssue.setTextColor((mIssue.isRisk()) ? Color.RED : green);
     }
 
     private void addCategoryValue() {
