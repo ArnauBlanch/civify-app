@@ -203,4 +203,5 @@
   <string name="qr_instructions">Show the QR code to the commerce that offers this reward and obtain your prize.</string>
   <string name="more_info">+info</string>
   <string name="close">CLOSE</string>
+  <string name="published_by">PUBLISHED BY</string>
 </resources>
