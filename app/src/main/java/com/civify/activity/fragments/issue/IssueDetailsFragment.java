@@ -47,6 +47,7 @@ import com.civify.model.map.CivifyMarkers;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
+import com.civify.utils.StringUtils;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.ocpsoft.prettytime.PrettyTime;
@@ -229,7 +230,7 @@ public class IssueDetailsFragment extends BasicFragment {
     private void addStreet(String address) {
         Log.v(DEBUG, "Adding street in layout");
         TextView streetIssue = (TextView) mViewDetails.findViewById(R.id.streetText);
-        streetIssue.setText(address);
+        streetIssue.setText(StringUtils.capitalize(address));
     }
 
     private void addDescription() {
