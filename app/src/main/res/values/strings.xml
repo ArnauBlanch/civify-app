@@ -1,9 +1,9 @@
 <resources>
-  <string name="email_validation_icon">Validation icon for e-mail</string>
-  <string name="name_validation_icon">Validation icon for name</string>
-  <string name="surname_validation_icon">Validation icon for surname</string>
-  <string name="username_validation_icon">Validation icon for username</string>
-  <string name="password_validation_icon">Validation icon for password</string>
+  <string name="email_validation_icon" translatable="false">Validation icon for e-mail</string>
+  <string name="name_validation_icon" translatable="false">Validation icon for name</string>
+  <string name="surname_validation_icon" translatable="false">Validation icon for surname</string>
+  <string name="username_validation_icon" translatable="false">Validation icon for username</string>
+  <string name="password_validation_icon" translatable="false">Validation icon for password</string>
   <string name="app_name">Civify</string>
 
   <string name="whats_happening">What\'s happening?</string>
@@ -68,12 +68,12 @@
   <string name="error_invalid_password">This password is too short</string>
   <string name="error_incorrect_password">This password is incorrect</string>
   <string name="error_field_required">This field is required</string>
-  <string name="permission_rationale">"Contacts permissions are needed for providing email
+  <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email
         completions."
     </string>
 
-  <string name="title_activity_basic">BasicActivity</string>
-  <string name="title_activity_drawer">DrawerActivity</string>
+  <string name="title_activity_basic" translatable="false">BasicActivity</string>
+  <string name="title_activity_drawer" translatable="false">DrawerActivity</string>
 
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -93,18 +93,18 @@
   <string name="login_password">Password</string>
   <string name="have_you_forgotten_your_password">Have you forgotten your password?</string>
 
-  <string name="user_location_settings_agreed">User agreed to make required location settings
+  <string name="user_location_settings_agreed" translatable="false">User agreed to make required location settings
         changes.
     </string>
-  <string name="user_location_settings_canceled">User chose not to make required location settings
+  <string name="user_location_settings_canceled" translatable="false">User chose not to make required location settings
         changes.
     </string>
   <string name="location_connection_failed">Location services connection failed.</string>
-  <string name="not_implemented_yet">Not implemented yet</string>
-  <string name="action">Action</string>
+  <string name="not_implemented_yet" translatable="false">Not implemented yet</string>
+  <string name="action" translatable="false">Action</string>
 
   <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
   <string name="level">Level</string>
   <string name="sign_out">Sign out</string>
   <string name="issue_name">Issue Name</string>
@@ -185,8 +185,8 @@
   <string name="must_write_title_description">You must write a title and a description</string>
   <string name="unspecified_title">Unspecified title</string>
   <string name="you_have_won">You have earned:</string>
-  <string name="coins_image_description">Coins icon</string>
-  <string name="level_image_description">Level Up icon</string>
+  <string name="coins_image_description" translatable="false">Coins icon</string>
+  <string name="level_image_description" translatable="false">Level Up icon</string>
   <string name="congratulations">Congratulations!</string>
   <string name="couldnt_add_coins">Couldn\'t add the coins to your account.</string>
   <string name="available_rewards_tab">AVAILABLE</string>
