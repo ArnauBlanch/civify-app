@@ -4,7 +4,7 @@
   <string name="achievements">Logros</string>
   <string name="achievements_title">Logros</string>
   <string name="action"></string>
-  <string name="action_settings">Opciones</string>
+  <string name="action_settings">Ajustes</string>
   <string name="action_sign_in">Identifícate o regístrate</string>
   <string name="action_sign_in_short">Identificarse</string>
   <string name="available_rewards_tab">DISPONIBLE</string>
@@ -14,7 +14,7 @@
   <string name="cant_report_own_issue">No puedes denunciar tu propia incidencia</string>
   <string name="cant_resolve_own_issue">No puedes resolver tu propia incidencia</string>
   <string name="category">Categoría</string>
-  <string name="choose_email">¿Cual es tu email?</string>
+  <string name="choose_email">¿Cual es tu correo electrónico?</string>
   <string name="choose_password">Escoge una contraseña</string>
   <string name="choose_username">Escoge un nombre de usuario</string>
   <string name="close">CERRAR</string>
@@ -25,7 +25,7 @@
   <string name="congratulations">¡Felcidades!</string>
   <string name="continue_button">Continuar</string>
   <string name="couldnt_add_coins">No se pudieron añadir las monedas a tu cuenta</string>
-  <string name="couldnt_create_issue">No se pudo crear la incidencia</string>
+  <string name="couldnt_create_issue">No se pudo crear la nueva incidencia</string>
   <string name="couldnt_delete_issue">No se pudo borrar la incidencia</string>
   <string name="couldnt_edit_issue">No se pudo editar la incidencia</string>
   <string name="couldnt_get_location">No se pudo obtener la localización actual</string>
