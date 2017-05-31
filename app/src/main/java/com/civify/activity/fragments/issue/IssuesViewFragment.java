@@ -1,4 +1,4 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.issue;
 
 import android.content.res.Resources;
 import android.graphics.Rect;

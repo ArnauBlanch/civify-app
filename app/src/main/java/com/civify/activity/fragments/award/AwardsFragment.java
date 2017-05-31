@@ -1,4 +1,4 @@
-package com.civify.activity.fragments.reward;
+package com.civify.activity.fragments.award;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -19,6 +19,12 @@ import com.civify.adapter.award.AwardsFragmentPagerAdapter;
 
 public class AwardsFragment extends BasicFragment {
 
+    private static final int AVAILABLE_ID = 0;
+    private static final int EXCHANGED_ID = 1;
+
+    private AwardsFragmentPagerAdapter mPagerAdapter;
+    private ViewPager mViewPager;
+
     public AwardsFragment() {
     }
 
@@ -37,27 +43,29 @@ public class AwardsFragment extends BasicFragment {
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.rewards_tab_host, container, false);
 
-        TabLayout tabLayout = setTabLayout(view);
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager_rewards);
+        mPagerAdapter = new AwardsFragmentPagerAdapter(getChildFragmentManager());
+        mViewPager.setAdapter(mPagerAdapter);
 
-        final ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager_rewards);
-        AwardsFragmentPagerAdapter pagerAdapter =
-                new AwardsFragmentPagerAdapter(getChildFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        TabLayout tabLayout = setTabLayout(view);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                mViewPager.setCurrentItem(tab.getPosition());
+                if (tab.getPosition() == AVAILABLE_ID) {
+                    mPagerAdapter.updateAvailableAwards();
+                } else if (tab.getPosition() == EXCHANGED_ID) {
+                    mPagerAdapter.updateExchangedAwards();
+                }
             }
 
             @Override
             public void onTabUnselected(Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(Tab tab) {
-
             }
         });
 
@@ -82,5 +90,17 @@ public class AwardsFragment extends BasicFragment {
             appCompatTextView.setTypeface(typeface, Typeface.NORMAL);
         }
         return tabLayout;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (mViewPager.getCurrentItem() == AVAILABLE_ID) {
+                mPagerAdapter.updateAvailableAwards();
+            } else if (mViewPager.getCurrentItem() == EXCHANGED_ID) {
+                mPagerAdapter.updateExchangedAwards();
+            }
+        }
     }
 }

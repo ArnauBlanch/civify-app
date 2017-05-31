@@ -1,7 +1,12 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.issue;
+
+import static android.app.Activity.RESULT_OK;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -11,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,10 +31,13 @@ import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.EditIssueActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.GeocoderAdapter;
 import com.civify.adapter.LocalityCallback;
 import com.civify.adapter.LocationAdapter;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.UserAttacher;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
@@ -36,20 +46,21 @@ import com.civify.model.map.CivifyMap;
 import com.civify.model.map.CivifyMarkers;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
+import com.civify.utils.ServiceGenerator;
+import com.civify.utils.StringUtils;
 import com.google.android.gms.maps.model.LatLng;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 public class IssueDetailsFragment extends BasicFragment {
 
     private static final String DEBUG = "debug-IssueDetails";
-    private static final String TAG_ISSUE = "issue";
 
-    private static final int DISTANCE_TO_KILOMETERS = 1000;
-    private static final int DISTANCE_TO_METERS = 1000000;
+    private static final String TAG_ISSUE = "issue";
     private static final int MIN_METERS_FROM_ISSUE = 70;
     private static final float DISABLED_ALPHA = 0.15f;
+    private static final int SHOW_AS_ACTION_NEVER = 0;
+    private static final int REQUEST_CODE = 0;
 
     private UserAdapter mUserAdapter;
     private IssueAdapter mIssueAdapter;
@@ -72,7 +83,7 @@ public class IssueDetailsFragment extends BasicFragment {
 
     @Override
     public int getFragmentId() {
-        return DrawerActivity.DETAILS_ID;
+        return DrawerActivity.DETAILS_ISSUE_ID;
     }
 
     @Override
@@ -87,6 +98,17 @@ public class IssueDetailsFragment extends BasicFragment {
         mViewDetails = inflater.inflate(R.layout.fragment_issue_details, container, false);
         init();
         return mViewDetails;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (!mIssue.getUserAuthToken().equals(mUserAdapter.getCurrentUser().getUserAuthToken())) {
+            for (int i = 0; i < menu.size(); ++i) {
+                menu.getItem(i).setVisible(false);
+                menu.getItem(i).setShowAsAction(SHOW_AS_ACTION_NEVER);
+            }
+        }
     }
 
     private void init() {
@@ -113,6 +135,11 @@ public class IssueDetailsFragment extends BasicFragment {
     private void setPosition() {
         addDistance();
         addStreetAsync(mIssue.getPosition());
+    }
+
+    public void setIssue(Issue issue) {
+        mIssue = issue;
+        setIssue();
     }
 
     private void setIssue() {
@@ -203,7 +230,7 @@ public class IssueDetailsFragment extends BasicFragment {
     private void addStreet(String address) {
         Log.v(DEBUG, "Adding street in layout");
         TextView streetIssue = (TextView) mViewDetails.findViewById(R.id.streetText);
-        streetIssue.setText(address);
+        streetIssue.setText(StringUtils.capitalize(address));
     }
 
     private void addDescription() {
@@ -216,8 +243,13 @@ public class IssueDetailsFragment extends BasicFragment {
     private void addRisk() {
         Log.v(DEBUG, "Adding risk in layout");
         TextView riskIssue = (TextView) mViewDetails.findViewById(R.id.riskAnswer);
-        riskIssue.setText(getText(R.string.no));
-        if (mIssue.isRisk()) riskIssue.setText(getText(R.string.yes));
+        riskIssue.setText((mIssue.isRisk()) ? R.string.yes : R.string.no);
+
+        int green = VERSION.SDK_INT >= VERSION_CODES.M
+                ? getResources().getColor(R.color.colorPrimary, getContext().getTheme())
+                : getResources().getColor(R.color.colorPrimary);
+
+        riskIssue.setTextColor((mIssue.isRisk()) ? Color.RED : green);
     }
 
     private void addCategoryValue() {
@@ -254,33 +286,18 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private User buildFakeUser() {
         String password = "";
-        User fakeUser = new User("", "User couldn't be retrieved", "",
+        return new User("", "User couldn't be retrieved", "",
                 "example@mail.com", password, password);
-        fakeUser.setLevel(1);
-        return fakeUser;
     }
 
     private void setUser(User user) {
-        Log.v(DEBUG, "setUser");
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
+        Log.v(DEBUG, "setUser: init");
 
-        ProgressBar progressBar = (ProgressBar) mViewDetails.findViewById(R.id.userProgress);
-
-        TextView name = (TextView) mViewDetails.findViewById(R.id.userName);
-        name.setText(user.getName() + ' ' + user.getSurname());
-
-        TextView username = (TextView) mViewDetails.findViewById(R.id.userUsername);
-        username.setText(user.getUsername());
-
-        TextView level = (TextView) mViewDetails.findViewById(R.id.userLevel);
-        String userLevel = Integer.toString(user.getLevel());
-        String showLevel = getString(R.string.level) + ' ' + userLevel;
-        level.setText(showLevel);
-
-        CircularImageView profileImage =
-                (CircularImageView) mViewDetails.findViewById(R.id.userImage);
-        //profileImage.setImageBitmap(img); // bitmap
-        //profileImage.setImageIcon(img); // icon
+        UserAttacher.get(getContext(), user)
+                .setFullName((TextView) mViewDetails.findViewById(R.id.userName))
+                .setUsername((TextView) mViewDetails.findViewById(R.id.userUsername))
+                .setLevel((TextView) mViewDetails.findViewById(R.id.userLevel))
+                .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress));
 
         Log.v(DEBUG, "setUser finished");
     }
@@ -294,8 +311,8 @@ public class IssueDetailsFragment extends BasicFragment {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, mIssue.getTitle());
-                intent.putExtra(Intent.EXTRA_TEXT, "See this issue: " + mIssue.getTitle());
-                // TODO Add link to web issue details to EXTRA_TEXT message
+                intent.putExtra(Intent.EXTRA_TEXT, "See this issue: " + mIssue.getTitle() + '\n'
+                        + ServiceGenerator.BASE_WEB_URL + "/issues/" + mIssue.getIssueAuthToken());
                 getContext().startActivity(Intent.createChooser(intent, "Share"));
             }
         };
@@ -338,19 +355,20 @@ public class IssueDetailsFragment extends BasicFragment {
         }
     }
 
-    public IssueSimpleCallback getDeleteCallback() {
-        return new IssueSimpleCallback() {
+    public SimpleCallback getDeleteCallback() {
+        return new SimpleCallback() {
             @Override
-            public void onSuccess(Issue issue) {
+            public void onSuccess() {
                 CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
-                if (markers != null) markers.remove(issue.getIssueAuthToken());
+                if (markers != null) markers.remove(mIssue.getIssueAuthToken());
                 getActivity().onBackPressed();
                 Log.d(DEBUG, "issue borrada");
             }
 
             @Override
             public void onFailure() {
-                Snackbar.make(mViewDetails, "Couldn't delete issue", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mViewDetails, R.string.couldnt_delete_issue, Snackbar.LENGTH_SHORT)
+                        .show();
             }
         };
     }
@@ -449,6 +467,24 @@ public class IssueDetailsFragment extends BasicFragment {
         Bundle data = new Bundle();
         data.putSerializable(TAG_ISSUE, mIssue);
         intent.putExtra(TAG_ISSUE, data);
-        drawerActivity.startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    Bundle editedBundle = data.getBundleExtra(TAG_ISSUE);
+                    Issue issue = (Issue) editedBundle.getSerializable(TAG_ISSUE);
+                    setIssue(issue);
+                    CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
+                    markers.get(mIssue.getIssueAuthToken()).setIssue(mIssue);
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 }

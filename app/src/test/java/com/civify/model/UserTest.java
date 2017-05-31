@@ -66,4 +66,14 @@ public class UserTest {
         mUser.setPasswordConfirmation("testPassw0rd");
         assertThat("testPassw0rd", is(mUser.getPasswordConfirmation()));
     }
+
+    @Test
+    public void testLevelDefault1() {
+        assertThat(1, is(mUser.getLevel()));
+    }
+
+    @Test
+    public void testXPDefault0() {
+        assertThat(0, is(mUser.getExperience()));
+    }
 }
