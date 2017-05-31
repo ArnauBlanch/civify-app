@@ -1,41 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.widget.RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     >
+  <android.support.v7.widget.Toolbar
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="#ffffff"
+      android:id="@+id/create_issue_toolbar"
+      app:popupTheme="@style/AppTheme" />
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
   <LinearLayout
       android:id="@+id/mainLayout"
-      android:layout_width="344dp"
-      android:layout_height="495dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       android:orientation="vertical"
       tools:layout_editor_absoluteY="8dp"
       tools:layout_editor_absoluteX="8dp"
       >
+
     <ImageView
         android:id="@+id/eventView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="270dp"
         android:layout_weight="40"
+        android:background="#eee"
         />
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/savechangeButton"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="3"
-        android:layout_height="35dp"
-        android:background="@drawable/green_bg_button"
-        android:text="@string/save_changes"
-        android:layout_marginTop="20dp"
-        android:textAllCaps="false"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:textColor="#ffffff"
-        android:textSize="25sp"
-        fontPath="fonts/Nunito-Bold.ttf"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        >
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/camera_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/green_border_button"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:onClick="cameraButtonListener"
+            android:src="@drawable/ic_photo_camera" />
+
+        <ImageButton
+            android:id="@+id/gallery_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/green_border_button"
+            android:gravity="center"
+            android:onClick="galleryButtonListener"
+            android:src="@drawable/ic_gallery" />
+
+      </LinearLayout>
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/nameLikesShareLayout"
         android:layout_width="match_parent"
@@ -47,11 +87,10 @@
         >
       <android.support.design.widget.TextInputLayout
           android:id="@+id/nameTextLayout"
-          android:layout_width="286dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_gravity="center_vertical"
-          android:textSize="30sp"
-          android:layout_weight="1">
+          android:textSize="30sp">
         <EditText
             android:id="@+id/IssueName"
             android:layout_width="match_parent"
@@ -60,7 +99,6 @@
             android:textSize="22sp"
             android:textColor="#000"
             android:maxLines="1"
-            android:maxLength="20"
             android:inputType="text"
             android:imeOptions="actionDone"
           />
@@ -84,6 +122,7 @@
           android:layout_gravity="center_vertical"
           android:text="@string/category"
           android:textSize="18sp"
+          android:layout_marginLeft="5dp"
           android:textStyle="bold"
 
           />
@@ -94,7 +133,7 @@
           android:layout_height="wrap_content"
           android:layout_gravity="center_vertical"
           android:layout_weight="1"
-          android:layout_marginRight="10dp"
+
           android:text="Name Category"
           android:textSize="18sp"
           android:textStyle="bold"
@@ -115,6 +154,7 @@
           android:layout_height="wrap_content"
           android:layout_gravity="center_vertical"
           android:text="@string/questionRisk"
+          android:layout_marginLeft="5dp"
           android:textSize="16sp"
           android:textStyle="bold"
           />
@@ -152,14 +192,18 @@
     </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/description_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         >
     <EditText
         android:id="@+id/descriptionTex"
         android:layout_width="match_parent"
         android:hint="@string/description"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:maxLength="500"
         android:inputType="textMultiLine"
         />
@@ -178,4 +222,5 @@
 
     </LinearLayout>
   </LinearLayout>
-</android.widget.RelativeLayout>
+  </ScrollView>
+</LinearLayout>

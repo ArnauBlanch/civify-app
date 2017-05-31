@@ -1,4 +1,4 @@
-package com.civify.activity.fragments.reward;
+package com.civify.activity.fragments.award;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -77,6 +77,21 @@ public class AvailableAwardsFragment extends BasicFragment {
                     @Override
                     public void onFailure() {
                         Snackbar.make(view, "Couldn't retrieve rewards.", Snackbar.LENGTH_SHORT);
+                    }
+                });
+    }
+
+    public void updateList() {
+        AdapterFactory.getInstance().getAwardAdapter(getContext())
+                .getOfferedAwards(new ListAwardsSimpleCallback() {
+                    @Override
+                    public void onSuccess(List<Award> awards) {
+                        mAwardsViewFragment.setRewardList(awards);
+                    }
+
+                    @Override
+                    public void onFailure() {
+
                     }
                 });
     }

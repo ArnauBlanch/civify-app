@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.civify.activity.fragments.IssueDetailsFragment"
+    tools:context="com.civify.activity.fragments.issue.IssueDetailsFragment"
     tools:ignore="missingPrefix"
     >
 
@@ -100,8 +100,6 @@
                   android:layout_marginBottom="2dp"
                   android:maxLines="1"
                   android:text="@string/share"
-
-
                   />
             </LinearLayout>
           </RelativeLayout>
@@ -183,45 +181,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="right"
-            android:gravity="right"
+            android:orientation="vertical"
             >
-          <TextView
-              android:id="@+id/sinceText"
-              android:layout_width="wrap_content"
+
+          <LinearLayout
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginRight="6dp"
-              android:maxLines="1"
-              android:gravity="right"
-              android:text="since"
-              android:textColor="#959595"
-              text="since"
-              />
-          <TextView
-              android:id="@+id/distanceText"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+              android:orientation="horizontal"
               android:gravity="end"
-              android:maxLines="1"
-              android:text="distance"
-              android:layout_alignParentRight="true"
-              />
-        </LinearLayout>
+              android:paddingBottom="3dp"
+              >
+            <TextView
+                android:id="@+id/sinceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="#959595"
+                />
+            <TextView
+                android:id="@+id/distanceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                />
+          </LinearLayout>
+
           <TextView
               android:id="@+id/streetText"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_alignParentLeft="true"
-              android:layout_marginRight="5dp"
-              android:layout_weight="0.39"
               android:ellipsize="end"
               android:maxLines="2"
-              android:layout_gravity="left"
-              android:text="Street name"
               android:textColor="#959595"
-              android:textStyle="bold"
               />
+
+        </LinearLayout>
         <TextView
             android:id="@+id/too_far_message"
             android:layout_width="match_parent"
@@ -272,14 +268,49 @@
                   android:background="@drawable/red_bg_button"
                   />
         </LinearLayout>
-        <RelativeLayout
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="24dp"
+          android:orientation="vertical"
+          >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/published_by"
+            android:textColor="#bbbbbb"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textSize="13sp"
+            fontPath="fonts/Nunito-Bold.ttf"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#bbbbbb"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"
+            />
+
+      </LinearLayout>
+
+
+      <RelativeLayout
             android:id="@+id/userLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="15dp"
+            android:background="#eeeeee"
             >
           <LinearLayout
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_alignParentBottom="true"
               android:gravity="center_vertical"
@@ -292,7 +323,7 @@
                 android:src="@drawable/man"
                 />
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
@@ -307,7 +338,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="Arnau Blanch Cortès"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@android:color/background_dark"
                     android:textSize="14sp"
@@ -318,7 +348,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="ArnauBlanch"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
@@ -346,7 +375,6 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/userProgress"
-                    android:text="Level 2"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp"
@@ -357,7 +385,6 @@
           </LinearLayout>
 
         </RelativeLayout>
-      </LinearLayout>
     </LinearLayout>
   </ScrollView>
 </LinearLayout>

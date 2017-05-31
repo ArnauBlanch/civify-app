@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.util.Base64;
 
 import com.civify.activity.DrawerActivity;
-import com.civify.activity.fragments.IssueDetailsFragment;
+import com.civify.activity.fragments.issue.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.map.CivifyMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -129,6 +129,21 @@ public class Issue implements Serializable {
         mPicture = picture;
     }
 
+    public Issue(String title, String description, Category category, boolean risk,
+            double longitude, double latitude, Picture pic, String userAuthToken) {
+        mTitle = title;
+        mDescription = description;
+        mCategory = category;
+        mRisk = risk;
+        mLongitude = longitude;
+        mLatitude = latitude;
+        mResolvedVotes = 0;
+        mConfirmVotes = 0;
+        mReports = 0;
+        mUserAuthToken = userAuthToken;
+        mPicture = pic;
+    }
+
     public String getTitle() {
         return mTitle;
     }
@@ -146,6 +161,7 @@ public class Issue implements Serializable {
     }
 
     public Category getCategory() {
+        if (mCategory == null) mCategory = Category.OTHER;
         return mCategory;
     }
 
@@ -287,6 +303,7 @@ public class Issue implements Serializable {
         return null;
     }
 
+    @Nullable
     public String getDistanceFromCurrentLocationAsString() {
         Float distance = getDistanceFromCurrentLocation();
         if (distance != null) {
@@ -306,7 +323,7 @@ public class Issue implements Serializable {
         Fragment issueDetailsFragment = IssueDetailsFragment.newInstance(this);
         if (issueDetailsFragment != null) {
             CivifyMap.getInstance().getContext()
-                    .setFragment(issueDetailsFragment, DrawerActivity.DETAILS_ID);
+                    .setFragment(issueDetailsFragment, DrawerActivity.DETAILS_ISSUE_ID);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.issue;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;

@@ -2,8 +2,14 @@ package com.civify.adapter;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.RewardDialogFragment;
 import com.civify.model.MessageResponse;
+import com.civify.model.Reward;
 import com.civify.model.User;
 import com.civify.service.UserService;
 import com.civify.utils.ServiceGenerator;
@@ -24,13 +30,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserAdapter {
+
     public static final int INVALID = 0;
     public static final int USED = 1;
     public static final int VALID_UNUSED = 2;
+    public static final String TAG = UserAdapter.class.getSimpleName();
     public static final String USER_CREATED = "User created";
     public static final String USER_NOT_CREATED = "User not created";
     public static final String USER_EXISTS = "User exists";
     public static final String USER_DOESNT_EXIST = "User not exists";
+    public static final String USER_NOT_FOUND = "User not found";
     public static final Pattern VALID_PASSWORD = Pattern.compile(
             "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9@&#$%]{8,40}$");
     public static final Pattern VALID_EMAIL = Pattern.compile(
@@ -188,6 +197,22 @@ public class UserAdapter {
         }
     }
 
+    public void updateCurrentUser(final UserSimpleCallback callback) {
+        getUser(getCurrentUser().getUserAuthToken(), new UserSimpleCallback() {
+            @Override
+            public void onSuccess(User user) {
+                setCurrentUser(user);
+                callback.onSuccess(user);
+            }
+
+            @Override
+            public void onFailure() {
+                Log.w(TAG, "Cannot update current user");
+                callback.onFailure();
+            }
+        });
+    }
+
     public static void setCurrentUser(User user) {
         sCurrentUser = user;
     }
@@ -215,4 +240,38 @@ public class UserAdapter {
             }
         });
     }
+
+    public void showRewardDialog(@NonNull final FragmentActivity context,
+            @NonNull Reward reward, @Nullable final UserSimpleCallback updateCallback) {
+        RewardDialogFragment.show(context, reward);
+        final int oldLevel = UserAdapter.getCurrentUser().getLevel();
+        updateCurrentUser(
+                new UserSimpleCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                        if (updateCallback != null) updateCallback.onSuccess(user);
+                        if (user.getLevel() > oldLevel) {
+                            RewardDialogFragment.show(context, user.getLevel());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        if (updateCallback != null) updateCallback.onFailure();
+                    }
+                });
+    }
+
+    public void updateRewards(@NonNull final DrawerActivity activity) {
+        updateCurrentUser(
+                new UserSimpleCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                    }
+
+                    @Override
+                    public void onFailure() { }
+                });
+    }
+
 }

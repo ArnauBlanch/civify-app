@@ -1,6 +1,11 @@
 package com.civify.model.award;
 
+import android.support.v4.app.Fragment;
+
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.award.AwardDetailsFragment;
 import com.civify.model.issue.Picture;
+import com.civify.model.map.CivifyMap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -117,5 +122,13 @@ public class Award implements Serializable {
 
     public void setPicture(Picture picture) {
         mPicture = picture;
+    }
+
+    public void showRewardDetails() {
+        Fragment awardDetailsFragment = AwardDetailsFragment.newInstance(this);
+        if (awardDetailsFragment != null) {
+            CivifyMap.getInstance().getContext()
+                    .setFragment(awardDetailsFragment, DrawerActivity.DETAILS_AWARD_ID);
+        }
     }
 }

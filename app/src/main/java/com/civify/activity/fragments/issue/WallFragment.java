@@ -1,4 +1,4 @@
-package com.civify.activity.fragments;
+package com.civify.activity.fragments.issue;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
@@ -94,5 +95,28 @@ public class WallFragment extends BasicFragment {
 
     protected List<Issue> filterIssues(List<Issue> issues) {
         return issues;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
+                @Override
+                public void onSuccess(List<Issue> issues) {
+                    mIssuesViewFragment.setIssuesList(filterIssues(issues));
+                    try {
+                        CivifyMap.getInstance().setIssues(issues);
+                    } catch (MapNotLoadedException ignore) {
+                        // Don't refresh map
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+        }
     }
 }

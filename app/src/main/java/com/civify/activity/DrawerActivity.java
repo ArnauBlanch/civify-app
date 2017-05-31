@@ -26,19 +26,17 @@ import com.civify.activity.fragments.BasicFragment;
 import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.SettingsFragment;
-import com.civify.activity.fragments.WallFragment;
+import com.civify.activity.fragments.award.AwardsFragment;
+import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
-import com.civify.activity.fragments.reward.AwardsFragment;
 import com.civify.adapter.UserAdapter;
-import com.civify.model.User;
-import com.mikhaellopez.circularimageview.CircularImageView;
+import com.civify.adapter.UserAttacher;
 
 import java.util.Stack;
 
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int UNDEFINED_ID = -1;
     public static final int NAVIGATE_ID = 0;
     public static final int WALL_ID = 1;
     public static final int PROFILE_ID = 2;
@@ -46,11 +44,11 @@ public class DrawerActivity extends BaseActivity
     public static final int ACHIEVEMENTS_ID = 4;
     public static final int EVENTS_ID = 5;
     public static final int SETTINGS_ID = 6;
-    public static final int DETAILS_ID = 7;
+    public static final int DETAILS_ISSUE_ID = 7;
+    public static final int DETAILS_AWARD_ID = 8;
+    public static final int DETAILS_QR_ID = 9;
+    public static final int EXCHANGED_AWARDS = 10;
 
-    private static final int COINS = 432;
-    private static final int EXPERIENCE = 50;
-    private static final int LEVEL = 3;
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
     private static final int SHOW_AS_ACTION_NEVER = 0;
@@ -64,7 +62,6 @@ public class DrawerActivity extends BaseActivity
     private int mCurrentFragment;
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
-    private User mCurrentUser;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -96,12 +93,7 @@ public class DrawerActivity extends BaseActivity
         setFragment(navigateFragment, NAVIGATE_ID);
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
-        mCurrentUser = UserAdapter.getCurrentUser();
-
-        mCurrentUser.setLevel(LEVEL);
-        mCurrentUser.setCoins(COINS);
-        mCurrentUser.setExperience(EXPERIENCE);
-        setUserHeader(mCurrentUser);
+        setUserHeader();
     }
 
     @Override
@@ -111,7 +103,8 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ID) {
+            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
+                    && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
                 while (fragment.getFragmentId() != NAVIGATE_ID) {
@@ -210,7 +203,7 @@ public class DrawerActivity extends BaseActivity
     private void updateMenu() {
         if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
-        } else if (mCurrentFragment == DETAILS_ID) {
+        } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
         } else {
@@ -224,51 +217,29 @@ public class DrawerActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
-        int noIcona = 0;
-        if (mShowMenu) {
-            if (!mShowMenuDetails) noIcona = SHOW_AS_ACTION_NEVER;
-            else noIcona = SHOW_AS_ACTION_IF_ROOM;
+        int noIcona = SHOW_AS_ACTION_NEVER;
+        if (mShowMenuDetails) {
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
         }
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
-            if (mShowMenu) {
-                menu.getItem(i).setShowAsAction(noIcona);
-            }
+            menu.getItem(i).setShowAsAction(noIcona);
         }
 
         return true;
     }
 
-    private void setUserHeader(User user) {
+    public void setUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
-        // progressBar.setProgress(user.getLevel()/utils.calcMaxLevel(userLevel) * 100);
 
-        ProgressBar progressBar = (ProgressBar) headerView.findViewById(R.id.header_progress);
-
-        TextView name = (TextView) headerView.findViewById(R.id.header_name);
-        name.setText(user.getName() + " " + user.getSurname());
-
-        TextView username = (TextView) headerView.findViewById(R.id.header_username);
-        username.setText(user.getUsername());
-
-        TextView level = (TextView) headerView.findViewById(R.id.header_level);
-        String userLevel = Integer.toString(user.getLevel());
-        String showLevel = getString(R.string.level) + ' ' + userLevel;
-        level.setText(showLevel);
-
-        TextView xp = (TextView) headerView.findViewById(R.id.header_xp);
-        String userExperience = Integer.toString(user.getExperience());
-        //xp.setText(userExperience + '/' + utils.calcMaxXp(userLevel));
-
-        TextView coins = (TextView) headerView.findViewById(R.id.header_coins);
-        String userCoins = Integer.toString(user.getCoins());
-        coins.setText(userCoins);
-
-        CircularImageView profileImage =
-                (CircularImageView) headerView.findViewById(R.id.header_image);
-        //profileImage.setImageBitmap(img); // bitmap
-        //profileImage.setImageIcon(img); // icon
+        UserAttacher.getFromCurrentUser(this)
+                .setFullName((TextView) headerView.findViewById(R.id.header_name))
+                .setUsername((TextView) headerView.findViewById(R.id.header_username))
+                .setLevel((TextView) headerView.findViewById(R.id.header_level))
+                .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
+                .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
+                .setCoins((TextView) headerView.findViewById(R.id.header_coins));
     }
 
     private void setToolbarTitle() {
@@ -326,18 +297,25 @@ public class DrawerActivity extends BaseActivity
         }
     }
 
-    private void removeCoinsFromToolbar() {
+    public void removeCoinsFromToolbar() {
         View coins = mToolbar.findViewById(R.id.coins_with_number);
         if (coins != null) {
             mToolbar.removeView(coins);
         }
     }
 
-    private void showCoinsOnToolbar() {
+    public void showCoinsOnToolbar() {
         View coins = getLayoutInflater().inflate(R.layout.coins_with_number, null);
         Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.END);
         ((TextView) coins.findViewById(R.id.num_coins)).setText(
                 String.valueOf(UserAdapter.getCurrentUser().getCoins()));
         mToolbar.addView(coins, layoutParams);
     }
+
+    public void updateCoinsOnToolbar(int coins) {
+        removeCoinsFromToolbar();
+        UserAdapter.getCurrentUser().setCoins(coins);
+        showCoinsOnToolbar();
+    }
+
 }
