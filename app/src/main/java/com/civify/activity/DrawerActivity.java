@@ -21,11 +21,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.activity.fragments.AchievementsFragment;
 import com.civify.activity.fragments.BasicFragment;
 import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.SettingsFragment;
+import com.civify.activity.fragments.achievements.AchievementsFragment;
 import com.civify.activity.fragments.award.AwardsFragment;
 import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
