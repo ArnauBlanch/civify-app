@@ -1,14 +1,18 @@
 package com.civify.adapter.achievement;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.civify.R;
+import com.civify.activity.fragments.achievements.AchievementsFragment;
 import com.civify.model.achievement.AchievementStub;
 
 import java.util.List;
@@ -18,23 +22,31 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter
         .AchievementViewHolder> {
 
     private List<AchievementStub> mItems;
+    private AchievementsFragment mContext;
 
-    public AchievementAdapter(List<AchievementStub> items) {
+    public AchievementAdapter(List<AchievementStub> items, AchievementsFragment context) {
         this.mItems = items;
+        this.mContext = context;
     }
 
     @Override
     public AchievementViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_achievement,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_achievement,
                 parent, false);
         return new AchievementViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(AchievementViewHolder holder, int position) {
-        holder.getTextViewTitle().setText(mItems.get(position).getTitle());
-        holder.getTextViewDescription().setText(mItems.get(position).getDescription());
-        String progress = mItems.get(position).getProgress() + "%";
+    public void onBindViewHolder(AchievementViewHolder holder, final int position) {
+        AchievementStub achievement = mItems.get(position);
+        holder.setAchievement(achievement);
+        Glide.with(mContext)
+                .load(achievement.getBadgePicture())
+                .centerCrop()
+                .into(holder.getImageViewImage());
+        holder.getTextViewTitle().setText(achievement.getTitle());
+        holder.getTextViewDescription().setText(achievement.getDescription());
+        String progress = achievement.getProgress() + "%";
         holder.getTextViewProgress().setText(progress);
     }
 
@@ -43,7 +55,8 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter
         return mItems.size();
     }
 
-    public static class AchievementViewHolder extends RecyclerView.ViewHolder {
+    public static class AchievementViewHolder extends RecyclerView.ViewHolder
+            implements OnClickListener {
 
         private ImageView mImageViewImage;
         private TextView mTextViewTitle;
@@ -51,14 +64,20 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter
         private ProgressBar mProgressBar;
         private TextView mTextViewProgress;
 
+        private AchievementStub mAchievement;
+        private View mView;
+
         public AchievementViewHolder(View itemView) {
             super(itemView);
-            mImageViewImage = (ImageView) itemView.findViewById(R.id.achievement_cardview_image);
-            mTextViewTitle = (TextView) itemView.findViewById(R.id.achievement_cardview_title);
+            mImageViewImage = (ImageView) itemView.findViewById(R.id.achievement_item_image);
+            mTextViewTitle = (TextView) itemView.findViewById(R.id.achievement_item_title);
             mTextViewDescription =
-                    (TextView) itemView.findViewById(R.id.achievement_cardview_description);
+                    (TextView) itemView.findViewById(R.id.achievement_item_description);
             mTextViewProgress =
-                    (TextView) itemView.findViewById(R.id.achievement_cardview_progressText);
+                    (TextView) itemView.findViewById(R.id.achievement_item_progressText);
+            itemView.setClickable(true);
+            itemView.setOnClickListener(this);
+            mView = itemView;
         }
 
         public ImageView getImageViewImage() {
@@ -79,6 +98,15 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter
 
         public TextView getTextViewProgress() {
             return mTextViewProgress;
+        }
+
+        public void setAchievement(AchievementStub achievement) {
+            mAchievement = achievement;
+        }
+
+        @Override
+        public void onClick(View v) {
+            //TODO achievement.showAchievementDetails();
         }
     }
 }
