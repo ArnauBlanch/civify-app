@@ -1,6 +1,7 @@
 package com.civify.activity.fragments.achievements;
 
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class AchievementsFragment extends BasicFragment {
 
-    private static final int AUX_MOCK = 15;
+    private static final int AUX_MOCK = 101;
 
     private View mView;
 
@@ -69,7 +70,13 @@ public class AchievementsFragment extends BasicFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         achievementRecycler.setLayoutManager(layoutManager);
 
-        AchievementAdapter achievementAdapter = new AchievementAdapter(items);
+        AchievementAdapter achievementAdapter = new AchievementAdapter(items, this);
+
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(achievementRecycler.getContext(),
+                        LinearLayoutManager.VERTICAL);
+        achievementRecycler.addItemDecoration(dividerItemDecoration);
+
         achievementRecycler.setAdapter(achievementAdapter);
     }
 }

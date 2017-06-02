@@ -1,12 +1,13 @@
 package com.civify.model.achievement;
 
-import retrofit2.http.Url;
-
 /**
  * Created by MSI on 01/06/2017.
  */
 
 public class AchievementStub {
+
+    private static final String URL_IMAGE = "http://1.bp.blogspot.com/_jifqT6DMvgw/TQLKH4pth0I/"
+            + "AAAAAAAAAVU/ZTMWA300pCM/s1600/medalla.jpg";
 
     private int mId;
     private String mTitle;
@@ -15,13 +16,13 @@ public class AchievementStub {
     private String mKind;
     private int mCoins;
     private int mXp;
-    private Url mBadgePicture;
+    private String mBadgePicture;
     private String mToken;
 
     private int mProgress;
 
     public AchievementStub(int id, String title, String description, int number, String kind,
-            int coins, int xp, Url badgePicture, String token) {
+            int coins, int xp, String badgePicture, String token) {
         this.mId = id;
         this.mTitle = title;
         this.mDescription = description;
@@ -89,11 +90,11 @@ public class AchievementStub {
         this.mXp = xp;
     }
 
-    public Url getBadgePicture() {
-        return mBadgePicture;
+    public String getBadgePicture() {
+        return URL_IMAGE;
     }
 
-    public void setBadgePicture(Url badgePicture) {
+    public void setBadgePicture(String badgePicture) {
         this.mBadgePicture = badgePicture;
     }
 
