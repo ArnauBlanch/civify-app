@@ -9,6 +9,7 @@
     android:paddingBottom="8dp"
     android:clickable="true"
     android:focusable="true"
+    android:background="?android:attr/selectableItemBackground"
     tools:ignore="MissingPrefix"
     >
 
