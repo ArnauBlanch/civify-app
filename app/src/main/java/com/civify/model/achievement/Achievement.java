@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Achievement implements Serializable {
 
@@ -33,7 +34,7 @@ public class Achievement implements Serializable {
 
     @Expose
     @SerializedName("created_at")
-    private String mCreatedAt;
+    private Date mCreatedAt;
 
     @Expose
     @SerializedName("achievement_token")
@@ -56,6 +57,23 @@ public class Achievement implements Serializable {
     private boolean mClaimed;
 
     public Achievement() {
+    }
+
+    public Achievement(String title, String description, int number, String kind, int coins, int xp,
+            Date createdAt, String achievementToken, boolean enabled, int progress,
+            boolean completed, boolean claimed) {
+        mTitle = title;
+        mDescription = description;
+        mNumber = number;
+        mKind = kind;
+        mCoins = coins;
+        mXp = xp;
+        mCreatedAt = createdAt;
+        mAchievementToken = achievementToken;
+        mEnabled = enabled;
+        mProgress = progress;
+        mCompleted = completed;
+        mClaimed = claimed;
     }
 
     public String getTitle() {
@@ -106,11 +124,11 @@ public class Achievement implements Serializable {
         mXp = xp;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return mCreatedAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         mCreatedAt = createdAt;
     }
 
