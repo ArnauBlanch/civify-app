@@ -2,7 +2,6 @@ package com.civify.adapter.achievement;
 
 import android.content.SharedPreferences;
 
-import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginAdapterImpl;
 import com.civify.model.achievement.Achievement;
 import com.civify.service.achievement.AchievementService;
@@ -15,9 +14,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.HTTP;
 
-public class AchievementAdapterImpl implements AchievementAdapter{
+public class AchievementAdapterImpl implements AchievementAdapter {
 
     private AchievementService mAchievementService;
     private String mAuthToken;
@@ -38,7 +36,7 @@ public class AchievementAdapterImpl implements AchievementAdapter{
             @Override
             public void onResponse(Call<List<Achievement>> call,
                     Response<List<Achievement>> response) {
-                if(response.code() == HttpURLConnection.HTTP_OK) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
                 } else {
                     callback.onFailure();
@@ -60,7 +58,7 @@ public class AchievementAdapterImpl implements AchievementAdapter{
         call.enqueue(new Callback<Achievement>() {
             @Override
             public void onResponse(Call<Achievement> call, Response<Achievement> response) {
-                if(response.code() == HttpURLConnection.HTTP_OK) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSucces(response.body());
                 } else {
                     callback.onFailure();
