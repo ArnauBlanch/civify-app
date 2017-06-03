@@ -7,6 +7,7 @@ import com.civify.model.achievement.Achievement;
 import com.civify.service.achievement.AchievementService;
 import com.civify.service.achievement.AchievementSimpleCallback;
 import com.civify.service.achievement.ListAchievementsSimpleCallback;
+import com.civify.utils.ServiceGenerator;
 
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -21,7 +22,8 @@ public class AchievementAdapterImpl implements AchievementAdapter {
     private String mAuthToken;
 
     public AchievementAdapterImpl(SharedPreferences sharedPreferences) {
-        mAuthToken = sharedPreferences.getString(LoginAdapterImpl.AUTH_TOKEN, "");
+        this(ServiceGenerator.getInstance()
+                .createService(AchievementService.class), sharedPreferences);
     }
 
     AchievementAdapterImpl(AchievementService service, SharedPreferences sharedPreferences) {
