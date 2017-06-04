@@ -59,7 +59,11 @@ public class AchievementsFragment extends BasicFragment {
                     @Override
                     public void onSuccess(List<Achievement> achievements) {
                         Log.d(API_TEST, "Success");
-                        Log.d(API_TEST, achievements.toString());
+                        for (int i = 0; i < achievements.size(); i++) {
+                            Log.d(API_TEST, "Achievement number " + (i + 1));
+                            Log.d(API_TEST, "Title: " + achievements.get(i).getTitle());
+                            Log.d(API_TEST, "Description: " + achievements.get(i).getDescription());
+                        }
                     }
 
                     @Override
