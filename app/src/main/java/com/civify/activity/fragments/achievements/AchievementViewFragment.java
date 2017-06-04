@@ -11,15 +11,12 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
-import com.civify.adapter.achievement.AchievementAdapter;
-import com.civify.model.achievement.AchievementStub;
+import com.civify.adapter.achievement.AchievementViewAdapter;
+import com.civify.model.achievement.Achievement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AchievementViewFragment extends BasicFragment {
-
-    private static final int AUX_MOCK = 101;
 
     private View mView;
 
@@ -48,21 +45,10 @@ public class AchievementViewFragment extends BasicFragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_achievement_view, container, false);
-        init();
         return mView;
     }
 
-    private void init() {
-        List<AchievementStub> items = new ArrayList<>();
-        for (int i = 0; i < AUX_MOCK; i++) {
-            String title = "Title" + (i + 1);
-            String description = "Description" + (i + 1);
-            AchievementStub item = new AchievementStub(i, title, description, 0, null, 0,
-                    0, null, null);
-            item.setProgress(i);
-            items.add(item);
-        }
-
+    public void setAchievementsList(List<Achievement> items) {
         RecyclerView achievementRecycler = (RecyclerView) mView.findViewById(R.id
                 .achievement_recyclerView);
         achievementRecycler.setHasFixedSize(true);
@@ -70,7 +56,7 @@ public class AchievementViewFragment extends BasicFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         achievementRecycler.setLayoutManager(layoutManager);
 
-        AchievementAdapter achievementAdapter = new AchievementAdapter(items, this);
+        AchievementViewAdapter achievementAdapter = new AchievementViewAdapter(items, this);
 
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(achievementRecycler.getContext(),
