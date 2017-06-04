@@ -1,5 +1,10 @@
 package com.civify.model.achievement;
 
+import android.support.v4.app.Fragment;
+
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.achievements.AchievementDetailsFragment;
+import com.civify.model.map.CivifyMap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -170,5 +175,12 @@ public class Achievement implements Serializable {
 
     public void setClaimed(boolean claimed) {
         mClaimed = claimed;
+    }
+
+    public void showAchievementDetails() {
+        Fragment achievementDetailsFragment = AchievementDetailsFragment.newInstance(this);
+        CivifyMap.getInstance().getContext()
+                .setFragment(achievementDetailsFragment, DrawerActivity.DETAILS_ACHIEVEMENTS_ID);
+
     }
 }

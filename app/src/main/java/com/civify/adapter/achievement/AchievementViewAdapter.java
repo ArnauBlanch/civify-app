@@ -110,7 +110,7 @@ public class AchievementViewAdapter extends RecyclerView.Adapter<AchievementView
 
         @Override
         public void onClick(View v) {
-            //TODO achievement.showAchievementDetails();
+            mAchievement.showAchievementDetails();
         }
     }
 }

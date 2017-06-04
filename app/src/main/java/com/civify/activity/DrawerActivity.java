@@ -48,6 +48,7 @@ public class DrawerActivity extends BaseActivity
     public static final int DETAILS_AWARD_ID = 8;
     public static final int DETAILS_QR_ID = 9;
     public static final int EXCHANGED_AWARDS = 10;
+    public static final int DETAILS_ACHIEVEMENTS_ID = 11;
 
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
@@ -104,7 +105,8 @@ public class DrawerActivity extends BaseActivity
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
-                    && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID) {
+                    && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID
+                    && mCurrentFragment != DETAILS_ACHIEVEMENTS_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
                 while (fragment.getFragmentId() != NAVIGATE_ID) {
