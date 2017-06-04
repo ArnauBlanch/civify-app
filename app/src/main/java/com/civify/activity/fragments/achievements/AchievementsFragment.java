@@ -1,36 +1,26 @@
 package com.civify.activity.fragments.achievements;
 
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
-import com.civify.adapter.achievement.AchievementAdapter;
-import com.civify.model.achievement.AchievementStub;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AchievementsFragment extends BasicFragment {
 
-    private static final int AUX_MOCK = 101;
-
-    private View mView;
+    private ProgressBar mProgressBar;
+    private AchievementViewFragment mAchievementViewFragment;
 
     public AchievementsFragment() {
     }
 
     public static AchievementsFragment newInstance() {
-        AchievementsFragment fragment = new AchievementsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new AchievementsFragment();
     }
 
     @Override
@@ -38,45 +28,38 @@ public class AchievementsFragment extends BasicFragment {
         return DrawerActivity.ACHIEVEMENTS_ID;
     }
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_achievements, container, false);
-        init();
-        return mView;
+        View view = inflater.inflate(R.layout.fragment_rewards, container, false);
+
+        mProgressBar = (ProgressBar) view.findViewById(R.id.loading_rewards);
+        return view;
     }
 
-    private void init() {
-        List<AchievementStub> items = new ArrayList<>();
-        for (int i = 0; i < AUX_MOCK; i++) {
-            String title = "Title" + (i + 1);
-            String description = "Description" + (i + 1);
-            AchievementStub item = new AchievementStub(i, title, description, 0, null, 0,
-                    0, null, null);
-            item.setProgress(i);
-            items.add(item);
-        }
+    /*
+    @Override
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+        mAchievementViewFragment = new AchievementViewFragment();
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.rewards_container, mAchievementViewFragment)
+                .commit();
+        AdapterFactory.getInstance().getAwardAdapter(getContext())
+                .getOfferedAwards(new ListAwardsSimpleCallback() {
+                    @Override
+                    public void onSuccess(List<Award> awards) {
+                        mProgressBar.setVisibility(View.GONE);
+                        mAwardsViewFragment.setRewardList(awards);
+                    }
 
-        RecyclerView achievementRecycler = (RecyclerView) mView.findViewById(R.id
-                .achievement_recyclerView);
-        achievementRecycler.setHasFixedSize(true);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        achievementRecycler.setLayoutManager(layoutManager);
-
-        AchievementAdapter achievementAdapter = new AchievementAdapter(items, this);
-
-        DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(achievementRecycler.getContext(),
-                        LinearLayoutManager.VERTICAL);
-        achievementRecycler.addItemDecoration(dividerItemDecoration);
-
-        achievementRecycler.setAdapter(achievementAdapter);
+                    @Override
+                    public void onFailure() {
+                        Snackbar.make(view, "Couldn't retrieve rewards.", Snackbar.LENGTH_SHORT);
+                    }
+                });
     }
+    */
 }

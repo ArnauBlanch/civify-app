@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
-import com.civify.activity.fragments.achievements.AchievementsFragment;
+import com.civify.activity.fragments.achievements.AchievementViewFragment;
 import com.civify.model.achievement.AchievementStub;
 
 import java.util.List;
@@ -21,9 +21,9 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter
         .AchievementViewHolder> {
 
     private List<AchievementStub> mItems;
-    private AchievementsFragment mContext;
+    private AchievementViewFragment mContext;
 
-    public AchievementAdapter(List<AchievementStub> items, AchievementsFragment context) {
+    public AchievementAdapter(List<AchievementStub> items, AchievementViewFragment context) {
         this.mItems = items;
         this.mContext = context;
     }
