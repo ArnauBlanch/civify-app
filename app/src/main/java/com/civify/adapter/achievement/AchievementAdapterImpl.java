@@ -1,9 +1,7 @@
 package com.civify.adapter.achievement;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
-import com.civify.activity.fragments.AchievementsFragment;
 import com.civify.adapter.LoginAdapterImpl;
 import com.civify.model.achievement.Achievement;
 import com.civify.service.achievement.AchievementService;
@@ -43,8 +41,6 @@ public class AchievementAdapterImpl implements AchievementAdapter {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess(response.body());
                 } else {
-                    Log.d(AchievementsFragment.API_TEST, "AuthToken = " + mAuthToken);
-                    Log.d(AchievementsFragment.API_TEST, "Response code = " + response.code());
                     callback.onFailure();
                 }
             }
