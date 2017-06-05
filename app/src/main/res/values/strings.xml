@@ -204,6 +204,15 @@
   <string name="more_info">+info</string>
   <string name="close">CLOSE</string>
   <string name="published_by">PUBLISHED BY</string>
+  <string name="filter_issues">Filter issues</string>
+  <string name="sort_issues">Sort issues</string>
+  <string name="dialog_achievement">achievement</string>
+  <string name="dialog_achievements">achievements</string>
+  <string name="and">and</string>
+  <string name="dialog_events">events</string>
+  <string name="dialog_event">event</string>
+  <string name="you_have_completed">You have completed</string>
+  <string name="access_achievements_events">Access the achievements or events section to claim your reward.</string>
 
   <string name="duration">Duration</string>
   <string name="day">day</string>
