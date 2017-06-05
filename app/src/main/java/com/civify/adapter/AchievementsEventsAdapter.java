@@ -7,6 +7,7 @@ import com.civify.service.AchievementsEventsCallback;
 import com.civify.service.AchievementsEventsService;
 import com.civify.utils.ServiceGenerator;
 
+import java.net.HttpURLConnection;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,7 +35,11 @@ public class AchievementsEventsAdapter {
             @Override
             public void onResponse(Call<AchievementsEventsContainer> call,
                     Response<AchievementsEventsContainer> response) {
-                callback.onSuccess(response.body());
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
             }
 
             @Override
