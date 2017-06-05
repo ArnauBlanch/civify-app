@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import android.util.Log;
 
-import com.civify.model.issue.Picture;
+import com.civify.model.Picture;
 import com.civify.utils.ServiceGenerator;
 
 import java.text.DateFormat;
@@ -94,7 +94,7 @@ public class AwardTest {
 
     @Test
     public void testPicture() {
-        Picture picture = mock(com.civify.model.issue.Picture.class);
+        Picture picture = mock(Picture.class);
         mAward.setPicture(picture);
         Assert.assertEquals(picture, mAward.getPicture());
     }
