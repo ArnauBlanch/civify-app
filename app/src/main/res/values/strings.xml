@@ -204,4 +204,6 @@
   <string name="more_info">+info</string>
   <string name="close">CLOSE</string>
   <string name="published_by">PUBLISHED BY</string>
+  <string name="filter_issues">Filter issues</string>
+  <string name="sort_issues">Sort issues</string>
 </resources>
