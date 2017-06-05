@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.civify.adapter.AchievementsEventsAdapter;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginAdapterImpl;
 import com.civify.adapter.UserAdapter;
@@ -20,6 +21,7 @@ public class AdapterFactory {
     private IssueAdapter mIssueAdapter;
     private AwardAdapter mAwardAdapter;
     private AchievementAdapter mAchievementAdapter;
+    private AchievementsEventsAdapter mAchievementsEventsAdapter;
 
     public static AdapterFactory getInstance() {
         if (sInstance == null) {
@@ -68,6 +70,14 @@ public class AdapterFactory {
             mAchievementAdapter = new AchievementAdapterImpl(getSharedPreferences(context));
         }
         return mAchievementAdapter;
+    }
+
+    public AchievementsEventsAdapter getAchievementsEventsAdapter(@NonNull Context context) {
+        if (mAchievementsEventsAdapter == null) {
+            mAchievementsEventsAdapter = new AchievementsEventsAdapter(
+                    getSharedPreferences(context));
+        }
+        return mAchievementsEventsAdapter;
     }
 
     private SharedPreferences getSharedPreferences(Context context) {
