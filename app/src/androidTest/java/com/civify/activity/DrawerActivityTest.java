@@ -68,7 +68,7 @@ public class DrawerActivityTest {
 
     private void openDrawerAndClickItem(String text) {
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Open navigation drawer"),
+                allOf(withContentDescription("Open navigation profile"),
                         withParent(allOf(withId(R.id.toolbar),
                                 withParent(withId(R.id.bar_layout)))),
                         isDisplayed()));

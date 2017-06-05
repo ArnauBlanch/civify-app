@@ -1,5 +1,6 @@
 package com.civify.activity;
 
+import android.content.DialogInterface;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -31,6 +34,9 @@ import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserAttacher;
+import com.civify.model.AchievementsEventsContainer;
+import com.civify.service.AchievementsEventsCallback;
+import com.civify.utils.AdapterFactory;
 
 import java.util.Stack;
 
@@ -54,6 +60,8 @@ public class DrawerActivity extends BaseActivity
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
     private static final int SHOW_AS_ACTION_NEVER = 0;
+    private static final String SPACE = " ";
+    private static final String DOT = ".";
 
     private Stack<Fragment> mFragmentStack;
 
@@ -62,8 +70,10 @@ public class DrawerActivity extends BaseActivity
     private Toolbar mToolbar;
     private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
+
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
+    private boolean mShowMenuWall;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -96,6 +106,8 @@ public class DrawerActivity extends BaseActivity
         mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
 
         setUserHeader();
+
+        checkNewAchievementsEvents();
     }
 
     @Override
@@ -206,12 +218,19 @@ public class DrawerActivity extends BaseActivity
     private void updateMenu() {
         if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
+            mShowMenuDetails = false;
         } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
+            mShowMenuWall = false;
+        } else if (mCurrentFragment == WALL_ID) {
+            mShowMenu = true;
+            mShowMenuWall = true;
+            mShowMenuDetails = false;
         } else {
             mShowMenu = false;
             mShowMenuDetails = false;
+            mShowMenuWall = false;
         }
         invalidateOptionsMenu();
     }
@@ -219,11 +238,19 @@ public class DrawerActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+        int menuRes;
         int noIcona = SHOW_AS_ACTION_NEVER;
         if (mShowMenuDetails) {
+            menuRes = R.menu.details;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
+        } else if (mShowMenuWall) {
+            menuRes = R.menu.wall;
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+        } else {
+            menuRes = R.menu.profile;
         }
+        getMenuInflater().inflate(menuRes, menu);
+
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
@@ -321,4 +348,51 @@ public class DrawerActivity extends BaseActivity
         showCoinsOnToolbar();
     }
 
+    private void checkNewAchievementsEvents() {
+        AdapterFactory.getInstance().getAchievementsEventsAdapter(getApplicationContext())
+                .getNewAchievementsEvents(new AchievementsEventsCallback() {
+                    @Override
+                    public void onSuccess(AchievementsEventsContainer achievementsEventsContainer) {
+                        int a = achievementsEventsContainer.getAchievementList().size();
+                        int e = achievementsEventsContainer.getEventList().size();
+                        if (a > 0 || e > 0) {
+                            Builder builder = new Builder(DrawerActivity.this)
+                                    .setTitle(R.string.congratulations)
+                                    .setMessage(getAchievementsEventsMessage(a, e))
+                                    .setNegativeButton(R.string.close,
+                                            new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure() {
+                    }
+                });
+    }
+
+    private String getAchievementsEventsMessage(int a, int e) {
+        String achievements = "";
+        if (a > 0) {
+            achievements += a + SPACE + getString(a > 1 ? R.string.dialog_achievements :
+                    R.string.dialog_achievement);
+        }
+
+        String events = "";
+        if (e > 0) {
+            if (a > 0) {
+                events += SPACE + getString(R.string.and) + SPACE;
+            }
+            events += e + SPACE + getString(e > 1 ? R.string.dialog_events : R.string.dialog_event);
+        }
+
+        return getString(R.string.you_have_completed) + SPACE + achievements + events + DOT
+                + "\n\n" + getString(R.string.access_achievements_events);
+    }
 }

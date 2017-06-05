@@ -238,6 +238,8 @@ public class CreateIssueActivity extends CameraGalleryActivity {
     private void showProgressDialog() {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.creating_new_issue));
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
     }
 }
