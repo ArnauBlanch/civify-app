@@ -213,4 +213,9 @@
   <string name="dialog_event">event</string>
   <string name="you_have_completed">You have completed</string>
   <string name="access_achievements_events">Access the achievements or events section to claim your reward.</string>
+  <string name="date_ascending">Date (ascending)</string>
+  <string name="date_descending">Date (descending)</string>
+  <string name="proximity">Proximity</string>
+  <string name="confirm_votes">Confirm votes</string>
+  <string name="sort_dialog_title">Sort issues</string>
 </resources>

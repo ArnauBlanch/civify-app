@@ -30,8 +30,8 @@ import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.achievements.AchievementsFragment;
 import com.civify.activity.fragments.award.AwardsFragment;
-import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
+import com.civify.activity.fragments.wall.WallFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserAttacher;
 import com.civify.model.AchievementsEventsContainer;
@@ -116,8 +116,10 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
-                    && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID
+            if (mCurrentFragment != NAVIGATE_ID
+                    && mCurrentFragment != DETAILS_ISSUE_ID
+                    && mCurrentFragment != DETAILS_QR_ID
+                    && mCurrentFragment != DETAILS_AWARD_ID
                     && mCurrentFragment != DETAILS_ACHIEVEMENTS_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
@@ -127,9 +129,7 @@ public class DrawerActivity extends BaseActivity
                 mFragmentStack.clear();
                 mFragmentStack.add(fragment);
                 fragment.onResume();
-                fragmentTransaction
-                        .show(fragment)
-                        .commit();
+                fragmentTransaction.show(fragment).commit();
                 mCurrentFragment = NAVIGATE_ID;
             } else {
                 mFragmentStack.lastElement().onPause();
@@ -250,7 +250,6 @@ public class DrawerActivity extends BaseActivity
         }
         getMenuInflater().inflate(menuRes, menu);
 
-
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
             menu.getItem(i).setShowAsAction(noIcona);
@@ -348,23 +347,25 @@ public class DrawerActivity extends BaseActivity
     }
 
     private void checkNewAchievementsEvents() {
-        AdapterFactory.getInstance().getAchievementsEventsAdapter(getApplicationContext())
+        AdapterFactory.getInstance()
+                .getAchievementsEventsAdapter(getApplicationContext())
                 .getNewAchievementsEvents(new AchievementsEventsCallback() {
                     @Override
                     public void onSuccess(AchievementsEventsContainer achievementsEventsContainer) {
                         int a = achievementsEventsContainer.getAchievementList().size();
                         int e = achievementsEventsContainer.getEventList().size();
                         if (a > 0 || e > 0) {
-                            Builder builder = new Builder(DrawerActivity.this)
-                                    .setTitle(R.string.congratulations)
+                            Builder builder = new Builder(DrawerActivity.this).setTitle(
+                                    R.string.congratulations)
                                     .setMessage(getAchievementsEventsMessage(a, e))
                                     .setNegativeButton(R.string.close,
                                             new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        });
+                                                @Override
+                                                public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                                    dialog.cancel();
+                                                }
+                                            });
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
@@ -379,8 +380,8 @@ public class DrawerActivity extends BaseActivity
     private String getAchievementsEventsMessage(int a, int e) {
         String achievements = "";
         if (a > 0) {
-            achievements += a + SPACE + getString(a > 1 ? R.string.dialog_achievements :
-                    R.string.dialog_achievement);
+            achievements += a + SPACE + getString(
+                    a > 1 ? R.string.dialog_achievements : R.string.dialog_achievement);
         }
 
         String events = "";
@@ -391,7 +392,12 @@ public class DrawerActivity extends BaseActivity
             events += e + SPACE + getString(e > 1 ? R.string.dialog_events : R.string.dialog_event);
         }
 
-        return getString(R.string.you_have_completed) + SPACE + achievements + events + DOT
-                + "\n\n" + getString(R.string.access_achievements_events);
+        return getString(R.string.you_have_completed)
+                + SPACE
+                + achievements
+                + events
+                + DOT
+                + "\n\n"
+                + getString(R.string.access_achievements_events);
     }
 }

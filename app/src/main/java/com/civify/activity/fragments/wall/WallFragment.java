@@ -1,17 +1,19 @@
-package com.civify.activity.fragments.issue;
+package com.civify.activity.fragments.wall;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
+import com.civify.activity.fragments.issue.IssuesViewFragment;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
@@ -21,16 +23,19 @@ import com.civify.utils.AdapterFactory;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WallFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class WallFragment extends BasicFragment {
 
+    public static final int ASCENDING = 0;
+    public static final int DESCENDING = 1;
+    public static final int PROXIMITY = 2;
+    public static final int NUM_CONFIRM = 3;
+
+    private static final String TAG = "WallFragment";
     private IssueAdapter mIssueAdapter;
     private IssuesViewFragment mIssuesViewFragment;
     private ProgressBar mProgressBar;
+    private int mSortSelected;
+    private boolean mLoaded;
 
     public WallFragment() {
     }
@@ -47,12 +52,14 @@ public class WallFragment extends BasicFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        mSortSelected = ASCENDING;
+        mLoaded = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_wall);
@@ -78,6 +85,7 @@ public class WallFragment extends BasicFragment {
                 } catch (MapNotLoadedException ignore) {
                     // Don't refresh map
                 }
+                mLoaded = true;
             }
 
             @Override
@@ -87,14 +95,32 @@ public class WallFragment extends BasicFragment {
                     mIssuesViewFragment.setIssuesList(CivifyMap.getInstance().getIssues());
                 } catch (MapNotLoadedException e) {
                     Snackbar.make(view, "Couldn't retrieve updated issues.", Snackbar.LENGTH_LONG)
-                            .setAction(R.string.action, null).show();
+                            .setAction(R.string.action, null)
+                            .show();
                 }
+                mLoaded = false;
             }
         });
     }
 
     protected List<Issue> filterIssues(List<Issue> issues) {
         return issues;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mLoaded) {
+            switch (item.getItemId()) {
+                case R.id.action_filter_issues:
+                    SortDialogFragment.show(getActivity(), mSortSelected);
+                    return false;
+                case R.id.action_sort_issues:
+                    return false;
+                default:
+                    break;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -117,6 +143,33 @@ public class WallFragment extends BasicFragment {
 
                 }
             });
+        }
+    }
+
+    public void dialogSelectedSort(int selectedSort) {
+        switch (selectedSort) {
+            case ASCENDING:
+                //sortByAscending();
+                mSortSelected = ASCENDING;
+                Toast.makeText(getContext(), "Ascending", Toast.LENGTH_LONG).show();
+                break;
+            case DESCENDING:
+                //sortByDescending();
+                mSortSelected = DESCENDING;
+                Toast.makeText(getContext(), "Descending", Toast.LENGTH_LONG).show();
+                break;
+            case PROXIMITY:
+                //sortByProximity();
+                mSortSelected = PROXIMITY;
+                Toast.makeText(getContext(), "proximity", Toast.LENGTH_LONG).show();
+                break;
+            case NUM_CONFIRM:
+                //sortByConfirms();
+                mSortSelected = NUM_CONFIRM;
+                Toast.makeText(getContext(), "num_confirm", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
         }
     }
 }
