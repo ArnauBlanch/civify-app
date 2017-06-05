@@ -2,6 +2,7 @@ package com.civify.activity.fragments.achievements;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.ProgressBar;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
-import com.civify.adapter.achievement.AchievementAdapter;
 import com.civify.model.achievement.Achievement;
 import com.civify.service.achievement.ListAchievementsSimpleCallback;
 import com.civify.utils.AdapterFactory;
@@ -22,7 +22,6 @@ public class AchievementsFragment extends BasicFragment {
 
     private ProgressBar mProgressBar;
     private AchievementViewFragment mAchievementViewFragment;
-    private AchievementAdapter mAchievementAdapter;
 
     public AchievementsFragment() {
     }
@@ -54,24 +53,24 @@ public class AchievementsFragment extends BasicFragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        AdapterFactory adapterFactory = AdapterFactory.getInstance();
-        mAchievementAdapter = adapterFactory.getAchievementAdapter(getContext());
         mAchievementViewFragment = new AchievementViewFragment();
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.achievements_container, mAchievementViewFragment)
                 .commit();
-        mAchievementAdapter.getAchievements(new ListAchievementsSimpleCallback() {
-            @Override
-            public void onSuccess(List<Achievement> achievementList) {
-                mProgressBar.setVisibility(View.GONE);
-                mAchievementViewFragment.setAchievementsList(achievementList);
-            }
+        AdapterFactory.getInstance().getAchievementAdapter(getContext())
+                .getAchievements(new ListAchievementsSimpleCallback() {
+                        @Override
+                        public void onSuccess(List<Achievement> achievements) {
+                            mProgressBar.setVisibility(View.GONE);
+                            mAchievementViewFragment.setAchievementsList(achievements);
+                        }
 
-            @Override
-            public void onFailure() {
-                mProgressBar.setVisibility(View.GONE);
-            }
-        });
+                        @Override
+                        public void onFailure() {
+                            Snackbar.make(view, "Couldn't retrieve achievements.",
+                                    Snackbar.LENGTH_SHORT);
+                        }
+                    });
     }
 }

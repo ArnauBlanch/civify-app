@@ -1,5 +1,6 @@
 package com.civify.adapter.achievement;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.activity.fragments.achievements.AchievementViewFragment;
 import com.civify.model.achievement.Achievement;
 
 import java.util.List;
@@ -21,9 +21,9 @@ public class AchievementViewAdapter extends RecyclerView.Adapter<AchievementView
     private static final int PERCENT = 100;
 
     private List<Achievement> mItems;
-    private AchievementViewFragment mContext;
+    private Context mContext;
 
-    public AchievementViewAdapter(List<Achievement> items, AchievementViewFragment context) {
+    public AchievementViewAdapter(List<Achievement> items, Context context) {
         this.mItems = items;
         this.mContext = context;
     }
