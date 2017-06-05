@@ -1,6 +1,7 @@
 package com.civify.model;
 
 import com.civify.model.achievement.Achievement;
+import com.civify.model.event.Event;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,13 +15,13 @@ public class AchievementsEventsContainer {
 
     @Expose
     @SerializedName("events")
-    private List<EventStub> mEventList;
+    private List<Event> mEventList;
 
     public AchievementsEventsContainer() {
     }
 
     public AchievementsEventsContainer(List<Achievement> achievementList,
-            List<EventStub> eventList) {
+            List<Event> eventList) {
         mAchievementList = achievementList;
         mEventList = eventList;
     }
@@ -33,11 +34,11 @@ public class AchievementsEventsContainer {
         mAchievementList = achievementList;
     }
 
-    public List<EventStub> getEventList() {
+    public List<Event> getEventList() {
         return mEventList;
     }
 
-    public void setEventList(List<EventStub> eventList) {
+    public void setEventList(List<Event> eventList) {
         mEventList = eventList;
     }
 }

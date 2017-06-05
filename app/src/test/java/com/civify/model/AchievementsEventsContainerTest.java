@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import com.civify.model.achievement.Achievement;
+import com.civify.model.event.Event;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,13 +18,13 @@ public class AchievementsEventsContainerTest {
 
     private AchievementsEventsContainer mAchievementsEventsContainer;
     private List<Achievement> mAchievements;
-    private List<EventStub> mEvents;
+    private List<Event> mEvents;
 
     @Before
     public void setUp() {
         this.mAchievementsEventsContainer = new AchievementsEventsContainer();
         mAchievements = Arrays.asList(mock(Achievement.class), mock(Achievement.class));
-        mEvents = Arrays.asList(mock(EventStub.class), mock(EventStub.class));
+        mEvents = Arrays.asList(mock(Event.class), mock(Event.class));
     }
 
     @After
