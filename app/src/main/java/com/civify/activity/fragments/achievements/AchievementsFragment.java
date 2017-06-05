@@ -54,6 +54,7 @@ public class AchievementsFragment extends BasicFragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mAchievementViewFragment = new AchievementViewFragment();
+        mAchievementViewFragment.setAchievementsFragment(this);
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.achievements_container, mAchievementViewFragment)
@@ -72,5 +73,25 @@ public class AchievementsFragment extends BasicFragment {
                                     Snackbar.LENGTH_SHORT);
                         }
                     });
+    }
+
+    public void updateList() {
+        AdapterFactory.getInstance().getAchievementAdapter(getContext())
+                .getAchievements(new ListAchievementsSimpleCallback() {
+                    @Override
+                    public void onSuccess(List<Achievement> achievements) {
+                        mAchievementViewFragment.setAchievementsList(achievements);
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
+    }
+
+    @Override
+    public View getView() {
+        return mAchievementViewFragment.getView();
     }
 }

@@ -23,6 +23,7 @@ public class AchievementViewFragment extends BasicFragment {
 
     private List<Achievement> mAchievementList;
     private AchievementViewAdapter mAchievementAdapter;
+    private AchievementsFragment mAchievementsFragment;
 
     public AchievementViewFragment() {
         mAchievementList = new ArrayList<>();
@@ -49,7 +50,7 @@ public class AchievementViewFragment extends BasicFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        mAchievementAdapter = new AchievementViewAdapter(mAchievementList, getContext());
+        mAchievementAdapter = new AchievementViewAdapter(mAchievementList, mAchievementsFragment);
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_achievement_view, container, false);
@@ -73,5 +74,9 @@ public class AchievementViewFragment extends BasicFragment {
         mAchievementList.addAll(intermediateList);
 
         mAchievementAdapter.notifyDataSetChanged();
+    }
+
+    public void setAchievementsFragment(AchievementsFragment achievementsFragment) {
+        this.mAchievementsFragment = achievementsFragment;
     }
 }
