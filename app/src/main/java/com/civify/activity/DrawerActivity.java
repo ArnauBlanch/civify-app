@@ -61,8 +61,10 @@ public class DrawerActivity extends BaseActivity
     private Toolbar mToolbar;
     private AppBarLayout mAppBarLayout;
     private int mCurrentFragment;
+
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
+    private boolean mShowMenuWall;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -205,12 +207,19 @@ public class DrawerActivity extends BaseActivity
     private void updateMenu() {
         if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
+            mShowMenuDetails = false;
         } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
+            mShowMenuWall = false;
+        } else if (mCurrentFragment == WALL_ID) {
+            mShowMenu = true;
+            mShowMenuWall = true;
+            mShowMenuDetails = false;
         } else {
             mShowMenu = false;
             mShowMenuDetails = false;
+            mShowMenuWall = false;
         }
         invalidateOptionsMenu();
     }
@@ -218,11 +227,19 @@ public class DrawerActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+        int menuRes;
         int noIcona = SHOW_AS_ACTION_NEVER;
         if (mShowMenuDetails) {
+            menuRes = R.menu.details;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
+        } else if (mShowMenuWall) {
+            menuRes = R.menu.wall;
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+        } else {
+            menuRes = R.menu.profile;
         }
+        getMenuInflater().inflate(menuRes, menu);
+
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
