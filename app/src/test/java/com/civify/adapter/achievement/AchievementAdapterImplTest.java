@@ -1,14 +1,19 @@
 package com.civify.adapter.achievement;
 
+import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.mock;
 
 import android.content.SharedPreferences;
 
+import com.civify.adapter.UserAdapter;
 import com.civify.model.Picture;
+import com.civify.model.Reward;
+import com.civify.model.RewardContainer;
 import com.civify.model.achievement.Achievement;
 import com.civify.service.achievement.AchievementService;
 import com.civify.service.achievement.AchievementSimpleCallback;
 import com.civify.service.achievement.ListAchievementsSimpleCallback;
+import com.civify.service.award.RewardCallback;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -189,6 +194,36 @@ public class AchievementAdapterImplTest {
         mAchievementAdapter.getAchievement(mAchievement.getToken(), mockCallback);
 
         verify(mockCallback, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void testClaimAchievement() {
+        String body = mGson.toJson(mock(RewardContainer.class));
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body);
+        mMockWebServer.enqueue(mockResponse);
+        RewardCallback callback = mock(RewardCallback.class);
+
+        mAchievementAdapter.claimAchievement(mAchievement.getToken(), callback);
+
+        ArgumentCaptor<Reward> argument = forClass(Reward.class);
+
+        verify(callback, timeout(1000)).onSuccess(argument.capture());
+    }
+
+    @Test
+    public void testClaimAchievementFailure() {
+        String body = mGson.toJson(mock(RewardContainer.class));
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+                .setBody(body);
+        mMockWebServer.enqueue(mockResponse);
+        RewardCallback callback = mock(RewardCallback.class);
+
+        mAchievementAdapter.claimAchievement(mAchievement.getToken(), callback);
+
+        verify(callback, timeout(1000)).onFailure();
     }
 
     private void setUpAchievement() throws ParseException {
