@@ -95,8 +95,8 @@ public class AchievementTest {
 
     @Test
     public void testAchievementToken() {
-        mAchievement.setAchievementToken(TOKEN);
-        assertEquals(TOKEN, mAchievement.getAchievementToken());
+        mAchievement.setToken(TOKEN);
+        assertEquals(TOKEN, mAchievement.getToken());
     }
 
     @Test

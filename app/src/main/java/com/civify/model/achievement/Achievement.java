@@ -44,7 +44,7 @@ public class Achievement implements Serializable {
 
     @Expose
     @SerializedName("achievement_token")
-    private String mAchievementToken;
+    private String mToken;
 
     @Expose
     @SerializedName("enabled")
@@ -70,7 +70,7 @@ public class Achievement implements Serializable {
     }
 
     public Achievement(String title, String description, int number, String kind, int coins, int xp,
-            Date createdAt, String achievementToken, boolean enabled, int progress,
+            Date createdAt, String token, boolean enabled, int progress,
             boolean completed, boolean claimed, Picture badge) {
         mTitle = title;
         mDescription = description;
@@ -79,7 +79,7 @@ public class Achievement implements Serializable {
         mCoins = coins;
         mXp = xp;
         mCreatedAt = createdAt;
-        mAchievementToken = achievementToken;
+        mToken = token;
         mEnabled = enabled;
         mProgress = progress;
         mCompleted = completed;
@@ -143,12 +143,12 @@ public class Achievement implements Serializable {
         mCreatedAt = createdAt;
     }
 
-    public String getAchievementToken() {
-        return mAchievementToken;
+    public String getToken() {
+        return mToken;
     }
 
-    public void setAchievementToken(String achievementToken) {
-        mAchievementToken = achievementToken;
+    public void setToken(String token) {
+        mToken = token;
     }
 
     public boolean isEnabled() {
