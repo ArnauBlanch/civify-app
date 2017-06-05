@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.model.achievement.Achievement;
 
@@ -39,12 +40,10 @@ public class AchievementViewAdapter extends RecyclerView.Adapter<AchievementView
     public void onBindViewHolder(AchievementViewHolder holder, final int position) {
         Achievement achievement = mItems.get(position);
         holder.setAchievement(achievement);
-        /*
         Glide.with(mContext)
-                .load(achievement.getBadge())
+                .load(achievement.getBadge().getLargeUrl())
                 .centerCrop()
                 .into(holder.getImageViewImage());
-                */
         holder.getTextViewTitle().setText(achievement.getTitle());
         holder.getTextViewDescription().setText(achievement.getDescription());
         int progress = (achievement.getProgress() * PERCENT) / achievement.getNumber();
@@ -61,14 +60,13 @@ public class AchievementViewAdapter extends RecyclerView.Adapter<AchievementView
     public static class AchievementViewHolder extends RecyclerView.ViewHolder
             implements OnClickListener {
 
-        private ImageView mImageViewImage;
-        private TextView mTextViewTitle;
-        private TextView mTextViewDescription;
-        private ProgressBar mProgressBar;
-        private TextView mTextViewProgress;
+        private final ImageView mImageViewImage;
+        private final TextView mTextViewTitle;
+        private final TextView mTextViewDescription;
+        private final ProgressBar mProgressBar;
+        private final TextView mTextViewProgress;
 
         private Achievement mAchievement;
-        private View mView;
 
         public AchievementViewHolder(View itemView) {
             super(itemView);
@@ -81,7 +79,6 @@ public class AchievementViewAdapter extends RecyclerView.Adapter<AchievementView
             mProgressBar = (ProgressBar) itemView.findViewById(R.id.achievement_item_progressBar);
             itemView.setClickable(true);
             itemView.setOnClickListener(this);
-            mView = itemView;
         }
 
         public ImageView getImageViewImage() {

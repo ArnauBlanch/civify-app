@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 
 import android.content.SharedPreferences;
 
+import com.civify.model.Picture;
 import com.civify.model.achievement.Achievement;
 import com.civify.service.achievement.AchievementService;
 import com.civify.service.achievement.AchievementSimpleCallback;
@@ -57,6 +58,7 @@ public class AchievementAdapterImplTest {
     private AchievementAdapter mAchievementAdapter;
     private Gson mGson;
     private Achievement mAchievement;
+    private Picture mPicture;
 
     @Before
     public void setUp() throws ParseException, IOException {
@@ -116,6 +118,8 @@ public class AchievementAdapterImplTest {
             assertEquals(mAchievement.getProgress(), responseAchievement.getProgress());
             assertEquals(mAchievement.isCompleted(), responseAchievement.isCompleted());
             assertEquals(mAchievement.isClaimed(), responseAchievement.isClaimed());
+            assertEquals(mAchievement.getBadge().getContentType(),
+                    responseAchievement.getBadge().getContentType());
         }
     }
 
@@ -168,6 +172,8 @@ public class AchievementAdapterImplTest {
         assertEquals(mAchievement.getProgress(), responseAchievement.getProgress());
         assertEquals(mAchievement.isCompleted(), responseAchievement.isCompleted());
         assertEquals(mAchievement.isClaimed(), responseAchievement.isClaimed());
+        assertEquals(mAchievement.getBadge().getContentType(),
+                responseAchievement.getBadge().getContentType());
     }
 
     @Test
@@ -188,7 +194,9 @@ public class AchievementAdapterImplTest {
     private void setUpAchievement() throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT,
                 Locale.getDefault());
+        mPicture = new Picture();
+        mPicture.setContentType("testContent");
         mAchievement = new Achievement(TITLE, DESCRIPTION, NUMBER, KIND, COINS, XP,
-                dateFormat.parse(DATE), TOKEN, true, PROGRESS, false, false);
+                dateFormat.parse(DATE), TOKEN, true, PROGRESS, false, false, mPicture);
     }
 }

@@ -1,4 +1,4 @@
-package com.civify.model.issue;
+package com.civify.model;
 
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.annotations.Expose;

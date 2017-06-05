@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.award.ShowQrFragment;
-import com.civify.model.issue.Picture;
+import com.civify.model.Picture;
 import com.civify.model.map.CivifyMap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
