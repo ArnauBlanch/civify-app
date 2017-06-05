@@ -112,8 +112,8 @@ public class AchievementAdapterImplTest {
             assertEquals(mAchievement.getCoins(), responseAchievement.getCoins());
             assertEquals(mAchievement.getXp(), responseAchievement.getXp());
             assertEquals(mAchievement.getCreatedAt(), responseAchievement.getCreatedAt());
-            assertEquals(mAchievement.getAchievementToken(),
-                    responseAchievement.getAchievementToken());
+            assertEquals(mAchievement.getToken(),
+                    responseAchievement.getToken());
             assertEquals(mAchievement.isEnabled(), responseAchievement.isEnabled());
             assertEquals(mAchievement.getProgress(), responseAchievement.getProgress());
             assertEquals(mAchievement.isCompleted(), responseAchievement.isCompleted());
@@ -147,12 +147,12 @@ public class AchievementAdapterImplTest {
         mMockWebServer.enqueue(mockResponse);
         AchievementSimpleCallback mockCallback = mock(AchievementSimpleCallback.class);
 
-        mAchievementAdapter.getAchievement(mAchievement.getAchievementToken(), mockCallback);
+        mAchievementAdapter.getAchievement(mAchievement.getToken(), mockCallback);
 
         RecordedRequest request = mMockWebServer.takeRequest();
 
         assertEquals("GET", request.getMethod());
-        assertEquals("/achievements/" + mAchievement.getAchievementToken(), request.getPath());
+        assertEquals("/achievements/" + mAchievement.getToken(), request.getPath());
 
         ArgumentCaptor<Achievement> argument = ArgumentCaptor.forClass(Achievement.class);
         verify(mockCallback, timeout(1000)).onSucces(argument.capture());
@@ -166,8 +166,8 @@ public class AchievementAdapterImplTest {
         assertEquals(mAchievement.getCoins(), responseAchievement.getCoins());
         assertEquals(mAchievement.getXp(), responseAchievement.getXp());
         assertEquals(mAchievement.getCreatedAt(), responseAchievement.getCreatedAt());
-        assertEquals(mAchievement.getAchievementToken(),
-                responseAchievement.getAchievementToken());
+        assertEquals(mAchievement.getToken(),
+                responseAchievement.getToken());
         assertEquals(mAchievement.isEnabled(), responseAchievement.isEnabled());
         assertEquals(mAchievement.getProgress(), responseAchievement.getProgress());
         assertEquals(mAchievement.isCompleted(), responseAchievement.isCompleted());
@@ -186,7 +186,7 @@ public class AchievementAdapterImplTest {
         mMockWebServer.enqueue(mockResponse);
         AchievementSimpleCallback mockCallback = mock(AchievementSimpleCallback.class);
 
-        mAchievementAdapter.getAchievement(mAchievement.getAchievementToken(), mockCallback);
+        mAchievementAdapter.getAchievement(mAchievement.getToken(), mockCallback);
 
         verify(mockCallback, timeout(1000)).onFailure();
     }
