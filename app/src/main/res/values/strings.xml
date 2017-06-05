@@ -213,6 +213,11 @@
   <string name="dialog_event">event</string>
   <string name="you_have_completed">You have completed</string>
   <string name="access_achievements_events">Access the achievements or events section to claim your reward.</string>
+
   <string name="claim">CLAIM</string>
   <string name="couldnt_claim_achievement">Couldn\'t claim your reward.</string>
+
+  <string name="duration">Duration</string>
+  <string name="day">day</string>
+  <string name="first_letter_hour">h</string>
 </resources>
