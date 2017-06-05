@@ -25,11 +25,11 @@ import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.activity.fragments.BasicFragment;
-import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.achievements.AchievementsFragment;
 import com.civify.activity.fragments.award.AwardsFragment;
+import com.civify.activity.fragments.event.EventsFragment;
 import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
 import com.civify.adapter.UserAdapter;
@@ -55,6 +55,7 @@ public class DrawerActivity extends BaseActivity
     public static final int DETAILS_QR_ID = 9;
     public static final int EXCHANGED_AWARDS = 10;
     public static final int DETAILS_ACHIEVEMENTS_ID = 11;
+    public static final int DETAILS_EVENTS_ID = 12;
 
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
