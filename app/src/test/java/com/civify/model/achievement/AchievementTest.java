@@ -5,6 +5,7 @@ import static junit.framework.Assert.assertTrue;
 
 import android.util.Log;
 
+import com.civify.model.Picture;
 import com.civify.utils.ServiceGenerator;
 
 import java.text.DateFormat;
@@ -120,5 +121,12 @@ public class AchievementTest {
     public void testClaimed() {
         mAchievement.setClaimed(true);
         assertTrue(mAchievement.isClaimed());
+    }
+
+    @Test
+    public void testBadge() {
+        Picture badge = new Picture();
+        mAchievement.setBadge(badge);
+        assertEquals(badge, mAchievement.getBadge());
     }
 }

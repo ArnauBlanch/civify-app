@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.achievements.AchievementDetailsFragment;
+import com.civify.model.Picture;
 import com.civify.model.map.CivifyMap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -61,12 +62,16 @@ public class Achievement implements Serializable {
     @SerializedName("claimed")
     private boolean mClaimed;
 
+    @Expose
+    @SerializedName("badge")
+    private Picture mBadge;
+
     public Achievement() {
     }
 
     public Achievement(String title, String description, int number, String kind, int coins, int xp,
             Date createdAt, String achievementToken, boolean enabled, int progress,
-            boolean completed, boolean claimed) {
+            boolean completed, boolean claimed, Picture badge) {
         mTitle = title;
         mDescription = description;
         mNumber = number;
@@ -79,6 +84,7 @@ public class Achievement implements Serializable {
         mProgress = progress;
         mCompleted = completed;
         mClaimed = claimed;
+        mBadge = badge;
     }
 
     public String getTitle() {
@@ -175,6 +181,14 @@ public class Achievement implements Serializable {
 
     public void setClaimed(boolean claimed) {
         mClaimed = claimed;
+    }
+
+    public Picture getBadge() {
+        return mBadge;
+    }
+
+    public void setBadge(Picture badge) {
+        mBadge = badge;
     }
 
     public void showAchievementDetails() {

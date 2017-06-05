@@ -21,7 +21,7 @@ import com.civify.model.Reward;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
-import com.civify.model.issue.Picture;
+import com.civify.model.Picture;
 import com.civify.service.issue.IssueRewardCallback;
 import com.civify.service.issue.IssueService;
 import com.civify.service.issue.IssueSimpleCallback;

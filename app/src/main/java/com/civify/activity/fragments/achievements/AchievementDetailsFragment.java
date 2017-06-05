@@ -3,13 +3,16 @@ package com.civify.activity.fragments.achievements;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
@@ -79,11 +82,21 @@ public class AchievementDetailsFragment extends BasicFragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(mAchievement.getTitle());
 
+        addAchievementBadge();
         addAchievementCoins();
         addAchievementXp();
         addAchievementTitle();
         addAchievementDescription();
         addAchievementProgress();
+    }
+
+    private void addAchievementBadge() {
+        Log.d(TAG_ACHIEVEMENT, "Adding badge...");
+        ImageView imageAchievement = (ImageView) mView.findViewById(R.id.achievement_details_image);
+        Glide.with(this)
+                .load(mAchievement.getBadge().getLargeUrl())
+                .centerCrop()
+                .into(imageAchievement);
     }
 
     private void addAchievementCoins() {
@@ -108,10 +121,14 @@ public class AchievementDetailsFragment extends BasicFragment {
         Log.d(TAG_ACHIEVEMENT, "Adding description...");
         TextView description = (TextView) mView.findViewById(R.id.achievement_details_description);
         description.setText(mAchievement.getDescription());
+        description.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private void addAchievementProgress() {
         Log.d(TAG_ACHIEVEMENT, "Adding progress...");
+        TextView progressTotal = (TextView) mView.findViewById(R.id
+                .achievement_details_progressTotal);
+        progressTotal.setText(mAchievement.getProgress() + "/" + mAchievement.getNumber());
         int progress = (mAchievement.getProgress() * PERCENT) / mAchievement.getNumber();
         ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id
                 .achievement_details_progressBar);

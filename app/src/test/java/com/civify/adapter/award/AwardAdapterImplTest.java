@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.civify.model.award.Award;
-import com.civify.model.issue.Picture;
+import com.civify.model.Picture;
 import com.civify.service.award.AwardService;
 import com.civify.service.award.AwardSimpleCallback;
 import com.civify.service.award.ListAwardsSimpleCallback;
@@ -18,8 +18,6 @@ import com.civify.service.award.ListExchangedAwardSimpleCallback;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
