@@ -15,7 +15,7 @@
   <string name="no">No</string>
   <string name="pose_a_risk">Does it pose a risk to people?</string>
   <string name="take_a_picture">Do you have a photo of the issue?</string>
-  <string name="create_new_issue">Change new issue</string>
+  <string name="create_new_issue">Create new issue</string>
   <string name="something_went_wrong">Something went wrong</string>
   <string name="havent_picked_image">You haven\'t picked an image!</string>
   <string name="need_to_allow_camera_permission">You need to allow camera permission to take a photo</string>
@@ -196,7 +196,7 @@
   <string name="get_it"> Get it!</string>
   <string name="dialog_award_bought">Congratulations! You have a new award avaliable now</string>
   <string name="ok_award">Ok!</string>
-  <string name="problem_award">Ups! Impossible exchange it. Try it again</string>
+  <string name="problem_award">Oops! Impossible exchange it. Try it again</string>
   <string name="exchanged_award_used">USED</string>
   <string name="exchanged_award_valid">VALID</string>
   <string name="exchanged_on">Exchanged on</string>
@@ -204,4 +204,9 @@
   <string name="more_info">+info</string>
   <string name="close">CLOSE</string>
   <string name="published_by">PUBLISHED BY</string>
+  <string name="mapLoading">Map loading, please wait...</string>
+  <string name="catala" translatable="false">Català</string>
+    <string name="castellano" translatable="false">Castellano</string>
+  <string name="english" translatable="false">English</string>
+  <string name="change_language">Change language</string>
 </resources>

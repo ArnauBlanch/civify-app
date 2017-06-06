@@ -30,7 +30,7 @@
   <string name="couldnt_edit_issue">No se pudo editar la incidencia</string>
   <string name="couldnt_get_location">No se pudo obtener la localización actual</string>
   <string name="couldnt_update_issue_info">No se pudo obtener información actualizada de la incidencia</string>
-  <string name="create_new_issue">Cambiar la nueva incidencia</string>
+  <string name="create_new_issue">Crear nueva incidencia</string>
   <string name="creating_new_issue">Creando nueva incidencia...</string>
   <string name="days">días</string>
   <string name="daysAgo">hace días</string>
@@ -71,7 +71,7 @@
   <string name="level_image_description"></string>
   <string name="location_connection_failed">Conexión con los servicios de localización fallida.</string>
   <string name="login_password">Contraseña</string>
-  <string name="login_sign_in">Indentificarse</string>
+  <string name="login_sign_in">Indentifícate</string>
   <string name="m">m</string>
   <string name="matching_passwords">Las dos contraseñas coinciden</string>
   <string name="more_info">+info</string>
@@ -100,7 +100,7 @@
   <string name="password">Contraseña</string>
   <string name="permission_rationale"></string>
   <string name="pose_a_risk">¿Supone un riesgo para la gente?</string>
-  <string name="problem_award">Ups! No se ha podido canjear. Inténtalo de nuevo</string>
+  <string name="problem_award">¡Ups! No se ha podido canjear. Inténtalo de nuevo</string>
   <string name="profile">Perfil</string>
   <string name="profile_title">Mi perfil</string>
   <string name="prompt_email">Correo electrónico</string>
@@ -108,11 +108,11 @@
   <string name="public_transport">Transporte público</string>
   <string name="other">Otros</string>
   <string name="illumination">Iluminación</string>
-  <string name="grove" translatable="false">Arboleda</string>
+  <string name="grove">Arboleda</string>
   <string name="published_by">PUBLICADO POR</string>
   <string name="qr_instructions">Muestra el código QR al comercio que ofrece esta recompensa y obtén tu premio.</string>
   <string name="questionRisk">¿Supone un riesgo?</string>
-  <string name="registration">Registrarse</string>
+  <string name="registration">Regístrate</string>
   <string name="report">Denunciar</string>
   <string name="report_error_message">No se pudo denunciar la incidencia</string>
   <string name="report_message">La incidencia fue denunciada</string>
@@ -137,7 +137,7 @@
   <string name="suggestion">Sugerencia</string>
   <string name="surname">Apellido</string>
   <string name="surname_not_validated">Debes poner tu apellido</string>
-  <string name="tab_label_badges">Insignias</string>
+  <string name="tab_label_badges">INSIGNIAS</string>
   <string name="tab_label_issues">INCIDENCIAS</string>
   <string name="tab_spec_badges">Insignias</string>
   <string name="tab_spec_issues">Incidencias</string>
@@ -167,9 +167,11 @@
   <string name="validate_password">Validar contraseña</string>
   <string name="wall">Muro</string>
   <string name="wall_title">Muro</string>
-  <string name="what_kind_of_problem">\"¿Qué tipo de \"</string>
+  <string name="what_kind_of_problem">¿Qué tipo de incidencia?</string>
   <string name="whats_happening">¿Qué pasa?</string>
   <string name="whats_your_name">¿Cómo te llamas?</string>
   <string name="yes">Sí</string>
   <string name="you_have_won">Has obtenido:</string>
+    <string name="mapLoading">Cargando mapa, espera por favor...</string>
+    <string name="change_language">Cambiar idioma</string>
 </resources>
