@@ -1,5 +1,7 @@
 package com.civify.activity.fragments.wall;
 
+import static com.civify.R.string.m;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
@@ -49,6 +52,7 @@ public class WallFragment extends BasicFragment {
     private int mStatusSelected;
     private View mView;
     private int mRiskSelected;
+    private TextView mTextEmpty;
 
     public WallFragment() {
     }
@@ -88,6 +92,8 @@ public class WallFragment extends BasicFragment {
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         mIssueAdapter = adapterFactory.getIssueAdapter(getContext());
         mIssuesViewFragment = new IssuesViewFragment();
+        mTextEmpty = (TextView) view.findViewById(R.id.wall_empty);
+        mTextEmpty.setVisibility(View.GONE);
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.wall_container, mIssuesViewFragment)
@@ -96,6 +102,9 @@ public class WallFragment extends BasicFragment {
             @Override
             public void onSuccess(List<Issue> issues) {
                 mProgressBar.setVisibility(View.GONE);
+                if (issues.isEmpty() && mTextEmpty != null) {
+                    mTextEmpty.setVisibility(View.VISIBLE);
+                }
                 mIssuesViewFragment.setIssuesList(filterIssues(issues));
                 try {
                     CivifyMap.getInstance().setIssues(issues);
@@ -179,21 +188,33 @@ public class WallFragment extends BasicFragment {
     }
 
     private void refreshIssues() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
-            @Override
-            public void onSuccess(List<Issue> issues) {
-                mIssues = issues;
-                applySelectedSorting(mSortSelected);
-                mIssuesViewFragment.setIssuesList(issues);
-                mProgressBar.setVisibility(View.GONE);
-            }
+        if (!mFilteredCategories.isEmpty()) {
+            if (mTextEmpty != null) mTextEmpty.setVisibility(View.GONE);
+            mProgressBar.setVisibility(View.VISIBLE);
+            mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
+                @Override
+                public void onSuccess(List<Issue> issues) {
+                    mIssues = issues;
+                    applySelectedSorting(mSortSelected);
+                    mIssuesViewFragment.setIssuesList(issues);
+                    mProgressBar.setVisibility(View.GONE);
+                    if (issues.isEmpty() && mTextEmpty != null) {
+                        mTextEmpty.setVisibility(View.VISIBLE);
+                    }
+                }
 
-            @Override
-            public void onFailure() {
-                // TODO: error
-            }
-        }, mStatusSelected, mFilteredCategories, mRiskSelected);
+                @Override
+                public void onFailure() {
+                    // TODO: error
+                }
+            }, mStatusSelected, mFilteredCategories, mRiskSelected);
+        } else {
+            mIssues = new ArrayList<>();
+            mIssuesViewFragment.setIssuesList(mIssues);
+            mProgressBar.setVisibility(View.GONE);
+            if (mTextEmpty != null) mTextEmpty.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override

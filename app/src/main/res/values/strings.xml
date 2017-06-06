@@ -226,4 +226,7 @@
   <string name="filter_dialog_title">Filter issues</string>
   <string name="ok">OK</string>
   <string name="is_risk">Risk?</string>
+  <string name="select_all">Select all</string>
+  <string name="deselect_all">Deselect all</string>
+  <string name="no_issues_found">No issues were found</string>
 </resources>

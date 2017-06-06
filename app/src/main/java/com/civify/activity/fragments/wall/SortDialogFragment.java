@@ -46,7 +46,7 @@ public class SortDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.sort_dialog_title).setPositiveButton(android.R.string.ok, null);
+        builder.setTitle(R.string.sort_dialog_title);
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialog_sort_issues, null);

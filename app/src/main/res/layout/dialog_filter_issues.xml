@@ -77,8 +77,8 @@
           android:layout_gravity="center_vertical"
           android:layout_marginStart="10dp"
           android:layout_marginLeft="10dp"
-          android:textOff="Select all"
-          android:textOn="Deselect all"
+          android:textOff="@string/select_all"
+          android:textOn="@string/deselect_all"
           />
     </LinearLayout>
 
@@ -100,7 +100,7 @@
             android:id="@+id/checkbox_grove"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/street_furniture" />
+            android:text="@string/grove" />
         <CheckBox
             android:id="@+id/checkbox_street_furniture"
             android:layout_width="match_parent"
