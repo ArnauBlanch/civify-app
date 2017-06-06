@@ -18,7 +18,7 @@
         android:layout_gravity="top"
         >
       <ImageView
-          android:id="@+id/item_event_picture"
+          android:id="@+id/details_event_picture"
           android:layout_width="match_parent"
           android:layout_height="180dp"
           android:scaleType="fitXY"
@@ -27,15 +27,15 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin_event_details"
+        android:layout_marginTop="@dimen/margin_event_details"
+        android:layout_marginBottom="@dimen/margin_event_details"
+        android:layout_marginEnd="@dimen/margin_event_details"
         >
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical"
-          android:layout_marginStart="@dimen/margin_event_details"
-          android:layout_marginTop="@dimen/margin_event_details"
-          android:layout_marginBottom="@dimen/margin_event_details"
-          android:layout_marginEnd="@dimen/margin_event_details"
           >
         <!-- BADGE + TITLE -->
         <LinearLayout
@@ -60,9 +60,8 @@
               android:scrollbars="vertical"
               android:layout_marginStart="@dimen/margin_event_details"
               android:layout_marginLeft="@dimen/margin_event_details"
-              android:text="Event title"
               android:textColor="#000000"
-              android:textSize="25sp"
+              android:textSize="20sp"
               fontPath="fonts/Nunito-Bold.ttf"
               />
         </LinearLayout>
@@ -75,11 +74,10 @@
           <TextView
               android:id="@+id/details_event_description"
               android:layout_width="match_parent"
-              android:layout_height="75dp"
+              android:layout_height="100dp"
               android:textSize="18sp"
               android:scrollbars="vertical"
-              fontPath="fonts/Nunito-Italic.ttf"
-              android:text="It's a fake description due to design details view"/>
+              fontPath="fonts/Nunito-Italic.ttf"/>
         </LinearLayout>
         <!-- TIME + DURATION + COINS + XP -->
         <LinearLayout
@@ -100,8 +98,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/green"
                 fontPath="fonts/Nunito-Bold.ttf"
-                android:textStyle="bold"
-                android:text="Time test"/>
+                android:textStyle="bold"/>
             <!--DURATION -->
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -114,15 +111,15 @@
                   android:textSize="18sp"
                   fontPath="fonts/Nunito-Italic.ttf"/>
               <TextView
-                  android:id="@+id/item_event_duration"
+                  android:id="@+id/details_event_duration"
                   android:layout_width="wrap_content"
                   android:layout_height="match_parent"
                   android:textSize="18sp"
                   android:textColor="@color/green"
                   fontPath="fonts/Nunito-Bold.ttf"
                   android:textStyle="bold"
-                  android:layout_marginLeft="5dp"
-                  android:text="3 weeks"/>
+                  android:layout_marginStart="5dp"
+                  android:layout_marginLeft="5dp"/>
             </LinearLayout>
           </LinearLayout>
           <!-- COINS + XP -->
@@ -145,11 +142,11 @@
                   android:textColor="#000"
                   android:textSize="18sp"
                   fontPath="fonts/Nunito-SemiBold.ttf"
-                  android:text="100"
                   />
               <ImageView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:layout_marginStart="5dp"
                   android:paddingLeft="5dp"
                   android:src="@drawable/ic_coins"
                   />
@@ -161,7 +158,6 @@
                 android:textColor="#000"
                 android:textSize="18sp"
                 fontPath="fonts/Nunito-SemiBold.ttf"
-                android:text="150 XP"
                 />
           </LinearLayout>
         </LinearLayout>

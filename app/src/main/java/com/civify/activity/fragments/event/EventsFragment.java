@@ -15,6 +15,7 @@ import com.civify.model.event.Event;
 import com.civify.service.event.ListEventsSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventsFragment extends BasicFragment {
@@ -62,7 +63,7 @@ public class EventsFragment extends BasicFragment {
                     @Override
                     public void onSuccess(List<Event> events) {
                         mProgressBar.setVisibility(View.GONE);
-                        mEventViewFragment.setEventsList(events);
+                        mEventViewFragment.setEventsList(validEvents(events));
                     }
 
                     @Override
@@ -71,5 +72,14 @@ public class EventsFragment extends BasicFragment {
                                 Snackbar.LENGTH_SHORT);
                     }
                 });
+    }
+
+    private static List<Event> validEvents(List<Event> oldEvents) {
+        List<Event> events = new ArrayList<>();
+        for (int i = 0; i < oldEvents.size(); ++i) {
+            Event event = oldEvents.get(i);
+            if (!event.isPast() && event.isEnabled()) events.add(event);
+        }
+        return events;
     }
 }
