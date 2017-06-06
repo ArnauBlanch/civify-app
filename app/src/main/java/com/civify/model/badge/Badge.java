@@ -20,6 +20,14 @@ public class Badge implements Serializable {
     @SerializedName("large_url")
     private String mUrl;
 
+    public Badge() { }
+
+    public Badge(String title, String contentType, String url) {
+        this.mTitle = title;
+        this.mContentType = contentType;
+        this.mUrl = url;
+    }
+
     public String getTitle() {
         return mTitle;
     }
