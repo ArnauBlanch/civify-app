@@ -5,7 +5,9 @@ import com.civify.model.MessageResponse;
 import com.civify.model.issue.Issue;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -17,6 +19,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface IssueService {
+
     @POST("/users/{user_auth_token}/issues")
     Call<IssueReward> createIssue(@Header("Authorization") String authToken, @Body Issue issue,
             @Path("user_auth_token") String userAuthToken);
@@ -25,11 +28,13 @@ public interface IssueService {
     Call<List<Issue>> getIssues(@Header("Authorization") String authToken);
 
     @GET("/issues")
-    Call<List<Issue>> getIssues(@Header("Authorization") String authToken, @Query("resolved") String isResolved);
+    Call<List<Issue>> getIssues(@Header("Authorization") String authToken,
+            @Query("resolved") String isResolved, @Query("categories[]") ArrayList<String>
+            categories, @Query("risk") String isRisk);
 
     @GET("/issues/{issue_auth_token}")
-    Call<Issue> getIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")
-            String issueAuthToken);
+    Call<Issue> getIssue(@Header("Authorization") String authToken,
+            @Path("issue_auth_token") String issueAuthToken);
 
     @POST("/issues/{issue_auth_token}/resolve")
     Call<MessageResponse> issueResolution(@Header("Authorization") String authToken,
@@ -45,10 +50,9 @@ public interface IssueService {
 
     @PATCH("/issues/{issue_auth_token}")
     Call<Issue> editIssue(@Header("Authorization") String authToken, @Body JsonObject editedIssue,
-            @Path
-            ("issue_auth_token") String issueAuthToken);
+            @Path("issue_auth_token") String issueAuthToken);
 
     @DELETE("/issues/{issue_auth_token}")
-    Call<Issue> deleteIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")
-            String issueAuthToken);
+    Call<Issue> deleteIssue(@Header("Authorization") String authToken,
+            @Path("issue_auth_token") String issueAuthToken);
 }

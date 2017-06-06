@@ -17,6 +17,7 @@ import com.civify.utils.ServiceGenerator;
 import com.google.gson.JsonObject;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,9 +34,12 @@ public class IssueAdapter {
     public static final String USER = "user";
     public static final String RESOLUTION_ADDED = "Resolution added";
     public static final String RESOLUTION_DELETED = "Resolution deleted";
-    public static final int RESOLVED = 0;
-    public static final int UNRESOLVED = 1;
+    public static final int UNRESOLVED = 0;
+    public static final int RESOLVED = 1;
     public static final int ALL = 2;
+    public static final int RISK_YES = 3;
+    public static final int RISK_NO = 4;
+    public static final int RISK_ALL = 5;
     static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
     private IssueService mIssueService;
     private String mAuthToken;
@@ -93,7 +97,7 @@ public class IssueAdapter {
     }
 
     public void getIssues(final ListIssuesSimpleCallback callback) {
-        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken);
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, "false", null, null);
         call.enqueue(new Callback<List<Issue>>() {
 
             @Override
@@ -112,12 +116,20 @@ public class IssueAdapter {
         });
     }
 
-    public void getIssues(final ListIssuesSimpleCallback callback, int resolved) {
+    public void getIssues(final ListIssuesSimpleCallback callback, int resolved,
+            ArrayList<String> categories, int isRisk) {
         String resolvedParam;
         if (resolved == RESOLVED) resolvedParam = "true";
         else if (resolved == UNRESOLVED) resolvedParam = "false";
         else resolvedParam = null;
-        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, resolvedParam);
+
+        String riskParam;
+        if (isRisk == RISK_YES) riskParam = "true";
+        else if (isRisk == RISK_NO) riskParam = "false";
+        else riskParam = null;
+
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, resolvedParam, categories,
+                riskParam);
         call.enqueue(new Callback<List<Issue>>() {
 
             @Override
