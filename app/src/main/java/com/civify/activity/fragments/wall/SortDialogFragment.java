@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -19,15 +20,22 @@ public class SortDialogFragment extends DialogFragment {
 
     private static final String DIALOG_TAG = "coins_dialog";
     private static final String SORT = "sort";
+    private static final int DIALOG_FRAGMENT = 9;
     private int mSortSelected;
+    private Fragment mTargetFragment;
 
-    public static void show(FragmentActivity activity, int sortingSelected) {
-        SortDialogFragment fragment = new SortDialogFragment();
+
+    public static SortDialogFragment newInstance(int sortingSelected, Fragment fragment) {
+        SortDialogFragment sortDialogFragment = new SortDialogFragment();
         Bundle args = new Bundle();
-        Log.d("lala", Integer.toString(sortingSelected));
         args.putInt(SORT, sortingSelected);
-        fragment.setArguments(args);
-        fragment.show(activity.getSupportFragmentManager(), DIALOG_TAG);
+        sortDialogFragment.setArguments(args);
+        sortDialogFragment.setTargetFragment(fragment, DIALOG_FRAGMENT);
+        return sortDialogFragment;
+    }
+
+    public void show(FragmentActivity activity) {
+        show(activity.getSupportFragmentManager(), DIALOG_TAG);
     }
 
     @NonNull
@@ -49,10 +57,11 @@ public class SortDialogFragment extends DialogFragment {
     }
 
     private void setupView(View view) {
+        mTargetFragment = getTargetFragment();
         view.findViewById(R.id.radio_ascending).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                WallFragment parent = (WallFragment) getParentFragment();
+                WallFragment parent = (WallFragment) mTargetFragment;
                 parent.dialogSelectedSort(WallFragment.ASCENDING);
                 dismiss();
             }
@@ -60,7 +69,7 @@ public class SortDialogFragment extends DialogFragment {
         view.findViewById(R.id.radio_descending).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                WallFragment parent = (WallFragment) getParentFragment();
+                WallFragment parent = (WallFragment) mTargetFragment;
                 parent.dialogSelectedSort(WallFragment.DESCENDING);
                 dismiss();
             }
@@ -68,7 +77,7 @@ public class SortDialogFragment extends DialogFragment {
         view.findViewById(R.id.radio_proximity).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                WallFragment parent = (WallFragment) getParentFragment();
+                WallFragment parent = (WallFragment) mTargetFragment;
                 parent.dialogSelectedSort(WallFragment.PROXIMITY);
                 dismiss();
             }
@@ -76,7 +85,7 @@ public class SortDialogFragment extends DialogFragment {
         view.findViewById(R.id.radio_confirm).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                WallFragment parent = (WallFragment) getParentFragment();
+                WallFragment parent = (WallFragment) mTargetFragment;
                 parent.dialogSelectedSort(WallFragment.NUM_CONFIRM);
                 dismiss();
             }
