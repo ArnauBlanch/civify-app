@@ -220,4 +220,9 @@
   <string name="duration">Duration</string>
   <string name="day">day</string>
   <string name="first_letter_hour">h</string>
+  <string name="explanation_forgotten">We will send you a recovery link so you can set a
+    new password</string>
+  <string name="send_button">Submit</string>
+  <string name="email_not_exists">This email doesn\'t exist</string>
+  <string name="email_exists_correct">Correct email, please submit</string>
 </resources>
