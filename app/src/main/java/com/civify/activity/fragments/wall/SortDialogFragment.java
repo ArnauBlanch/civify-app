@@ -62,7 +62,7 @@ public class SortDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 WallFragment parent = (WallFragment) mTargetFragment;
-                parent.dialogSelectedSort(WallFragment.ASCENDING);
+                parent.applySelectedSorting(WallFragment.ASCENDING);
                 dismiss();
             }
         });
@@ -70,7 +70,7 @@ public class SortDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 WallFragment parent = (WallFragment) mTargetFragment;
-                parent.dialogSelectedSort(WallFragment.DESCENDING);
+                parent.applySelectedSorting(WallFragment.DESCENDING);
                 dismiss();
             }
         });
@@ -78,7 +78,7 @@ public class SortDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 WallFragment parent = (WallFragment) mTargetFragment;
-                parent.dialogSelectedSort(WallFragment.PROXIMITY);
+                parent.applySelectedSorting(WallFragment.PROXIMITY);
                 dismiss();
             }
         });
@@ -86,7 +86,7 @@ public class SortDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 WallFragment parent = (WallFragment) mTargetFragment;
-                parent.dialogSelectedSort(WallFragment.NUM_CONFIRM);
+                parent.applySelectedSorting(WallFragment.NUM_CONFIRM);
                 dismiss();
             }
         });

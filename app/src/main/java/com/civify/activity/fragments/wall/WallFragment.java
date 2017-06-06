@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
@@ -184,6 +183,8 @@ public class WallFragment extends BasicFragment {
         mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
             @Override
             public void onSuccess(List<Issue> issues) {
+                mIssues = issues;
+                applySelectedSorting(mSortSelected);
                 mIssuesViewFragment.setIssuesList(issues);
                 mProgressBar.setVisibility(View.GONE);
             }
@@ -220,7 +221,7 @@ public class WallFragment extends BasicFragment {
         }
     }
 
-    public void dialogSelectedSort(int selectedSort) {
+    public void applySelectedSorting(int selectedSort) {
         switch (selectedSort) {
             case ASCENDING:
                 sortByAscending();
