@@ -49,13 +49,14 @@ public class ProfileFragment extends BasicFragment {
         tabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
 
         IssuesProfileFragment issuesFragment = new IssuesProfileFragment();
+        BadgeProfileFragment badgeFragment = new BadgeProfileFragment();
 
         tabHost.addTab(tabHost.newTabSpec(getString(R.string.tab_spec_issues))
                                 .setIndicator(getString(R.string.tab_label_issues), null),
                             issuesFragment.getClass(), null);
         tabHost.addTab(tabHost.newTabSpec(getString(R.string.tab_spec_badges))
                         .setIndicator(getString(R.string.tab_label_badges), null),
-                            TabHostFragment.class, null);
+                            badgeFragment.getClass(), null);
 
         return view;
     }

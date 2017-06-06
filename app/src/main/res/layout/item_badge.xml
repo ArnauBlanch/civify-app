@@ -1,0 +1,102 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_achievement_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground"
+    tools:ignore="MissingPrefix"
+    >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="horizontal"
+      >
+    <!-- IMAGE -->
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="25"
+        >
+      <com.mikhaellopez.circularimageview.CircularImageView
+          android:id="@+id/badge_item_image"
+          android:layout_width="75dp"
+          android:layout_height="75dp"
+          android:layout_gravity="center"
+          android:src="@drawable/man"
+          />
+  </LinearLayout>
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="75"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        >
+      <!-- TITLE -->
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="6"
+          >
+        <TextView
+            android:id="@+id/badge_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fontPath="fonts/Nunito-Bold.ttf"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="My Badge"
+            />
+      </LinearLayout>
+      <!-- DESCRIPTION -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="5dp"
+          android:paddingBottom="5dp"
+          >
+        <TextView
+            android:id="@+id/badge_item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="My description, good example."
+            />
+      </LinearLayout>
+      <!-- OBTAINED -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:paddingTop="5dp"
+          android:paddingBottom="5dp"
+          >
+        <TextView
+            android:id="@+id/achievement_item_progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
+            android:text="Obtained at 24/04/17"
+            />
+      </LinearLayout>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>
