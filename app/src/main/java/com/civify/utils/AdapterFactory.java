@@ -12,6 +12,8 @@ import com.civify.adapter.achievement.AchievementAdapter;
 import com.civify.adapter.achievement.AchievementAdapterImpl;
 import com.civify.adapter.award.AwardAdapter;
 import com.civify.adapter.award.AwardAdapterImpl;
+import com.civify.adapter.badge.BadgeAdapter;
+import com.civify.adapter.badge.BadgeAdapterImpl;
 import com.civify.adapter.event.EventAdapter;
 import com.civify.adapter.event.EventAdapterImpl;
 import com.civify.adapter.issue.IssueAdapter;
@@ -25,6 +27,7 @@ public class AdapterFactory {
     private AchievementAdapter mAchievementAdapter;
     private AchievementsEventsAdapter mAchievementsEventsAdapter;
     private EventAdapter mEventAdapter;
+    private BadgeAdapter mBadgeAdapter;
 
     public static AdapterFactory getInstance() {
         if (sInstance == null) {
@@ -88,6 +91,13 @@ public class AdapterFactory {
             mEventAdapter = new EventAdapterImpl(getSharedPreferences(context));
         }
         return mEventAdapter;
+    }
+
+    public BadgeAdapter getBadgeAdapter(@NonNull Context context) {
+        if (mBadgeAdapter == null) {
+            mBadgeAdapter = new BadgeAdapterImpl(getSharedPreferences(context));
+        }
+        return mBadgeAdapter;
     }
 
     private SharedPreferences getSharedPreferences(Context context) {
