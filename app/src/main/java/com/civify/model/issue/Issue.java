@@ -10,6 +10,7 @@ import android.util.Base64;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.issue.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
+import com.civify.model.Picture;
 import com.civify.model.map.CivifyMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;

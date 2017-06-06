@@ -122,7 +122,7 @@ public class WallFragmentTest {
         }
 
         ViewInteraction appCompatImageButton =
-                onView(allOf(withContentDescription("Open navigation drawer"), withParent(
+                onView(allOf(withContentDescription("Open navigation profile"), withParent(
                         allOf(withId(R.id.toolbar), withParent(withId(R.id.bar_layout)))),
                         isDisplayed()));
         appCompatImageButton.perform(click());

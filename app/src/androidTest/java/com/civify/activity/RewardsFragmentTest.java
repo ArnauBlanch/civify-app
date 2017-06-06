@@ -27,7 +27,7 @@ import com.civify.adapter.LoginFinishedCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
 import com.civify.model.award.Award;
-import com.civify.model.issue.Picture;
+import com.civify.model.Picture;
 import com.civify.service.issue.IssueService;
 import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
@@ -127,7 +127,7 @@ public class RewardsFragmentTest {
     @Test
     public void testAvailableRewards() throws ParseException {
         ViewInteraction appCompatImageButton =
-                onView(allOf(withContentDescription("Open navigation drawer"), withParent(
+                onView(allOf(withContentDescription("Open navigation profile"), withParent(
                         allOf(withId(R.id.toolbar), withParent(withId(R.id.bar_layout)))),
                         isDisplayed()));
         appCompatImageButton.perform(click());
