@@ -119,7 +119,8 @@ public class DrawerActivity extends BaseActivity
                     getSupportFragmentManager().beginTransaction();
             if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
                     && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID
-                    && mCurrentFragment != DETAILS_ACHIEVEMENTS_ID) {
+                    && mCurrentFragment != DETAILS_ACHIEVEMENTS_ID
+                    && mCurrentFragment != DETAILS_EVENTS_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
                 while (fragment.getFragmentId() != NAVIGATE_ID) {
