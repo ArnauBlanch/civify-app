@@ -1,5 +1,6 @@
 package com.civify.activity.fragments.wall;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -25,7 +26,9 @@ import com.civify.utils.AdapterFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WallFragment extends BasicFragment {
 
@@ -45,7 +48,8 @@ public class WallFragment extends BasicFragment {
     private List<Issue> mIssues;
     private ArrayList<String> mFilteredCategories;
     private int mStatusSelected;
-
+    private View mView;
+    private int mRiskSelected;
 
     public WallFragment() {
     }
@@ -65,6 +69,7 @@ public class WallFragment extends BasicFragment {
         setHasOptionsMenu(true);
         mSortSelected = ASCENDING;
         mStatusSelected = IssueAdapter.UNRESOLVED;
+        mRiskSelected = IssueAdapter.RISK_ALL;
         initCategories();
         mLoaded = false;
     }
@@ -80,6 +85,7 @@ public class WallFragment extends BasicFragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        mView = view;
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         mIssueAdapter = adapterFactory.getIssueAdapter(getContext());
         mIssuesViewFragment = new IssuesViewFragment();
@@ -113,7 +119,7 @@ public class WallFragment extends BasicFragment {
                 }
                 mLoaded = false;
             }
-        }, IssueAdapter.UNRESOLVED);
+        }, IssueAdapter.UNRESOLVED, null, IssueAdapter.RISK_ALL);
     }
 
     protected List<Issue> filterIssues(List<Issue> issues) {
@@ -137,7 +143,8 @@ public class WallFragment extends BasicFragment {
         if (mLoaded) {
             switch (item.getItemId()) {
                 case R.id.action_filter_issues:
-                    FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance(mStatusSelected, mFilteredCategories);
+                    FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance
+                            (mStatusSelected, mFilteredCategories, mRiskSelected);
                     filterDialogFragment.setTargetFragment(this, REQUEST_DIALOG);
                     filterDialogFragment.show(getActivity());
                     return false;
@@ -156,10 +163,36 @@ public class WallFragment extends BasicFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_DIALOG) {
-            mStatusSelected = data.getIntExtra(FilterDialogFragment.STATUS, 0);
-            mFilteredCategories = data.getStringArrayListExtra(FilterDialogFragment.CATEGORIES);
-            // TODO: refresh issues with new filters
+            if (resultCode == Activity.RESULT_OK) {
+                int oldStatusSelected = mStatusSelected;
+                int oldRiskSelected = mRiskSelected;
+                ArrayList<String> oldFilteredCategories = new ArrayList<>(mFilteredCategories);
+                mStatusSelected = data.getIntExtra(FilterDialogFragment.STATUS, 0);
+                mFilteredCategories = data.getStringArrayListExtra(FilterDialogFragment.CATEGORIES);
+                mRiskSelected = data.getIntExtra(FilterDialogFragment.RISK, 3);
+                Set<String> oldSet = new HashSet<>(oldFilteredCategories);
+                Set<String> newSet = new HashSet<>(mFilteredCategories);
+                if (oldStatusSelected != mStatusSelected || !oldSet.equals(newSet) ||
+                        oldRiskSelected != mRiskSelected)
+                    refreshIssues();
+            }
         }
+    }
+
+    private void refreshIssues() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
+            @Override
+            public void onSuccess(List<Issue> issues) {
+                mIssuesViewFragment.setIssuesList(issues);
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure() {
+                // TODO: error
+            }
+        }, mStatusSelected, mFilteredCategories, mRiskSelected);
     }
 
     @Override
@@ -181,9 +214,9 @@ public class WallFragment extends BasicFragment {
 
                 @Override
                 public void onFailure() {
-
+                    // TODO: do this
                 }
-            }, IssueAdapter.UNRESOLVED);
+            }, mStatusSelected, mFilteredCategories, mRiskSelected);
         }
     }
 
@@ -192,22 +225,18 @@ public class WallFragment extends BasicFragment {
             case ASCENDING:
                 sortByAscending();
                 mSortSelected = ASCENDING;
-                Toast.makeText(getContext(), "Ascending", Toast.LENGTH_LONG).show();
                 break;
             case DESCENDING:
                 sortByDescending();
                 mSortSelected = DESCENDING;
-                Toast.makeText(getContext(), "Descending", Toast.LENGTH_LONG).show();
                 break;
             case PROXIMITY:
                 sortByProximity();
                 mSortSelected = PROXIMITY;
-                Toast.makeText(getContext(), "proximity", Toast.LENGTH_LONG).show();
                 break;
             case NUM_CONFIRM:
                 sortByConfirms();
                 mSortSelected = NUM_CONFIRM;
-                Toast.makeText(getContext(), "num_confirm", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

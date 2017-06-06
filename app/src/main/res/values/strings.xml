@@ -224,4 +224,6 @@
   <string name="all">All</string>
   <string name="status">Status</string>
   <string name="filter_dialog_title">Filter issues</string>
+  <string name="ok">OK</string>
+  <string name="is_risk">Risk?</string>
 </resources>

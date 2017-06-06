@@ -10,6 +10,7 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="15dp"
       android:text="@string/status"/>
   <RadioGroup
       android:layout_width="wrap_content"
@@ -31,52 +32,97 @@
           android:layout_height="match_parent"
           android:text="@string/all" />
   </RadioGroup>
-    <TextView
-        android:layout_width="wrap_content"
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="15dp"
+      android:layout_marginTop="15dp"
+      android:text="@string/pose_a_risk"/>
+  <RadioGroup
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+    <RadioButton
+        android:id="@+id/radio_risk_yes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/yes"  />
+    <RadioButton
+        android:id="@+id/radio_risk_no"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no" />
+    <RadioButton
+        android:id="@+id/radio_risk_all"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/all" />
+  </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/category"
-        android:layout_marginTop="@dimen/album_title_padding"/>
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/category"
+          android:layout_marginTop="15dp"
+          android:layout_marginBottom="15dp"/>
+      <ToggleButton
+          android:id="@+id/toggle_select_all_categories"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_gravity="center_vertical"
+          android:layout_marginStart="10dp"
+          android:layout_marginLeft="10dp"
+          android:textOff="Select all"
+          android:textOn="Deselect all"
+          />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <CheckBox
-            android:id="@+id/radio_road_signs"
+            android:id="@+id/checkbox_road_signs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/road_signs"  />
         <CheckBox
-            android:id="@+id/radio_illumination"
+            android:id="@+id/checkbox_illumination"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/illumination" />
         <CheckBox
-            android:id="@+id/radio_grove"
+            android:id="@+id/checkbox_grove"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/street_furniture" />
         <CheckBox
-            android:id="@+id/radio_street_furniture"
+            android:id="@+id/checkbox_street_furniture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/street_furniture" />
         <CheckBox
-            android:id="@+id/radio_trash_and_cleaning"
+            android:id="@+id/checkbox_trash_and_cleaning"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/trash_and_cleaning" />
         <CheckBox
-            android:id="@+id/radio_public_transport"
+            android:id="@+id/checkbox_public_transport"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/public_transport" />
         <CheckBox
-            android:id="@+id/radio_suggestion"
+            android:id="@+id/checkbox_suggestion"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/suggestion" />
         <CheckBox
-            android:id="@+id/radio_other"
+            android:id="@+id/checkbox_other"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/other" />

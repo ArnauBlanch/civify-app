@@ -97,7 +97,6 @@ public class SortDialogFragment extends DialogFragment {
         RadioButton radioButton;
         switch (mSortSelected) {
             case WallFragment.ASCENDING:
-                Log.d(getTag(), "Im here ascending");
                 radioButton = (RadioButton) view.findViewById(R.id.radio_ascending);
                 break;
             case WallFragment.DESCENDING:
