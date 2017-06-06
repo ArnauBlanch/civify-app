@@ -120,6 +120,7 @@
   <string name="public_transport">Public transport</string>
   <string name="suggestion">Suggestion</string>
   <string name="other">Other</string>
+
   <string name="select_category">Select category</string>
   <string name="must_choose_category">You must choose a category</string>
   <string name="need_to_allow_location_permission">You need to allow location permission</string>
@@ -218,4 +219,8 @@
   <string name="proximity">Proximity</string>
   <string name="confirm_votes">Confirm votes</string>
   <string name="sort_dialog_title">Sort issues</string>
+    <string name="unresolved">Unresolved</string>
+  <string name="resolved">Resolved</string>
+  <string name="all">All</string>
+  <string name="status">Status</string>
 </resources>

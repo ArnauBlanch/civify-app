@@ -104,7 +104,7 @@ public class WallFragment extends BasicFragment {
                 }
                 mLoaded = false;
             }
-        });
+        }, IssueAdapter.UNRESOLVED);
     }
 
     protected List<Issue> filterIssues(List<Issue> issues) {
@@ -116,10 +116,12 @@ public class WallFragment extends BasicFragment {
         if (mLoaded) {
             switch (item.getItemId()) {
                 case R.id.action_filter_issues:
-                    SortDialogFragment sortDialogFragment = SortDialogFragment.newInstance(mSortSelected, this);
-                    sortDialogFragment.show(getActivity());
+                    //FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance(mFilterSelected, this);
+                    //filterDialogFragment.show(getActivity());
                     return false;
                 case R.id.action_sort_issues:
+                    SortDialogFragment sortDialogFragment = SortDialogFragment.newInstance(mSortSelected, this);
+                    sortDialogFragment.show(getActivity());
                     return false;
                 default:
                     break;
@@ -149,7 +151,7 @@ public class WallFragment extends BasicFragment {
                 public void onFailure() {
 
                 }
-            });
+            }, IssueAdapter.UNRESOLVED);
         }
     }
 

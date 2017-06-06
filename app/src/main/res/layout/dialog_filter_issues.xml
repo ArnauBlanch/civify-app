@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="12dp"
+    android:gravity="center"
+    >
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/status"/>
+  <RadioGroup
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+      <RadioButton
+          android:id="@+id/radio_ascending"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/unresolved"  />
+      <RadioButton
+          android:id="@+id/radio_descending"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/resolved" />
+      <RadioButton
+          android:id="@+id/radio_proximity"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/all" />
+  </RadioGroup>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/category"
+        android:layout_marginTop="@dimen/album_title_padding"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <CheckBox
+            android:id="@+id/radio_road_signs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/road_signs"  />
+        <CheckBox
+            android:id="@+id/radio_illumination"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/illumination" />
+        <CheckBox
+            android:id="@+id/radio_grove"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/street_furniture" />
+        <CheckBox
+            android:id="@+id/radio_street_furniture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/street_furniture" />
+        <CheckBox
+            android:id="@+id/radio_trash_and_cleaning"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/trash_and_cleaning" />
+        <CheckBox
+            android:id="@+id/radio_public_transport"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/public_transport" />
+        <CheckBox
+            android:id="@+id/radio_suggestion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/suggestion" />
+        <CheckBox
+            android:id="@+id/radio_other"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/other" />
+    </LinearLayout>
+</LinearLayout>

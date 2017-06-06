@@ -14,6 +14,7 @@ import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface IssueService {
     @POST("/users/{user_auth_token}/issues")
@@ -22,6 +23,9 @@ public interface IssueService {
 
     @GET("/issues")
     Call<List<Issue>> getIssues(@Header("Authorization") String authToken);
+
+    @GET("/issues")
+    Call<List<Issue>> getIssues(@Header("Authorization") String authToken, @Query("resolved") String isResolved);
 
     @GET("/issues/{issue_auth_token}")
     Call<Issue> getIssue(@Header("Authorization") String authToken, @Path("issue_auth_token")
