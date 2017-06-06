@@ -33,6 +33,9 @@ public class IssueAdapter {
     public static final String USER = "user";
     public static final String RESOLUTION_ADDED = "Resolution added";
     public static final String RESOLUTION_DELETED = "Resolution deleted";
+    public static final int RESOLVED = 0;
+    public static final int UNRESOLVED = 1;
+    public static final int ALL = 2;
     static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
     private IssueService mIssueService;
     private String mAuthToken;
@@ -91,6 +94,30 @@ public class IssueAdapter {
 
     public void getIssues(final ListIssuesSimpleCallback callback) {
         Call<List<Issue>> call = mIssueService.getIssues(mAuthToken);
+        call.enqueue(new Callback<List<Issue>>() {
+
+            @Override
+            public void onResponse(Call<List<Issue>> call, Response<List<Issue>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Issue>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getIssues(final ListIssuesSimpleCallback callback, int resolved) {
+        String resolvedParam;
+        if (resolved == RESOLVED) resolvedParam = "true";
+        else if (resolved == UNRESOLVED) resolvedParam = "false";
+        else resolvedParam = null;
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, resolvedParam);
         call.enqueue(new Callback<List<Issue>>() {
 
             @Override
