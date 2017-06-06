@@ -5,7 +5,6 @@ import static org.mockito.Mockito.mock;
 
 import android.content.SharedPreferences;
 
-import com.civify.adapter.UserAdapter;
 import com.civify.model.Picture;
 import com.civify.model.Reward;
 import com.civify.model.RewardContainer;
@@ -63,7 +62,7 @@ public class AchievementAdapterImplTest {
     private AchievementAdapter mAchievementAdapter;
     private Gson mGson;
     private Achievement mAchievement;
-    private Picture mPicture;
+    private Picture mBadge;
 
     @Before
     public void setUp() throws ParseException, IOException {
@@ -106,7 +105,7 @@ public class AchievementAdapterImplTest {
         assertEquals("GET", request.getMethod());
         assertEquals("/achievements", request.getPath());
 
-        ArgumentCaptor<List<Achievement>> argument = ArgumentCaptor.forClass((Class) List.class);
+        ArgumentCaptor<List<Achievement>> argument = forClass((Class) List.class);
         verify(mockCallback, timeout(1000)).onSuccess(argument.capture());
 
         for (Achievement responseAchievement : argument.getValue()) {
@@ -159,7 +158,7 @@ public class AchievementAdapterImplTest {
         assertEquals("GET", request.getMethod());
         assertEquals("/achievements/" + mAchievement.getToken(), request.getPath());
 
-        ArgumentCaptor<Achievement> argument = ArgumentCaptor.forClass(Achievement.class);
+        ArgumentCaptor<Achievement> argument = forClass(Achievement.class);
         verify(mockCallback, timeout(1000)).onSucces(argument.capture());
 
         Achievement responseAchievement = argument.getValue();
@@ -229,9 +228,9 @@ public class AchievementAdapterImplTest {
     private void setUpAchievement() throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat(ServiceGenerator.RAILS_DATE_FORMAT,
                 Locale.getDefault());
-        mPicture = new Picture();
-        mPicture.setContentType("testContent");
+        mBadge = new Picture();
+        mBadge.setContentType("testContent");
         mAchievement = new Achievement(TITLE, DESCRIPTION, NUMBER, KIND, COINS, XP,
-                dateFormat.parse(DATE), TOKEN, true, PROGRESS, false, false, mPicture);
+                dateFormat.parse(DATE), TOKEN, true, PROGRESS, false, false, mBadge);
     }
 }

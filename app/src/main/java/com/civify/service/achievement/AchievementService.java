@@ -16,10 +16,10 @@ public interface AchievementService {
     Call<List<Achievement>> getAchievements(@Header("Authorization") String authToken);
 
     @GET("/achievements/{achievement_token}")
-    Call<Achievement> getAchievement(@Header("Authorization") String authToken, @Path
-            ("achievement_token") String achievementAuthToken);
+    Call<Achievement> getAchievement(@Header("Authorization") String authToken,
+            @Path("achievement_token") String achievementAuthToken);
 
     @POST("/achievements/{achievement_token}/claim")
-    Call<RewardContainer> claimAchievement(@Header("Authorization") String authToken, @Path
-            ("achievement_token") String achievementAuthToken);
+    Call<RewardContainer> claimAchievement(@Header("Authorization") String authToken,
+            @Path("achievement_token") String achievementAuthToken);
 }
