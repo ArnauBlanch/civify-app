@@ -16,17 +16,17 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal">
       <RadioButton
-          android:id="@+id/radio_ascending"
+          android:id="@+id/radio_unresolved"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:text="@string/unresolved"  />
       <RadioButton
-          android:id="@+id/radio_descending"
+          android:id="@+id/radio_resolved"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:text="@string/resolved" />
       <RadioButton
-          android:id="@+id/radio_proximity"
+          android:id="@+id/radio_all"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:text="@string/all" />
