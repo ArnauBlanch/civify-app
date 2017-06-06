@@ -1,5 +1,6 @@
 package com.civify.activity.fragments.wall;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +22,7 @@ import com.civify.model.map.MapNotLoadedException;
 import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,6 +33,8 @@ public class WallFragment extends BasicFragment {
     public static final int DESCENDING = 1;
     public static final int PROXIMITY = 2;
     public static final int NUM_CONFIRM = 3;
+    public static final int REQUEST_DIALOG = 9;
+    public static final String STATUS = "status";
 
     private static final String TAG = "WallFragment";
     private IssueAdapter mIssueAdapter;
@@ -39,6 +43,9 @@ public class WallFragment extends BasicFragment {
     private int mSortSelected;
     private boolean mLoaded;
     private List<Issue> mIssues;
+    private ArrayList<String> mFilteredCategories;
+    private int mStatusSelected;
+
 
     public WallFragment() {
     }
@@ -57,6 +64,8 @@ public class WallFragment extends BasicFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mSortSelected = ASCENDING;
+        mStatusSelected = IssueAdapter.UNRESOLVED;
+        initCategories();
         mLoaded = false;
     }
 
@@ -111,13 +120,26 @@ public class WallFragment extends BasicFragment {
         return issues;
     }
 
+    public void initCategories() {
+        mFilteredCategories = new ArrayList<>();
+        mFilteredCategories.add("road_signs");
+        mFilteredCategories.add("illumination");
+        mFilteredCategories.add("grove");
+        mFilteredCategories.add("street_furniture");
+        mFilteredCategories.add("trash_and_cleaning");
+        mFilteredCategories.add("public_transport");
+        mFilteredCategories.add("suggestion");
+        mFilteredCategories.add("other");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mLoaded) {
             switch (item.getItemId()) {
                 case R.id.action_filter_issues:
-                    //FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance(mFilterSelected, this);
-                    //filterDialogFragment.show(getActivity());
+                    FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance(mStatusSelected, mFilteredCategories);
+                    filterDialogFragment.setTargetFragment(this, REQUEST_DIALOG);
+                    filterDialogFragment.show(getActivity());
                     return false;
                 case R.id.action_sort_issues:
                     SortDialogFragment sortDialogFragment = SortDialogFragment.newInstance(mSortSelected, this);
@@ -128,6 +150,16 @@ public class WallFragment extends BasicFragment {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_DIALOG) {
+            mStatusSelected = data.getIntExtra(FilterDialogFragment.STATUS, 0);
+            mFilteredCategories = data.getStringArrayListExtra(FilterDialogFragment.CATEGORIES);
+            // TODO: refresh issues with new filters
+        }
     }
 
     @Override

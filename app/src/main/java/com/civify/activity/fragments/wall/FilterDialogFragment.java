@@ -12,25 +12,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 
 import com.civify.R;
+import com.civify.adapter.issue.IssueAdapter;
+
+import java.util.ArrayList;
 
 public class FilterDialogFragment extends DialogFragment {
 
     private static final String DIALOG_TAG = "coins_dialog";
-    private static final String SORT = "sort";
+    public static final String STATUS = "filter";
     private static final int DIALOG_FRAGMENT = 9;
-    private int mSortSelected;
-    private Fragment mTargetFragment;
+    public static final String CATEGORIES = "categories";
+    private int mFilterSelected;
+    private ArrayList<String> mCategoriesSelected;
 
 
-    public static FilterDialogFragment newInstance(int sortingSelected, Fragment fragment) {
+    public static FilterDialogFragment newInstance(int statusSelected, ArrayList<String> categories) {
         FilterDialogFragment sortDialogFragment = new FilterDialogFragment();
         Bundle args = new Bundle();
-        args.putInt(SORT, sortingSelected);
+        args.putInt(STATUS, statusSelected);
+        args.putStringArrayList(CATEGORIES, categories);
         sortDialogFragment.setArguments(args);
-        sortDialogFragment.setTargetFragment(fragment, DIALOG_FRAGMENT);
         return sortDialogFragment;
     }
 
@@ -41,12 +46,12 @@ public class FilterDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mSortSelected = getArguments().getInt(SORT);
-        Log.d(getTag(), Integer.toString(mSortSelected));
+        mFilterSelected = getArguments().getInt(STATUS);
+        mCategoriesSelected = getArguments().getStringArrayList(CATEGORIES);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.sort_dialog_title).setPositiveButton(android.R.string.ok, null);
+        builder.setTitle(R.string.filter_dialog_title).setPositiveButton(android.R.string.ok, null);
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialog_filter_issues, null);
@@ -57,38 +62,31 @@ public class FilterDialogFragment extends DialogFragment {
     }
 
     private void setupView(View view) {
-        mTargetFragment = getTargetFragment();
-        view.findViewById(R.id.radio_ascending).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WallFragment parent = (WallFragment) mTargetFragment;
-                parent.dialogSelectedSort(WallFragment.ASCENDING);
-                dismiss();
-            }
-        });
-        view.findViewById(R.id.radio_descending).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WallFragment parent = (WallFragment) mTargetFragment;
-                parent.dialogSelectedSort(WallFragment.DESCENDING);
-                dismiss();
-            }
-        });
-        view.findViewById(R.id.radio_proximity).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WallFragment parent = (WallFragment) mTargetFragment;
-                parent.dialogSelectedSort(WallFragment.PROXIMITY);
-                dismiss();
-            }
-        });
-        //TODO
+        switch (mFilterSelected) {
+            case IssueAdapter.UNRESOLVED:
+                RadioButton radioUnresolved = (RadioButton) view.findViewById(R.id.radio_unresolved);
+                radioUnresolved.setChecked(true);
+                break;
+            case IssueAdapter.RESOLVED:
+                RadioButton radioResolved = (RadioButton) view.findViewById(R.id.radio_resolved);
+                radioResolved.setChecked(true);
+                break;
+            case IssueAdapter.ALL:
+                RadioButton radioAll = (RadioButton) view.findViewById(R.id.radio_all);
+                radioAll.setChecked(true);
+                break;
+        }
+        for (String category : mCategoriesSelected) {
+            int resId = getResources().getIdentifier(category, "id", getActivity().getPackageName());
+            CheckBox checkBox = (CheckBox) view.findViewById(resId);
+            checkBox.setChecked(true);
+        }
     }
 
     private void setRadioButtonSelected(View view) {
-        Log.d(getTag(), Integer.toString(mSortSelected));
+        Log.d(getTag(), Integer.toString(mFilterSelected));
         RadioButton radioButton;
-        switch (mSortSelected) {
+        switch (mFilterSelected) {
             case WallFragment.ASCENDING:
                 Log.d(getTag(), "Im here ascending");
                 radioButton = (RadioButton) view.findViewById(R.id.radio_ascending);
