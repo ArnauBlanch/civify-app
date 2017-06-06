@@ -21,6 +21,8 @@ import com.civify.model.map.MapNotLoadedException;
 import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class WallFragment extends BasicFragment {
@@ -36,6 +38,7 @@ public class WallFragment extends BasicFragment {
     private ProgressBar mProgressBar;
     private int mSortSelected;
     private boolean mLoaded;
+    private List<Issue> mIssues;
 
     public WallFragment() {
     }
@@ -59,7 +62,7 @@ public class WallFragment extends BasicFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_wall);
@@ -85,6 +88,7 @@ public class WallFragment extends BasicFragment {
                 } catch (MapNotLoadedException ignore) {
                     // Don't refresh map
                 }
+                mIssues = issues;
                 mLoaded = true;
             }
 
@@ -112,7 +116,8 @@ public class WallFragment extends BasicFragment {
         if (mLoaded) {
             switch (item.getItemId()) {
                 case R.id.action_filter_issues:
-                    SortDialogFragment.show(getActivity(), mSortSelected);
+                    SortDialogFragment sortDialogFragment = SortDialogFragment.newInstance(mSortSelected, this);
+                    sortDialogFragment.show(getActivity());
                     return false;
                 case R.id.action_sort_issues:
                     return false;
@@ -136,6 +141,8 @@ public class WallFragment extends BasicFragment {
                     } catch (MapNotLoadedException ignore) {
                         // Don't refresh map
                     }
+                    mLoaded = true;
+                    mIssues = issues;
                 }
 
                 @Override
@@ -149,27 +156,80 @@ public class WallFragment extends BasicFragment {
     public void dialogSelectedSort(int selectedSort) {
         switch (selectedSort) {
             case ASCENDING:
-                //sortByAscending();
+                sortByAscending();
                 mSortSelected = ASCENDING;
                 Toast.makeText(getContext(), "Ascending", Toast.LENGTH_LONG).show();
                 break;
             case DESCENDING:
-                //sortByDescending();
+                sortByDescending();
                 mSortSelected = DESCENDING;
                 Toast.makeText(getContext(), "Descending", Toast.LENGTH_LONG).show();
                 break;
             case PROXIMITY:
-                //sortByProximity();
+                sortByProximity();
                 mSortSelected = PROXIMITY;
                 Toast.makeText(getContext(), "proximity", Toast.LENGTH_LONG).show();
                 break;
             case NUM_CONFIRM:
-                //sortByConfirms();
+                sortByConfirms();
                 mSortSelected = NUM_CONFIRM;
                 Toast.makeText(getContext(), "num_confirm", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;
         }
+    }
+
+    private void sortByAscending() {
+        if (mLoaded && mIssues != null) {
+            Collections.sort(mIssues, new Comparator<Issue>() {
+                @Override
+                public int compare(Issue firstIssue, Issue secondIssue) {
+                    return firstIssue.getCreatedAt().compareTo(secondIssue.getCreatedAt());
+                }
+            });
+        }
+        mIssuesViewFragment.setIssuesList(mIssues);
+    }
+
+    private void sortByDescending() {
+        if (mLoaded && mIssues != null) {
+            Collections.sort(mIssues, new Comparator<Issue>() {
+                @Override
+                public int compare(Issue firstIssue, Issue secondIssue) {
+                    return secondIssue.getCreatedAt().compareTo(firstIssue.getCreatedAt());
+                }
+            });
+        }
+        mIssuesViewFragment.setIssuesList(mIssues);
+    }
+
+    private void sortByProximity() {
+        if (mLoaded && mIssues != null) {
+            Collections.sort(mIssues, new Comparator<Issue>() {
+                @Override
+                public int compare(Issue firstIssue, Issue secondIssue) {
+                    if (firstIssue != null && secondIssue != null) {
+                        int first = Math.round(firstIssue.getDistanceFromCurrentLocation());
+                        int second = Math.round(secondIssue.getDistanceFromCurrentLocation());
+                        return second - first;
+                    }
+                    return 0;
+                }
+            });
+        }
+        mIssuesViewFragment.setIssuesList(mIssues);
+    }
+
+    private void sortByConfirms() {
+        if (mLoaded && mIssues != null) {
+            Collections.sort(mIssues, new Comparator<Issue>() {
+                @Override
+                public int compare(Issue firstIssue, Issue secondIssue) {
+                    return firstIssue.getConfirmVotes() - secondIssue.getConfirmVotes();
+                }
+            });
+        }
+        mIssuesViewFragment.setIssuesList(mIssues);
     }
 }
