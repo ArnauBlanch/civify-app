@@ -16,10 +16,7 @@ import com.bumptech.glide.Glide;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
-import com.civify.adapter.UserAdapter;
-import com.civify.adapter.achievement.AchievementAdapter;
 import com.civify.model.achievement.Achievement;
-import com.civify.utils.AdapterFactory;
 
 public class AchievementDetailsFragment extends BasicFragment {
 
@@ -28,8 +25,6 @@ public class AchievementDetailsFragment extends BasicFragment {
     private static final String TAG_ACHIEVEMENT = "achievement";
     private static final int PERCENT = 100;
 
-    private AchievementAdapter mAchievementAdapter;
-    private UserAdapter mUserAdapter;
     private Achievement mAchievement;
     private View mView;
 
@@ -65,17 +60,15 @@ public class AchievementDetailsFragment extends BasicFragment {
     }
 
     private void init() {
-        Log.v(DEBUG, "init");
+        Log.d(DEBUG, "init");
 
-        Log.v(DEBUG, "Getting arguments from bundle");
+        Log.d(DEBUG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
         mAchievement = (Achievement) bundle.getSerializable(TAG_ACHIEVEMENT);
 
-        mAchievementAdapter = AdapterFactory.getInstance().getAchievementAdapter(getActivity());
-        mUserAdapter = AdapterFactory.getInstance().getUserAdapter(getActivity());
         setAchievement();
 
-        Log.v(DEBUG, "init finished");
+        Log.d(DEBUG, "init finished");
     }
 
     private void setAchievement() {
@@ -91,7 +84,7 @@ public class AchievementDetailsFragment extends BasicFragment {
     }
 
     private void addAchievementBadge() {
-        Log.d(TAG_ACHIEVEMENT, "Adding badge...");
+        Log.d(DEBUG, "Adding badge...");
         ImageView imageAchievement = (ImageView) mView.findViewById(R.id.achievement_details_image);
         Glide.with(this)
                 .load(mAchievement.getBadge().getLargeUrl())
@@ -100,32 +93,32 @@ public class AchievementDetailsFragment extends BasicFragment {
     }
 
     private void addAchievementCoins() {
-        Log.d(TAG_ACHIEVEMENT, "Adding coins...");
+        Log.d(DEBUG, "Adding coins...");
         TextView coins = (TextView) mView.findViewById(R.id.achievement_details_coins);
         coins.setText(String.valueOf(mAchievement.getCoins()));
     }
 
     private void addAchievementXp() {
-        Log.d(TAG_ACHIEVEMENT, "Adding xp...");
+        Log.d(DEBUG, "Adding xp...");
         TextView xp = (TextView) mView.findViewById(R.id.achievement_details_xp);
         xp.setText(mAchievement.getXp() + " xp");
     }
 
     private void addAchievementTitle() {
-        Log.d(TAG_ACHIEVEMENT, "Adding title...");
+        Log.d(DEBUG, "Adding title...");
         TextView title = (TextView) mView.findViewById(R.id.achievement_details_title);
         title.setText(mAchievement.getTitle());
     }
 
     private void addAchievementDescription() {
-        Log.d(TAG_ACHIEVEMENT, "Adding description...");
+        Log.d(DEBUG, "Adding description...");
         TextView description = (TextView) mView.findViewById(R.id.achievement_details_description);
         description.setText(mAchievement.getDescription());
         description.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private void addAchievementProgress() {
-        Log.d(TAG_ACHIEVEMENT, "Adding progress...");
+        Log.d(DEBUG, "Adding progress...");
         TextView progressTotal = (TextView) mView.findViewById(R.id
                 .achievement_details_progressTotal);
         progressTotal.setText(mAchievement.getProgress() + "/" + mAchievement.getNumber());

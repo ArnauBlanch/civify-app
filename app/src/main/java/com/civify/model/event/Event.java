@@ -1,13 +1,25 @@
 package com.civify.model.event;
 
+import android.content.Context;
+
+import com.civify.R;
+import com.civify.activity.DrawerActivity;
+import com.civify.activity.fragments.event.EventDetailsFragment;
 import com.civify.model.Picture;
 import com.civify.model.achievement.Achievement;
+import com.civify.model.map.CivifyMap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Event extends Achievement {
+
+    private static final int MILI_TO_DAYS = 86400000;
+    private static final int MILI_TO_HOURS = 3600000;
+    private static final int DAY_TO_HOURS = 24;
+    private static final char SPACE = ' ';
 
     @Expose
     @SerializedName("start_date")
@@ -85,5 +97,48 @@ public class Event extends Achievement {
 
     public void setPicture(Picture picture) {
         mPicture = picture;
+    }
+
+    public String getDuration(Context context) {
+        Long time = mEndDate.getTime() - (isHappening() ? Calendar.getInstance().getTime().getTime()
+                : mStartDate.getTime());
+        Long days = time / MILI_TO_DAYS;
+        Long hours = (time / MILI_TO_HOURS) - (days * DAY_TO_HOURS);
+        String duration;
+        if (days > 0) {
+            if (hours > 0) {
+                duration = days.toString() + SPACE + context.getResources().getString(R.string
+                        .day) + SPACE + hours.toString() + SPACE + context.getResources()
+                        .getString(R.string.first_letter_hour);
+            } else {
+                duration = days.toString() + SPACE + context.getResources().getString(R.string
+                        .day);
+            }
+        } else {
+            duration = hours.toString()
+                    + SPACE
+                    + context.getResources().getString(R.string.first_letter_hour);
+        }
+        return duration;
+    }
+
+    public boolean isHappening() {
+        boolean happen = false;
+        Long currentTime = Calendar.getInstance().getTime().getTime();
+        if (currentTime > mStartDate.getTime() && currentTime < mEndDate.getTime()) happen = true;
+        return happen;
+    }
+
+    public boolean isPast() {
+        boolean past = false;
+        Long currentTime = Calendar.getInstance().getTime().getTime();
+        if (currentTime > mEndDate.getTime()) past = true;
+        return past;
+    }
+
+    public void showEventDetails() {
+        CivifyMap.getInstance().getContext()
+                .setFragment(EventDetailsFragment.newInstance(this), DrawerActivity
+                        .DETAILS_EVENTS_ID);
     }
 }
