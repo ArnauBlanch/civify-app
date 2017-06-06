@@ -8,10 +8,8 @@ import android.util.Log;
 
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.issue.Issue;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterItem;
 
@@ -20,37 +18,26 @@ public class IssueMarker implements ClusterItem {
     private static final String TAG = IssueMarker.class.getSimpleName();
 
     private CivifyMap mMap;
-    private GoogleMap mAttached;
     private Issue mIssue;
-    private Marker mMarker;
+    private MarkerOptions mMarkerOptions;
     private String mTag;
     private boolean mPresent;
 
-    IssueMarker(@NonNull Issue issue, @NonNull CivifyMap map) {
+    protected IssueMarker(@NonNull Issue issue, @NonNull CivifyMap map) {
         mIssue = issue;
         mTag = issue.getIssueAuthToken();
         mMap = map;
     }
 
-    public void attachToMap(@NonNull GoogleMap googleMap) {
-        if (isPresent()) mMarker.remove();
-        mAttached = googleMap;
-        mMarker = mAttached.addMarker(new MarkerOptions().position(
+    protected void setup(MarkerOptions markerOptions) {
+        mMarkerOptions = markerOptions;
+        mMarkerOptions.position(
                 LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()))
                 .title(mIssue.getTitle())
                 .draggable(false)
-                .flat(false));
-        mMarker.setTag(mTag);
+                .flat(false);
         setIcon(mIssue.getCategory().getMarker());
         mPresent = true;
-    }
-
-    public void attachToMap() {
-        attachToMap(mMap.getGoogleMap());
-    }
-
-    public GoogleMap getAttachedMap() {
-        return mAttached;
     }
 
     @NonNull
@@ -71,60 +58,57 @@ public class IssueMarker implements ClusterItem {
     public final IssueMarker setIcon(@DrawableRes int markerIcon) {
         Bitmap icon = BitmapFactory.decodeResource(mMap.getContext().getResources(), markerIcon);
         if (icon != null) {
-            mMarker.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+            mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
         }
         return this;
     }
 
     @Override
     public LatLng getPosition() {
-        return LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude());
-        // return mMarker.getPosition();
+        return mIssue.getPosition();
     }
 
     @NonNull
     public IssueMarker setPosition(@NonNull LatLng position) {
-        mMarker.setPosition(position);
+        mMarkerOptions.position(position);
         mIssue.setLatitude((float) position.latitude);
         mIssue.setLongitude((float) position.longitude);
         return this;
     }
 
     public float getRotation() {
-        return mMarker.getRotation();
+        return mMarkerOptions.getRotation();
     }
 
     @NonNull
     public IssueMarker setRotation(float rotation) {
-        mMarker.setRotation(rotation);
+        mMarkerOptions.rotation(rotation);
         return this;
     }
 
     public boolean isVisible() {
-        return mMarker.isVisible();
+        return mMarkerOptions.isVisible();
     }
 
     @NonNull
     public IssueMarker setVisible(boolean visible) {
-        mMarker.setVisible(visible);
+        mMarkerOptions.visible(visible);
         return this;
     }
 
     public boolean isDraggable() {
-        return mMarker.isDraggable();
+        return mMarkerOptions.isDraggable();
     }
 
     @NonNull
     public IssueMarker setDraggable(boolean draggable) {
-        mMarker.setDraggable(draggable);
+        mMarkerOptions.draggable(draggable);
         return this;
     }
 
     void remove() {
         if (isPresent()) {
-            mMarker.remove();
             mPresent = false;
-            mAttached = null;
             Log.v(TAG, "Removed marker " + getTag() + '(' + getIssue().getTitle() + ')');
         }
     }
