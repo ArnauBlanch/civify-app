@@ -13,8 +13,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterItem;
 
-public class IssueMarker {
+public class IssueMarker implements ClusterItem {
 
     private static final String TAG = IssueMarker.class.getSimpleName();
 
@@ -75,8 +76,10 @@ public class IssueMarker {
         return this;
     }
 
+    @Override
     public LatLng getPosition() {
-        return mMarker.getPosition();
+        return LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude());
+        // return mMarker.getPosition();
     }
 
     @NonNull
