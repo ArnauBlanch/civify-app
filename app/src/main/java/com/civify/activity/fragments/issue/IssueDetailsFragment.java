@@ -165,6 +165,15 @@ public class IssueDetailsFragment extends BasicFragment {
                     @Override
                     public void onSuccess(Issue issue) {
                         mIssue = issue;
+                        int votes = issue.getResolvedVotes();
+                        if (issue.isResolved()) {
+                            Snackbar.make(mViewDetails, "Is resolved with "+votes+" resolved votes",
+                                    Snackbar.LENGTH_SHORT).show();
+                        }
+                        else if (!issue.isResolved()) {
+                            Snackbar.make(mViewDetails, "Is not resolved and has "+votes+" votes",
+                                    Snackbar.LENGTH_SHORT).show();
+                        }
                         setIssue();
                         if (!oldPosition.equals(issue.getPosition())) setPosition();
                     }
