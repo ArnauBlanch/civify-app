@@ -1,7 +1,5 @@
 package com.civify.model.achievement;
 
-import android.support.v4.app.Fragment;
-
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.achievements.AchievementDetailsFragment;
 import com.civify.model.Picture;
@@ -192,9 +190,8 @@ public class Achievement implements Serializable {
     }
 
     public void showAchievementDetails() {
-        Fragment achievementDetailsFragment = AchievementDetailsFragment.newInstance(this);
         CivifyMap.getInstance().getContext()
-                .setFragment(achievementDetailsFragment, DrawerActivity.DETAILS_ACHIEVEMENTS_ID);
-
+                .setFragment(AchievementDetailsFragment.newInstance(this), DrawerActivity
+                        .DETAILS_ACHIEVEMENTS_ID);
     }
 }

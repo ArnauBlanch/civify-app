@@ -3,7 +3,9 @@ package com.civify.adapter.event;
 import android.content.SharedPreferences;
 
 import com.civify.adapter.LoginAdapterImpl;
+import com.civify.model.RewardContainer;
 import com.civify.model.event.Event;
+import com.civify.service.award.RewardCallback;
 import com.civify.service.event.EventService;
 import com.civify.service.event.EventSimpleCallback;
 import com.civify.service.event.ListEventsSimpleCallback;
@@ -55,8 +57,7 @@ public class EventAdapterImpl implements EventAdapter {
     @Override
     public void getEvent(String eventAuthToken,
             final EventSimpleCallback callback) {
-        Call<Event> call = mEventService.getEvent(mAuthToken,
-                eventAuthToken);
+        Call<Event> call = mEventService.getEvent(mAuthToken, eventAuthToken);
         call.enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
@@ -70,6 +71,26 @@ public class EventAdapterImpl implements EventAdapter {
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
                 t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void claimEvent(String eventToken, final RewardCallback callback) {
+        Call<RewardContainer> call = mEventService.claimEvent(mAuthToken, eventToken);
+        call.enqueue(new Callback<RewardContainer>() {
+            @Override
+            public void onResponse(Call<RewardContainer> call, Response<RewardContainer> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body().getReward());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RewardContainer> call, Throwable t) {
+                callback.onFailure();
             }
         });
     }

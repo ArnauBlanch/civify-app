@@ -40,7 +40,9 @@ public class IssueAdapter {
     public static final int RISK_YES = 3;
     public static final int RISK_NO = 4;
     public static final int RISK_ALL = 5;
-    static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
+    static final String RECORD_DOES_NOT_EXIST = "Record doesn't exist";
+    private static final String TRUE = "true";
+    private static final String FALSE = "false";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -97,7 +99,7 @@ public class IssueAdapter {
     }
 
     public void getIssues(final ListIssuesSimpleCallback callback) {
-        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, "false", null, null);
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, FALSE, null, null);
         call.enqueue(new Callback<List<Issue>>() {
 
             @Override
@@ -119,14 +121,22 @@ public class IssueAdapter {
     public void getIssues(final ListIssuesSimpleCallback callback, int resolved,
             ArrayList<String> categories, int isRisk) {
         String resolvedParam;
-        if (resolved == RESOLVED) resolvedParam = "true";
-        else if (resolved == UNRESOLVED) resolvedParam = "false";
-        else resolvedParam = null;
+        if (resolved == RESOLVED) {
+            resolvedParam = TRUE;
+        } else if (resolved == UNRESOLVED) {
+            resolvedParam = FALSE;
+        } else {
+            resolvedParam = null;
+        }
 
         String riskParam;
-        if (isRisk == RISK_YES) riskParam = "true";
-        else if (isRisk == RISK_NO) riskParam = "false";
-        else riskParam = null;
+        if (isRisk == RISK_YES) {
+            riskParam = TRUE;
+        } else if (isRisk == RISK_NO) {
+            riskParam = FALSE;
+        } else {
+            riskParam = null;
+        }
 
         Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, resolvedParam, categories,
                 riskParam);

@@ -1,7 +1,5 @@
 package com.civify.activity.fragments.wall;
 
-import static com.civify.R.string.m;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -26,11 +24,15 @@ import java.util.ArrayList;
 
 public class FilterDialogFragment extends DialogFragment {
 
-    private static final String DIALOG_TAG = "coins_dialog";
     public static final String STATUS = "filter";
     public static final String RISK = "risk";
-    private static final int DIALOG_FRAGMENT = 9;
     public static final String CATEGORIES = "categories";
+
+    public static final String ID_STRING = "id";
+    public static final String CHECKBOX = "checkbox_";
+
+    private static final String DIALOG_TAG = "coins_dialog";
+
     private int mFilterSelected;
     private ArrayList<String> mCategoriesSelected;
     private Intent mIntent;
@@ -40,13 +42,13 @@ public class FilterDialogFragment extends DialogFragment {
     private ToggleButton mToggleButton;
     private int mRiskSelected;
 
-    public static FilterDialogFragment newInstance(int statusSelected,
-            ArrayList<String> categories, int riskSelected) {
-        FilterDialogFragment sortDialogFragment = new FilterDialogFragment();
+    public static FilterDialogFragment newInstance(int statusSelected, ArrayList<String> categories,
+            int riskSelected) {
         Bundle args = new Bundle();
         args.putInt(STATUS, statusSelected);
         args.putInt(RISK, riskSelected);
         args.putStringArrayList(CATEGORIES, categories);
+        FilterDialogFragment sortDialogFragment = new FilterDialogFragment();
         sortDialogFragment.setArguments(args);
         return sortDialogFragment;
     }
@@ -88,8 +90,7 @@ public class FilterDialogFragment extends DialogFragment {
         if (mCategoriesSelected.size() == mAllCategories.size()) {
             mCategoriesChecked = true;
             mToggleButton.setChecked(true);
-        }
-        else {
+        } else {
             mCategoriesChecked = false;
             mToggleButton.setChecked(false);
         }
@@ -111,7 +112,7 @@ public class FilterDialogFragment extends DialogFragment {
         mIntent.putExtra(STATUS, mFilterSelected);
         ArrayList<String> newCategories = new ArrayList<>();
         for (String category : mAllCategories) {
-            int resId = getResources().getIdentifier("checkbox_" + category, "id",
+            int resId = getResources().getIdentifier(CHECKBOX + category, ID_STRING,
                     getActivity().getPackageName());
             CheckBox checkBox = (CheckBox) mView.findViewById(resId);
             if (checkBox != null && checkBox.isChecked()) {
@@ -150,34 +151,42 @@ public class FilterDialogFragment extends DialogFragment {
             }
         });
 
-        switch (mFilterSelected) {
-            case IssueAdapter.UNRESOLVED:
-                radioUnresolved.setChecked(true);
-                break;
-            case IssueAdapter.RESOLVED:
-                radioResolved.setChecked(true);
-                break;
-            case IssueAdapter.ALL:
-                radioAll.setChecked(true);
-                break;
+        if (mFilterSelected == IssueAdapter.UNRESOLVED) {
+            radioUnresolved.setChecked(true);
+        } else if (mFilterSelected == IssueAdapter.RESOLVED) {
+            radioResolved.setChecked(true);
+        } else if (mFilterSelected == IssueAdapter.ALL) {
+            radioAll.setChecked(true);
         }
+        setupCheckboxes(view);
+        setupToggleButton(view);
+        setupRiskRadio(view);
+    }
+
+    private void setupToggleButton(View view) {
+        ToggleButton toggleButton =
+                (ToggleButton) view.findViewById(R.id.toggle_select_all_categories);
+        if (toggleButton != null) {
+            toggleButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCategoriesChecked = !mCategoriesChecked;
+                    setCategoriesChecked(mCategoriesChecked);
+                }
+            });
+        }
+    }
+
+    private void setupCheckboxes(View view) {
         for (String category : mCategoriesSelected) {
-            int resId = getResources().getIdentifier("checkbox_" + category, "id",
+            int resId = getResources().getIdentifier(CHECKBOX + category, ID_STRING,
                     getActivity().getPackageName());
             CheckBox checkBox = (CheckBox) view.findViewById(resId);
             if (checkBox != null) checkBox.setChecked(true);
         }
+    }
 
-        ToggleButton toggleButton =
-                (ToggleButton) view.findViewById(R.id.toggle_select_all_categories);
-        if (toggleButton != null) toggleButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCategoriesChecked = !mCategoriesChecked;
-                setCategoriesChecked(mCategoriesChecked);
-            }
-        });
-
+    private void setupRiskRadio(View view) {
         RadioButton radioRiskYes = (RadioButton) view.findViewById(R.id.radio_risk_yes);
         RadioButton radioRiskNo = (RadioButton) view.findViewById(R.id.radio_risk_no);
         RadioButton radioRiskAll = (RadioButton) view.findViewById(R.id.radio_risk_all);
@@ -213,13 +222,14 @@ public class FilterDialogFragment extends DialogFragment {
             case IssueAdapter.RISK_ALL:
                 radioRiskAll.setChecked(true);
                 break;
+            default:
+                break;
         }
-
     }
 
     private void setCategoriesChecked(boolean checked) {
         for (String category : mAllCategories) {
-            int resId = getResources().getIdentifier("checkbox_" + category, "id",
+            int resId = getResources().getIdentifier(CHECKBOX + category, ID_STRING,
                     getActivity().getPackageName());
             CheckBox checkBox = (CheckBox) mView.findViewById(resId);
             if (checkBox != null) checkBox.setChecked(checked);

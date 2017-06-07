@@ -1,7 +1,5 @@
 package com.civify.activity.fragments.wall;
 
-import static com.civify.R.string.m;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -79,7 +77,7 @@ public class WallFragment extends BasicFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wall, container, false);
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_wall);
@@ -88,12 +86,7 @@ public class WallFragment extends BasicFragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mView = view;
-        AdapterFactory adapterFactory = AdapterFactory.getInstance();
-        mIssueAdapter = adapterFactory.getIssueAdapter(getContext());
-        mIssuesViewFragment = new IssuesViewFragment();
-        mTextEmpty = (TextView) view.findViewById(R.id.wall_empty);
-        mTextEmpty.setVisibility(View.GONE);
+        initializeView(view);
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.wall_container, mIssuesViewFragment)
@@ -105,11 +98,11 @@ public class WallFragment extends BasicFragment {
                 if (issues.isEmpty() && mTextEmpty != null) {
                     mTextEmpty.setVisibility(View.VISIBLE);
                 }
-                mIssuesViewFragment.setIssuesList(filterIssues(issues));
+                mIssuesViewFragment.setIssues(filterIssues(issues));
                 try {
                     CivifyMap.getInstance().setIssues(issues);
                 } catch (MapNotLoadedException ignore) {
-                    // Don't refresh map
+                    // error loading map
                 }
                 mIssues = issues;
                 mLoaded = true;
@@ -119,7 +112,7 @@ public class WallFragment extends BasicFragment {
             public void onFailure() {
                 mProgressBar.setVisibility(View.GONE);
                 try {
-                    mIssuesViewFragment.setIssuesList(CivifyMap.getInstance().getIssues());
+                    mIssuesViewFragment.setIssues(CivifyMap.getInstance().getIssues());
                 } catch (MapNotLoadedException e) {
                     Snackbar.make(view, "Couldn't retrieve updated issues.", Snackbar.LENGTH_LONG)
                             .setAction(R.string.action, null)
@@ -128,6 +121,15 @@ public class WallFragment extends BasicFragment {
                 mLoaded = false;
             }
         }, IssueAdapter.UNRESOLVED, null, IssueAdapter.RISK_ALL);
+    }
+
+    private void initializeView(View view) {
+        mView = view;
+        AdapterFactory adapterFactory = AdapterFactory.getInstance();
+        mIssueAdapter = adapterFactory.getIssueAdapter(getContext());
+        mIssuesViewFragment = new IssuesViewFragment();
+        mTextEmpty = (TextView) view.findViewById(R.id.wall_empty);
+        mTextEmpty.setVisibility(View.GONE);
     }
 
     protected List<Issue> filterIssues(List<Issue> issues) {
@@ -151,13 +153,15 @@ public class WallFragment extends BasicFragment {
         if (mLoaded) {
             switch (item.getItemId()) {
                 case R.id.action_filter_issues:
-                    FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance
-                            (mStatusSelected, mFilteredCategories, mRiskSelected);
+                    FilterDialogFragment filterDialogFragment =
+                            FilterDialogFragment.newInstance(mStatusSelected, mFilteredCategories,
+                                    mRiskSelected);
                     filterDialogFragment.setTargetFragment(this, REQUEST_DIALOG);
                     filterDialogFragment.show(getActivity());
                     return false;
                 case R.id.action_sort_issues:
-                    SortDialogFragment sortDialogFragment = SortDialogFragment.newInstance(mSortSelected, this);
+                    SortDialogFragment sortDialogFragment =
+                            SortDialogFragment.newInstance(mSortSelected, this);
                     sortDialogFragment.show(getActivity());
                     return false;
                 default:
@@ -172,17 +176,21 @@ public class WallFragment extends BasicFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_DIALOG) {
             if (resultCode == Activity.RESULT_OK) {
-                int oldStatusSelected = mStatusSelected;
-                int oldRiskSelected = mRiskSelected;
-                ArrayList<String> oldFilteredCategories = new ArrayList<>(mFilteredCategories);
+                final int oldStatusSelected = mStatusSelected;
+                final int oldRiskSelected = mRiskSelected;
+                final ArrayList<String> oldFilteredCategories =
+                        new ArrayList<>(mFilteredCategories);
                 mStatusSelected = data.getIntExtra(FilterDialogFragment.STATUS, 0);
                 mFilteredCategories = data.getStringArrayListExtra(FilterDialogFragment.CATEGORIES);
-                mRiskSelected = data.getIntExtra(FilterDialogFragment.RISK, 3);
+                final int defaultRisk = 3;
+                mRiskSelected = data.getIntExtra(FilterDialogFragment.RISK, defaultRisk);
                 Set<String> oldSet = new HashSet<>(oldFilteredCategories);
                 Set<String> newSet = new HashSet<>(mFilteredCategories);
-                if (oldStatusSelected != mStatusSelected || !oldSet.equals(newSet) ||
-                        oldRiskSelected != mRiskSelected)
+                if (oldStatusSelected != mStatusSelected
+                        || !oldSet.equals(newSet)
+                        || oldRiskSelected != mRiskSelected) {
                     refreshIssues();
+                }
             }
         }
     }
@@ -196,7 +204,7 @@ public class WallFragment extends BasicFragment {
                 public void onSuccess(List<Issue> issues) {
                     mIssues = issues;
                     applySelectedSorting(mSortSelected);
-                    mIssuesViewFragment.setIssuesList(issues);
+                    mIssuesViewFragment.setIssues(issues);
                     mProgressBar.setVisibility(View.GONE);
                     if (issues.isEmpty() && mTextEmpty != null) {
                         mTextEmpty.setVisibility(View.VISIBLE);
@@ -210,11 +218,10 @@ public class WallFragment extends BasicFragment {
             }, mStatusSelected, mFilteredCategories, mRiskSelected);
         } else {
             mIssues = new ArrayList<>();
-            mIssuesViewFragment.setIssuesList(mIssues);
+            mIssuesViewFragment.setIssues(mIssues);
             mProgressBar.setVisibility(View.GONE);
             if (mTextEmpty != null) mTextEmpty.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
@@ -224,7 +231,7 @@ public class WallFragment extends BasicFragment {
             mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
                 @Override
                 public void onSuccess(List<Issue> issues) {
-                    mIssuesViewFragment.setIssuesList(filterIssues(issues));
+                    mIssuesViewFragment.setIssues(filterIssues(issues));
                     try {
                         CivifyMap.getInstance().setIssues(issues);
                     } catch (MapNotLoadedException ignore) {
@@ -274,7 +281,7 @@ public class WallFragment extends BasicFragment {
                 }
             });
         }
-        mIssuesViewFragment.setIssuesList(mIssues);
+        mIssuesViewFragment.setIssues(mIssues);
     }
 
     private void sortByDescending() {
@@ -286,7 +293,7 @@ public class WallFragment extends BasicFragment {
                 }
             });
         }
-        mIssuesViewFragment.setIssuesList(mIssues);
+        mIssuesViewFragment.setIssues(mIssues);
     }
 
     private void sortByProximity() {
@@ -303,7 +310,7 @@ public class WallFragment extends BasicFragment {
                 }
             });
         }
-        mIssuesViewFragment.setIssuesList(mIssues);
+        mIssuesViewFragment.setIssues(mIssues);
     }
 
     private void sortByConfirms() {
@@ -315,6 +322,6 @@ public class WallFragment extends BasicFragment {
                 }
             });
         }
-        mIssuesViewFragment.setIssuesList(mIssues);
+        mIssuesViewFragment.setIssues(mIssues);
     }
 }

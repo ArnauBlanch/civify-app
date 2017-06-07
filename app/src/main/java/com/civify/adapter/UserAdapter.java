@@ -34,12 +34,15 @@ public class UserAdapter {
     public static final int INVALID = 0;
     public static final int USED = 1;
     public static final int VALID_UNUSED = 2;
+    public static final int EMAIL_SENT_CODE = 3;
+    public static final int EMAIL_NOT_SENT_CODE = 4;
     public static final String TAG = UserAdapter.class.getSimpleName();
     public static final String USER_CREATED = "User created";
     public static final String USER_NOT_CREATED = "User not created";
     public static final String USER_EXISTS = "User exists";
     public static final String USER_DOESNT_EXIST = "User not exists";
     public static final String USER_NOT_FOUND = "User not found";
+    public static final String EMAIL_SENT = "Email sent";
     public static final Pattern VALID_PASSWORD = Pattern.compile(
             "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9@&#$%]{8,40}$");
     public static final Pattern VALID_EMAIL = Pattern.compile(
@@ -48,6 +51,7 @@ public class UserAdapter {
     public static final Pattern VALID_USERNAME = Pattern.compile(
             "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
 
+    private static final String EMAIL_STRING = "email";
     private static User sCurrentUser;
     private String mAuthToken;
 
@@ -120,6 +124,34 @@ public class UserAdapter {
         return VALID_PASSWORD.matcher(password).matches();
     }
 
+    public void sentResetPasswrdEmail(@NonNull String email, final ValidationCallback callback) {
+        JsonObject passwordResetEmail = new JsonObject();
+        JsonObject emailJson = new JsonObject();
+        emailJson.addProperty(EMAIL_STRING, email);
+        passwordResetEmail.add("password_reset", emailJson);
+
+        Log.d(TAG, "Sending JSON for password reset: " + passwordResetEmail);
+        Call<MessageResponse> call = mUserService.sendResetPasswrdMail(passwordResetEmail);
+        call.enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK
+                        && response.body().getMessage().equals(EMAIL_SENT)) {
+                    callback.onValidationResponse(EMAIL_SENT_CODE);
+                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
+                        && getMessageFromError(response.errorBody()).equals(USER_DOESNT_EXIST)) {
+                    callback.onValidationResponse(EMAIL_NOT_SENT_CODE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
     private void checkUnusedUsername(String username, final ValidationCallback callback) {
         JsonObject usernameJson = new JsonObject();
         usernameJson.addProperty("username", username);
@@ -146,7 +178,7 @@ public class UserAdapter {
 
     private void checkUnusedEmail(String email, final ValidationCallback callback) {
         JsonObject emailJson = new JsonObject();
-        emailJson.addProperty("email", email);
+        emailJson.addProperty(EMAIL_STRING, email);
 
         Call<MessageResponse> call = mUserService.checkUnusedEmail(emailJson);
         call.enqueue(new Callback<MessageResponse>() {
