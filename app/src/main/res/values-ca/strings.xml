@@ -118,7 +118,7 @@
   <string name="unspecified_title">Títol sense especificar</string>
   <string name="unresolve_message">S\'ha tret la marca de resolta de la incidència amb èxit</string>
   <string name="unresolve_error_message">No s\'ha pogut treure la marca de resolta</string>
-  <string name="unresolve">Treure marca de resolta</string>
+  <string name="unresolve">No resolta</string>
   <string name="unreport_message">S\'ha tret la denúncia amb èxit</string>
   <string name="unreport_error_message">No s\'ha pogut treure la denúncia</string>
   <string name="unreport">Treure denúncia</string>

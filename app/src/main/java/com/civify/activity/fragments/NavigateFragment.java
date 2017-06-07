@@ -13,34 +13,50 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.activity.fragments.wall.FilterDialogFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UserSimpleCallback;
+import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.IssueReward;
 import com.civify.model.User;
+import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
+import com.civify.service.issue.ListIssuesSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 public class NavigateFragment extends BasicFragment {
 
     private static final String TAG = NavigateFragment.class.getSimpleName();
 
+    private static final int REQUEST_DIALOG = 9;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final int RESULT_OK = -1;
+    private static final int DEFAULT_RISK = 3;
 
     private float mLastZoom;
     private Snackbar mSarchCenterSnackbar;
+    private int mStatusSelected;
+    private int mRiskSelected;
+    private ArrayList<String> mCategoriesSelected;
+    private IssueAdapter mIssueAdapter;
 
-    public NavigateFragment() { }
+    public NavigateFragment() {
+    }
 
     public static NavigateFragment newInstance() {
         return new NavigateFragment();
@@ -55,8 +71,7 @@ public class NavigateFragment extends BasicFragment {
         CivifyMap.setContext((DrawerActivity) getActivity());
         Fragment mapFragment = CivifyMap.getInstance().getMapFragment();
         CivifyMap.getInstance().enable();
-        getChildFragmentManager()
-                .beginTransaction()
+        getChildFragmentManager().beginTransaction()
                 .replace(R.id.map_fragment_placeholder, mapFragment)
                 .commit();
     }
@@ -76,8 +91,7 @@ public class NavigateFragment extends BasicFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-            @NonNull String[] permissions,
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
         CivifyMap.getInstance().onRequestPermissionsResult(requestCode, grantResults);
     }
@@ -91,7 +105,8 @@ public class NavigateFragment extends BasicFragment {
                 try {
                     CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
                     final DrawerActivity activity = (DrawerActivity) getActivity();
-                    AdapterFactory.getInstance().getUserAdapter(getContext())
+                    AdapterFactory.getInstance()
+                            .getUserAdapter(getContext())
                             .showRewardDialog(activity, issueReward.getReward(),
                                     new UserSimpleCallback() {
                                         @Override
@@ -105,15 +120,66 @@ public class NavigateFragment extends BasicFragment {
                     Snackbar.make(getView(), getString(R.string.issue_created),
                             Snackbar.LENGTH_SHORT).show();
                 } catch (MapNotLoadedException ignore) {
-                    Log.wtf(NavigateFragment.class.getSimpleName(), "Creating issues must be "
-                            + "only enabled if the map is loaded");
+                    Log.wtf(NavigateFragment.class.getSimpleName(),
+                            "Creating issues must be " + "only enabled if the map is loaded");
                 }
             }
             CivifyMap.getInstance().setCanBeDisabled(true);
-
         } else if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             handleSearch(resultCode, data);
-        } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
+        } else if (requestCode == REQUEST_DIALOG) {
+            applyFilters(data);
+        } else {
+            CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
+        }
+    }
+
+    private void applyFilters(Intent data) {
+        final int oldStatusSelected = mStatusSelected;
+        final int oldRiskSelected = mRiskSelected;
+        final HashSet<String> oldFilteredCategories = new HashSet<>(mCategoriesSelected);
+        mStatusSelected = data.getIntExtra(FilterDialogFragment.STATUS, 0);
+        mCategoriesSelected = data.getStringArrayListExtra(FilterDialogFragment.CATEGORIES);
+        mRiskSelected = data.getIntExtra(FilterDialogFragment.RISK, DEFAULT_RISK);
+        if (oldStatusSelected != mStatusSelected
+                || !oldFilteredCategories.equals(new HashSet<>(mCategoriesSelected))
+                || oldRiskSelected != mRiskSelected) {
+            refreshIssues();
+        }
+    }
+
+    private void refreshIssues() {
+        ArrayList<String> categories = mCategoriesSelected.isEmpty() ? null : mCategoriesSelected;
+
+        mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
+            @Override
+            public void onSuccess(List<Issue> issues) {
+                try {
+                    CivifyMap.getInstance().setIssues(issues);
+                } catch (MapNotLoadedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure() {
+                // Ignore filters
+            }
+        }, mStatusSelected, categories, mRiskSelected);
+    }
+
+    private void setupFilterItems() {
+        mCategoriesSelected = new ArrayList<>();
+        mCategoriesSelected.add("road_signs");
+        mCategoriesSelected.add("illumination");
+        mCategoriesSelected.add("grove");
+        mCategoriesSelected.add("street_furniture");
+        mCategoriesSelected.add("trash_and_cleaning");
+        mCategoriesSelected.add("public_transport");
+        mCategoriesSelected.add("suggestion");
+        mCategoriesSelected.add("other");
+        mRiskSelected = IssueAdapter.RISK_ALL;
+        mStatusSelected = IssueAdapter.UNRESOLVED;
     }
 
     private void handleSearch(int resultCode, Intent data) {
@@ -140,11 +206,15 @@ public class NavigateFragment extends BasicFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        mIssueAdapter = AdapterFactory.getInstance().getIssueAdapter(getContext());
         View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
 
         setMap();
         setCenterButton(mapView);
         setCreateIssueButton(mapView);
+
+        setupFilterFloating(mapView);
+        setupFilterItems();
 
         return mapView;
     }
@@ -188,6 +258,21 @@ public class NavigateFragment extends BasicFragment {
         });
     }
 
+    private void setupFilterFloating(View view) {
+        FloatingActionButton fabFilterIssues =
+                (FloatingActionButton) view.findViewById(R.id.fab_filter);
+        fabFilterIssues.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FilterDialogFragment filterDialogFragment =
+                        FilterDialogFragment.newInstance(mStatusSelected, mCategoriesSelected,
+                                mRiskSelected);
+                filterDialogFragment.setTargetFragment(NavigateFragment.this, REQUEST_DIALOG);
+                filterDialogFragment.show(getActivity());
+            }
+        });
+    }
+
     private static void showMapLoadingWarning(View view) {
         Snackbar.make(view, R.string.mapLoading, Snackbar.LENGTH_LONG).show();
     }
@@ -202,9 +287,8 @@ public class NavigateFragment extends BasicFragment {
         switch (item.getItemId()) {
             case R.id.search_place:
                 try {
-                    Intent intent =
-                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                                    .build(getActivity());
+                    Intent intent = new PlaceAutocomplete.IntentBuilder(
+                            PlaceAutocomplete.MODE_OVERLAY).build(getActivity());
                     startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
                 } catch (GooglePlayServicesRepairableException e) {
                     Snackbar.make(getView(), R.string.service_error, Snackbar.LENGTH_LONG)
