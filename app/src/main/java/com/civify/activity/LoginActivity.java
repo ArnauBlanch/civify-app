@@ -2,6 +2,7 @@ package com.civify.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,7 @@ public class LoginActivity extends BaseActivity {
     private TextView mPassforgot;
     private View.OnClickListener mListen = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             final String tag = "loginLog";
             switch (v.getId()) {
                 case R.id.bsignin:
@@ -43,11 +44,7 @@ public class LoginActivity extends BaseActivity {
 
                         @Override
                         public void onLoginFailed(LoginError e) {
-                            Log.d(tag, e.getType().toString());
-                            Toast toast = Toast.makeText(getApplicationContext(),
-                                    e.getType().toString(), Toast.LENGTH_SHORT);
-                            toast.show();
-                            //Mostrar l'error per pantalla corresponent
+                            Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_LONG).show();
                         }
                     });
                     break;
