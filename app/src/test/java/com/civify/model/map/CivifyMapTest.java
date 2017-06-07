@@ -169,7 +169,6 @@ public class CivifyMapTest extends RobolectricTest {
         mMap.onMapReady(mGoogleMap);
         verify(mMap, atLeastOnce()).refreshIssues();
         IssueMarker issueMarker = mMap.getMarkers().get(ISSUE_MOCK_ID);
-        assertThat(issueMarker.getAttachedMap(), is(sameInstance(mGoogleMap)));
         assertThat(issueMarker, is(not(nullValue())));
         assertThat(mMap.getMarkers().isEmpty(), is(false));
         assertThat(mMap.getMarkers().size(), is(1));
@@ -184,7 +183,6 @@ public class CivifyMapTest extends RobolectricTest {
         Marker newMarkerMock = getMarkerMock();
         assertThat(mGoogleMap, is(not(sameInstance(oldMap))));
         mMap.onMapReady(mGoogleMap);
-        assertThat(issueMarker.getAttachedMap(), is(sameInstance(mGoogleMap)));
         assertThat(issueMarker.getPosition(), is(newMarkerMock.getPosition()));
         assertThat(issueMarker.isPresent(), is(true));
         assertThat(newMarkerMock.isVisible(), is(true));
@@ -196,7 +194,6 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.getMarkers().isEmpty(), is(true));
         assertThat(mMap.getMarkers().size(), is(0));
         assertThat(mMap.getMarkers().get(ISSUE_MOCK_ID), is(nullValue()));
-        assertThat(issueMarker.getAttachedMap(), is(nullValue()));
         assertThat(issueMarker.isVisible(), is(false));
         assertThat(issueMarker.isPresent(), is(false));
     }
