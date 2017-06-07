@@ -44,7 +44,7 @@
   <string name="email">Correo electrónico</string>
   <string name="error_field_required">Este campo es obligatorio</string>
   <string name="error_incorrect_password">Esta contraseña es incorrecta</string>
-  <string name="error_invalid_email">Esta dirección de correo electrónico es inválida</string>
+  <string name="error_invalid_email">Esta dirección de correo electrónico no es inválida</string>
   <string name="error_invalid_password">La contraseña es demasiado corta</string>
   <string name="events">Eventos</string>
   <string name="events_title">Eventos</string>
@@ -193,9 +193,10 @@
   <string name="email_exists_correct">Dirección de correo correcta, puedes enviar</string>
   <string name="email_not_exists">El correo introducido no existe</string>
   <string name="email_not_sent">Se ha producido un error al enviar</string>
-  <string name="email_sent">Email enviado</string>
-  <string name="enter_email">Introduce tu email primero</string>
+  <string name="email_sent">Correo enviado</string>
+  <string name="enter_email">Introduce tu correo primero</string>
   <string name="ok">Ok</string>
   <string name="explanation_forgotten">Te enviaremos un correo con un link para que puedas establecer una nueva contraseña</string>
   <string name="send_button">Enviar</string>
+  <string name="sending_forgot_mail">Enviando correo, un momento</string>
 </resources>
