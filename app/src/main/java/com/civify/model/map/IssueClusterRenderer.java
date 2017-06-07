@@ -42,14 +42,13 @@ public class IssueClusterRenderer extends DefaultClusterRenderer<IssueMarker> {
         Context context = mMap.getContext();
         int clusterSize = cluster.getSize();
         String clusterIconRes = "cluster1";
-        String clusterText = String.valueOf(clusterSize);
         for (int i = 0; i < CLUSTER_THRESHOLDS.length; i++) {
             int threshold = CLUSTER_THRESHOLDS[i];
             if (clusterSize >= threshold) clusterIconRes = "cluster" + (i + 2);
         }
         mClusterIconGenerator.setBackground(getClusterIcon(context, clusterIconRes));
         mClusterIconGenerator.setTextAppearance(R.style.ClusterIconText);
-        Bitmap sizeIcon = mClusterIconGenerator.makeIcon(clusterText);
+        Bitmap sizeIcon = mClusterIconGenerator.makeIcon(String.valueOf(clusterSize));
         options.icon(BitmapDescriptorFactory.fromBitmap(sizeIcon));
     }
 
