@@ -8,15 +8,17 @@ import android.widget.TextView;
 import com.civify.R;
 import com.civify.model.User;
 
+import java.io.Serializable;
+
 public final class UserAttacher {
 
     private static final int PERCENT = 100;
 
+    private final String mLevelLabel;
     private User mUser;
-    private Context mContext;
 
     private UserAttacher(@NonNull Context context, @NonNull User user) {
-        mContext = context;
+        mLevelLabel = context.getString(R.string.level);
         setUser(user);
     }
 
@@ -45,7 +47,7 @@ public final class UserAttacher {
 
     public UserAttacher setLevel(@NonNull TextView level) {
         String userLevel = Integer.toString(mUser.getLevel());
-        String showLevel = mContext.getString(R.string.level) + ' ' + userLevel;
+        String showLevel = mLevelLabel + ' ' + userLevel;
         level.setText(showLevel);
         return this;
     }

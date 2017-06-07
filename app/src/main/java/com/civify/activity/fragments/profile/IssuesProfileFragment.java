@@ -10,6 +10,8 @@ import java.util.List;
 
 public class IssuesProfileFragment extends WallFragment {
 
+    // TODO: Filter from custom user (maybe an instance attribute User?)
+
     @Override
     protected List<Issue> filterIssues(List<Issue> issues) {
         User currentUser = UserAdapter.getCurrentUser();
