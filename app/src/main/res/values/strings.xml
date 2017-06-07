@@ -237,6 +237,10 @@
   <string name="email_sent">Email sent</string>
   <string name="email_not_sent">Error sending mail, please try</string>
   <string name="enter_email">Please write your email first</string>
+    <string name="search">Search</string>
+    <string name="service_error">Service error</string>
+  <string name="service_not_available">Service not available</string>
+    <string name="error_ocurred">An error ocurred</string>
   <string name="date_ascending">Date (ascending)</string>
   <string name="date_descending">Date (descending)</string>
   <string name="proximity">Proximity</string>
