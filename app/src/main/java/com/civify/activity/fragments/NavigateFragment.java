@@ -1,6 +1,7 @@
 package com.civify.activity.fragments;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.model.IssueReward;
 import com.civify.model.User;
@@ -21,6 +23,10 @@ import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
 import com.civify.utils.AdapterFactory;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 public class NavigateFragment extends BasicFragment {
 
@@ -102,7 +108,7 @@ public class NavigateFragment extends BasicFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
+        final View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
 
         setMap();
 
@@ -130,6 +136,27 @@ public class NavigateFragment extends BasicFragment {
                             CreateIssueActivity.class);
                     startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
                 } else showMapLoadingWarning(view);
+            }
+        });
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Location loc = LocationAdapter.getLocation(place.getLatLng());
+                try {
+                    CivifyMap.getInstance().center(loc, true);
+                } catch (MapNotReadyException ignore) {
+                    showMapLoadingWarning(mapView);
+                }
+                Log.d("place", "Place: " + place.getName());
+            }
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.d("place", "An error occurred: " + status);
             }
         });
 
