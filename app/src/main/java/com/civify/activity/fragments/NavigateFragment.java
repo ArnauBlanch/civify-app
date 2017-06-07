@@ -137,7 +137,7 @@ public class NavigateFragment extends BasicFragment {
     }
 
     private static void showMapLoadingWarning(View view) {
-        Snackbar.make(view, "Map loading, please wait...", Snackbar.LENGTH_LONG)
+        Snackbar.make(view, R.string.mapLoading, Snackbar.LENGTH_LONG)
                 .setAction(R.string.action, null).show();
     }
 }
