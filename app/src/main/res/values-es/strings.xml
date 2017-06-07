@@ -190,10 +190,12 @@
   <string name="claim">Reclamar</string>
   <string name="and">y</string>
   <string name="couldnt_claim_achievement">No se pudo reclamar la recompensa.</string>
-  <string name="email_exists_correct">Email correcto, puedes enviar</string>
-  <string name="email_not_exists">El email introducido no existe</string>
+  <string name="email_exists_correct">Dirección de correo correcta, puedes enviar</string>
+  <string name="email_not_exists">El correo introducido no existe</string>
   <string name="email_not_sent">Se ha producido un error al enviar</string>
   <string name="email_sent">Email enviado</string>
   <string name="enter_email">Introduce tu email primero</string>
   <string name="ok">Ok</string>
+  <string name="explanation_forgotten">Te enviaremos un correo con un link para que puedas establecer una nueva contraseña</string>
+  <string name="send_button">Enviar</string>
 </resources>
