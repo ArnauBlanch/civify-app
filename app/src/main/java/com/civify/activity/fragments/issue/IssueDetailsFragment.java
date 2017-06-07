@@ -115,8 +115,6 @@ public class IssueDetailsFragment extends BasicFragment {
     private void init() {
         Log.v(TAG, "init");
 
-        Log.d(TAG, "Markers loaded on init: " + CivifyMap.getInstance().getMarkers());
-
         Log.v(TAG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
         mIssue = (Issue) bundle.getSerializable(TAG_ISSUE);
