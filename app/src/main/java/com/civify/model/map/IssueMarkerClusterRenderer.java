@@ -9,30 +9,40 @@ import android.support.v4.content.ContextCompat;
 
 import com.civify.R;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
-public class IssueClusterRenderer extends DefaultClusterRenderer<IssueMarker> {
+public class IssueMarkerClusterRenderer extends DefaultClusterRenderer<IssueMarker> {
 
     private static final int[] CLUSTER_THRESHOLDS = {10, 30, 60, 100};
 
     private CivifyMap mMap;
+    private ClusterManager<IssueMarker> mClusterManager;
     private final IconGenerator mClusterIconGenerator;
 
-    public IssueClusterRenderer(@NonNull CivifyMap map, ClusterManager<IssueMarker> manager) {
+    public IssueMarkerClusterRenderer(@NonNull CivifyMap map, ClusterManager<IssueMarker> manager) {
         super(map.getContext(), map.getGoogleMap(), manager);
         mMap = map;
+        mClusterManager = manager;
         mClusterIconGenerator = new IconGenerator(map.getContext());
     }
 
     @Override
-    protected void onBeforeClusterItemRendered(IssueMarker marker, MarkerOptions options) {
-        super.onBeforeClusterItemRendered(marker, options);
+    protected void onBeforeClusterItemRendered(IssueMarker issueMarker, MarkerOptions options) {
+        super.onBeforeClusterItemRendered(issueMarker, options);
         // Marker customization
-        marker.setup(options);
+        issueMarker.setup(options);
+    }
+
+    @Override
+    protected void onClusterItemRendered(IssueMarker issueMarker, Marker marker) {
+        super.onClusterItemRendered(issueMarker, marker);
+        // Notify rendered
+        issueMarker.render(marker, mClusterManager);
     }
 
     @Override
