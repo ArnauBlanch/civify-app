@@ -76,7 +76,7 @@ public final class NetworkController {
 
                 boolean airplaneMode = isAirplaneModeEnabled(context);
                 String additionalInfo = airplaneMode
-                        ? "Disable Airplane Mode and enableLocationUpdates the network."
+                        ? "Disable Airplane Mode and enable the network."
                         : "Enable the network.";
                 setNetworkDialog(context, airplaneMode, additionalInfo);
             } else if (noNetworkPreDialogListener != null) {
