@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.activity.forgotpassword.ForgotActivity;
 import com.civify.activity.registration.RegistrationActivity;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
@@ -51,15 +49,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 loginListener();
-            }
-        });
-        TextView linkForgot = (TextView) findViewById(R.id.forgot_password);
-        linkForgot.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =
-                        new Intent(getApplicationContext(), ForgotActivity.class);
-                startActivity(intent);
             }
         });
         ((Button) findViewById(R.id.buttonGoogle)).setOnClickListener(new OnClickListener() {
