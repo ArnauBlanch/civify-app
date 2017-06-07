@@ -75,6 +75,7 @@ public class DrawerActivity extends BaseActivity
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
     private boolean mShowMenuWall;
+    private boolean mShowMenuNavigate;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -219,18 +220,27 @@ public class DrawerActivity extends BaseActivity
         if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
             mShowMenuDetails = false;
+            mShowMenuNavigate = false;
         } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
             mShowMenuWall = false;
+            mShowMenuNavigate = false;
         } else if (mCurrentFragment == WALL_ID) {
             mShowMenu = true;
             mShowMenuWall = true;
+            mShowMenuDetails = false;
+            mShowMenuNavigate = false;
+        } else if (mCurrentFragment == NAVIGATE_ID) {
+            mShowMenu = true;
+            mShowMenuWall = false;
+            mShowMenuNavigate = true;
             mShowMenuDetails = false;
         } else {
             mShowMenu = false;
             mShowMenuDetails = false;
             mShowMenuWall = false;
+            mShowMenuNavigate = false;
         }
         invalidateOptionsMenu();
     }
@@ -245,6 +255,9 @@ public class DrawerActivity extends BaseActivity
             noIcona = SHOW_AS_ACTION_IF_ROOM;
         } else if (mShowMenuWall) {
             menuRes = R.menu.wall;
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+        } else if (mShowMenuNavigate) {
+            menuRes = R.menu.navigation;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
         } else {
             menuRes = R.menu.profile;
