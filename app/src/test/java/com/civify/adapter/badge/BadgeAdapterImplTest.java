@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.mockwebserver.MockResponse;
@@ -42,6 +43,9 @@ public class BadgeAdapterImplTest {
     private static final String TITLE = "sample_title";
     private static final String CONTENTTYPE = "picture-content-type";
     private static final String URL = "badge_url";
+    private static final int TIME_DATE = 123456789;
+    private static final String TYPE = "new_type";
+    private static final String TOKEN = "new_token";
 
     private BadgeAdapter mBadgeAdapter;
     private MockWebServer mMockWebServer;
@@ -100,6 +104,9 @@ public class BadgeAdapterImplTest {
             assertEquals(mBadge.getTitle(), responseBadge.getTitle());
             assertEquals(mBadge.getContentType(), responseBadge.getContentType());
             assertEquals(mBadge.getUrl(), responseBadge.getUrl());
+            assertEquals(mBadge.getOptainedDate(), responseBadge.getOptainedDate());
+            assertEquals(mBadge.getCorrespondsToType(), responseBadge.getCorrespondsToType());
+            assertEquals(mBadge.getCorrespondsToToken(), responseBadge.getCorrespondsToToken());
         }
 
     }
@@ -128,6 +135,6 @@ public class BadgeAdapterImplTest {
     }
 
     private void setUpBadge() {
-        mBadge = new Badge(TITLE, CONTENTTYPE, URL);
+        mBadge = new Badge(TITLE, CONTENTTYPE, URL, new Date(TIME_DATE), TYPE, TOKEN);
     }
 }

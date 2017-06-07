@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Badge implements Serializable {
 
@@ -20,12 +21,28 @@ public class Badge implements Serializable {
     @SerializedName("large_url")
     private String mUrl;
 
+    @Expose
+    @SerializedName("optained_date")
+    private Date mOptainedDate;
+
+    @Expose
+    @SerializedName("corresponds_to_type")
+    private String mCorrespondsToType;
+
+    @Expose
+    @SerializedName("correspondsToToken")
+    private String mCorrespondsToToken;
+
     public Badge() { }
 
-    public Badge(String title, String contentType, String url) {
-        this.mTitle = title;
-        this.mContentType = contentType;
-        this.mUrl = url;
+    public Badge(String title, String contentType, String url, Date optainedDate,
+            String correspondsToType, String correspondsToToken) {
+        mTitle = title;
+        mContentType = contentType;
+        mUrl = url;
+        mOptainedDate = optainedDate;
+        mCorrespondsToType = correspondsToType;
+        mCorrespondsToToken = correspondsToToken;
     }
 
     public String getTitle() {
@@ -50,5 +67,29 @@ public class Badge implements Serializable {
 
     public void setUrl(String url) {
         mUrl = url;
+    }
+
+    public Date getOptainedDate() {
+        return mOptainedDate;
+    }
+
+    public void setOptainedDate(Date optainedDate) {
+        mOptainedDate = optainedDate;
+    }
+
+    public String getCorrespondsToType() {
+        return mCorrespondsToType;
+    }
+
+    public void setCorrespondsToType(String correspondsToType) {
+        mCorrespondsToType = correspondsToType;
+    }
+
+    public String getCorrespondsToToken() {
+        return mCorrespondsToToken;
+    }
+
+    public void setCorrespondsToToken(String correspondsToToken) {
+        mCorrespondsToToken = correspondsToToken;
     }
 }
