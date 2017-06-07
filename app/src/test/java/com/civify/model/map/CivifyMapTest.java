@@ -120,7 +120,6 @@ public class CivifyMapTest extends RobolectricTest {
         verify(mGoogleMap, atLeastOnce()).getUiSettings();
         verify(mLocationAdapter).setOnUpdateLocationListener(mMap);
         verify(mGoogleMap).setMyLocationEnabled(true);
-        verify(mGoogleMap).setOnMarkerClickListener(mMap.getMarkers());
         verify(mMap, atLeastOnce()).enableGoogleMyLocation();
         assertThat(mMap.getGoogleMap(), is(sameInstance(mGoogleMap)));
         assertThat(mMap.isMapLoaded(), is(true));
@@ -174,7 +173,7 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.getMarkers().size(), is(1));
         assertThat(issueMarker.getIssue(), is(sameInstance(issueMock)));
         assertThat(issueMarker.getPosition(), is(markerMock.getPosition()));
-        assertThat(issueMarker.isPresent(), is(true));
+        assertThat(issueMarker.isRendered(), is(true));
         assertThat(issueMarker.isVisible(), is(true));
         assertThat(markerMock.isVisible(), is(true));
 
@@ -184,7 +183,7 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mGoogleMap, is(not(sameInstance(oldMap))));
         mMap.onMapReady(mGoogleMap);
         assertThat(issueMarker.getPosition(), is(newMarkerMock.getPosition()));
-        assertThat(issueMarker.isPresent(), is(true));
+        assertThat(issueMarker.isRendered(), is(true));
         assertThat(newMarkerMock.isVisible(), is(true));
         assertThat(issueMarker.isVisible(), is(true));
         assertThat(markerMock.isVisible(), is(false));
@@ -195,7 +194,7 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.getMarkers().size(), is(0));
         assertThat(mMap.getMarkers().get(ISSUE_MOCK_ID), is(nullValue()));
         assertThat(issueMarker.isVisible(), is(false));
-        assertThat(issueMarker.isPresent(), is(false));
+        assertThat(issueMarker.isRendered(), is(false));
     }
 
     @Test
@@ -206,19 +205,19 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.getMarkers(), is(nullValue()));
         try {
             mMap.addIssueMarker(issueMock);
-            fail("Trying to add issue when map is not present!");
+            fail("Trying to addItem issue when map is not present!");
         } catch (MapNotLoadedException ignore) {}
         mMap.onMapReady(mGoogleMap);
         when(mMap.isMapReady()).thenReturn(true);
         mMap.addIssueMarker(issueMock);
         assertThat(mMap.isMapLoaded(), is(true));
         assertThat(mMap.getMarkers(), is(not(nullValue())));
-        assertThat(mMap.getMarkers().onMarkerClick(markerMock), is(true));
         IssueMarker marker = mMap.getMarkers().get(ISSUE_MOCK_ID.toUpperCase());
+        marker.setMarker(markerMock);
         assertThat(marker, is(instanceOf(IssueMarker.class)));
         assertThat(marker.getIssue(), is(sameInstance(issueMock)));
         assertThat(marker.getPosition(), is(markerMock.getPosition()));
-        assertThat(marker.isPresent(), is(true));
+        assertThat(marker.isRendered(), is(true));
         assertThat(markerMock.isVisible(), is(true));
     }
 
