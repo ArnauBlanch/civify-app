@@ -168,8 +168,7 @@ public class NavigateFragment extends BasicFragment {
     }
 
     private static void showMapLoadingWarning(View view) {
-        Snackbar.make(view, R.string.mapLoading, Snackbar.LENGTH_LONG)
-                .setAction(R.string.action, null).show();
+        Snackbar.make(view, R.string.mapLoading, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

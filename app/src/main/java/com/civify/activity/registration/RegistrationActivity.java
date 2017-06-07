@@ -1,11 +1,13 @@
 package com.civify.activity.registration;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,8 +20,11 @@ import com.civify.adapter.LoginFinishedCallback;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
+import com.civify.model.ProfileIcon;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
+
+import java.util.ArrayList;
 
 public class RegistrationActivity
         extends BaseActivity {
@@ -27,6 +32,8 @@ public class RegistrationActivity
     private UserAdapter mUserAdapter;
     private ViewPager mViewPager;
     private LoginAdapter mLoginAdapter;
+    private ArrayList<ProfileIcon> mProfileIcons;
+    private ProfileIcon mSelectedProfileIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +82,7 @@ public class RegistrationActivity
         if (mViewPager.getCurrentItem() == 0) {
             super.onBackPressed();
         } else {
+            closeKeyBoard();
             previousPage();
         }
     }
@@ -88,6 +96,7 @@ public class RegistrationActivity
         String password2 = ((EditText) findViewById(R.id.password2_input)).getText().toString();
 
         User newUser = new User(username, name, surname, email, password, password2);
+        newUser.setProfileIcon(mSelectedProfileIcon);
         mUserAdapter.registerUser(newUser, new SimpleCallback() {
             @Override
             public void onSuccess() {
@@ -134,6 +143,7 @@ public class RegistrationActivity
         }
 
         if (valid) {
+            closeKeyBoard();
             nextPage();
         }
     }
@@ -148,6 +158,7 @@ public class RegistrationActivity
                     @Override
                     public void onValidationResponse(int response) {
                         if (response == UserAdapter.VALID_UNUSED) {
+                            closeKeyBoard();
                             nextPage();
                         }
                     }
@@ -164,6 +175,7 @@ public class RegistrationActivity
                     @Override
                     public void onValidationResponse(int response) {
                         if (response == UserAdapter.VALID_UNUSED) {
+                            closeKeyBoard();
                             nextPage();
                         }
                     }
@@ -181,7 +193,38 @@ public class RegistrationActivity
         EditText matchingPassword = (EditText) findViewById(R.id.password2_input);
         if (mUserAdapter.checkValidPassword(password.getText().toString())
                 && password.getText().toString().equals(matchingPassword.getText().toString())) {
+            closeKeyBoard();
             register();
         }
+    }
+
+    private void closeKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                .INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mViewPager.getWindowToken(), 0);
+    }
+
+    public void avatarButtonListener(View v) {
+        boolean found = false;
+        if (mProfileIcons != null && !mProfileIcons.isEmpty()) {
+            for (ProfileIcon pi : mProfileIcons) {
+                if (pi.isSelected()) {
+                    mSelectedProfileIcon = pi;
+                    found = true;
+                }
+            }
+            if (!found) {
+                mSelectedProfileIcon = ProfileIcon.USER;
+                mSelectedProfileIcon.setSelected(true);
+            }
+        } else {
+            mSelectedProfileIcon = ProfileIcon.USER;
+            mSelectedProfileIcon.setSelected(true);
+        }
+        nextPage();
+    }
+
+    public void setProfileIcons(ArrayList<ProfileIcon> profileIcons) {
+        mProfileIcons = profileIcons;
     }
 }

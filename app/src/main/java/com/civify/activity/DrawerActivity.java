@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,8 +31,8 @@ import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.achievements.AchievementsFragment;
 import com.civify.activity.fragments.award.AwardsFragment;
 import com.civify.activity.fragments.event.EventsFragment;
-import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
+import com.civify.activity.fragments.wall.WallFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserAttacher;
 import com.civify.model.AchievementsEventsContainer;
@@ -130,9 +131,7 @@ public class DrawerActivity extends BaseActivity
                 mFragmentStack.clear();
                 mFragmentStack.add(fragment);
                 fragment.onResume();
-                fragmentTransaction
-                        .show(fragment)
-                        .commit();
+                fragmentTransaction.show(fragment).commit();
                 mCurrentFragment = NAVIGATE_ID;
             } else {
                 mFragmentStack.lastElement().onPause();
@@ -265,7 +264,6 @@ public class DrawerActivity extends BaseActivity
         }
         getMenuInflater().inflate(menuRes, menu);
 
-
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
             menu.getItem(i).setShowAsAction(noIcona);
@@ -283,7 +281,8 @@ public class DrawerActivity extends BaseActivity
                 .setLevel((TextView) headerView.findViewById(R.id.header_level))
                 .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
                 .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
-                .setCoins((TextView) headerView.findViewById(R.id.header_coins));
+                .setCoins((TextView) headerView.findViewById(R.id.header_coins))
+                .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
     }
 
     private void setToolbarTitle() {

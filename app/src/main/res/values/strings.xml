@@ -120,6 +120,7 @@
   <string name="public_transport">Public transport</string>
   <string name="suggestion">Suggestion</string>
   <string name="other">Other</string>
+
   <string name="select_category">Select category</string>
   <string name="must_choose_category">You must choose a category</string>
   <string name="need_to_allow_location_permission">You need to allow location permission</string>
@@ -235,10 +236,25 @@
   <string name="email_exists_correct">Correct email, please submit</string>
   <string name="email_sent">Email sent</string>
   <string name="email_not_sent">Error sending mail, please try</string>
-  <string name="ok">Ok</string>
   <string name="enter_email">Please write your email first</string>
     <string name="search">Search</string>
     <string name="service_error">Service error</string>
   <string name="service_not_available">Service not available</string>
     <string name="error_ocurred">An error ocurred</string>
+  <string name="date_ascending">Date (ascending)</string>
+  <string name="date_descending">Date (descending)</string>
+  <string name="proximity">Proximity</string>
+  <string name="confirm_votes">Confirm votes</string>
+  <string name="sort_dialog_title">Sort issues</string>
+    <string name="unresolved">Unresolved</string>
+  <string name="resolved">Resolved</string>
+  <string name="all">All</string>
+  <string name="status">Status</string>
+  <string name="filter_dialog_title">Filter issues</string>
+  <string name="ok">OK</string>
+  <string name="is_risk">Risk?</string>
+  <string name="select_all">Select all</string>
+  <string name="deselect_all">Deselect all</string>
+  <string name="no_issues_found">No issues were found</string>
+  <string name="choose_avatar">Choose an avatar</string>
 </resources>
