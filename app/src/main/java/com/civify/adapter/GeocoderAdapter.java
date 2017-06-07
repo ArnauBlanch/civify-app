@@ -69,7 +69,7 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
         } catch (IOException e) {
             Throwable cause = e.getCause();
             Log.i(TAG, "Error " + (cause != null ? cause.getClass().getSimpleName()
-                    : '(' + e.getClass().getSimpleName() + ':' + e.getMessage() + ')')
+                    : '(' + e.getClass().getSimpleName() + ": " + e.getMessage() + ')')
                     + " getting locality with Geocoder. "
                     + "Trying with HTTP/GET on Google Maps API.");
             result = geolocateFromGoogleApis(latitude, longitude);
@@ -90,13 +90,9 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
             response = client.newCall(request).execute();
             responseBody = response.body();
             String jsonData = responseBody.string();
-            Log.d(TAG, jsonData);
-            if (response.isSuccessful()) {
-                return getAddressFromGoogleApis(jsonData);
-            }
+            if (response.isSuccessful()) return getAddressFromGoogleApis(jsonData);
             mErrorMessage = "Unexpected code getting locality with HTTP/GET "
-                    + "on Google Maps API: "
-                    + response.code();
+                    + "on Google Maps API: " + response.code();
         } catch (IOException | JSONException e) {
             mErrorMessage = "Error getting locality with HTTP/GET on Google Maps API";
             mError = e;
