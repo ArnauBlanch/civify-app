@@ -18,6 +18,8 @@ import java.util.Arrays;
 
 public class RegistrationFragment extends Fragment {
 
+    private static final int AVATAR_PAGE_ID = 3;
+
     private View mView;
     private int mPage;
 
@@ -26,7 +28,7 @@ public class RegistrationFragment extends Fragment {
         mPage = getArguments().getInt("page");
         mView = getActivity().getLayoutInflater()
                 .inflate(getLayoutResource(mPage), container, false);
-        if (mPage == 3) {
+        if (mPage == AVATAR_PAGE_ID) {
             prepareGridView();
         }
         mView.setTag(mPage);
@@ -69,7 +71,7 @@ public class RegistrationFragment extends Fragment {
                 return R.layout.registration_page_username;
             case 2:
                 return R.layout.registration_page_email;
-            case 3:
+            case AVATAR_PAGE_ID:
                 return R.layout.registration_page_profile_icon;
             default:
                 return R.layout.registration_page_password;
@@ -90,7 +92,7 @@ public class RegistrationFragment extends Fragment {
                         new EmailTextWatcher(mView, R.id.email_validation_icon,
                                 R.id.email_validation_text));
                 break;
-            case 3:
+            case AVATAR_PAGE_ID:
                 break;
             default:
                 ((EditText) mView.findViewById(R.id.password_input)).addTextChangedListener(
