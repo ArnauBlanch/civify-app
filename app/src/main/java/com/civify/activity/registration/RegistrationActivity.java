@@ -199,7 +199,8 @@ public class RegistrationActivity
     }
 
     private void closeKeyBoard() {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                .INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mViewPager.getWindowToken(), 0);
     }
 

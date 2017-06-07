@@ -1,13 +1,9 @@
 package com.civify.model;
 
 import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
 
 import com.civify.R;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public enum ProfileIcon {
 
