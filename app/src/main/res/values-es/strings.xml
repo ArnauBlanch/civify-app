@@ -151,7 +151,7 @@
   <string name="unreport">Quitar denuncia</string>
   <string name="unreport_error_message">No se pudo quitar la denuncia</string>
   <string name="unreport_message">Se quitó la denúncia con éxito</string>
-  <string name="unresolve">Quitar marca de resuelta</string>
+  <string name="unresolve">No resuelta</string>
   <string name="unresolve_error_message">No se pudo quitar la marca de resuelta</string>
   <string name="unresolve_message">Se ha quitado la marca de resuelta de la incidencia con éxito</string>
   <string name="unspecified_title">Título sin especificar</string>

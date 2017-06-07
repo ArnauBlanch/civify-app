@@ -2,6 +2,7 @@ package com.civify.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -64,6 +65,11 @@ public final class UserAttacher {
 
     public UserAttacher setCoins(@NonNull TextView coins) {
         coins.setText(String.valueOf(mUser.getCoins()));
+        return this;
+    }
+
+    public UserAttacher setAvatar(@NonNull ImageView avatar) {
+        avatar.setImageResource(mUser.getProfileIcon().getIcon());
         return this;
     }
 

@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -74,6 +75,7 @@ public class DrawerActivity extends BaseActivity
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
     private boolean mShowMenuWall;
+    private boolean mShowMenuNavigate;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -218,18 +220,27 @@ public class DrawerActivity extends BaseActivity
         if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
             mShowMenuDetails = false;
+            mShowMenuNavigate = false;
         } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
             mShowMenuWall = false;
+            mShowMenuNavigate = false;
         } else if (mCurrentFragment == WALL_ID) {
             mShowMenu = true;
             mShowMenuWall = true;
+            mShowMenuDetails = false;
+            mShowMenuNavigate = false;
+        } else if (mCurrentFragment == NAVIGATE_ID) {
+            mShowMenu = true;
+            mShowMenuWall = false;
+            mShowMenuNavigate = true;
             mShowMenuDetails = false;
         } else {
             mShowMenu = false;
             mShowMenuDetails = false;
             mShowMenuWall = false;
+            mShowMenuNavigate = false;
         }
         invalidateOptionsMenu();
     }
@@ -244,6 +255,9 @@ public class DrawerActivity extends BaseActivity
             noIcona = SHOW_AS_ACTION_IF_ROOM;
         } else if (mShowMenuWall) {
             menuRes = R.menu.wall;
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+        } else if (mShowMenuNavigate) {
+            menuRes = R.menu.navigation;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
         } else {
             menuRes = R.menu.profile;
@@ -267,7 +281,8 @@ public class DrawerActivity extends BaseActivity
                 .setLevel((TextView) headerView.findViewById(R.id.header_level))
                 .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
                 .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
-                .setCoins((TextView) headerView.findViewById(R.id.header_coins));
+                .setCoins((TextView) headerView.findViewById(R.id.header_coins))
+                .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
     }
 
     private void setToolbarTitle() {
