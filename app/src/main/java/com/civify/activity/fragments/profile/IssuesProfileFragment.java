@@ -1,6 +1,6 @@
 package com.civify.activity.fragments.profile;
 
-import com.civify.activity.fragments.issue.WallFragment;
+import com.civify.activity.fragments.wall.WallFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Issue;
