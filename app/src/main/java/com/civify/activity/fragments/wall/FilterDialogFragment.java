@@ -59,7 +59,6 @@ public class FilterDialogFragment extends DialogFragment {
 
     private void initAllCategories() {
         mAllCategories = new ArrayList<>();
-        mAllCategories = new ArrayList<>();
         mAllCategories.add("road_signs");
         mAllCategories.add("illumination");
         mAllCategories.add("grove");
