@@ -24,7 +24,6 @@ import com.civify.model.IssueReward;
 import com.civify.model.User;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
-import com.civify.model.map.MapNotReadyException;
 import com.civify.utils.AdapterFactory;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -33,9 +32,13 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 public class NavigateFragment extends BasicFragment {
 
+    private static final String TAG = NavigateFragment.class.getSimpleName();
+
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final int RESULT_OK = -1;
-    private static final int RESULT_CANCELED = 0;
+
+    private float mLastZoom;
+    private Snackbar mSarchCenterSnackbar;
 
     public NavigateFragment() { }
 
@@ -63,7 +66,7 @@ public class NavigateFragment extends BasicFragment {
     public void onResume() {
         setHasOptionsMenu(true);
         super.onResume();
-        CivifyMap.getInstance().enable();
+        if (mSarchCenterSnackbar == null) CivifyMap.getInstance().enable();
     }
 
     @Override
@@ -118,41 +121,60 @@ public class NavigateFragment extends BasicFragment {
             Place place = PlaceAutocomplete.getPlace(getActivity(), data);
             Location loc = LocationAdapter.getLocation(place.getLatLng());
             try {
-                CivifyMap.getInstance().center(loc, true);
-            } catch (MapNotReadyException ignore) {
-                Snackbar.make(getView(), getString(com.civify.R.string.error_ocurred),
+                CivifyMap.getInstance().disableLocation();
+                mLastZoom = CivifyMap.getInstance().getCurrentCameraPosition().zoom;
+                CivifyMap.getInstance().center(loc, CivifyMap.DEFAULT_ZOOM, true);
+                mSarchCenterSnackbar = Snackbar.make(getView(),
+                        getString(R.string.search_disable_center), Snackbar.LENGTH_INDEFINITE);
+                mSarchCenterSnackbar.show();
+            } catch (MapNotLoadedException ignore) {
+                Snackbar.make(getView(), getString(R.string.error_ocurred),
                         Snackbar.LENGTH_SHORT).show();
             }
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-            Snackbar.make(getView(), getString(com.civify.R.string.error_ocurred),
+            Snackbar.make(getView(), getString(R.string.error_ocurred),
                     Snackbar.LENGTH_SHORT).show();
-        } else if (resultCode == RESULT_CANCELED) {
-            //cancelled search
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        final View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
+        View mapView = inflater.inflate(R.layout.fragment_navigate, container, false);
 
         setMap();
+        setCenterButton(mapView);
+        setCreateIssueButton(mapView);
 
+        return mapView;
+    }
+
+    private void setCenterButton(View v) {
         FloatingActionButton fabLocation = (FloatingActionButton)
-                mapView.findViewById(R.id.fab_location);
+                v.findViewById(R.id.fab_location);
         fabLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    CivifyMap.getInstance().center(true);
-                } catch (MapNotReadyException ignore) {
+                    Float zoom = null;
+                    if (mSarchCenterSnackbar != null) {
+                        CivifyMap.getInstance().enable();
+                        mSarchCenterSnackbar.dismiss();
+                        mSarchCenterSnackbar = null;
+                        zoom = mLastZoom;
+                    }
+                    CivifyMap.getInstance().center(
+                            CivifyMap.getInstance().getCurrentLocation(), zoom, true);
+                } catch (MapNotLoadedException ignore) {
                     showMapLoadingWarning(view);
                 }
             }
         });
+    }
 
+    private void setCreateIssueButton(View v) {
         FloatingActionButton fabCreateIssue = (FloatingActionButton)
-                mapView.findViewById(R.id.fab_add);
+                v.findViewById(R.id.fab_add);
         fabCreateIssue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,7 +186,6 @@ public class NavigateFragment extends BasicFragment {
                 } else showMapLoadingWarning(view);
             }
         });
-        return mapView;
     }
 
     private static void showMapLoadingWarning(View view) {
