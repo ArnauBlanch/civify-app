@@ -219,6 +219,7 @@
   <string name="you_have_completed">You have completed</string>
   <string name="access_achievements_events">Access the achievements or events section to claim your reward.</string>
 
+  <string name="sending_forgot_mail">Sending mail, please wait</string>
   <string name="claim">CLAIM</string>
   <string name="couldnt_claim_achievement">Couldn\'t claim your reward.</string>
 
@@ -227,4 +228,13 @@
   <string name="first_letter_hour">h</string>
   <string name="its_happening_now">"It's happening now"</string>
   <string name="due_date">"Due date"</string>
+  <string name="explanation_forgotten">We will send you a recovery link so you can set a
+    new password</string>
+  <string name="send_button">Submit</string>
+  <string name="email_not_exists">This email doesn\'t exist</string>
+  <string name="email_exists_correct">Correct email, please submit</string>
+  <string name="email_sent">Email sent</string>
+  <string name="email_not_sent">Error sending mail, please try</string>
+  <string name="ok">Ok</string>
+  <string name="enter_email">Please write your email first</string>
 </resources>

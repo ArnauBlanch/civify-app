@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.civify.R;
+import com.civify.activity.forgotpassword.ForgotActivity;
 import com.civify.activity.registration.RegistrationActivity;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
@@ -31,6 +33,10 @@ public class MainActivity extends BaseActivity {
         mDialog = createDialog();
         putButtonDialog();
 
+        initButtons();
+    }
+
+    private void initButtons() {
         Button buttonRegister = (Button) findViewById(R.id.registerButton);
         buttonRegister.setOnClickListener(new OnClickListener() {
             @Override
@@ -47,21 +53,27 @@ public class MainActivity extends BaseActivity {
                 loginListener();
             }
         });
-        Button buttonGoogle = (Button) findViewById(R.id.buttonGoogle);
-        buttonGoogle.setOnClickListener(new OnClickListener() {
+        TextView linkForgot = (TextView) findViewById(R.id.forgot_password);
+        linkForgot.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getApplicationContext(), ForgotActivity.class);
+                startActivity(intent);
+            }
+        });
+        ((Button) findViewById(R.id.buttonGoogle)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDialog.show();
             }
         });
-        Button buttonTwitter = (Button) findViewById(R.id.buttonTwitter);
-        buttonTwitter.setOnClickListener(new OnClickListener() {
+        ((Button) findViewById(R.id.buttonTwitter)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDialog.show();
             }
         });
-
     }
 
     private void loginListener() {
