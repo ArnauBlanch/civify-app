@@ -8,10 +8,13 @@ import android.util.Log;
 
 import com.civify.adapter.LocationAdapter;
 import com.civify.model.issue.Issue;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
 
 public class IssueMarker implements ClusterItem {
 
@@ -19,9 +22,9 @@ public class IssueMarker implements ClusterItem {
 
     private CivifyMap mMap;
     private Issue mIssue;
-    private MarkerOptions mMarkerOptions;
+    private Marker mMarker;
     private String mTag;
-    private boolean mPresent;
+    private boolean mUpdated;
 
     protected IssueMarker(@NonNull Issue issue, @NonNull CivifyMap map) {
         mIssue = issue;
@@ -30,14 +33,21 @@ public class IssueMarker implements ClusterItem {
     }
 
     protected void setup(MarkerOptions markerOptions) {
-        mMarkerOptions = markerOptions;
-        mMarkerOptions.position(
+        markerOptions.position(
                 LocationAdapter.getLatLng(mIssue.getLatitude(), mIssue.getLongitude()))
                 .title(mIssue.getTitle())
                 .draggable(false)
                 .flat(false);
-        setIcon(mIssue.getCategory().getMarker());
-        mPresent = true;
+        setIcon(mIssue.getCategory().getMarker(), markerOptions);
+        mUpdated = true;
+    }
+
+    protected void render(@NonNull Marker marker, @NonNull ClusterManager<IssueMarker> manager) {
+        mMarker = marker;
+        if (!mUpdated) {
+            manager.cluster();
+            mUpdated = true;
+        }
     }
 
     @NonNull
@@ -52,14 +62,41 @@ public class IssueMarker implements ClusterItem {
 
     public void setIssue(@NonNull Issue issue) {
         mIssue = issue;
+        if (isRendered()) {
+            setPosition(issue.getPosition());
+            setIcon(issue.getCategory().getMarker());
+            mMarker.setTitle(issue.getTitle());
+            mUpdated = false;
+        }
     }
 
     @NonNull
     public final IssueMarker setIcon(@DrawableRes int markerIcon) {
+        checkRendered();
+        setIcon(markerIcon, new IconCallback() {
+            @Override
+            public void setIcon(@NonNull BitmapDescriptor icon) {
+                mMarker.setIcon(icon);
+                Log.d(TAG, "Icon set to marker");
+            }
+        });
+        return this;
+    }
+
+    @NonNull
+    private IssueMarker setIcon(@DrawableRes int markerIcon, final MarkerOptions options) {
+        setIcon(markerIcon, new IconCallback() {
+            @Override
+            public void setIcon(@NonNull BitmapDescriptor icon) {
+                options.icon(icon);
+            }
+        });
+        return this;
+    }
+
+    private IssueMarker setIcon(@DrawableRes int markerIcon, IconCallback callback) {
         Bitmap icon = BitmapFactory.decodeResource(mMap.getContext().getResources(), markerIcon);
-        if (icon != null) {
-            mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
-        }
+        if (icon != null) callback.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
         return this;
     }
 
@@ -70,55 +107,71 @@ public class IssueMarker implements ClusterItem {
 
     @NonNull
     public IssueMarker setPosition(@NonNull LatLng position) {
-        mMarkerOptions.position(position);
+        checkRendered();
+        mMarker.setPosition(position);
         mIssue.setLatitude((float) position.latitude);
         mIssue.setLongitude((float) position.longitude);
         return this;
     }
 
     public float getRotation() {
-        return mMarkerOptions.getRotation();
+        checkRendered();
+        return mMarker.getRotation();
     }
 
     @NonNull
     public IssueMarker setRotation(float rotation) {
-        mMarkerOptions.rotation(rotation);
+        checkRendered();
+        mMarker.setRotation(rotation);
         return this;
     }
 
     public boolean isVisible() {
-        return mMarkerOptions.isVisible();
+        checkRendered();
+        return mMarker.isVisible();
     }
 
     @NonNull
     public IssueMarker setVisible(boolean visible) {
-        mMarkerOptions.visible(visible);
+        checkRendered();
+        mMarker.setVisible(visible);
         return this;
     }
 
     public boolean isDraggable() {
-        return mMarkerOptions.isDraggable();
+        checkRendered();
+        return mMarker.isDraggable();
     }
 
     @NonNull
     public IssueMarker setDraggable(boolean draggable) {
-        mMarkerOptions.draggable(draggable);
+        checkRendered();
+        mMarker.setDraggable(draggable);
         return this;
     }
 
-    void remove() {
-        if (isPresent()) {
-            mPresent = false;
-            Log.v(TAG, "Removed marker " + getTag() + '(' + getIssue().getTitle() + ')');
-        }
+    protected void remove() {
+        if (isRendered()) mMarker = null;
     }
 
-    public boolean isPresent() {
-        return mPresent;
+    public boolean isRendered() {
+        return mMarker != null;
+    }
+
+    private void checkRendered() {
+        if (!isRendered()) throw new RuntimeException("This marker is not rendered!");
+    }
+
+    public String getTagWithTitle() {
+        return getIssue().getTitle() + " (" + getTag() + ')';
     }
 
     @Override
     public String toString() {
-        return getTag();
+        return getTagWithTitle();
+    }
+
+    private interface IconCallback {
+        void setIcon(@NonNull BitmapDescriptor icon);
     }
 }

@@ -25,7 +25,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -152,7 +151,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void refreshIssues() throws MapNotLoadedException {
-        if (!isMapLoaded()) throw new MapNotLoadedException();
+        checkMapLoaded();
         mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
             @Override
             public void onSuccess(List<Issue> issues) {
@@ -172,17 +171,14 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void setIssues(List<Issue> issues) throws MapNotLoadedException {
-        mMarkers.clear();
+        checkMapLoaded();
+        mMarkers.clearItems();
         addAndLog(issues);
     }
 
-    public List<Issue> getIssues() throws MapNotLoadedException {
-        Collection<IssueMarker> markers = mMarkers.getAll();
-        List<Issue> currentIssues = new LinkedList<>();
-        for (IssueMarker marker : markers) {
-            currentIssues.add(marker.getIssue());
-        }
-        return currentIssues;
+    public Collection<Issue> getIssues() throws MapNotLoadedException {
+        checkMapLoaded();
+        return mMarkers.getAllIssues();
     }
 
     private void addAndLog(List<Issue> issues) {
@@ -191,22 +187,21 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         for (Issue issue : issues) {
             Log.v(TAG, "Issue[" + i + "] " + issue + '\n');
             Set<IssueMarker> overlapped = mMarkers.get(
-                    LocationAdapter.getLatLng(
-                            issue.getLatitude(), issue.getLongitude()));
+                    LocationAdapter.getLatLng(issue.getLatitude(), issue.getLongitude()));
             if (overlapped.isEmpty()) visibleCount++;
             else {
                 Log.v(TAG, "Issue overlapped");
                 overlappedCount++;
             }
-            mMarkers.add(new IssueMarker(issue, this));
+            mMarkers.addItem(new IssueMarker(issue, this));
             i++;
         }
         Log.v(TAG, "Overlapped: " + overlappedCount + ", Visible: " + visibleCount);
     }
 
     public void addIssueMarker(@NonNull Issue issue) throws MapNotLoadedException {
-        if (isMapLoaded()) mMarkers.add(new IssueMarker(issue, this));
-        else throw new MapNotLoadedException();
+        checkMapLoaded();
+        mMarkers.addItem(new IssueMarker(issue, this));
     }
 
     /** @return all markers of this map, including their issues, or null if not isMapLoaded() */
@@ -326,6 +321,10 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     public void onMapSettingsResults(int requestCode, int resultCode) {
         mLocationAdapter.onMapSettingsResults(requestCode, resultCode);
+    }
+
+    private void checkMapLoaded() throws MapNotLoadedException {
+        if (!isMapLoaded()) throw new MapNotLoadedException();
     }
 
     public static CivifyMap getInstance() {
