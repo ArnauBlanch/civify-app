@@ -30,7 +30,7 @@ public class Badge implements Serializable {
     private String mCorrespondsToType;
 
     @Expose
-    @SerializedName("correspondsToToken")
+    @SerializedName("corresponds_to_token")
     private String mCorrespondsToToken;
 
     public Badge() { }

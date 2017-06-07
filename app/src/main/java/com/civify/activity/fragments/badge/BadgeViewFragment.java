@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,14 +51,17 @@ public class BadgeViewFragment extends BasicFragment {
 
         mBadgeViewAdapter = new BadgeViewAdapter(mBadgeList, getContext());
 
-                // Inflate the layout for this fragment
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_badge_view, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.badge_recyclerView);
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_badges);
 
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setAdapter(mBadgeViewAdapter);
 
         return view;
@@ -72,7 +76,7 @@ public class BadgeViewFragment extends BasicFragment {
                 .getUserBadges(userToken, new ListBadgesSimpleCallback() {
                     @Override
                     public void onSuccess(List<Badge> badges) {
-                        //mProgressBar.setVisibility(View.GONE);
+                        mProgressBar.setVisibility(View.GONE);
                         setBadgeList(badges);
                     }
 
