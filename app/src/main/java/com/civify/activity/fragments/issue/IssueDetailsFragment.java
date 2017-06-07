@@ -298,7 +298,8 @@ public class IssueDetailsFragment extends BasicFragment {
                 .setFullName((TextView) mViewDetails.findViewById(R.id.userName))
                 .setUsername((TextView) mViewDetails.findViewById(R.id.userUsername))
                 .setLevel((TextView) mViewDetails.findViewById(R.id.userLevel))
-                .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress));
+                .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress))
+                .setAvatar((ImageView) mViewDetails.findViewById(R.id.userImage));
 
         // TODO: Pass User to ProfileFragment
 
