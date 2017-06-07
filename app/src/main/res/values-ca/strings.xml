@@ -178,4 +178,5 @@
   <string name="its_happening_now">\"Està succeint ara\"</string>
   <string name="sort_issues">Ordena incidències</string>
   <string name="you_have_completed">Has completat</string>
+    <string name="access_achievements_events">Accedeix a la secció d\'assoliments o esdeveniments per reclamar la teva recompensa.</string>
 </resources>

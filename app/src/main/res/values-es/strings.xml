@@ -186,4 +186,5 @@
   <string name="its_happening_now">\"Está sucediendo ahora\"</string>
   <string name="sort_issues">Ordenar incidencias</string>
   <string name="you_have_completed">Has completado</string>
+    <string name="access_achievements_events">Accede a la sección de logros o eventos para reclamar tu recompensa.</string>
 </resources>
