@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.civify.R;
+import com.civify.activity.forgotpassword.ForgotActivity;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
 import com.civify.adapter.LoginFinishedCallback;
@@ -52,10 +53,8 @@ public class LoginActivity extends BaseActivity {
                     });
                     break;
                 case R.id.login_forgot:
-                    Log.d(tag, "change pass");
-                    Toast toast = Toast.makeText(getApplicationContext(), "portará a la activity",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
+                    Intent intent = new Intent(getApplicationContext(), ForgotActivity.class);
+                    startActivity(intent);
                     break;
                 default:
                     break;
