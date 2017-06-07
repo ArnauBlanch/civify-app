@@ -4,15 +4,15 @@
 
   <item
       android:title="@string/filter_issues"
-      android:id="@+id/filter_issues"
+      android:id="@+id/action_filter_issues"
       android:icon="@drawable/ic_menu_filter"
       app:showAsAction="ifRoom"
       />
   <item
       android:title="@string/sort_issues"
-      android:id="@+id/sort_issues"
+      android:id="@+id/action_sort_issues"
       android:icon="@drawable/ic_menu_sort"
-      app:showAsAction="always"
+      app:showAsAction="ifRoom"
       />
 
 </menu>
