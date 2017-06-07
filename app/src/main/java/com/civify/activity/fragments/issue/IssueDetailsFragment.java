@@ -300,6 +300,8 @@ public class IssueDetailsFragment extends BasicFragment {
                 .setLevel((TextView) mViewDetails.findViewById(R.id.userLevel))
                 .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress));
 
+        // TODO: Pass User to ProfileFragment
+
         Log.v(TAG, "setUser finished");
     }
 
