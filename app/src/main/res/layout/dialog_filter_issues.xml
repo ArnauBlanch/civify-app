@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingTop="12dp"
+      android:gravity="center"
+      >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="@string/status"/>
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <RadioButton
+          android:id="@+id/radio_unresolved"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/unresolved"  />
+      <RadioButton
+          android:id="@+id/radio_resolved"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/resolved" />
+      <RadioButton
+          android:id="@+id/radio_all"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/all" />
+    </RadioGroup>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/pose_a_risk"/>
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <RadioButton
+          android:id="@+id/radio_risk_yes"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/yes"  />
+      <RadioButton
+          android:id="@+id/radio_risk_no"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/no" />
+      <RadioButton
+          android:id="@+id/radio_risk_all"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/all" />
+    </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/category"
+          android:layout_marginTop="15dp"
+          android:layout_marginBottom="15dp"/>
+      <ToggleButton
+          android:id="@+id/toggle_select_all_categories"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_gravity="center_vertical"
+          android:layout_marginStart="10dp"
+          android:layout_marginLeft="10dp"
+          android:textOff="@string/select_all"
+          android:textOn="@string/deselect_all"
+          />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+      <CheckBox
+          android:id="@+id/checkbox_road_signs"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/road_signs"  />
+      <CheckBox
+          android:id="@+id/checkbox_illumination"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/illumination" />
+      <CheckBox
+          android:id="@+id/checkbox_grove"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/grove" />
+      <CheckBox
+          android:id="@+id/checkbox_street_furniture"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/street_furniture" />
+      <CheckBox
+          android:id="@+id/checkbox_trash_and_cleaning"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/trash_and_cleaning" />
+      <CheckBox
+          android:id="@+id/checkbox_public_transport"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/public_transport" />
+      <CheckBox
+          android:id="@+id/checkbox_suggestion"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/suggestion" />
+      <CheckBox
+          android:id="@+id/checkbox_other"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/other" />
+    </LinearLayout>
+  </LinearLayout>
+</ScrollView>

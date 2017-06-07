@@ -14,7 +14,6 @@ import com.civify.R;
 import com.civify.model.event.Event;
 
 import java.util.List;
-import java.util.Locale;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -53,7 +52,7 @@ public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
         if (event.isHappening()) {
             holder.getTime().setText(mContext.getString(R.string.its_happening_now));
         } else {
-            PrettyTime prettyTime = new PrettyTime(Locale.ENGLISH);
+            PrettyTime prettyTime = new PrettyTime();
             holder.getTime().setText(prettyTime.format(event.getStartDate()));
         }
         holder.getDuration().setText(event.getDuration(mContext));

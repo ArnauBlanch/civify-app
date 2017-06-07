@@ -88,6 +88,7 @@ public class SettingsFragment extends BasicFragment {
                 case R.id.confirmButton:
                     config.locale = new Locale(mNewlang);
                     editor.putString(LANGUAGE, mNewlang);
+                    Locale.setDefault(config.locale);
                     mCurrentLang = mNewlang;
                     break;
                 default:
@@ -101,8 +102,7 @@ public class SettingsFragment extends BasicFragment {
         }
     };
 
-    public SettingsFragment() {
-    }
+    public SettingsFragment() { }
 
     /**
      * Use this factory method to create a new instance of
