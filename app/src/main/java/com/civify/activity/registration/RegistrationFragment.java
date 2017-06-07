@@ -5,9 +5,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.GridView;
 
 import com.civify.R;
+import com.civify.model.ProfileIcon;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class RegistrationFragment extends Fragment {
 
@@ -19,9 +26,39 @@ public class RegistrationFragment extends Fragment {
         mPage = getArguments().getInt("page");
         mView = getActivity().getLayoutInflater()
                 .inflate(getLayoutResource(mPage), container, false);
+        if (mPage == 3) {
+            prepareGridView();
+        }
         mView.setTag(mPage);
         setTextWatchers();
         return mView;
+    }
+
+    private void prepareGridView() {
+        GridView gridView = (GridView) mView.findViewById(R.id.avatar_grid_view);
+        final ArrayList<ProfileIcon> profileIcons = new ArrayList<>(Arrays.asList(
+                ProfileIcon.values()));
+        final AvatarAdapter avatarAdapter = new AvatarAdapter(getContext(), profileIcons);
+        gridView.setAdapter(avatarAdapter);
+        gridView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                boolean found = false;
+                int i = 0;
+                while (!found && i < profileIcons.size()) {
+                    if (profileIcons.get(i).isSelected()) {
+                        profileIcons.get(i).setSelected(false);
+                        found = true;
+                    }
+                    i++;
+                }
+                if (!found || position != i - 1) {
+                    profileIcons.get(position).setSelected(true);
+                }
+                avatarAdapter.notifyDataSetChanged();
+                ((RegistrationActivity) getActivity()).setProfileIcons(profileIcons);
+            }
+        });
     }
 
     private static int getLayoutResource(int pageId) {
@@ -32,6 +69,8 @@ public class RegistrationFragment extends Fragment {
                 return R.layout.registration_page_username;
             case 2:
                 return R.layout.registration_page_email;
+            case 3:
+                return R.layout.registration_page_profile_icon;
             default:
                 return R.layout.registration_page_password;
         }
@@ -50,6 +89,8 @@ public class RegistrationFragment extends Fragment {
                 ((EditText) mView.findViewById(R.id.email_input)).addTextChangedListener(
                         new EmailTextWatcher(mView, R.id.email_validation_icon,
                                 R.id.email_validation_text));
+                break;
+            case 3:
                 break;
             default:
                 ((EditText) mView.findViewById(R.id.password_input)).addTextChangedListener(

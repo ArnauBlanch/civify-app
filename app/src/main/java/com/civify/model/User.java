@@ -61,6 +61,10 @@ public class User implements Serializable {
     @SerializedName("coins")
     private int mCoins;
 
+    @Expose
+    @SerializedName("profile_icon")
+    private ProfileIcon mProfileIcon;
+
     public User(@NonNull String username, @NonNull String name,
                 @NonNull String surname, @NonNull String email,
                 @NonNull String password, @NonNull String passwordConfirmation) {
@@ -165,5 +169,13 @@ public class User implements Serializable {
 
     public void setUserAuthToken(String userAuthToken) {
         mUserAuthToken = userAuthToken;
+    }
+
+    public ProfileIcon getProfileIcon() {
+        return mProfileIcon;
+    }
+
+    public void setProfileIcon(ProfileIcon profileIcon) {
+        mProfileIcon = profileIcon;
     }
 }

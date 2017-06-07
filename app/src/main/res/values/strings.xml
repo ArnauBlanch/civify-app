@@ -252,4 +252,5 @@
   <string name="select_all">Select all</string>
   <string name="deselect_all">Deselect all</string>
   <string name="no_issues_found">No issues were found</string>
+  <string name="choose_avatar">Choose an avatar</string>
 </resources>
