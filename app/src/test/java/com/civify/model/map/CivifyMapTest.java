@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -213,7 +214,7 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.isMapLoaded(), is(true));
         assertThat(mMap.getMarkers(), is(not(nullValue())));
         IssueMarker marker = mMap.getMarkers().get(ISSUE_MOCK_ID.toUpperCase());
-        //marker.setMarker(markerMock);
+        marker.render(markerMock, mock(ClusterManager.class));
         assertThat(marker, is(instanceOf(IssueMarker.class)));
         assertThat(marker.getIssue(), is(sameInstance(issueMock)));
         assertThat(marker.getPosition(), is(markerMock.getPosition()));

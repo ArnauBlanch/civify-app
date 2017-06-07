@@ -151,7 +151,7 @@
   <string name="unreport">Quitar denuncia</string>
   <string name="unreport_error_message">No se pudo quitar la denuncia</string>
   <string name="unreport_message">Se quitó la denúncia con éxito</string>
-  <string name="unresolve">Quitar marca de resuelta</string>
+  <string name="unresolve">No resuelta</string>
   <string name="unresolve_error_message">No se pudo quitar la marca de resuelta</string>
   <string name="unresolve_message">Se ha quitado la marca de resuelta de la incidencia con éxito</string>
   <string name="unspecified_title">Título sin especificar</string>
@@ -199,4 +199,10 @@
   <string name="explanation_forgotten">Te enviaremos un correo con un link para que puedas establecer una nueva contraseña</string>
   <string name="send_button">Enviar</string>
   <string name="sending_forgot_mail">Enviando correo, un momento</string>
+  <string name="general_error">Se ha producido un error\\nIntentalo de nuevo más tarde</string>
+  <string name="logging_in">Iniciando sesión...</string>
+  <string name="user_not_exists">El usuario que has introducido no existe.</string>
+  <string name="incorrect_credentials">Credenciales incorrectas. Intentalo de nuevo.</string>
+  <string name="introduce_valid_password">Introduce una contraseña</string>
+  <string name="introduce_valid_ue">Introduce un correo válido o un nombre de usuario</string>
 </resources>

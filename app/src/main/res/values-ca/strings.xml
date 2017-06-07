@@ -118,7 +118,7 @@
   <string name="unspecified_title">Títol sense especificar</string>
   <string name="unresolve_message">S\'ha tret la marca de resolta de la incidència amb èxit</string>
   <string name="unresolve_error_message">No s\'ha pogut treure la marca de resolta</string>
-  <string name="unresolve">Treure marca de resolta</string>
+  <string name="unresolve">No resolta</string>
   <string name="unreport_message">S\'ha tret la denúncia amb èxit</string>
   <string name="unreport_error_message">No s\'ha pogut treure la denúncia</string>
   <string name="unreport">Treure denúncia</string>
@@ -192,4 +192,10 @@
   <string name="send_button">Enviar</string>
   <string name="sending_forgot_mail">Enviant correu, un moment siusplau</string>
   <string name="action" translatable="false"></string>
+  <string name="general_error">Hi ha agut un error\\nIntenta-ho de nou més tard.</string>
+  <string name="logging_in">Iniciant sessió..</string>
+  <string name="user_not_exists">L\'usuari introduït no existeix.</string>
+  <string name="incorrect_credentials">Credencials incorrectes. Intenta-ho de nou siusplau.</string>
+  <string name="introduce_valid_password">Introdueix una contrasenya, siusplau.</string>
+  <string name="introduce_valid_ue">Introdueix un correu vàlid o un nom d\'usuari siusplau</string>
 </resources>

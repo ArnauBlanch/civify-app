@@ -45,6 +45,26 @@
                 android:maxLines="1"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"/>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/email_errors_icon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/email_errors_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                fontPath="fonts/Nunito-SemiBold.ttf"/>
+          </LinearLayout>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -63,6 +83,26 @@
                 android:textColor="#000"
                 android:inputType="textPassword"
                 android:maxLines="1"/>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/password_errors_icon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/password_errors_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                fontPath="fonts/Nunito-SemiBold.ttf"/>
+          </LinearLayout>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
@@ -72,7 +112,7 @@
         android:layout_height="wrap_content"
         android:text="@string/have_you_forgotten_your_password"
         android:gravity="center"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
 
         android:textColor="@color/green"
         />
