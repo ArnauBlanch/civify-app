@@ -104,7 +104,7 @@ public class BadgeAdapterImplTest {
             assertEquals(mBadge.getTitle(), responseBadge.getTitle());
             assertEquals(mBadge.getContentType(), responseBadge.getContentType());
             assertEquals(mBadge.getUrl(), responseBadge.getUrl());
-            assertEquals(mBadge.getOptainedDate(), responseBadge.getOptainedDate());
+            assertEquals(mBadge.getObtainedDate(), responseBadge.getObtainedDate());
             assertEquals(mBadge.getCorrespondsToType(), responseBadge.getCorrespondsToType());
             assertEquals(mBadge.getCorrespondsToToken(), responseBadge.getCorrespondsToToken());
         }

@@ -22,8 +22,8 @@ public class Badge implements Serializable {
     private String mUrl;
 
     @Expose
-    @SerializedName("optained_date")
-    private Date mOptainedDate;
+    @SerializedName("obtained_date")
+    private Date mObtainedDate;
 
     @Expose
     @SerializedName("corresponds_to_type")
@@ -35,12 +35,12 @@ public class Badge implements Serializable {
 
     public Badge() { }
 
-    public Badge(String title, String contentType, String url, Date optainedDate,
+    public Badge(String title, String contentType, String url, Date obtainedDate,
             String correspondsToType, String correspondsToToken) {
         mTitle = title;
         mContentType = contentType;
         mUrl = url;
-        mOptainedDate = optainedDate;
+        mObtainedDate = obtainedDate;
         mCorrespondsToType = correspondsToType;
         mCorrespondsToToken = correspondsToToken;
     }
@@ -69,12 +69,12 @@ public class Badge implements Serializable {
         mUrl = url;
     }
 
-    public Date getOptainedDate() {
-        return mOptainedDate;
+    public Date getObtainedDate() {
+        return mObtainedDate;
     }
 
-    public void setOptainedDate(Date optainedDate) {
-        mOptainedDate = optainedDate;
+    public void setObtainedDate(Date obtainedDate) {
+        mObtainedDate = obtainedDate;
     }
 
     public String getCorrespondsToType() {

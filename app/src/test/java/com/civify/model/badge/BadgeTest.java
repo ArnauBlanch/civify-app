@@ -51,9 +51,9 @@ public class BadgeTest {
     }
 
     @Test
-    public void testOptainedAt() {
-        mBadge.setOptainedDate(mDate);
-        assertEquals(mDate, mBadge.getOptainedDate());
+    public void testObtainedAt() {
+        mBadge.setObtainedDate(mDate);
+        assertEquals(mDate, mBadge.getObtainedDate());
     }
 
     @Test
