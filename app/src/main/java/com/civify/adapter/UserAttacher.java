@@ -9,8 +9,6 @@ import android.widget.TextView;
 import com.civify.R;
 import com.civify.model.User;
 
-import java.io.Serializable;
-
 public final class UserAttacher {
 
     private static final int PERCENT = 100;
