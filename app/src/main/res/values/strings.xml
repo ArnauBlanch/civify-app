@@ -253,4 +253,5 @@
   <string name="deselect_all">Deselect all</string>
   <string name="no_issues_found">No issues were found</string>
   <string name="choose_avatar">Choose an avatar</string>
+  <string name="skip_this_step">Skip this step</string>
 </resources>
