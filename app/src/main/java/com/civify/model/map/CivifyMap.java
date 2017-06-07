@@ -253,8 +253,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void center(@NonNull Location location, boolean animate) throws MapNotReadyException {
-        if (isMapReady()) forceCenter(location, animate);
-        else throw new MapNotReadyException();
+      forceCenter(location, animate);
     }
 
     private void forceCenter(@NonNull Location location, boolean animate) {
