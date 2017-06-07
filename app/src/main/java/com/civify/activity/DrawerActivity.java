@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,8 +31,8 @@ import com.civify.activity.fragments.SettingsFragment;
 import com.civify.activity.fragments.achievements.AchievementsFragment;
 import com.civify.activity.fragments.award.AwardsFragment;
 import com.civify.activity.fragments.event.EventsFragment;
-import com.civify.activity.fragments.issue.WallFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
+import com.civify.activity.fragments.wall.WallFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserAttacher;
 import com.civify.model.AchievementsEventsContainer;
@@ -74,6 +75,7 @@ public class DrawerActivity extends BaseActivity
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
     private boolean mShowMenuWall;
+    private boolean mShowMenuNavigate;
 
     public int getCurrentFragment() {
         return mCurrentFragment;
@@ -129,9 +131,7 @@ public class DrawerActivity extends BaseActivity
                 mFragmentStack.clear();
                 mFragmentStack.add(fragment);
                 fragment.onResume();
-                fragmentTransaction
-                        .show(fragment)
-                        .commit();
+                fragmentTransaction.show(fragment).commit();
                 mCurrentFragment = NAVIGATE_ID;
             } else {
                 mFragmentStack.lastElement().onPause();
@@ -220,18 +220,27 @@ public class DrawerActivity extends BaseActivity
         if (mCurrentFragment == PROFILE_ID) {
             mShowMenu = true;
             mShowMenuDetails = false;
+            mShowMenuNavigate = false;
         } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
             mShowMenuWall = false;
+            mShowMenuNavigate = false;
         } else if (mCurrentFragment == WALL_ID) {
             mShowMenu = true;
             mShowMenuWall = true;
+            mShowMenuDetails = false;
+            mShowMenuNavigate = false;
+        } else if (mCurrentFragment == NAVIGATE_ID) {
+            mShowMenu = true;
+            mShowMenuWall = false;
+            mShowMenuNavigate = true;
             mShowMenuDetails = false;
         } else {
             mShowMenu = false;
             mShowMenuDetails = false;
             mShowMenuWall = false;
+            mShowMenuNavigate = false;
         }
         invalidateOptionsMenu();
     }
@@ -247,11 +256,13 @@ public class DrawerActivity extends BaseActivity
         } else if (mShowMenuWall) {
             menuRes = R.menu.wall;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
+        } else if (mShowMenuNavigate) {
+            menuRes = R.menu.navigation;
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
         } else {
             menuRes = R.menu.profile;
         }
         getMenuInflater().inflate(menuRes, menu);
-
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
@@ -270,7 +281,8 @@ public class DrawerActivity extends BaseActivity
                 .setLevel((TextView) headerView.findViewById(R.id.header_level))
                 .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
                 .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
-                .setCoins((TextView) headerView.findViewById(R.id.header_coins));
+                .setCoins((TextView) headerView.findViewById(R.id.header_coins))
+                .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
     }
 
     private void setToolbarTitle() {

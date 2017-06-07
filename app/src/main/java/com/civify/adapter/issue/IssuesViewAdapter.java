@@ -19,7 +19,6 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -33,7 +32,7 @@ public class IssuesViewAdapter extends RecyclerView.Adapter<IssuesViewAdapter.My
     public IssuesViewAdapter(Context context, List<Issue> issueList) {
         this.mContext = context;
         this.mIssueList = issueList;
-        mPrettyTime = new PrettyTime(Locale.ENGLISH);
+        mPrettyTime = new PrettyTime();
     }
 
     @Override
