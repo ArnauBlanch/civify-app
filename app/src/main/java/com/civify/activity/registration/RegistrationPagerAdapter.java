@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 class RegistrationPagerAdapter extends FragmentPagerAdapter {
 
-    private static final int NUM_PAGES = 4;
+    private static final int NUM_PAGES = 5;
 
     RegistrationPagerAdapter(FragmentManager fm) {
         super(fm);

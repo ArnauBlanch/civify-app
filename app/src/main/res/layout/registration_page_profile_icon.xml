@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    tools:ignore="MissingPrefix,Overdraw"
+    >
+
+  <TextView
+      android:id="@+id/title1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/choose_avatar"
+      android:textAlignment="center"
+      android:textSize="28sp"
+      android:textColor="#000000"
+      fontPath="fonts/Nunito-ExtraBold.ttf"
+      android:layout_marginBottom="16dp"/>
+
+  <GridView
+      android:padding="16dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:numColumns="3"
+      android:verticalSpacing="10dp"
+      android:horizontalSpacing="10dp"
+      android:stretchMode="columnWidth"
+      android:gravity="center"
+      android:id="@+id/avatar_grid_view"
+      android:scrollbars="none"
+      android:isScrollContainer="false"
+      >
+  </GridView>
+
+  <android.support.v7.widget.AppCompatButton
+      android:layout_width="180dp"
+      android:layout_height="50dp"
+      android:id="@+id/button1"
+      android:layout_gravity="center_horizontal"
+      android:background="@drawable/green_bg_button"
+      android:text="@string/continue_button"
+      android:layout_marginTop="25dp"
+      android:textAllCaps="false"
+      android:textColor="#ffffff"
+      android:textSize="24sp"
+      android:onClick="avatarButtonListener"
+      fontPath="fonts/Nunito-Bold.ttf" />
+
+</LinearLayout>
