@@ -213,7 +213,7 @@ public class CivifyMapTest extends RobolectricTest {
         assertThat(mMap.isMapLoaded(), is(true));
         assertThat(mMap.getMarkers(), is(not(nullValue())));
         IssueMarker marker = mMap.getMarkers().get(ISSUE_MOCK_ID.toUpperCase());
-        marker.setMarker(markerMock);
+        //marker.setMarker(markerMock);
         assertThat(marker, is(instanceOf(IssueMarker.class)));
         assertThat(marker.getIssue(), is(sameInstance(issueMock)));
         assertThat(marker.getPosition(), is(markerMock.getPosition()));
