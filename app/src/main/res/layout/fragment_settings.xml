@@ -1,15 +1,94 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix,Overdraw"
     tools:context="com.civify.activity.fragments.NavigateFragment"
     >
-
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
+  <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:text="Settings Fragment"
-      />
+      >
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:layout_marginTop="20dp"
+      >
 
-</FrameLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_margin="20dp"
+        android:background="#27AE60"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_language"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="28sp"
+        android:layout_marginBottom="20dp"
+        fontPath="fonts/Nunito-ExtraBold.ttf"
+        />
+  <RadioGroup
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/langradio"
+      android:orientation="horizontal"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
+      android:gravity="center_horizontal"
+     >
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radiocat"
+        android:text="@string/catala"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#27AE60"
+       />
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/castellano"
+        android:id="@+id/radiocast"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:textColor="#27AE60" />
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/english"
+        android:id="@+id/radioeng"
+        android:textSize="16sp"
+        android:layout_weight="1"
+        android:textStyle="bold"
+        android:textColor="#27AE60" />
+  </RadioGroup>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/confirmButton"
+        android:layout_marginTop="25dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/confirm"
+        android:background="@drawable/green_bg_button"
+        android:textColor="@color/white"
+        />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_margin="20dp"
+        android:background="#27AE60"/>
+
+  </LinearLayout>
+  </ScrollView>
+</LinearLayout>

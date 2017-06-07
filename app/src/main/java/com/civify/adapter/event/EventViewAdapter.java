@@ -21,11 +21,6 @@ import org.ocpsoft.prettytime.PrettyTime;
 public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
         .EventViewHolder> {
 
-    private static final int MILI_TO_DAYS = 86400000;
-    private static final int MILI_TO_HOURS = 3600000;
-    private static final int DAY_TO_HOURS = 24;
-    private static final char SPACE = ' ';
-
     private List<Event> mItems;
     private Context mContext;
 
@@ -55,37 +50,18 @@ public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
                 .into(holder.getPicture());
         holder.getTitle().setText(event.getTitle());
         holder.getDescription().setText(event.getDescription());
-        PrettyTime prettyTime = new PrettyTime(Locale.ENGLISH);
-        holder.getTime().setText(prettyTime.format(event.getStartDate()));
-        holder.getDuration().setText(getDurationDates(event.getEndDate().getTime(), event
-                .getStartDate().getTime()));
+        if (event.isHappening()) {
+            holder.getTime().setText(mContext.getString(R.string.its_happening_now));
+        } else {
+            PrettyTime prettyTime = new PrettyTime(Locale.ENGLISH);
+            holder.getTime().setText(prettyTime.format(event.getStartDate()));
+        }
+        holder.getDuration().setText(event.getDuration(mContext));
     }
 
     @Override
     public int getItemCount() {
         return mItems.size();
-    }
-
-    private String getDurationDates(Long endDate, Long startDate) {
-        Long difference = endDate - startDate;
-        Long days = difference / MILI_TO_DAYS;
-        Long hours = (difference / MILI_TO_HOURS) - (days * DAY_TO_HOURS);
-        String duration;
-        if (days > 0) {
-            if (hours > 0) {
-                duration = days.toString() + SPACE + mContext.getResources().getString(R.string
-                        .day) + SPACE + hours.toString() + SPACE + mContext.getResources()
-                        .getString(R.string.first_letter_hour);
-            } else {
-                duration = days.toString() + SPACE + mContext.getResources().getString(R.string
-                        .day);
-            }
-        } else {
-            duration = hours.toString()
-                    + SPACE
-                    + mContext.getResources().getString(R.string.first_letter_hour);
-        }
-        return duration;
     }
 
     public static class EventViewHolder extends RecyclerView.ViewHolder
@@ -147,7 +123,7 @@ public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
 
         @Override
         public void onClick(View v) {
-
+            mEvent.showEventDetails();
         }
     }
 }
