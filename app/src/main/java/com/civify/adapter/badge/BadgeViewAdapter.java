@@ -53,7 +53,7 @@ public class BadgeViewAdapter extends RecyclerView.Adapter<BadgeViewAdapter.Badg
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mItems.size();
     }
 
     public static class BadgeViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
