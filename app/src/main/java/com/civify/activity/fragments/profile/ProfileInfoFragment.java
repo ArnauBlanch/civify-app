@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -59,7 +60,8 @@ public class ProfileInfoFragment extends Fragment {
                     .setLevel((TextView) view.findViewById(R.id.user_info_level))
                     .setExperienceWithMax((TextView) view.findViewById(R.id.user_info_xp))
                     .setProgress((ProgressBar) view.findViewById(R.id.user_info_progress))
-                    .setCoins((TextView) view.findViewById(R.id.user_info_coins));
+                    .setCoins((TextView) view.findViewById(R.id.user_info_coins))
+                    .setAvatar((ImageView) view.findViewById(R.id.user_info_image));
         }
     }
 }

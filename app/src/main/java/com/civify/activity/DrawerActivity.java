@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -267,7 +268,8 @@ public class DrawerActivity extends BaseActivity
                 .setLevel((TextView) headerView.findViewById(R.id.header_level))
                 .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
                 .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
-                .setCoins((TextView) headerView.findViewById(R.id.header_coins));
+                .setCoins((TextView) headerView.findViewById(R.id.header_coins))
+                .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
     }
 
     private void setToolbarTitle() {
