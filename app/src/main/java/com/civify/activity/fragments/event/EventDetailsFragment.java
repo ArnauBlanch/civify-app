@@ -18,8 +18,6 @@ import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
 import com.civify.model.event.Event;
 
-import java.util.Locale;
-
 import org.ocpsoft.prettytime.PrettyTime;
 
 public class EventDetailsFragment extends BasicFragment {
@@ -117,7 +115,7 @@ public class EventDetailsFragment extends BasicFragment {
         if (mEvent.isHappening()) {
             time.setText(getContext().getString(R.string.its_happening_now));
         } else {
-            PrettyTime prettyTime = new PrettyTime(Locale.ENGLISH);
+            PrettyTime prettyTime = new PrettyTime();
             time.setText(prettyTime.format(mEvent.getStartDate()));
         }
     }

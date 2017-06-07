@@ -79,7 +79,8 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
 
     private Address geolocateFromGoogleApis(double latitude, double longitude) {
         String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
-                + latitude + ',' + longitude + "&sensor=true";
+                + latitude + ',' + longitude + "&sensor=true&language="
+                + Locale.getDefault().getLanguage();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = null;

@@ -24,6 +24,7 @@ public class SplashActivity extends BaseActivity {
     private static final String LANGUAGE = "lang";
     private static final String CA = "ca";
     private static final String ES = "es";
+    private static final String EN = "en";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,25 +63,19 @@ public class SplashActivity extends BaseActivity {
 
     private void setupLang() {
         SharedPreferences sprefs = getSharedPreferences(SHAREDPREFSLOCALE, Context.MODE_PRIVATE);
-        Configuration config;
-        config = new Configuration(getResources().getConfiguration());
+
         if (sprefs.contains(LANGUAGE)) {
-            config.locale = new Locale(sprefs.getString(LANGUAGE, "en"));
-            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            setLang(new Locale(sprefs.getString(LANGUAGE, EN)));
         } else {
             String devLoc = Locale.getDefault().getLanguage();
-            switch (devLoc) {
-                case ES:
-                    config.locale = new Locale(ES);
-                    getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                    break;
-                case CA:
-                    config.locale = new Locale(CA);
-                    getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                    break;
-                default:
-                    break;
-            }
+            setLang(new Locale(devLoc.equals(ES) || devLoc.equals(CA) ? devLoc : EN));
         }
+    }
+
+    private void setLang(Locale locale) {
+        Locale.setDefault(locale);
+        Configuration config = new Configuration(getResources().getConfiguration());
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 }
