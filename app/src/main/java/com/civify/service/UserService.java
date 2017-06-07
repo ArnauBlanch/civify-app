@@ -29,4 +29,7 @@ public interface UserService {
     @POST("/users/{user_auth_token}/coins")
     Call<User> addCoins(@Header("Authorization") String authToken, @Path("user_auth_token")
             String userAuthToken, @Body JsonObject coins);
+
+    @POST("/password_resets")
+    Call<MessageResponse> sendResetPasswrdMail(@Body JsonObject email);
 }

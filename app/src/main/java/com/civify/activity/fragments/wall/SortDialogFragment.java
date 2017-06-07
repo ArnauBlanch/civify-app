@@ -24,7 +24,6 @@ public class SortDialogFragment extends DialogFragment {
     private int mSortSelected;
     private Fragment mTargetFragment;
 
-
     public static SortDialogFragment newInstance(int sortingSelected, Fragment fragment) {
         SortDialogFragment sortDialogFragment = new SortDialogFragment();
         Bundle args = new Bundle();

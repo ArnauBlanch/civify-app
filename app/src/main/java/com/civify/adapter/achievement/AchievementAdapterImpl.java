@@ -3,10 +3,12 @@ package com.civify.adapter.achievement;
 import android.content.SharedPreferences;
 
 import com.civify.adapter.LoginAdapterImpl;
+import com.civify.model.RewardContainer;
 import com.civify.model.achievement.Achievement;
 import com.civify.service.achievement.AchievementService;
 import com.civify.service.achievement.AchievementSimpleCallback;
 import com.civify.service.achievement.ListAchievementsSimpleCallback;
+import com.civify.service.award.RewardCallback;
 import com.civify.utils.ServiceGenerator;
 
 import java.net.HttpURLConnection;
@@ -70,6 +72,27 @@ public class AchievementAdapterImpl implements AchievementAdapter {
             @Override
             public void onFailure(Call<Achievement> call, Throwable t) {
                 t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void claimAchievement(String achievementToken, final RewardCallback callback) {
+        Call<RewardContainer> call = mAchievementService.claimAchievement(mAuthToken,
+                achievementToken);
+        call.enqueue(new Callback<RewardContainer>() {
+            @Override
+            public void onResponse(Call<RewardContainer> call, Response<RewardContainer> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body().getReward());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RewardContainer> call, Throwable t) {
+                callback.onFailure();
             }
         });
     }

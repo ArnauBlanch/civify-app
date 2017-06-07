@@ -1,6 +1,7 @@
 package com.civify.adapter.event;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -8,8 +9,11 @@ import static org.mockito.Mockito.verify;
 import android.content.SharedPreferences;
 
 import com.civify.model.Picture;
+import com.civify.model.Reward;
+import com.civify.model.RewardContainer;
 import com.civify.model.event.Event;
 import com.civify.service.achievement.AchievementSimpleCallback;
+import com.civify.service.award.RewardCallback;
 import com.civify.service.event.EventService;
 import com.civify.service.event.EventSimpleCallback;
 import com.civify.service.event.ListEventsSimpleCallback;
@@ -128,7 +132,7 @@ public class EventAdapterImplTest {
     }
 
     @Test
-    public void testInvalidGetAchievements() {
+    public void testInvalidGetEvents() {
         JsonObject body = new JsonObject();
         body.addProperty("message", "Doesn’t exists record");
         MockResponse mockResponse = new MockResponse()
@@ -143,7 +147,7 @@ public class EventAdapterImplTest {
     }
 
     @Test
-    public void testValidGetAchievement() throws InterruptedException {
+    public void testValidGetEvent() throws InterruptedException {
         String jsonBody = mGson.toJson(mEvent);
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
@@ -198,6 +202,36 @@ public class EventAdapterImplTest {
         mEventAdapter.getEvent(mEvent.getToken(), mockCallback);
 
         verify(mockCallback, timeout(1000)).onFailure();
+    }
+
+    @Test
+    public void testClaimAchievement() {
+        String body = mGson.toJson(mock(RewardContainer.class));
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(body);
+        mMockWebServer.enqueue(mockResponse);
+        RewardCallback callback = mock(RewardCallback.class);
+
+        mEventAdapter.claimEvent(mEvent.getToken(), callback);
+
+        ArgumentCaptor<Reward> argument = forClass(Reward.class);
+
+        verify(callback, timeout(1000)).onSuccess(argument.capture());
+    }
+
+    @Test
+    public void testClaimAchievementFailure() {
+        String body = mGson.toJson(mock(RewardContainer.class));
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+                .setBody(body);
+        mMockWebServer.enqueue(mockResponse);
+        RewardCallback callback = mock(RewardCallback.class);
+
+        mEventAdapter.claimEvent(mEvent.getToken(), callback);
+
+        verify(callback, timeout(1000)).onFailure();
     }
 
     private void setUpEvent() throws ParseException {
