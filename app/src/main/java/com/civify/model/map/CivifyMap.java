@@ -175,7 +175,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         });
     }
 
-    public void setIssues(List<Issue> issues) throws MapNotLoadedException {
+    public void setIssues(Collection<Issue> issues) throws MapNotLoadedException {
         checkMapLoaded();
         mMarkers.clearItems();
         addAndLog(issues);
@@ -186,7 +186,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mMarkers.getAllIssues();
     }
 
-    private void addAndLog(List<Issue> issues) {
+    private void addAndLog(Collection<Issue> issues) {
         int i = 0, visibleCount = 0, overlappedCount = 0;
         Log.v(TAG, "Issues: " + issues.size() + '\n');
         for (Issue issue : issues) {

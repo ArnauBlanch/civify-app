@@ -147,7 +147,7 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
     }
 
     @NonNull
-    private String formatAddress(@NonNull Address address) {
+    private static String formatAddress(@NonNull Address address) {
         String addressText = "";
         String streetAndNumber = address.getAddressLine(0);
         if (!(streetAndNumber == null || streetAndNumber.isEmpty())) {
