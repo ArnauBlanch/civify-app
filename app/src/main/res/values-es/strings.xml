@@ -6,7 +6,7 @@
   <string name="action"></string>
   <string name="action_settings">Ajustes</string>
   <string name="action_sign_in">Identifícate o regístrate</string>
-  <string name="action_sign_in_short">Identificarse</string>
+  <string name="action_sign_in_short">Identifícate</string>
   <string name="available_rewards_tab">DISPONIBLE</string>
   <string name="camera_error">Ha habido un problema con la cámara</string>
   <string name="camera_permission_denied">Permiso de cámara denegado</string>
@@ -129,8 +129,8 @@
   <string name="settings">Opciones</string>
   <string name="settings_title">Opciones</string>
   <string name="share">compartir</string>
-  <string name="signInWith">Identificarse con:</string>
-  <string name="sign_in">Identificarse</string>
+  <string name="signInWith">Identifícate con:</string>
+  <string name="sign_in">Identifícate</string>
   <string name="sign_out">Cerrar sesión</string>
   <string name="something_went_wrong">Algo fue mal</string>
   <string name="street_furniture">Mobiliario urbano</string>
@@ -187,4 +187,7 @@
   <string name="sort_issues">Ordenar incidencias</string>
   <string name="you_have_completed">Has completado</string>
     <string name="access_achievements_events">Accede a la sección de logros o eventos para reclamar tu recompensa.</string>
+  <string name="claim">Reclamar</string>
+  <string name="and">y</string>
+  <string name="couldnt_claim_achievement">No se pudo reclamar la recompensa.</string>
 </resources>
