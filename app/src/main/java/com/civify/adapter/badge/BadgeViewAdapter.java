@@ -19,9 +19,13 @@ import com.civify.service.achievement.AchievementSimpleCallback;
 import com.civify.service.event.EventSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class BadgeViewAdapter extends RecyclerView.Adapter<BadgeViewAdapter.BadgeViewHolder> {
+
+    private static final char SLASH = '/';
+    private static final char SPACE = ' ';
 
     private List<Badge> mItems;
     private Context mContext;
@@ -47,8 +51,12 @@ public class BadgeViewAdapter extends RecyclerView.Adapter<BadgeViewAdapter.Badg
                 .centerCrop()
                 .into(holder.getImage());
         holder.getTitle().setText(badge.getTitle());
-        String obtained = mContext.getResources().getString(R.string.obtained_at);
-        holder.getDate().setText(obtained);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(badge.getObtainedDate());
+        holder.getDate().setText(mContext.getResources().getString(R.string.obtained_at) + SPACE
+                + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + SLASH
+                + String.valueOf(calendar.get(Calendar.MONTH)) + SLASH
+                + String.valueOf(calendar.get(Calendar.YEAR)));
     }
 
     @Override
