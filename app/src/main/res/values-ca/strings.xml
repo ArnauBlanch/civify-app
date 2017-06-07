@@ -185,9 +185,11 @@
   <string name="email_exists_correct">Direcció de correu correcta, siusplau envia</string>
   <string name="email_not_exists">El correu introduït no existeix</string>
   <string name="email_not_sent">S\'ha produït un error en enviar</string>
-  <string name="email_sent">Email enviat correctament</string>
-  <string name="enter_email">Siusplau, introdueix el teu email</string>
+  <string name="email_sent">Correu enviat correctament</string>
+  <string name="enter_email">Siusplau, introdueix la direcció de correu</string>
   <string name="ok">Ok</string>
   <string name="explanation_forgotten">T\'enviarem un correu amb un link per a poder establir una nova contrasenya</string>
   <string name="send_button">Enviar</string>
+  <string name="sending_forgot_mail">Enviant correu, un moment siusplau</string>
+  <string name="action" translatable="false"></string>
 </resources>
