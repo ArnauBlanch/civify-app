@@ -165,4 +165,17 @@
   <string name="public_transport">Transport públic</string>
   <string name="mapLoading">Carregant mapa, espera si us plau...</string>
   <string name="change_language">Canvía l\'idioma</string>
+    <string name="day">dia</string>
+  <string name="dialog_achievement">assoliment</string>
+  <string name="dialog_achievements">assoliments</string>
+  <string name="dialog_event">esdeveniment</string>
+  <string name="dialog_events">esdeveniments</string>
+  <string name="due_date">\"Data de caducitat\"</string>
+  <string name="duration">Durada</string>
+  <string name="filter_issues">Filtrar incidències</string>
+  <string name="first_letter_hour">h</string>
+  <string name="hello_blank_fragment" translatable="false"></string>
+  <string name="its_happening_now">\"Està succeint ara\"</string>
+  <string name="sort_issues">Ordena incidències</string>
+  <string name="you_have_completed">Has completat</string>
 </resources>

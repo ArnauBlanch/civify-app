@@ -174,4 +174,16 @@
   <string name="you_have_won">Has obtenido:</string>
     <string name="mapLoading">Cargando mapa, espera por favor...</string>
     <string name="change_language">Cambiar idioma</string>
+    <string name="day">día</string>
+  <string name="dialog_achievement">logro</string>
+  <string name="dialog_achievements">logros</string>
+  <string name="dialog_event">evento</string>
+  <string name="dialog_events">eventos</string>
+  <string name="due_date">\"Fecha de caducidad\"</string>
+  <string name="duration">Duración</string>
+  <string name="filter_issues">Filtrar incidencias</string>
+  <string name="first_letter_hour">h</string>
+  <string name="its_happening_now">\"Está sucediendo ahora\"</string>
+  <string name="sort_issues">Ordenar incidencias</string>
+  <string name="you_have_completed">Has completado</string>
 </resources>
