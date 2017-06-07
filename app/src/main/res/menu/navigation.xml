@@ -4,6 +4,6 @@
     <item
         android:title="@string/search"
         android:id="@+id/search_place"
-        android:icon="@drawable/places_ic_search" />
+        android:icon="@drawable/ic_search" />
 
 </menu>

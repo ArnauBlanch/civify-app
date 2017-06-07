@@ -9,6 +9,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,12 +26,16 @@ import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
 import com.civify.model.map.MapNotReadyException;
 import com.civify.utils.AdapterFactory;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 public class NavigateFragment extends BasicFragment {
+
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private static final int RESULT_OK = -1;
+    private static final int RESULT_CANCELED = 0;
 
     public NavigateFragment() { }
 
@@ -54,6 +61,7 @@ public class NavigateFragment extends BasicFragment {
     @Override
     // Called after onCreate
     public void onResume() {
+        setHasOptionsMenu(true);
         super.onResume();
         CivifyMap.getInstance().enable();
     }
@@ -79,7 +87,6 @@ public class NavigateFragment extends BasicFragment {
                         (IssueReward) data.getExtras().getSerializable("issueReward");
                 try {
                     CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
-
                     final DrawerActivity activity = (DrawerActivity) getActivity();
                     AdapterFactory.getInstance().getUserAdapter(getContext())
                             .showRewardDialog(activity, issueReward.getReward(),
@@ -92,7 +99,6 @@ public class NavigateFragment extends BasicFragment {
                                         @Override
                                         public void onFailure() { }
                                     });
-
                     Snackbar.make(getView(), getString(R.string.issue_created),
                             Snackbar.LENGTH_SHORT).show();
                 } catch (MapNotLoadedException ignore) {
@@ -102,7 +108,27 @@ public class NavigateFragment extends BasicFragment {
             }
             CivifyMap.getInstance().setCanBeDisabled(true);
 
+        } else if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            handleSearch(resultCode, data);
         } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
+    }
+
+    private void handleSearch(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Place place = PlaceAutocomplete.getPlace(getActivity(), data);
+            Location loc = LocationAdapter.getLocation(place.getLatLng());
+            try {
+                CivifyMap.getInstance().center(loc, true);
+            } catch (MapNotReadyException ignore) {
+                Snackbar.make(getView(), getString(com.civify.R.string.error_ocurred),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+            Snackbar.make(getView(), getString(com.civify.R.string.error_ocurred),
+                    Snackbar.LENGTH_SHORT).show();
+        } else if (resultCode == RESULT_CANCELED) {
+            //cancelled search
+        }
     }
 
     @Override
@@ -138,33 +164,39 @@ public class NavigateFragment extends BasicFragment {
                 } else showMapLoadingWarning(view);
             }
         });
-
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                Location loc = LocationAdapter.getLocation(place.getLatLng());
-                try {
-                    CivifyMap.getInstance().center(loc, true);
-                } catch (MapNotReadyException ignore) {
-                    showMapLoadingWarning(mapView);
-                }
-                Log.d("place", "Place: " + place.getName());
-            }
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.d("place", "An error occurred: " + status);
-            }
-        });
-
         return mapView;
     }
 
     private static void showMapLoadingWarning(View view) {
         Snackbar.make(view, R.string.mapLoading, Snackbar.LENGTH_LONG)
                 .setAction(R.string.action, null).show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_place:
+                try {
+                    Intent intent =
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                                    .build(getActivity());
+                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException e) {
+                    Snackbar.make(getView(), R.string.service_error, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.action, null).show();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Snackbar.make(getView(), R.string.service_not_available, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.action, null).show();
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }
