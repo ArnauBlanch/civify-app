@@ -179,4 +179,7 @@
   <string name="sort_issues">Ordena incidències</string>
   <string name="you_have_completed">Has completat</string>
     <string name="access_achievements_events">Accedeix a la secció d\'assoliments o esdeveniments per reclamar la teva recompensa.</string>
+  <string name="claim">Reclama</string>
+  <string name="and">i</string>
+  <string name="couldnt_claim_achievement">No s\'ha pogut reclamar la recompensa</string>
 </resources>
