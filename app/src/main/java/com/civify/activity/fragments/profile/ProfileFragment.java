@@ -13,6 +13,7 @@ import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.MainActivity;
 import com.civify.activity.fragments.BasicFragment;
+import com.civify.activity.fragments.badge.BadgeViewFragment;
 import com.civify.adapter.LoginAdapter;
 import com.civify.utils.AdapterFactory;
 
@@ -49,13 +50,14 @@ public class ProfileFragment extends BasicFragment {
         tabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
 
         IssuesProfileFragment issuesFragment = new IssuesProfileFragment();
+        BadgeViewFragment badgeViewFragment = new BadgeViewFragment();
 
         tabHost.addTab(tabHost.newTabSpec(getString(R.string.tab_spec_issues))
                                 .setIndicator(getString(R.string.tab_label_issues), null),
                             issuesFragment.getClass(), null);
         tabHost.addTab(tabHost.newTabSpec(getString(R.string.tab_spec_badges))
                         .setIndicator(getString(R.string.tab_label_badges), null),
-                            TabHostFragment.class, null);
+                            badgeViewFragment.getClass(), null);
 
         return view;
     }
