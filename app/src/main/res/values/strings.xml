@@ -1,9 +1,9 @@
 <resources>
-  <string name="email_validation_icon">Validation icon for e-mail</string>
-  <string name="name_validation_icon">Validation icon for name</string>
-  <string name="surname_validation_icon">Validation icon for surname</string>
-  <string name="username_validation_icon">Validation icon for username</string>
-  <string name="password_validation_icon">Validation icon for password</string>
+  <string name="email_validation_icon" translatable="false">Validation icon for e-mail</string>
+  <string name="name_validation_icon" translatable="false">Validation icon for name</string>
+  <string name="surname_validation_icon" translatable="false">Validation icon for surname</string>
+  <string name="username_validation_icon" translatable="false">Validation icon for username</string>
+  <string name="password_validation_icon" translatable="false">Validation icon for password</string>
   <string name="app_name">Civify</string>
 
   <string name="whats_happening">What\'s happening?</string>
@@ -15,7 +15,7 @@
   <string name="no">No</string>
   <string name="pose_a_risk">Does it pose a risk to people?</string>
   <string name="take_a_picture">Do you have a photo of the issue?</string>
-  <string name="create_new_issue">Change new issue</string>
+  <string name="create_new_issue">Create new issue</string>
   <string name="something_went_wrong">Something went wrong</string>
   <string name="havent_picked_image">You haven\'t picked an image!</string>
   <string name="need_to_allow_camera_permission">You need to allow camera permission to take a photo</string>
@@ -68,12 +68,12 @@
   <string name="error_invalid_password">This password is too short</string>
   <string name="error_incorrect_password">This password is incorrect</string>
   <string name="error_field_required">This field is required</string>
-  <string name="permission_rationale">"Contacts permissions are needed for providing email
+  <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email
         completions."
     </string>
 
-  <string name="title_activity_basic">BasicActivity</string>
-  <string name="title_activity_drawer">DrawerActivity</string>
+  <string name="title_activity_basic" translatable="false">BasicActivity</string>
+  <string name="title_activity_drawer" translatable="false">DrawerActivity</string>
 
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -93,18 +93,18 @@
   <string name="login_password">Password</string>
   <string name="have_you_forgotten_your_password">Have you forgotten your password?</string>
 
-  <string name="user_location_settings_agreed">User agreed to make required location settings
+  <string name="user_location_settings_agreed" translatable="false">User agreed to make required location settings
         changes.
     </string>
-  <string name="user_location_settings_canceled">User chose not to make required location settings
+  <string name="user_location_settings_canceled" translatable="false">User chose not to make required location settings
         changes.
     </string>
   <string name="location_connection_failed">Location services connection failed.</string>
-  <string name="not_implemented_yet">Not implemented yet</string>
-  <string name="action">Action</string>
+  <string name="not_implemented_yet" translatable="false">Not implemented yet</string>
+  <string name="action" translatable="false">Action</string>
 
   <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
   <string name="level">Level</string>
   <string name="sign_out">Sign out</string>
   <string name="issue_name">Issue Name</string>
@@ -120,6 +120,7 @@
   <string name="public_transport">Public transport</string>
   <string name="suggestion">Suggestion</string>
   <string name="other">Other</string>
+
   <string name="select_category">Select category</string>
   <string name="must_choose_category">You must choose a category</string>
   <string name="need_to_allow_location_permission">You need to allow location permission</string>
@@ -185,8 +186,8 @@
   <string name="must_write_title_description">You must write a title and a description</string>
   <string name="unspecified_title">Unspecified title</string>
   <string name="you_have_won">You have earned:</string>
-  <string name="coins_image_description">Coins icon</string>
-  <string name="level_image_description">Level Up icon</string>
+  <string name="coins_image_description" translatable="false">Coins icon</string>
+  <string name="level_image_description" translatable="false">Level Up icon</string>
   <string name="congratulations">Congratulations!</string>
   <string name="couldnt_add_coins">Couldn\'t add the coins to your account.</string>
   <string name="available_rewards_tab">AVAILABLE</string>
@@ -196,7 +197,7 @@
   <string name="get_it"> Get it!</string>
   <string name="dialog_award_bought">Congratulations! You have a new award avaliable now</string>
   <string name="ok_award">Ok!</string>
-  <string name="problem_award">Ups! Impossible exchange it. Try it again</string>
+  <string name="problem_award">Oops! Impossible exchange it. Try it again</string>
   <string name="exchanged_award_used">USED</string>
   <string name="exchanged_award_valid">VALID</string>
   <string name="exchanged_on">Exchanged on</string>
@@ -204,6 +205,11 @@
   <string name="more_info">+info</string>
   <string name="close">CLOSE</string>
   <string name="published_by">PUBLISHED BY</string>
+  <string name="mapLoading">Map loading, please wait...</string>
+  <string name="catala" translatable="false">Català</string>
+    <string name="castellano" translatable="false">Castellano</string>
+  <string name="english" translatable="false">English</string>
+  <string name="change_language">Change language</string>
   <string name="filter_issues">Filter issues</string>
   <string name="sort_issues">Sort issues</string>
   <string name="dialog_achievement">achievement</string>
@@ -214,6 +220,7 @@
   <string name="you_have_completed">You have completed</string>
   <string name="access_achievements_events">Access the achievements or events section to claim your reward.</string>
 
+  <string name="sending_forgot_mail">Sending mail, please wait</string>
   <string name="claim">CLAIM</string>
   <string name="couldnt_claim_achievement">Couldn\'t claim your reward.</string>
 
@@ -224,4 +231,32 @@
   <string name="due_date">Due date</string>
   
   <string name="obtained_at">Obtained at</string>
+  <string name="explanation_forgotten">We will send you a recovery link so you can set a
+    new password</string>
+  <string name="send_button">Submit</string>
+  <string name="email_not_exists">This email doesn\'t exist</string>
+  <string name="email_exists_correct">Correct email, please submit</string>
+  <string name="email_sent">Email sent</string>
+  <string name="email_not_sent">Error sending mail, please try</string>
+  <string name="enter_email">Please write your email first</string>
+    <string name="search">Search</string>
+    <string name="service_error">Service error</string>
+  <string name="service_not_available">Service not available</string>
+    <string name="error_ocurred">An error ocurred</string>
+  <string name="date_ascending">Date (ascending)</string>
+  <string name="date_descending">Date (descending)</string>
+  <string name="proximity">Proximity</string>
+  <string name="confirm_votes">Confirm votes</string>
+  <string name="sort_dialog_title">Sort issues</string>
+    <string name="unresolved">Unresolved</string>
+  <string name="resolved">Resolved</string>
+  <string name="all">All</string>
+  <string name="status">Status</string>
+  <string name="filter_dialog_title">Filter issues</string>
+  <string name="ok">OK</string>
+  <string name="is_risk">Risk?</string>
+  <string name="select_all">Select all</string>
+  <string name="deselect_all">Deselect all</string>
+  <string name="no_issues_found">No issues were found</string>
+  <string name="choose_avatar">Choose an avatar</string>
 </resources>

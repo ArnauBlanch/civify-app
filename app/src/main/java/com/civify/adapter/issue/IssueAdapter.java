@@ -17,6 +17,7 @@ import com.civify.utils.ServiceGenerator;
 import com.google.gson.JsonObject;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,7 +34,15 @@ public class IssueAdapter {
     public static final String USER = "user";
     public static final String RESOLUTION_ADDED = "Resolution added";
     public static final String RESOLUTION_DELETED = "Resolution deleted";
-    static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
+    public static final int UNRESOLVED = 0;
+    public static final int RESOLVED = 1;
+    public static final int ALL = 2;
+    public static final int RISK_YES = 3;
+    public static final int RISK_NO = 4;
+    public static final int RISK_ALL = 5;
+    static final String RECORD_DOES_NOT_EXIST = "Record doesn't exist";
+    private static final String TRUE = "true";
+    private static final String FALSE = "false";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -90,7 +99,47 @@ public class IssueAdapter {
     }
 
     public void getIssues(final ListIssuesSimpleCallback callback) {
-        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken);
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, FALSE, null, null);
+        call.enqueue(new Callback<List<Issue>>() {
+
+            @Override
+            public void onResponse(Call<List<Issue>> call, Response<List<Issue>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Issue>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getIssues(final ListIssuesSimpleCallback callback, int resolved,
+            ArrayList<String> categories, int isRisk) {
+        String resolvedParam;
+        if (resolved == RESOLVED) {
+            resolvedParam = TRUE;
+        } else if (resolved == UNRESOLVED) {
+            resolvedParam = FALSE;
+        } else {
+            resolvedParam = null;
+        }
+
+        String riskParam;
+        if (isRisk == RISK_YES) {
+            riskParam = TRUE;
+        } else if (isRisk == RISK_NO) {
+            riskParam = FALSE;
+        } else {
+            riskParam = null;
+        }
+
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, resolvedParam, categories,
+                riskParam);
         call.enqueue(new Callback<List<Issue>>() {
 
             @Override

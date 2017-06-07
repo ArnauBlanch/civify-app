@@ -31,6 +31,10 @@ public class MainActivity extends BaseActivity {
         mDialog = createDialog();
         putButtonDialog();
 
+        initButtons();
+    }
+
+    private void initButtons() {
         Button buttonRegister = (Button) findViewById(R.id.registerButton);
         buttonRegister.setOnClickListener(new OnClickListener() {
             @Override
@@ -47,21 +51,18 @@ public class MainActivity extends BaseActivity {
                 loginListener();
             }
         });
-        Button buttonGoogle = (Button) findViewById(R.id.buttonGoogle);
-        buttonGoogle.setOnClickListener(new OnClickListener() {
+        ((Button) findViewById(R.id.buttonGoogle)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDialog.show();
             }
         });
-        Button buttonTwitter = (Button) findViewById(R.id.buttonTwitter);
-        buttonTwitter.setOnClickListener(new OnClickListener() {
+        ((Button) findViewById(R.id.buttonTwitter)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDialog.show();
             }
         });
-
     }
 
     private void loginListener() {
