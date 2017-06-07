@@ -70,7 +70,7 @@ task checkstyle(dependsOn: ['clean'], type: Checkstyle) {
 
 tasks.withType(Checkstyle) {
   showViolations true
-  ignoreFailures false
+  ignoreFailures true
 
   reports {
     xml.enabled false
