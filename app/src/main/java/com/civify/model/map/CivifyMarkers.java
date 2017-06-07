@@ -26,12 +26,7 @@ public class CivifyMarkers
 
     protected CivifyMarkers(@NonNull CivifyMap map) {
         super(map.getContext(), map.getGoogleMap());
-        attachToMap(map);
-    }
-
-    public final void attachToMap(@NonNull CivifyMap map) {
         setUpClusterer(map);
-        addItems(getAllRenderedMarkers());
     }
 
     @Nullable
@@ -53,6 +48,10 @@ public class CivifyMarkers
     @Nullable
     private static IssueMarker filterRendered(@Nullable IssueMarker marker) {
         return marker != null && marker.isRendered() ? marker : null;
+    }
+
+    public Collection<IssueMarker> getAll() {
+        return new LinkedList<>(mMarkers.values());
     }
 
     public Collection<IssueMarker> getAllRenderedMarkers() {
@@ -112,7 +111,8 @@ public class CivifyMarkers
     @Override
     public void clearItems() {
         super.clearItems();
-        for (IssueMarker marker : mMarkers.values()) removeInternal(marker);
+        for (IssueMarker issueMarker : mMarkers.values()) issueMarker.remove();
+        mMarkers.clear();
         cluster();
     }
 

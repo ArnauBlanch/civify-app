@@ -139,9 +139,14 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     private void setMarkers() {
-        if (isMapLoaded()) mMarkers.attachToMap(this);
-        else {
-            mMarkers = new CivifyMarkers(this);
+        CivifyMarkers old = mMarkers;
+        mMarkers = new CivifyMarkers(this);
+        if (old != null) {
+            Log.d(TAG, "Map already loaded");
+            mMarkers.addItems(old.getAll());
+            old.clearItems();
+            if (isMapReady()) forceCenter(getCurrentLocation(), false);
+        } else {
             try {
                 refreshIssues();
             } catch (MapNotLoadedException e) {
@@ -248,11 +253,14 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void center(@NonNull Location location, boolean animate) throws MapNotReadyException {
-        if (isMapReady()) {
-            CameraUpdate update = getCameraUpdate(location);
-            if (animate) mGoogleMap.animateCamera(update, CAMERA_ANIMATION_MILLIS, null);
-            else mGoogleMap.moveCamera(update);
-        } else throw new MapNotReadyException();
+        if (isMapReady()) forceCenter(location, animate);
+        else throw new MapNotReadyException();
+    }
+
+    private void forceCenter(@NonNull Location location, boolean animate) {
+        CameraUpdate update = getCameraUpdate(location);
+        if (animate) mGoogleMap.animateCamera(update, CAMERA_ANIMATION_MILLIS, null);
+        else mGoogleMap.moveCamera(update);
     }
 
     static CameraUpdate getCameraUpdate(Location location) {
