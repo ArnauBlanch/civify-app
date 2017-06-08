@@ -279,7 +279,7 @@ public class CivifyMapTest extends RobolectricTest {
                 ((Runnable)invocation.getArguments()[0]).run();
                 return null;
             }
-        }).when(mLocationAdapter).setOnPermissionsRequestedListener(any(Runnable.class));
+        }).when(mLocationAdapter).addOnPermissionsListener(any(Runnable.class));
     }
 
     private Marker getMarkerMock() {

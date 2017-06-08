@@ -21,10 +21,12 @@ public final class UserAttacher {
         setUser(user);
     }
 
+    @NonNull
     public static UserAttacher get(@NonNull Context context, @NonNull User user) {
         return new UserAttacher(context, user);
     }
 
+    @NonNull
     public static UserAttacher getFromCurrentUser(@NonNull Context context) {
         return get(context, UserAdapter.getCurrentUser());
     }

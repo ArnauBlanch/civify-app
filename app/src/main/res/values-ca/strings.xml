@@ -163,7 +163,7 @@
   <string name="qr_instructions">Mostra el codi QR al comerç que ofereix aquesta recompensa per obtenir el teu premi.</string>
   <string name="published_by">PUBLICAT PER</string>
   <string name="public_transport">Transport públic</string>
-  <string name="mapLoading">Carregant mapa, espera si us plau...</string>
+  <string name="map_loading">Carregant mapa, espera si us plau...</string>
   <string name="change_language">Canvía l\'idioma</string>
     <string name="day">dia</string>
   <string name="dialog_achievement">assoliment</string>
