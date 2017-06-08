@@ -229,12 +229,14 @@ public class UserAdapter {
         }
     }
 
-    public void updateCurrentUser(final UserSimpleCallback callback) {
-        getUser(getCurrentUser().getUserAuthToken(), new UserSimpleCallback() {
+    public void updateUser(@NonNull final User user, final UserSimpleCallback callback) {
+        getUser(user.getUserAuthToken(), new UserSimpleCallback() {
             @Override
-            public void onSuccess(User user) {
-                setCurrentUser(user);
-                callback.onSuccess(user);
+            public void onSuccess(User updated) {
+                if (user.getUserAuthToken().equals(getCurrentUser().getUserAuthToken())) {
+                    setCurrentUser(updated);
+                }
+                callback.onSuccess(updated);
             }
 
             @Override
@@ -276,8 +278,9 @@ public class UserAdapter {
     public void showRewardDialog(@NonNull final FragmentActivity context,
             @NonNull Reward reward, @Nullable final UserSimpleCallback updateCallback) {
         RewardDialogFragment.show(context, reward);
-        final int oldLevel = UserAdapter.getCurrentUser().getLevel();
-        updateCurrentUser(
+        User user = getCurrentUser();
+        final int oldLevel = user.getLevel();
+        updateUser(user,
                 new UserSimpleCallback() {
                     @Override
                     public void onSuccess(User user) {
@@ -295,7 +298,7 @@ public class UserAdapter {
     }
 
     public void updateRewards(@NonNull final DrawerActivity activity) {
-        updateCurrentUser(
+        updateUser(getCurrentUser(),
                 new UserSimpleCallback() {
                     @Override
                     public void onSuccess(User user) {
