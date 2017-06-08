@@ -73,4 +73,9 @@ public final class UserAttacher {
         return this;
     }
 
+    public UserAttacher setBadges(@NonNull TextView badges) {
+        badges.setText(String.valueOf(mUser.getBadges()));
+        return this;
+    }
+
 }

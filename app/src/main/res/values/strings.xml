@@ -244,7 +244,7 @@
     button.</string>
   <string name="service_error">Service error</string>
   <string name="service_not_available">Service not available</string>
-   <string name="error_ocurred">An error ocurred</string>
+    <string name="error_ocurred">An error ocurred</string>
   <string name="date_ascending">Date (ascending)</string>
   <string name="date_descending">Date (descending)</string>
   <string name="proximity">Proximity</string>
@@ -267,4 +267,7 @@
   <string name="introduce_valid_ue">Please, introduce an existing email or username</string>
   <string name="introduce_valid_password">Please, introduce a password</string>
   <string name="choose_avatar">Choose an avatar</string>
+  <string name="issue_resolved">This issue has been resolved</string>
+  <string name="cant_edit_resolved">You can\'t edit a resolved issue</string>
+  <string name="skip_this_step">Skip this step</string>
 </resources>

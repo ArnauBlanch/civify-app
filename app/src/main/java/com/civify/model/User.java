@@ -61,6 +61,10 @@ public class User implements Serializable {
     @SerializedName("coins")
     private int mCoins;
 
+    @Expose(serialize = false)
+    @SerializedName("num_badges")
+    private int mBadges;
+
     @Expose
     @SerializedName("profile_icon")
     private ProfileIcon mProfileIcon;
@@ -177,5 +181,13 @@ public class User implements Serializable {
 
     public void setProfileIcon(ProfileIcon profileIcon) {
         mProfileIcon = profileIcon;
+    }
+
+    public int getBadges() {
+        return mBadges;
+    }
+
+    public void setBadges(int badges) {
+        mBadges = badges;
     }
 }
