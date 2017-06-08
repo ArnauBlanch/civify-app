@@ -105,14 +105,21 @@ public class Event extends Achievement {
         Long days = time / MILI_TO_DAYS;
         Long hours = (time / MILI_TO_HOURS) - (days * DAY_TO_HOURS);
         String duration;
+        String daydays;
         if (days > 0) {
+            if (days > 1) {
+                daydays = context.getResources().getString(R.string
+                        .days);
+            } else {
+                daydays = context.getResources().getString(R.string
+                        .day);
+            }
             if (hours > 0) {
-                duration = days.toString() + SPACE + context.getResources().getString(R.string
-                        .day) + SPACE + hours.toString() + SPACE + context.getResources()
+                duration = days.toString() + SPACE + daydays + SPACE + hours.toString()
+                        + SPACE + context.getResources()
                         .getString(R.string.first_letter_hour);
             } else {
-                duration = days.toString() + SPACE + context.getResources().getString(R.string
-                        .day);
+                duration = days.toString() + SPACE + daydays;
             }
         } else {
             duration = hours.toString()
