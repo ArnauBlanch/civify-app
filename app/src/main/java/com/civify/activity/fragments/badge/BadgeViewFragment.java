@@ -82,7 +82,7 @@ public class BadgeViewFragment extends BasicFragment {
 
                     @Override
                     public void onFailure() {
-                        Snackbar.make(view, "Couldn't retrieve badges",
+                        Snackbar.make(view, R.string.couldnt_retrieve_badges,
                                 Snackbar.LENGTH_SHORT);
                     }
                 });
