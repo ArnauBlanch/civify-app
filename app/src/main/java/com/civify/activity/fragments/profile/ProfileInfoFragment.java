@@ -26,7 +26,6 @@ public class ProfileInfoFragment extends BasicFragment {
 
     public ProfileInfoFragment() {
         // Required empty public constructor
-        Log.d(getClass().getSimpleName(), "CONSTRUCTOR");
     }
 
     public static ProfileInfoFragment newInstance() {
@@ -88,6 +87,5 @@ public class ProfileInfoFragment extends BasicFragment {
     private void setUser() {
         mUser = getArguments() == null ? UserAdapter.getCurrentUser()
                 : (User) getArguments().getSerializable(TAG_USER);
-        Log.d(getClass().getSimpleName(), "USER " + mUser);
     }
 }

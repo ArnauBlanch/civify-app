@@ -15,12 +15,9 @@ public class IssuesProfileFragment extends WallFragment {
 
     private User mUser;
 
-    public IssuesProfileFragment() {
-        Log.d(getClass().getSimpleName(), "CONSTRUCTOR EMPTY");
-    }
+    public IssuesProfileFragment() { }
 
     public static IssuesProfileFragment newInstance(User user) {
-        Log.d(IssuesProfileFragment.class.getSimpleName(), "NEW INSTANCE");
         IssuesProfileFragment fragment = new IssuesProfileFragment();
         Bundle args = new Bundle();
         args.putSerializable(ProfileInfoFragment.TAG_USER, user);
@@ -50,6 +47,5 @@ public class IssuesProfileFragment extends WallFragment {
     private void setUser() {
         mUser = getArguments() == null ? UserAdapter.getCurrentUser()
                 : (User) getArguments().getSerializable(ProfileInfoFragment.TAG_USER);
-        Log.d(getClass().getSimpleName(), "USER " + mUser);
     }
 }
