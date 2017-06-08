@@ -192,4 +192,24 @@
   <string name="send_button">Enviar</string>
   <string name="sending_forgot_mail">Enviant correu, un moment siusplau</string>
   <string name="action" translatable="false"></string>
+    <string name="cant_edit_resolved">No pots editar una incidència resolta</string>
+  <string name="all">Tot</string>
+  <string name="choose_avatar">Escull un avatar</string>
+  <string name="confirm_votes">Vots de confirmació</string>
+  <string name="deselect_all">Deseleccionar tot</string>
+  <string name="error_ocurred">Hi ha hagut un error</string>
+  <string name="filter_dialog_title">Filtrar incidències</string>
+  <string name="is_risk">Risc?</string>
+  <string name="issue_resolved">Aquesta incidència ha estat resolta</string>
+  <string name="no_issues_found">No s\'han trobat incidències</string>
+  <string name="obtained_at">Obtingut el</string>
+  <string name="proximity">Proximitat</string>
+  <string name="resolved">Resolta</string>
+  <string name="search">Cercar</string>
+  <string name="select_all">Seleccionar tot</string>
+  <string name="service_error">Error de servei</string>
+  <string name="service_not_available">Servei no disponible</string>
+  <string name="sort_dialog_title">Ordenar incidències</string>
+  <string name="status">Estat</string>
+  <string name="unresolved">No resolta</string>
 </resources>
