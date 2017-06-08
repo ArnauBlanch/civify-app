@@ -199,4 +199,24 @@
   <string name="explanation_forgotten">Te enviaremos un correo con un link para que puedas establecer una nueva contraseña</string>
   <string name="send_button">Enviar</string>
   <string name="sending_forgot_mail">Enviando correo, un momento</string>
+    <string name="cant_edit_resolved">No puedes editar una incidencia resuelta</string>
+  <string name="all">Todo</string>
+  <string name="choose_avatar">Elige un avatar</string>
+  <string name="confirm_votes">Votos de confirmación</string>
+  <string name="deselect_all">Deseleccionar todo</string>
+  <string name="error_ocurred">Ha habido un error</string>
+  <string name="filter_dialog_title">Filtrar incidencias</string>
+  <string name="is_risk">¿Riesgo?</string>
+  <string name="issue_resolved">Esta incidencia ha sido resuelta</string>
+  <string name="no_issues_found">No se encontraron incidencias</string>
+  <string name="obtained_at">Obtenido el</string>
+  <string name="proximity">Proximidad</string>
+  <string name="resolved">Resuelta</string>
+  <string name="search">Buscar</string>
+  <string name="select_all">Seleccionar todo</string>
+  <string name="service_error">Error de servicio</string>
+  <string name="service_not_available">Servicio no disponible</string>
+  <string name="sort_dialog_title">Ordenar incidencias</string>
+  <string name="status">Estado</string>
+  <string name="unresolved">No resuelta</string>
 </resources>

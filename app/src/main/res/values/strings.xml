@@ -243,8 +243,8 @@
     <string name="service_error">Service error</string>
   <string name="service_not_available">Service not available</string>
     <string name="error_ocurred">An error ocurred</string>
-  <string name="date_ascending">Date (ascending)</string>
-  <string name="date_descending">Date (descending)</string>
+  <string name="date_ascending" translatable="false">Date (ascending)</string>
+  <string name="date_descending" translatable="false">Date (descending)</string>
   <string name="proximity">Proximity</string>
   <string name="confirm_votes">Confirm votes</string>
   <string name="sort_dialog_title">Sort issues</string>
@@ -259,4 +259,6 @@
   <string name="deselect_all">Deselect all</string>
   <string name="no_issues_found">No issues were found</string>
   <string name="choose_avatar">Choose an avatar</string>
+    <string name="issue_resolved">This issue has been resolved</string>
+  <string name="cant_edit_resolved">You can\'t edit a resolved issue</string>
 </resources>
