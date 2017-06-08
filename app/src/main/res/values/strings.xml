@@ -270,4 +270,11 @@
   <string name="issue_resolved">This issue has been resolved</string>
   <string name="cant_edit_resolved">You can\'t edit a resolved issue</string>
   <string name="skip_this_step">Skip this step</string>
+  <string name="couldnt_retrieve_achievements">Couldn\'t retrieve achievements.</string>
+  <string name="couldnt_retrieve_rewards">Couldn\'t retrieve rewards.</string>
+  <string name="couldnt_retrieve_badges">Couldn\'t retrieve badges</string>
+  <string name="error_register">There was an error when registering</string>
+  <string name="error_locality">Error getting locality with HTTP/GET on Google Maps API</string>
+  <string name="unexpected_code">Unexpected code getting locality with HTTP/GET</string>
+  <string name="on_google">on Google Maps API:</string>
 </resources>

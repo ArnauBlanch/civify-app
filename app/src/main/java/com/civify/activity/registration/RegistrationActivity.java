@@ -118,7 +118,7 @@ public class RegistrationActivity
             @Override
             public void onFailure() {
                 Snackbar.make(findViewById(R.id.registration_linearlayout),
-                        "There was an error when registering", Snackbar.LENGTH_SHORT).show();
+                        R.string.error_register, Snackbar.LENGTH_SHORT).show();
             }
         });
     }

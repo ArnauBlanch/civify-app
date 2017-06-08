@@ -225,4 +225,14 @@
   <string name="incorrect_credentials">Credenciales incorrectas. Intentalo de nuevo.</string>
   <string name="introduce_valid_password">Introduce una contraseña</string>
   <string name="introduce_valid_ue">Introduce un correo válido o un nombre de usuario</string>
+    <string name="couldnt_retrieve_achievements">No se pudieron recuperar los logros</string>
+  <string name="couldnt_retrieve_badges">No se pudieron recuperar las insignias</string>
+  <string name="couldnt_retrieve_rewards">No se pudieron recuperar las recompensas</string>
+  <string name="date_ascending">Fecha (ascendiente)</string>
+  <string name="date_descending">Fecha (descendiente)</string>
+  <string name="error_locality">Error al obtener localidad con HTTP/GET en Google Maps API</string>
+  <string name="error_register">Hubo un error durante el registro</string>
+  <string name="on_google">en Google Maps API:</string>
+  <string name="search_disable_center">Localizaciones deshabilitadas. Para habilitarlas de nuevo pulsa el botón centrar</string>
+  <string name="unexpected_code">Código inesperado al obtener localidad con HTTP/GET</string>
 </resources>
