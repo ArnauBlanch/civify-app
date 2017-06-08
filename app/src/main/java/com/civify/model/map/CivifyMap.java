@@ -22,7 +22,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.Set;
 
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
-    public static final int DEFAULT_ZOOM = 18;
+    public static final float DEFAULT_ZOOM = 18f;
     public static final int CAMERA_ANIMATION_MILLIS = 1000;
 
     private static final String TAG = CivifyMap.class.getSimpleName();
@@ -40,7 +39,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
     private CivifyMarkers mMarkers;
-    private boolean mPlayerSet, mCanBeDisabled;
+    private boolean mPlayerSet, mCanBeDisabled, mAutoCenter;
     private Runnable mOnMapReadyListener;
     private final LocationAdapter mLocationAdapter;
     private final IssueAdapter mIssueAdapter;
@@ -51,13 +50,15 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     // Dependency injection for tests
-    CivifyMap(@NonNull LocationAdapter locationAdapter, @NonNull IssueAdapter issueAdapter) {
+    protected CivifyMap(@NonNull LocationAdapter locationAdapter,
+            @NonNull IssueAdapter issueAdapter) {
         mLocationAdapter = locationAdapter;
         mIssueAdapter = issueAdapter;
         setRefreshMillis(LocationAdapter.Priority.HIGH_ACCURACY,
                 LocationAdapter.Priority.HIGH_ACCURACY.getPeriodMillis(), 0L);
         setRefreshLocations(true);
         setCanBeDisabled(true);
+        setAutoCenter(true);
     }
 
     public static void setContext(@NonNull DrawerActivity context) {
@@ -145,7 +146,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
             Log.d(TAG, "Map already loaded");
             mMarkers.addItems(old.getAll());
             old.clearItems();
-            if (isMapReady()) forceCenter(getCurrentLocation(), false);
+            if (isMapReady()) forceCenter(getCurrentLocation(), null, false);
         } else {
             try {
                 refreshIssues();
@@ -175,7 +176,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         });
     }
 
-    public void setIssues(List<Issue> issues) throws MapNotLoadedException {
+    public void setIssues(Collection<Issue> issues) throws MapNotLoadedException {
         checkMapLoaded();
         mMarkers.clearItems();
         addAndLog(issues);
@@ -186,7 +187,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return mMarkers.getAllIssues();
     }
 
-    private void addAndLog(List<Issue> issues) {
+    private void addAndLog(Collection<Issue> issues) {
         int i = 0, visibleCount = 0, overlappedCount = 0;
         Log.v(TAG, "Issues: " + issues.size() + '\n');
         for (Issue issue : issues) {
@@ -244,26 +245,59 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         mMockLocation = mockLocation;
     }
 
-    public LatLng getCurrentCameraPosition() {
-        return mGoogleMap.getCameraPosition().target;
+    public CameraPosition getCurrentCameraPosition() {
+        return mGoogleMap.getCameraPosition();
+    }
+
+    public void setZoom(float zoom, boolean animate) throws MapNotLoadedException {
+        checkMapLoaded();
+        cameraUpdate(getCameraUpdate(zoom), animate);
     }
 
     public void center(boolean animate) throws MapNotReadyException {
-        center(getCurrentLocation(), animate);
+        center((Float) null, animate);
     }
 
-    public void center(@NonNull Location location, boolean animate) throws MapNotReadyException {
-        forceCenter(location, animate);
+    public void center(@Nullable Float zoom, boolean animate) throws MapNotReadyException {
+        checkMapReady();
+        try {
+            center(getCurrentLocation(), zoom, animate);
+        } catch (MapNotLoadedException e) {
+            Log.wtf(TAG, "Map ready must include that is loaded", e);
+        }
     }
 
-    private void forceCenter(@NonNull Location location, boolean animate) {
-        CameraUpdate update = getCameraUpdate(location);
+    public void center(@NonNull Location location, boolean animate) throws MapNotLoadedException {
+        center(location, null, animate);
+    }
+
+    public void center(@NonNull Location location, @Nullable Float zoom, boolean animate)
+            throws MapNotLoadedException {
+        checkMapLoaded();
+        forceCenter(location, zoom, animate);
+    }
+
+    private void forceCenter(@NonNull Location location, @Nullable Float zoom, boolean animate) {
+        CameraUpdate update = zoom == null ? getCameraUpdate(location)
+                : getCameraUpdate(location, zoom);
+        cameraUpdate(update, animate);
+    }
+
+    protected static CameraUpdate getCameraUpdate(Location location) {
+        return CameraUpdateFactory.newLatLng(LocationAdapter.getLatLng(location));
+    }
+
+    protected static CameraUpdate getCameraUpdate(Location location, float zoom) {
+        return CameraUpdateFactory.newLatLngZoom(LocationAdapter.getLatLng(location), zoom);
+    }
+
+    protected static CameraUpdate getCameraUpdate(float zoom) {
+        return CameraUpdateFactory.zoomTo(zoom);
+    }
+
+    private void cameraUpdate(@NonNull CameraUpdate update, boolean animate) {
         if (animate) mGoogleMap.animateCamera(update, CAMERA_ANIMATION_MILLIS, null);
         else mGoogleMap.moveCamera(update);
-    }
-
-    static CameraUpdate getCameraUpdate(Location location) {
-        return CameraUpdateFactory.newLatLng(LocationAdapter.getLatLng(location));
     }
 
     public void setOnMapReadyListener(@Nullable Runnable onMapReadyListener) {
@@ -275,13 +309,23 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     public void onUpdateLocation(@NonNull Location location) {
         if (!mPlayerSet) {
             mPlayerSet = true;
+            if (mOnMapReadyListener != null) mOnMapReadyListener.run();
+        }
+        if (isAutoCenter()) {
             try {
                 center(false);
             } catch (MapNotReadyException e) {
                 Log.wtf(TAG, e);
             }
-            if (mOnMapReadyListener != null) mOnMapReadyListener.run();
         }
+    }
+
+    public boolean isAutoCenter() {
+        return mAutoCenter;
+    }
+
+    public void setAutoCenter(boolean autoCenter) {
+        mAutoCenter = autoCenter;
     }
 
     public final void setRefreshLocations(boolean refreshLocations) {
@@ -332,6 +376,10 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     private void checkMapLoaded() throws MapNotLoadedException {
         if (!isMapLoaded()) throw new MapNotLoadedException();
+    }
+
+    private void checkMapReady() throws MapNotReadyException {
+        if (!isMapReady()) throw new MapNotReadyException();
     }
 
     public static CivifyMap getInstance() {

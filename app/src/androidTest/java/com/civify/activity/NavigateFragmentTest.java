@@ -5,23 +5,18 @@ import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.core.Is.is;
 
-import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -34,14 +29,12 @@ import com.civify.adapter.LoginError;
 import com.civify.adapter.LoginFinishedCallback;
 import com.civify.model.User;
 import com.civify.model.map.CivifyMap;
-import com.civify.model.map.MapNotReadyException;
+import com.civify.model.map.MapNotLoadedException;
 import com.civify.utils.AdapterFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.concurrent.CountDownLatch;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -110,7 +103,7 @@ public class NavigateFragmentTest {
             public void run() {
                 try {
                     CivifyMap.getInstance().center(LocationAdapter.getLocation(fake), false);
-                } catch (MapNotReadyException e) {
+                } catch (MapNotLoadedException e) {
                     Log.wtf(TAG, e);
                 }
             }
@@ -122,7 +115,7 @@ public class NavigateFragmentTest {
         runOnMain(new Runnable() {
             @Override
             public void run() {
-                LatLng actual = CivifyMap.getInstance().getCurrentCameraPosition();
+                LatLng actual = CivifyMap.getInstance().getCurrentCameraPosition().target;
                 assertThat(actual.latitude, is(closeTo(expected.latitude, 0.01)));
                 assertThat(actual.longitude, is(closeTo(expected.longitude, 0.01)));
             }
