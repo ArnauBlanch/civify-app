@@ -93,6 +93,10 @@ public class Issue implements Serializable {
     @SerializedName("picture")
     private Picture mPicture;
 
+    @Expose(serialize = false)
+    @SerializedName("resolved")
+    private boolean mResolved;
+
     public Issue() { }
 
     public Issue(String title, String description, Category category, boolean risk,
@@ -172,6 +176,10 @@ public class Issue implements Serializable {
 
     public boolean isRisk() {
         return mRisk;
+    }
+
+    public boolean isResolved() {
+        return mResolved;
     }
 
     public void setRisk(boolean risk) {

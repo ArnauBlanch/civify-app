@@ -165,6 +165,15 @@ public class IssueDetailsFragment extends BasicFragment {
                     @Override
                     public void onSuccess(Issue issue) {
                         mIssue = issue;
+                        if (issue.isResolved()) {
+                            LinearLayout buttons = (LinearLayout) mViewDetails
+                                    .findViewById(R.id.buttonsLayout);
+                            buttons.setVisibility(View.GONE);
+                            TextView resolvedOrFar = (TextView) mViewDetails
+                                    .findViewById(R.id.too_far_message);
+                            resolvedOrFar.setText(R.string.issue_resolved);
+                            resolvedOrFar.setVisibility(View.VISIBLE);
+                        }
                         setIssue();
                         if (!oldPosition.equals(issue.getPosition())) setPosition();
                     }
@@ -380,7 +389,10 @@ public class IssueDetailsFragment extends BasicFragment {
 
         if (isTooFarFromIssue()) {
             buttons.setVisibility(View.GONE);
-            mViewDetails.findViewById(R.id.too_far_message).setVisibility(View.VISIBLE);
+            TextView resolvedOrFar = (TextView) mViewDetails
+                    .findViewById(R.id.too_far_message);
+            resolvedOrFar.setText(R.string.too_far_from_issue);
+            resolvedOrFar.setVisibility(View.VISIBLE);
         } else {
             setupConfirmButton();
             setupReportButton();
@@ -464,11 +476,17 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     public void launchEditActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
-        Bundle data = new Bundle();
-        data.putSerializable(TAG_ISSUE, mIssue);
-        intent.putExtra(TAG_ISSUE, data);
-        startActivityForResult(intent, REQUEST_CODE);
+        if (mIssue.isResolved()) {
+            Snackbar.make(getView(), R.string.cant_edit_resolved, Snackbar.LENGTH_SHORT)
+                    .show();
+        } else {
+            Intent intent = new Intent(getActivity().getApplicationContext(),
+                    EditIssueActivity.class);
+            Bundle data = new Bundle();
+            data.putSerializable(TAG_ISSUE, mIssue);
+            intent.putExtra(TAG_ISSUE, data);
+            startActivityForResult(intent, REQUEST_CODE);
+        }
     }
 
     @Override
