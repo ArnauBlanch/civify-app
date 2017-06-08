@@ -258,7 +258,14 @@
   <string name="select_all">Select all</string>
   <string name="deselect_all">Deselect all</string>
   <string name="no_issues_found">No issues were found</string>
+  <string name="logging_in">Logging in...</string>
+  <string name="user_not_exists">Sorry, this user does not exists</string>
+  <string name="general_error">An error occurred.\nPlease, try again later</string>
+  <string name="incorrect_credentials">Invalid credentials.\nPlease, try again.</string>
+  <string name="introduce_valid_ue">Please, introduce an existing email or username</string>
+  <string name="introduce_valid_password">Please, introduce a password</string>
   <string name="choose_avatar">Choose an avatar</string>
     <string name="issue_resolved">This issue has been resolved</string>
   <string name="cant_edit_resolved">You can\'t edit a resolved issue</string>
+  <string name="skip_this_step">Skip this step</string>
 </resources>
