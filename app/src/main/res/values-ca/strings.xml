@@ -228,4 +228,7 @@
   <string name="on_google">en Google Maps API:</string>
   <string name="search_disable_center">Localitzacions deshabilitides. Per tornar-les a habilitar prem el botó centrar</string>
   <string name="unexpected_code">Codi inesperat al obtenir la localitat amb HTTP/GET</string>
+  <string name="without_permissions">No tens permisos per dur a terme auqesta acció.</string>
+  <string name="skip_this_step">Salta\'t aquest pas</string>
+  <string name="all_rights_reserved">Tots els drets reservats.</string>
 </resources>
