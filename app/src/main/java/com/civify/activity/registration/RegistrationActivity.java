@@ -24,15 +24,12 @@ import com.civify.model.ProfileIcon;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
-import java.util.ArrayList;
-
 public class RegistrationActivity
         extends BaseActivity {
 
     private UserAdapter mUserAdapter;
     private ViewPager mViewPager;
     private LoginAdapter mLoginAdapter;
-    private ArrayList<ProfileIcon> mProfileIcons;
     private ProfileIcon mSelectedProfileIcon;
 
     @Override
@@ -204,27 +201,13 @@ public class RegistrationActivity
         imm.hideSoftInputFromWindow(mViewPager.getWindowToken(), 0);
     }
 
-    public void avatarButtonListener(View v) {
-        boolean found = false;
-        if (mProfileIcons != null && !mProfileIcons.isEmpty()) {
-            for (ProfileIcon pi : mProfileIcons) {
-                if (pi.isSelected()) {
-                    mSelectedProfileIcon = pi;
-                    found = true;
-                }
-            }
-            if (!found) {
-                mSelectedProfileIcon = ProfileIcon.USER;
-                mSelectedProfileIcon.setSelected(true);
-            }
-        } else {
-            mSelectedProfileIcon = ProfileIcon.USER;
-            mSelectedProfileIcon.setSelected(true);
-        }
+    public void defaultAvatarButtonListener(View v) {
+        mSelectedProfileIcon = ProfileIcon.USER;
         nextPage();
     }
 
-    public void setProfileIcons(ArrayList<ProfileIcon> profileIcons) {
-        mProfileIcons = profileIcons;
+    public void selectProfileIcon(ProfileIcon profileIcon) {
+        mSelectedProfileIcon = profileIcon;
+        nextPage();
     }
 }

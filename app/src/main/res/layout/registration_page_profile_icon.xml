@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="#ffffff"
     tools:ignore="MissingPrefix,Overdraw"
+    android:layout_marginBottom="25dp"
     >
 
   <TextView
@@ -19,6 +20,17 @@
       android:textColor="#000000"
       fontPath="fonts/Nunito-ExtraBold.ttf"
       android:layout_marginBottom="16dp"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:textColor="@color/colorPrimary"
+      android:text="@string/skip_this_step"
+      android:textSize="14sp"
+      fontPath="fonts/Nunito-BoldItalic.ttf"
+      android:onClick="defaultAvatarButtonListener"
+      />
 
   <GridView
       android:padding="16dp"
@@ -34,19 +46,5 @@
       android:isScrollContainer="false"
       >
   </GridView>
-
-  <android.support.v7.widget.AppCompatButton
-      android:layout_width="180dp"
-      android:layout_height="50dp"
-      android:id="@+id/button1"
-      android:layout_gravity="center_horizontal"
-      android:background="@drawable/green_bg_button"
-      android:text="@string/continue_button"
-      android:layout_marginTop="25dp"
-      android:textAllCaps="false"
-      android:textColor="#ffffff"
-      android:textSize="24sp"
-      android:onClick="avatarButtonListener"
-      fontPath="fonts/Nunito-Bold.ttf" />
 
 </LinearLayout>

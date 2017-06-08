@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class AvatarAdapter extends BaseAdapter {
 
     private static final int WIDTH = 250;
-    private static final float UNSELECTED_ALPHA = 0.4f;
 
     private Context mContext;
     private ArrayList<ProfileIcon> mProfileIcons;
@@ -50,12 +49,6 @@ public class AvatarAdapter extends BaseAdapter {
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) convertView;
-        }
-
-        if (!mProfileIcons.get(position).isSelected()) {
-            imageView.setAlpha(UNSELECTED_ALPHA);
-        } else {
-            imageView.setAlpha(1f);
         }
 
         imageView.setImageResource(mProfileIcons.get(position).getIcon());

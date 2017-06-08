@@ -45,20 +45,8 @@ public class RegistrationFragment extends Fragment {
         gridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                boolean found = false;
-                int i = 0;
-                while (!found && i < profileIcons.size()) {
-                    if (profileIcons.get(i).isSelected()) {
-                        profileIcons.get(i).setSelected(false);
-                        found = true;
-                    }
-                    i++;
-                }
-                if (!found || position != i - 1) {
-                    profileIcons.get(position).setSelected(true);
-                }
-                avatarAdapter.notifyDataSetChanged();
-                ((RegistrationActivity) getActivity()).setProfileIcons(profileIcons);
+                ((RegistrationActivity) getActivity()).selectProfileIcon(profileIcons
+                        .get(position));
             }
         });
     }
