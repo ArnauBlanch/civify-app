@@ -25,9 +25,7 @@ public class ProfileFragment extends BasicFragment {
     private LoginAdapter mLoginAdapter;
     private User mUser;
 
-    public ProfileFragment() {
-        Log.d(getClass().getSimpleName(), "CONSTRUCTOR");
-    }
+    public ProfileFragment() { }
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -68,15 +66,15 @@ public class ProfileFragment extends BasicFragment {
         IssuesProfileFragment issuesFragment = IssuesProfileFragment.newInstance(mUser);
         BadgeViewFragment badgeViewFragment = BadgeViewFragment.newInstance(mUser);
 
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.profile_info_fragment_placeholder, profileInfoFragment).commit();
-
         tabHost.addTab(tabHost.newTabSpec(getString(R.string.tab_spec_issues))
                                 .setIndicator(getString(R.string.tab_label_issues), null),
                             issuesFragment.getClass(), issuesFragment.getArguments());
         tabHost.addTab(tabHost.newTabSpec(getString(R.string.tab_spec_badges))
                         .setIndicator(getString(R.string.tab_label_badges), null),
                             badgeViewFragment.getClass(), badgeViewFragment.getArguments());
+
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.profile_info_fragment_placeholder, profileInfoFragment).commit();
 
         return view;
     }
@@ -105,6 +103,5 @@ public class ProfileFragment extends BasicFragment {
     private void setUser() {
         mUser = getArguments() == null ? UserAdapter.getCurrentUser()
                 : (User) getArguments().getSerializable(ProfileInfoFragment.TAG_USER);
-        Log.d(getClass().getSimpleName(), "USER " + mUser);
     }
 }

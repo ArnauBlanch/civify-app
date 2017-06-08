@@ -25,6 +25,7 @@ import com.civify.service.badge.ListBadgesSimpleCallback;
 import com.civify.utils.AdapterFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,12 +33,10 @@ public class BadgeViewFragment extends BasicFragment {
 
     private List<Badge> mBadgeList;
     private BadgeViewAdapter mBadgeViewAdapter;
-    private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
     private User mUser;
 
     public BadgeViewFragment() {
-        Log.d(getClass().getSimpleName(), "CONSTRUCTOR");
         mBadgeList = new ArrayList<>();
     }
 
@@ -68,20 +67,16 @@ public class BadgeViewFragment extends BasicFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_badge_view, container, false);
 
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.profile_badge_placeholder, BadgeViewFragment.newInstance(mUser))
-                .commit();
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.badge_recyclerView);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.badge_recyclerView);
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_badges);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-        mRecyclerView.setAdapter(mBadgeViewAdapter);
+                new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(mBadgeViewAdapter);
 
         return view;
     }
@@ -122,6 +117,5 @@ public class BadgeViewFragment extends BasicFragment {
     private void setUser() {
         mUser = getArguments() == null ? UserAdapter.getCurrentUser()
                 : (User) getArguments().getSerializable(ProfileInfoFragment.TAG_USER);
-        Log.d(getClass().getSimpleName(), "USER " + mUser);
     }
 }

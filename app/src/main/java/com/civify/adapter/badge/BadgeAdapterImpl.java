@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.civify.adapter.LoginAdapterImpl;
-import com.civify.adapter.UserAdapter;
 import com.civify.model.badge.Badge;
 import com.civify.service.badge.BadgeService;
 import com.civify.service.badge.ListBadgesSimpleCallback;
@@ -33,8 +32,7 @@ public class BadgeAdapterImpl implements BadgeAdapter {
     @Override
     public void getUserBadges(@NonNull String authToken,
             @NonNull final ListBadgesSimpleCallback callback) {
-        Call<List<Badge>> serviceCall = mBadgeService.getUserBadges(getToken(), UserAdapter
-                .getCurrentUser().getUserAuthToken());
+        Call<List<Badge>> serviceCall = mBadgeService.getUserBadges(getToken(), authToken);
         serviceCall.enqueue(new Callback<List<Badge>>() {
             @Override
             public void onResponse(Call<List<Badge>> call, Response<List<Badge>> response) {
