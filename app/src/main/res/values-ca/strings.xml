@@ -124,7 +124,7 @@
   <string name="unreport">Treure denúncia</string>
   <string name="unconfirm_message">La incidencia s\'ha desconfirmat amb èxit</string>
   <string name="unconfirm_error_message">No s\'ha pogut desconfirmar la incidència</string>
-  <string name="unconfirm">Desconfirmar</string>
+  <string name="unconfirm">Treure confirmació</string>
   <string name="trash_and_cleaning">Brossa i neteja</string>
   <string name="too_far_from_issue">Ets massa lluny d\'aquesta incidència</string>
   <string name="today">avui</string>
