@@ -278,4 +278,6 @@
   <string name="error_locality">Error getting locality with HTTP/GET on Google Maps API</string>
   <string name="unexpected_code">Unexpected code getting locality with HTTP/GET</string>
   <string name="on_google">on Google Maps API:</string>
+  <string name="welcome_to">Welcome to</string>
+  <string name="introduction_page_1">The users community where you can win worrying about your city.</string>
 </resources>
