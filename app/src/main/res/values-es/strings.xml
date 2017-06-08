@@ -219,4 +219,10 @@
   <string name="sort_dialog_title">Ordenar incidencias</string>
   <string name="status">Estado</string>
   <string name="unresolved">No resuelta</string>
+  <string name="general_error">Se ha producido un error\\nIntentalo de nuevo más tarde</string>
+  <string name="logging_in">Iniciando sesión...</string>
+  <string name="user_not_exists">El usuario que has introducido no existe.</string>
+  <string name="incorrect_credentials">Credenciales incorrectas. Intentalo de nuevo.</string>
+  <string name="introduce_valid_password">Introduce una contraseña</string>
+  <string name="introduce_valid_ue">Introduce un correo válido o un nombre de usuario</string>
 </resources>

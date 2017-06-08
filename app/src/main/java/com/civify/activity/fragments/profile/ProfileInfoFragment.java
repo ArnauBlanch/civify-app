@@ -58,7 +58,8 @@ public class ProfileInfoFragment extends Fragment {
                     .setExperienceWithMax((TextView) view.findViewById(R.id.user_info_xp))
                     .setProgress((ProgressBar) view.findViewById(R.id.user_info_progress))
                     .setCoins((TextView) view.findViewById(R.id.user_info_coins))
-                    .setAvatar((ImageView) view.findViewById(R.id.user_info_image));
+                    .setAvatar((ImageView) view.findViewById(R.id.user_info_image))
+                    .setBadges((TextView) view.findViewById(R.id.user_info_rewards));
         }
     }
 }
