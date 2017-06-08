@@ -230,7 +230,7 @@
   <string name="first_letter_hour">h</string>
   <string name="its_happening_now">It\'s happening now</string>
   <string name="due_date">Due date</string>
-  
+
   <string name="obtained_at">Obtained at</string>
   <string name="explanation_forgotten">We will send you a recovery link so you can set a
     new password</string>
@@ -245,7 +245,7 @@
     button.</string>
   <string name="service_error">Service error</string>
   <string name="service_not_available">Service not available</string>
-    <string name="error_ocurred">An error ocurred</string>
+  <string name="error_ocurred">An error ocurred</string>
   <string name="date_ascending">Date (ascending)</string>
   <string name="date_descending">Date (descending)</string>
   <string name="proximity">Proximity</string>
@@ -278,4 +278,7 @@
   <string name="error_locality">Error getting locality with HTTP/GET on Google Maps API</string>
   <string name="unexpected_code">Unexpected code getting locality with HTTP/GET</string>
   <string name="on_google">on Google Maps API:</string>
+
+  <string name="year_team">© 2017 Civify Team</string>
+  <string name="all_rights_reserved">All rigths reserved.</string>
 </resources>
