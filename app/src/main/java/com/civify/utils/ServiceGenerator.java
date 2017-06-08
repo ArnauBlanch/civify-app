@@ -25,7 +25,7 @@ public final class ServiceGenerator {
 
     private ServiceGenerator() {
         mGson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
+                 .excludeFieldsWithoutExposeAnnotation()
                 .setDateFormat(RAILS_DATE_FORMAT)
                 .create();
         mBuilder = new Retrofit.Builder()

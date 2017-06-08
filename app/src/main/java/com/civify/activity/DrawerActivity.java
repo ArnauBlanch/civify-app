@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.civify.R;
+import com.civify.activity.fragments.AboutFragment;
 import com.civify.activity.fragments.BasicFragment;
 import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.SettingsFragment;
@@ -57,6 +58,7 @@ public class DrawerActivity extends BaseActivity
     public static final int EXCHANGED_AWARDS = 10;
     public static final int DETAILS_ACHIEVEMENTS_ID = 11;
     public static final int DETAILS_EVENTS_ID = 12;
+    public static final int ABOUT_ID = 13;
 
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
@@ -191,6 +193,9 @@ public class DrawerActivity extends BaseActivity
         } else if (id == R.id.nav_settings) {
             SettingsFragment settingsFragment = SettingsFragment.newInstance();
             setFragment(settingsFragment, SETTINGS_ID);
+        } else if (id == R.id.nav_about) {
+            AboutFragment aboutFragment = AboutFragment.newInstance();
+            setFragment(aboutFragment, ABOUT_ID);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
