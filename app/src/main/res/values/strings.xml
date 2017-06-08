@@ -31,7 +31,7 @@
   <string name="valid_unused_username">The username is valid and unused</string>
   <string name="invalid_username">The username is invalid (Should have 8–20 characters. Special
         characters allowed: .,)
-    </string>
+  </string>
   <string name="used_username">The username is already used</string>
   <string name="valid_unused_email">The e-mail is valid and unused</string>
   <string name="invalid_email">The e-mail is invalid</string>
@@ -95,10 +95,10 @@
 
   <string name="user_location_settings_agreed" translatable="false">User agreed to make required location settings
         changes.
-    </string>
+  </string>
   <string name="user_location_settings_canceled" translatable="false">User chose not to make required location settings
         changes.
-    </string>
+  </string>
   <string name="location_connection_failed">Location services connection failed.</string>
   <string name="not_implemented_yet" translatable="false">Not implemented yet</string>
   <string name="action" translatable="false">Action</string>
@@ -207,7 +207,7 @@
   <string name="published_by">PUBLISHED BY</string>
   <string name="mapLoading">Map loading, please wait...</string>
   <string name="catala" translatable="false">Català</string>
-    <string name="castellano" translatable="false">Castellano</string>
+  <string name="castellano" translatable="false">Castellano</string>
   <string name="english" translatable="false">English</string>
   <string name="change_language">Change language</string>
   <string name="filter_issues">Filter issues</string>
@@ -239,8 +239,10 @@
   <string name="email_sent">Email sent</string>
   <string name="email_not_sent">Error sending mail, please try</string>
   <string name="enter_email">Please write your email first</string>
-    <string name="search">Search</string>
-    <string name="service_error">Service error</string>
+  <string name="search">Search</string>"
+  <string name="search_disable_center">Locations disabled.\nTo enable it again press center
+    button.</string>
+  <string name="service_error">Service error</string>
   <string name="service_not_available">Service not available</string>
     <string name="error_ocurred">An error ocurred</string>
   <string name="date_ascending">Date (ascending)</string>
@@ -248,7 +250,7 @@
   <string name="proximity">Proximity</string>
   <string name="confirm_votes">Confirm votes</string>
   <string name="sort_dialog_title">Sort issues</string>
-    <string name="unresolved">Unresolved</string>
+  <string name="unresolved">Unresolved</string>
   <string name="resolved">Resolved</string>
   <string name="all">All</string>
   <string name="status">Status</string>
@@ -265,5 +267,7 @@
   <string name="introduce_valid_ue">Please, introduce an existing email or username</string>
   <string name="introduce_valid_password">Please, introduce a password</string>
   <string name="choose_avatar">Choose an avatar</string>
+  <string name="issue_resolved">This issue has been resolved</string>
+  <string name="cant_edit_resolved">You can\'t edit a resolved issue</string>
   <string name="skip_this_step">Skip this step</string>
 </resources>

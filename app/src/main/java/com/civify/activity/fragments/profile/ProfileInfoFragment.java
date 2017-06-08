@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.civify.R;
+import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserAttacher;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.model.User;
@@ -35,6 +36,7 @@ public class ProfileInfoFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_profile_info, container, false);
+        // TODO: Get user from ProfileFragment and set info
         setUserInfo(view);
         AdapterFactory.getInstance().getUserAdapter(getContext()).updateCurrentUser(
                 new UserSimpleCallback() {
@@ -51,7 +53,7 @@ public class ProfileInfoFragment extends Fragment {
 
     private void setUserInfo(View view) {
         if (view != null) {
-            UserAttacher.getFromCurrentUser(getContext())
+            UserAttacher.get(getContext(), UserAdapter.getCurrentUser())
                     .setFullName((TextView) view.findViewById(R.id.user_info_name))
                     .setUsername((TextView) view.findViewById(R.id.user_info_username))
                     .setLevel((TextView) view.findViewById(R.id.user_info_level))

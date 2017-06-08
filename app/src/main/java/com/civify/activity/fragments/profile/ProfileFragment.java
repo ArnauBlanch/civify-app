@@ -49,6 +49,7 @@ public class ProfileFragment extends BasicFragment {
         FragmentTabHost tabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         tabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
 
+        // TODO: Pass User to IssuesProfileFragment
         IssuesProfileFragment issuesFragment = new IssuesProfileFragment();
         BadgeViewFragment badgeViewFragment = new BadgeViewFragment();
 
@@ -61,6 +62,8 @@ public class ProfileFragment extends BasicFragment {
 
         return view;
     }
+
+    // TODO: Disable sign out if not is the current user
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
