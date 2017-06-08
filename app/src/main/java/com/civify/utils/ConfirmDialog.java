@@ -28,21 +28,25 @@ public class ConfirmDialog extends AlertDialog {
                          @Nullable OnClickListener noListener) {
         this(context, title, message);
         if (yesListener != null) {
-            setPositiveButton(context.getString(android.R.string.yes), yesListener);
+            setPositiveButton(null, yesListener);
         }
         if (noListener != null) {
-            setNegativeButton(context.getString(android.R.string.no), noListener);
+            setNegativeButton(null, noListener);
         }
     }
 
     public final void setPositiveButton(
-            @NonNull String text, @Nullable OnClickListener yesListener) {
-        setButton(BUTTON_POSITIVE, text, yesListener);
+            @Nullable String text, @Nullable OnClickListener yesListener) {
+        String checkedTest = text;
+        if (text == null) checkedTest = getContext().getString(android.R.string.ok);
+        setButton(BUTTON_POSITIVE, checkedTest, yesListener);
     }
 
     public final void setNegativeButton(
-            @NonNull String text, @Nullable OnClickListener noListener) {
-        setButton(BUTTON_NEGATIVE, text, noListener);
+            @Nullable String text, @Nullable OnClickListener noListener) {
+        String checkedTest = text;
+        if (text == null) checkedTest = getContext().getString(android.R.string.cancel);
+        setButton(BUTTON_NEGATIVE, checkedTest, noListener);
     }
 
     public static void show(@NonNull Context context,

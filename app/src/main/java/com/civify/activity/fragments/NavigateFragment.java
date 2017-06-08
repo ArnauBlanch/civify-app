@@ -9,8 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +17,7 @@ import android.view.ViewGroup;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.createissue.CreateIssueActivity;
+import com.civify.activity.fragments.issue.IssueDetailsFragment;
 import com.civify.activity.fragments.wall.FilterDialogFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UserSimpleCallback;
@@ -48,6 +47,8 @@ public class NavigateFragment extends BasicFragment {
     private static final int RESULT_OK = -1;
     private static final int DEFAULT_RISK = 3;
 
+    private FloatingActionButton mFabLocation, mFabCreateIssue;
+    private OnClickListener mLocationListener, mCreateIssueListener;
     private float mLastZoom;
     private Snackbar mSarchCenterSnackbar;
     private int mStatusSelected;
@@ -216,13 +217,14 @@ public class NavigateFragment extends BasicFragment {
         setupFilterFloating(mapView);
         setupFilterItems();
 
+        disableButtonsIfNoPermissions();
+
         return mapView;
     }
 
     private void setCenterButton(View v) {
-        FloatingActionButton fabLocation = (FloatingActionButton)
-                v.findViewById(R.id.fab_location);
-        fabLocation.setOnClickListener(new View.OnClickListener() {
+        mFabLocation = (FloatingActionButton) v.findViewById(R.id.fab_location);
+        mLocationListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -233,19 +235,19 @@ public class NavigateFragment extends BasicFragment {
                         mSarchCenterSnackbar = null;
                         zoom = mLastZoom;
                     }
-                    CivifyMap.getInstance().center(
-                            CivifyMap.getInstance().getCurrentLocation(), zoom, true);
+                    CivifyMap.getInstance()
+                            .center(CivifyMap.getInstance().getCurrentLocation(), zoom, true);
                 } catch (MapNotLoadedException ignore) {
                     showMapLoadingWarning(view);
                 }
             }
-        });
+        };
+        mFabLocation.setOnClickListener(mLocationListener);
     }
 
     private void setCreateIssueButton(View v) {
-        FloatingActionButton fabCreateIssue = (FloatingActionButton)
-                v.findViewById(R.id.fab_add);
-        fabCreateIssue.setOnClickListener(new View.OnClickListener() {
+        mFabCreateIssue = (FloatingActionButton) v.findViewById(R.id.fab_add);
+        mCreateIssueListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (CivifyMap.getInstance().isMapReady()) {
@@ -255,31 +257,57 @@ public class NavigateFragment extends BasicFragment {
                     startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
                 } else showMapLoadingWarning(view);
             }
-        });
+        };
+        mFabCreateIssue.setOnClickListener(mCreateIssueListener);
     }
 
     private void setupFilterFloating(View view) {
         FloatingActionButton fabFilterIssues =
                 (FloatingActionButton) view.findViewById(R.id.fab_filter);
-        fabFilterIssues.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FilterDialogFragment filterDialogFragment =
-                        FilterDialogFragment.newInstance(mStatusSelected, mCategoriesSelected,
-                                mRiskSelected);
-                filterDialogFragment.setTargetFragment(NavigateFragment.this, REQUEST_DIALOG);
-                filterDialogFragment.show(getActivity());
+        fabFilterIssues.setOnClickListener(
+                new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance(
+                            mStatusSelected, mCategoriesSelected, mRiskSelected);
+                    filterDialogFragment.setTargetFragment(NavigateFragment.this, REQUEST_DIALOG);
+                    filterDialogFragment.show(getActivity());
+                }
             }
-        });
+        );
     }
 
     private static void showMapLoadingWarning(View view) {
-        Snackbar.make(view, R.string.mapLoading, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(view, R.string.map_loading, Snackbar.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    private static void showNoPermissionsWarning(View view) {
+        Snackbar.make(view, R.string.without_permissions, Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void disableButtonsIfNoPermissions() {
+        final CivifyMap map = CivifyMap.getInstance();
+        Runnable setButtonsEnabled = new Runnable() {
+            @Override
+            public void run() {
+                setButtonsEnabled(map.hasLocationPermissions());
+            }
+        };
+        setButtonsEnabled.run();
+        map.addOnPermissionsChangedListener(setButtonsEnabled);
+    }
+
+    private void setButtonsEnabled(boolean enable) {
+        OnClickListener noPermissionsListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNoPermissionsWarning(v);
+            }
+        };
+        mFabLocation.setOnClickListener(enable ? mLocationListener : noPermissionsListener);
+        mFabLocation.setAlpha(enable ? 1f : IssueDetailsFragment.DISABLED_ALPHA);
+        mFabCreateIssue.setOnClickListener(enable ? mCreateIssueListener : noPermissionsListener);
+        mFabCreateIssue.setAlpha(enable ? 1f : IssueDetailsFragment.DISABLED_ALPHA);
     }
 
     @Override
@@ -290,10 +318,10 @@ public class NavigateFragment extends BasicFragment {
                     Intent intent = new PlaceAutocomplete.IntentBuilder(
                             PlaceAutocomplete.MODE_OVERLAY).build(getActivity());
                     startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-                } catch (GooglePlayServicesRepairableException e) {
+                } catch (GooglePlayServicesRepairableException ignore) {
                     Snackbar.make(getView(), R.string.service_error, Snackbar.LENGTH_LONG)
                             .setAction(R.string.action, null).show();
-                } catch (GooglePlayServicesNotAvailableException e) {
+                } catch (GooglePlayServicesNotAvailableException ignore) {
                     Snackbar.make(getView(), R.string.service_not_available, Snackbar.LENGTH_LONG)
                             .setAction(R.string.action, null).show();
                 }
@@ -303,4 +331,5 @@ public class NavigateFragment extends BasicFragment {
         }
         return false;
     }
+
 }

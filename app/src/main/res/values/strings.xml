@@ -205,7 +205,8 @@
   <string name="more_info">+info</string>
   <string name="close">CLOSE</string>
   <string name="published_by">PUBLISHED BY</string>
-  <string name="mapLoading">Map loading, please wait...</string>
+  <string name="map_loading">Map loading, please wait...</string>
+  <string name="without_permissions">You do not have permissions to perform this action.</string>
   <string name="catala" translatable="false">Català</string>
   <string name="castellano" translatable="false">Castellano</string>
   <string name="english" translatable="false">English</string>

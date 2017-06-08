@@ -43,7 +43,6 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     private Runnable mOnMapReadyListener;
     private final LocationAdapter mLocationAdapter;
     private final IssueAdapter mIssueAdapter;
-    private Location mMockLocation;
 
     private CivifyMap(@NonNull DrawerActivity context) {
         this(new LocationAdapter(context), AdapterFactory.getInstance().getIssueAdapter(context));
@@ -113,10 +112,10 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         Log.d(TAG, "Map received. Loading Civify Map...");
         mGoogleMap = googleMap;
         setMapSettings();
-        mLocationAdapter.setOnPermissionsRequestedListener(new Runnable() {
+        addOnPermissionsChangedListener(new Runnable() {
             @Override
             public void run() {
-                enableGoogleMyLocation();
+                setGoogleMyLocation(hasLocationPermissions());
             }
         });
         mLocationAdapter.setOnUpdateLocationListener(this);
@@ -226,23 +225,34 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         return (DrawerActivity) mLocationAdapter.getContext();
     }
 
-    public void enableGoogleMyLocation() {
+    public void setGoogleMyLocation(boolean enabled) {
         try {
-            mGoogleMap.setMyLocationEnabled(true);
+            mGoogleMap.setMyLocationEnabled(enabled);
         } catch (SecurityException e) {
             Log.wtf(TAG, "Permissions should be checked before call enableGoogleMyLocation()", e);
         }
     }
 
-    public Location getCurrentLocation() {
-        if (mMockLocation != null) {
-            return mMockLocation;
-        }
-        return mLocationAdapter.getLastLocation();
+    public boolean hasLocationPermissions() {
+        return mLocationAdapter.hasPermissions();
     }
 
-    public void setMockLocation(Location mockLocation) {
-        mMockLocation = mockLocation;
+    public void addOnPermissionsChangedListener(@NonNull Runnable onPermissionsChanged) {
+        mLocationAdapter.addOnPermissionsChangedListener(onPermissionsChanged);
+    }
+
+    public void removeOnPermissionsChangedListener(@NonNull Runnable onPermissionsChanged) {
+        mLocationAdapter.removeOnPermissionsChangedListener(onPermissionsChanged);
+    }
+
+    public void setLocation(@Nullable Location mockLocation) {
+        mLocationAdapter.setMockLocationsEnabled(
+                mockLocation != null || LocationAdapter.DEFAULT_MOCKS_ENABLED);
+        mLocationAdapter.setMockLocation(mockLocation);
+    }
+
+    public Location getCurrentLocation() {
+        return mLocationAdapter.getLastLocation();
     }
 
     public CameraPosition getCurrentCameraPosition() {

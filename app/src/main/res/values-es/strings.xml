@@ -172,7 +172,7 @@
   <string name="whats_your_name">¿Cómo te llamas?</string>
   <string name="yes">Sí</string>
   <string name="you_have_won">Has obtenido:</string>
-    <string name="mapLoading">Cargando mapa, espera por favor...</string>
+    <string name="map_loading">Cargando mapa, espera por favor...</string>
     <string name="change_language">Cambiar idioma</string>
     <string name="day">día</string>
   <string name="dialog_achievement">logro</string>

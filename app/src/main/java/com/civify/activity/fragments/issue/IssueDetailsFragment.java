@@ -55,11 +55,12 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 public class IssueDetailsFragment extends BasicFragment {
 
+    public static final float DISABLED_ALPHA = 0.15f;
+
     private static final String TAG = "debug-IssueDetails";
 
     private static final String TAG_ISSUE = "issue";
     private static final int MIN_METERS_FROM_ISSUE = 70;
-    private static final float DISABLED_ALPHA = 0.15f;
     private static final int SHOW_AS_ACTION_NEVER = 0;
     private static final int REQUEST_CODE = 0;
 
@@ -156,6 +157,7 @@ public class IssueDetailsFragment extends BasicFragment {
         addTime();
 
         setupButtons();
+        disableButtonsIfNoPermissions();
     }
 
     private void updateIssue(String token) {
@@ -389,10 +391,14 @@ public class IssueDetailsFragment extends BasicFragment {
     private void setupButtons() {
         LinearLayout buttons = (LinearLayout) mViewDetails.findViewById(R.id.buttonsLayout);
 
-        if (isTooFarFromIssue()) {
+        if (!CivifyMap.getInstance().hasLocationPermissions()) {
             buttons.setVisibility(View.GONE);
-            TextView resolvedOrFar = (TextView) mViewDetails
-                    .findViewById(R.id.too_far_message);
+            TextView noPerms = (TextView) mViewDetails.findViewById(R.id.too_far_message);
+            noPerms.setText(R.string.without_permissions);
+            noPerms.setVisibility(View.VISIBLE);
+        } else if (isTooFarFromIssue()) {
+            buttons.setVisibility(View.GONE);
+            TextView resolvedOrFar = (TextView) mViewDetails.findViewById(R.id.too_far_message);
             resolvedOrFar.setText(R.string.too_far_from_issue);
             resolvedOrFar.setVisibility(View.VISIBLE);
         } else {
@@ -404,6 +410,17 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private boolean isTooFarFromIssue() {
         return mDistance == null || mDistance > MIN_METERS_FROM_ISSUE;
+    }
+
+    private void disableButtonsIfNoPermissions() {
+        CivifyMap.getInstance().addOnPermissionsChangedListener(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        setupButtons();
+                    }
+                }
+        );
     }
 
     private void setupConfirmButton() {
