@@ -37,70 +37,6 @@ public class SettingsFragment extends BasicFragment {
     private String mCurrentLang;
     private String mNewlang;
     private RadioGroup mRadiolang;
-    private RadioGroup.OnCheckedChangeListener mRadioListener =
-            new RadioGroup.OnCheckedChangeListener() {
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    switch (checkedId) {
-                        case R.id.radiocat:
-                            if (!mCurrentLang.equals(CA)) {
-                                mConfirmButton.setAlpha(ENABLED_ALPHA);
-                                mConfirmButton.setEnabled(true);
-                                mNewlang = CA;
-                            } else {
-                                mConfirmButton.setAlpha(DISABLED_ALPHA);
-                                mConfirmButton.setEnabled(false);
-                            }
-                            break;
-                        case R.id.radiocast:
-                            if (!mCurrentLang.equals(ES)) {
-                                mConfirmButton.setAlpha(ENABLED_ALPHA);
-                                mConfirmButton.setEnabled(true);
-                                mNewlang = ES;
-                            } else {
-                                mConfirmButton.setAlpha(DISABLED_ALPHA);
-                                mConfirmButton.setEnabled(false);
-                            }
-                            break;
-                        case R.id.radioeng:
-                            if (!mCurrentLang.equals(EN)) {
-                                mConfirmButton.setAlpha(ENABLED_ALPHA);
-                                mConfirmButton.setEnabled(true);
-                                mNewlang = EN;
-                            } else {
-                                mConfirmButton.setAlpha(DISABLED_ALPHA);
-                                mConfirmButton.setEnabled(false);
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            };
-    private View.OnClickListener mSettingsListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Configuration config;
-            config = new Configuration(getResources().getConfiguration());
-            SharedPreferences sprefs = getActivity().getApplicationContext()
-                    .getSharedPreferences(SHAREDPREFSLOCALE, 0);
-            SharedPreferences.Editor editor = sprefs.edit();
-            switch (v.getId()) {
-                case R.id.confirmButton:
-                    config.locale = new Locale(mNewlang);
-                    editor.putString(LANGUAGE, mNewlang);
-                    Locale.setDefault(config.locale);
-                    mCurrentLang = mNewlang;
-                    break;
-                default:
-                    break;
-            }
-            editor.apply();
-            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-            Intent intent = new Intent(getActivity().getApplicationContext(), DrawerActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-        }
-    };
 
     public SettingsFragment() { }
 
@@ -152,10 +88,80 @@ public class SettingsFragment extends BasicFragment {
             default:
                 break;
         }
-        mRadiolang.setOnCheckedChangeListener(mRadioListener);
+        mRadiolang.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                handleRadio(checkedId);
+            }
+        });
         mConfirmButton.setAlpha(DISABLED_ALPHA);
         mConfirmButton.setEnabled(false);
-        mConfirmButton.setOnClickListener(mSettingsListener);
+        mConfirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLanguage(v);
+            }
+        });
         return mSettings;
     }
+
+    private void handleRadio(int checkedId) {
+        switch (checkedId) {
+            case R.id.radiocat:
+                if (!mCurrentLang.equals(CA)) {
+                    mConfirmButton.setAlpha(ENABLED_ALPHA);
+                    mConfirmButton.setEnabled(true);
+                    mNewlang = CA;
+                } else {
+                    mConfirmButton.setAlpha(DISABLED_ALPHA);
+                    mConfirmButton.setEnabled(false);
+                }
+                break;
+            case R.id.radiocast:
+                if (!mCurrentLang.equals(ES)) {
+                    mConfirmButton.setAlpha(ENABLED_ALPHA);
+                    mConfirmButton.setEnabled(true);
+                    mNewlang = ES;
+                } else {
+                    mConfirmButton.setAlpha(DISABLED_ALPHA);
+                    mConfirmButton.setEnabled(false);
+                }
+                break;
+            case R.id.radioeng:
+                if (!mCurrentLang.equals(EN)) {
+                    mConfirmButton.setAlpha(ENABLED_ALPHA);
+                    mConfirmButton.setEnabled(true);
+                    mNewlang = EN;
+                } else {
+                    mConfirmButton.setAlpha(DISABLED_ALPHA);
+                    mConfirmButton.setEnabled(false);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void setLanguage(View v) {
+        Configuration config;
+        config = new Configuration(getResources().getConfiguration());
+        SharedPreferences sprefs = getActivity().getApplicationContext()
+                .getSharedPreferences(SHAREDPREFSLOCALE, 0);
+        SharedPreferences.Editor editor = sprefs.edit();
+        switch (v.getId()) {
+            case R.id.confirmButton:
+                config.locale = new Locale(mNewlang);
+                editor.putString(LANGUAGE, mNewlang);
+                Locale.setDefault(config.locale);
+                mCurrentLang = mNewlang;
+                break;
+            default:
+                break;
+        }
+        editor.apply();
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        Intent intent = new Intent(getActivity().getApplicationContext(), DrawerActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
 }
+

@@ -36,7 +36,7 @@
   <string name="daysAgo">hace días</string>
   <string name="delete_issue">Borrar Incidencia</string>
   <string name="delete_sure">¿Borrar Incidencia?</string>
-  <string name="describe_your_issue">\"Describe tu incidencia\"</string>
+  <string name="describe_your_issue">Describe tu incidencia</string>
   <string name="description">Descripción</string>
   <string name="details_title">Detalles</string>
   <string name="dialog_award_bought">¡Felicidades! Tienes una nueva recompensa disponible</string>
@@ -60,7 +60,7 @@
   <string name="havent_picked_image">¡No has elegido una imagen!</string>
   <string name="hello_blank_fragment"></string>
   <string name="invalid_email">El correo electrónico es inválido</string>
-  <string name="invalid_password">\"         <![CDATA[LA contraseña es inválida (Debería tener 8-40 caracteres, incluyendo al menos 1 letra mayúscula y una minúscula, 1 dígito. Caracteres especiales permitidos: @&#$%)]]>\"</string>
+  <string name="invalid_password">"         <![CDATA[LA contraseña es inválida (Debería tener 8-40 caracteres, incluyendo al menos 1 letra mayúscula y una minúscula, 1 dígito. Caracteres especiales permitidos: @&#$%)]]>"</string>
   <string name="invalid_username">El nombre de usuario es inválido (Debería tener 8-20 caracteres. Caracteres especiales permitidos: .,)</string>
   <string name="issue_created">Incidencia creada</string>
   <string name="issue_description">Descripción de la incidencia</string>
@@ -145,7 +145,7 @@
   <string name="today">hoy</string>
   <string name="too_far_from_issue">Estás demasiado lejos de esta incidencia</string>
   <string name="trash_and_cleaning">Basura y limpieza</string>
-  <string name="unconfirm">Desconfirmar</string>
+  <string name="unconfirm">Quitar confirmación</string>
   <string name="unconfirm_error_message">No se pudo desconfirmar la incidencia</string>
   <string name="unconfirm_message">La incidencia fue desconfirmada con éxito</string>
   <string name="unreport">Quitar denuncia</string>
@@ -179,11 +179,11 @@
   <string name="dialog_achievements">logros</string>
   <string name="dialog_event">evento</string>
   <string name="dialog_events">eventos</string>
-  <string name="due_date">\"Fecha de caducidad\"</string>
+  <string name="due_date">Fecha de caducidad</string>
   <string name="duration">Duración</string>
   <string name="filter_issues">Filtrar incidencias</string>
   <string name="first_letter_hour">h</string>
-  <string name="its_happening_now">\"Está sucediendo ahora\"</string>
+  <string name="its_happening_now">Está sucediendo ahora</string>
   <string name="sort_issues">Ordenar incidencias</string>
   <string name="you_have_completed">Has completado</string>
     <string name="access_achievements_events">Accede a la sección de logros o eventos para reclamar tu recompensa.</string>
@@ -235,4 +235,7 @@
   <string name="on_google">en Google Maps API:</string>
   <string name="search_disable_center">Localizaciones deshabilitadas. Para habilitarlas de nuevo pulsa el botón centrar</string>
   <string name="unexpected_code">Código inesperado al obtener localidad con HTTP/GET</string>
+  <string name="without_permissions">No tienes permisos para llevar a cabo esta acción.</string>
+  <string name="skip_this_step">Saltarse este paso</string>
+  <string name="all_rights_reserved">Todos los derechos reservados.</string>
 </resources>
