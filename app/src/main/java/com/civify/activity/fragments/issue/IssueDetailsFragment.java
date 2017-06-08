@@ -167,15 +167,6 @@ public class IssueDetailsFragment extends BasicFragment {
                     @Override
                     public void onSuccess(Issue issue) {
                         mIssue = issue;
-                        if (issue.isResolved()) {
-                            LinearLayout buttons = (LinearLayout) mViewDetails
-                                    .findViewById(R.id.buttonsLayout);
-                            buttons.setVisibility(View.GONE);
-                            TextView resolvedOrFar = (TextView) mViewDetails
-                                    .findViewById(R.id.too_far_message);
-                            resolvedOrFar.setText(R.string.issue_resolved);
-                            resolvedOrFar.setVisibility(View.VISIBLE);
-                        }
                         setIssue();
                         if (!oldPosition.equals(issue.getPosition())) setPosition();
                     }
@@ -400,6 +391,11 @@ public class IssueDetailsFragment extends BasicFragment {
             buttons.setVisibility(View.GONE);
             TextView resolvedOrFar = (TextView) mViewDetails.findViewById(R.id.too_far_message);
             resolvedOrFar.setText(R.string.too_far_from_issue);
+            resolvedOrFar.setVisibility(View.VISIBLE);
+        } else if (mIssue.isResolved()) {
+            buttons.setVisibility(View.GONE);
+            TextView resolvedOrFar = (TextView) mViewDetails.findViewById(R.id.too_far_message);
+            resolvedOrFar.setText(R.string.issue_resolved);
             resolvedOrFar.setVisibility(View.VISIBLE);
         } else {
             setupConfirmButton();
