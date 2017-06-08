@@ -60,7 +60,7 @@
   <string name="havent_picked_image">No has escollit una imatge!</string>
   <string name="illumination">Il·luminació</string>
   <string name="invalid_email">El correu electrònic es invàlid</string>
-  <string name="invalid_password">\"         <![CDATA[La contrasenya es invàlida (Hauria d\'incloure 8-40 caràcters, incloent almenys 1 lletra majúscula i 1 minúscula, 1 digit. Caràcters especials permesos: @&#$%)]]>\"</string>
+  <string name="invalid_password">"         <![CDATA[La contrasenya es invàlida (Hauria d'incloure 8-40 caràcters, incloent almenys 1 lletra majúscula i 1 minúscula, 1 digit. Caràcters especials permesos: @&#$%)]]>"</string>
   <string name="invalid_username">El nom d\'usuari es invàlid (Hauria de tenir 8-20 caràcters. Caràcters especials permesos: .,)</string>
   <string name="issue_created">Incidència creada</string>
   <string name="issue_description">Descripció de la incidència</string>
@@ -170,12 +170,12 @@
   <string name="dialog_achievements">assoliments</string>
   <string name="dialog_event">esdeveniment</string>
   <string name="dialog_events">esdeveniments</string>
-  <string name="due_date">\"Data de caducitat\"</string>
+  <string name="due_date">Data de caducitat</string>
   <string name="duration">Durada</string>
   <string name="filter_issues">Filtrar incidències</string>
   <string name="first_letter_hour">h</string>
   <string name="hello_blank_fragment" translatable="false"></string>
-  <string name="its_happening_now">\"Està succeint ara\"</string>
+  <string name="its_happening_now">Està succeint ara</string>
   <string name="sort_issues">Ordena incidències</string>
   <string name="you_have_completed">Has completat</string>
     <string name="access_achievements_events">Accedeix a la secció d\'assoliments o esdeveniments per reclamar la teva recompensa.</string>
