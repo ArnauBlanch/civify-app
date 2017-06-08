@@ -51,18 +51,6 @@ public class MainActivity extends BaseActivity {
                 loginListener();
             }
         });
-        ((Button) findViewById(R.id.buttonGoogle)).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.show();
-            }
-        });
-        ((Button) findViewById(R.id.buttonTwitter)).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.show();
-            }
-        });
     }
 
     private void loginListener() {
