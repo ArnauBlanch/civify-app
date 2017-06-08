@@ -279,6 +279,6 @@
   <string name="unexpected_code">Unexpected code getting locality with HTTP/GET</string>
   <string name="on_google">on Google Maps API:</string>
 
-  <string name="year_team">© 2017 Civify Team</string>
+  <string name="year_team" translatable="false">© 2017 Civify Team</string>
   <string name="all_rights_reserved">All rigths reserved.</string>
 </resources>

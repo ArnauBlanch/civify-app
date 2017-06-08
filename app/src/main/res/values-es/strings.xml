@@ -235,4 +235,7 @@
   <string name="on_google">en Google Maps API:</string>
   <string name="search_disable_center">Localizaciones deshabilitadas. Para habilitarlas de nuevo pulsa el botón centrar</string>
   <string name="unexpected_code">Código inesperado al obtener localidad con HTTP/GET</string>
+  <string name="without_permissions">No tienes permisos para llevar a cabo esta acción.</string>
+  <string name="skip_this_step">Saltarse este paso</string>
+  <string name="all_rights_reserved">Todos los derechos reservados.</string>
 </resources>
