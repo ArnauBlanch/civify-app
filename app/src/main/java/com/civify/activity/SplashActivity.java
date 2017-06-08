@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Window;
 
+import com.civify.activity.introduction.IntroductionActivity;
 import com.civify.adapter.LoginAdapter;
 import com.civify.adapter.LoginError;
 import com.civify.adapter.LoginFinishedCallback;
@@ -48,7 +49,7 @@ public class SplashActivity extends BaseActivity {
 
                     @Override
                     public void onLoginFailed(LoginError t) {
-                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, IntroductionActivity.class);
                         startActivity(intent);
                         finish();
                     }
