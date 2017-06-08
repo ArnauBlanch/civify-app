@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,17 +16,29 @@ import com.civify.activity.MainActivity;
 import com.civify.activity.fragments.BasicFragment;
 import com.civify.activity.fragments.badge.BadgeViewFragment;
 import com.civify.adapter.LoginAdapter;
+import com.civify.adapter.UserAdapter;
+import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
 public class ProfileFragment extends BasicFragment {
 
     private LoginAdapter mLoginAdapter;
+    private User mUser;
 
     public ProfileFragment() {
+        Log.d(getClass().getSimpleName(), "CONSTRUCTOR");
     }
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
+    }
+
+    public static ProfileFragment newInstance(User user) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ProfileInfoFragment.TAG_USER, user);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -36,9 +49,11 @@ public class ProfileFragment extends BasicFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setUser();
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         mLoginAdapter = adapterFactory.getLoginAdapter(getContext());
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(mUser.getUserAuthToken()
+                .equals(UserAdapter.getCurrentUser().getUserAuthToken()));
     }
 
     @Override
@@ -49,21 +64,22 @@ public class ProfileFragment extends BasicFragment {
         FragmentTabHost tabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         tabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
 
-        // TODO: Pass User to IssuesProfileFragment
-        IssuesProfileFragment issuesFragment = new IssuesProfileFragment();
-        BadgeViewFragment badgeViewFragment = new BadgeViewFragment();
+        ProfileInfoFragment profileInfoFragment = ProfileInfoFragment.newInstance(mUser);
+        IssuesProfileFragment issuesFragment = IssuesProfileFragment.newInstance(mUser);
+        BadgeViewFragment badgeViewFragment = BadgeViewFragment.newInstance(mUser);
+
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.profile_info_fragment_placeholder, profileInfoFragment).commit();
 
         tabHost.addTab(tabHost.newTabSpec(getString(R.string.tab_spec_issues))
                                 .setIndicator(getString(R.string.tab_label_issues), null),
-                            issuesFragment.getClass(), null);
+                            issuesFragment.getClass(), issuesFragment.getArguments());
         tabHost.addTab(tabHost.newTabSpec(getString(R.string.tab_spec_badges))
                         .setIndicator(getString(R.string.tab_label_badges), null),
-                            badgeViewFragment.getClass(), null);
+                            badgeViewFragment.getClass(), badgeViewFragment.getArguments());
 
         return view;
     }
-
-    // TODO: Disable sign out if not is the current user
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -84,5 +100,11 @@ public class ProfileFragment extends BasicFragment {
         Intent intent = new Intent(applicationContext, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private void setUser() {
+        mUser = getArguments() == null ? UserAdapter.getCurrentUser()
+                : (User) getArguments().getSerializable(ProfileInfoFragment.TAG_USER);
+        Log.d(getClass().getSimpleName(), "USER " + mUser);
     }
 }

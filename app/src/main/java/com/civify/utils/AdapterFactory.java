@@ -19,7 +19,9 @@ import com.civify.adapter.event.EventAdapterImpl;
 import com.civify.adapter.issue.IssueAdapter;
 
 public class AdapterFactory {
+
     private static AdapterFactory sInstance;
+
     private UserAdapter mUserAdapter;
     private LoginAdapter mLoginAdapter;
     private IssueAdapter mIssueAdapter;
@@ -100,7 +102,7 @@ public class AdapterFactory {
         return mBadgeAdapter;
     }
 
-    public SharedPreferences getSharedPreferences(Context context) {
+    private SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
     }
 }

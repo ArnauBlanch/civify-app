@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -72,8 +73,7 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private View mViewDetails;
 
-    public IssueDetailsFragment() {
-    }
+    public IssueDetailsFragment() { }
 
     public static IssueDetailsFragment newInstance(@NonNull Issue issue) {
         Bundle data = new Bundle();
@@ -302,17 +302,16 @@ public class IssueDetailsFragment extends BasicFragment {
                 "example@mail.com", password, password);
     }
 
-    private void setUser(User user) {
+    private void setUser(final User user) {
         Log.v(TAG, "setUser: init");
 
-        UserAttacher.get(getContext(), user)
+        UserAttacher.get((DrawerActivity) getActivity(),
+                (RelativeLayout) mViewDetails.findViewById(R.id.userLayout), user)
                 .setFullName((TextView) mViewDetails.findViewById(R.id.userName))
                 .setUsername((TextView) mViewDetails.findViewById(R.id.userUsername))
                 .setLevel((TextView) mViewDetails.findViewById(R.id.userLevel))
                 .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress))
                 .setAvatar((ImageView) mViewDetails.findViewById(R.id.userImage));
-
-        // TODO: Pass User to ProfileFragment
 
         Log.v(TAG, "setUser finished");
     }
@@ -476,9 +475,6 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private void setupResolveButton() {
         AppCompatButton button = (AppCompatButton) mViewDetails.findViewById(R.id.resolveButton);
-        String issueUserToken = mIssue.getUserAuthToken();
-        String userToken = UserAdapter.getCurrentUser().getUserAuthToken();
-
         if (mIssue.getResolvedByAuthUser()) {
             changeButtonStyle(button, IssueButton.UNRESOLVE);
         }

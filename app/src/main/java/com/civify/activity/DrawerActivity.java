@@ -275,7 +275,7 @@ public class DrawerActivity extends BaseActivity
     public void setUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
 
-        UserAttacher.getFromCurrentUser(this)
+        UserAttacher.getFromCurrentUser(this, null)
                 .setFullName((TextView) headerView.findViewById(R.id.header_name))
                 .setUsername((TextView) headerView.findViewById(R.id.header_username))
                 .setLevel((TextView) headerView.findViewById(R.id.header_level))
