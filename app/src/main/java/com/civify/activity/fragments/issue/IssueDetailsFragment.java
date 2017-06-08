@@ -396,7 +396,7 @@ public class IssueDetailsFragment extends BasicFragment {
             TextView noPerms = (TextView) mViewDetails.findViewById(R.id.too_far_message);
             noPerms.setText(R.string.without_permissions);
             noPerms.setVisibility(View.VISIBLE);
-        } else if (isTooFarFromIssue()) {
+        } else if (isTooFarFromIssue() && !mIssue.isResolved()) {
             buttons.setVisibility(View.GONE);
             TextView resolvedOrFar = (TextView) mViewDetails.findViewById(R.id.too_far_message);
             resolvedOrFar.setText(R.string.too_far_from_issue);
