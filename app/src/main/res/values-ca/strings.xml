@@ -218,4 +218,14 @@
   <string name="incorrect_credentials">Credencials incorrectes. Intenta-ho de nou siusplau.</string>
   <string name="introduce_valid_password">Introdueix una contrasenya, siusplau.</string>
   <string name="introduce_valid_ue">Introdueix un correu vàlid o un nom d\'usuari siusplau</string>
+    <string name="couldnt_retrieve_achievements">No s\'han pogut recuperar els assoliments</string>
+  <string name="couldnt_retrieve_badges">No s\'han pogut recuperar les insígnies</string>
+  <string name="couldnt_retrieve_rewards">No s\'han pogut recuperar les recompenses</string>
+  <string name="date_ascending">Data (ascendent)</string>
+  <string name="date_descending">Data (descendent)</string>
+  <string name="error_locality">Error al obtenir localitat amb HTTP/GET a Google Maps API</string>
+  <string name="error_register">Hi ha hagut un error durant el registre</string>
+  <string name="on_google">en Google Maps API:</string>
+  <string name="search_disable_center">Localitzacions deshabilitides. Per tornar-les a habilitar prem el botó centrar</string>
+  <string name="unexpected_code">Codi inesperat al obtenir la localitat amb HTTP/GET</string>
 </resources>

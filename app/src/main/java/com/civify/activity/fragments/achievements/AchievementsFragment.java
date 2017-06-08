@@ -69,7 +69,7 @@ public class AchievementsFragment extends BasicFragment {
 
                         @Override
                         public void onFailure() {
-                            Snackbar.make(view, "Couldn't retrieve achievements.",
+                            Snackbar.make(view, R.string.couldnt_retrieve_achievements,
                                     Snackbar.LENGTH_SHORT);
                         }
                     });

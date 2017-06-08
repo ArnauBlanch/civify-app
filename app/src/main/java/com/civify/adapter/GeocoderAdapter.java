@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.civify.R;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -91,10 +93,10 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
             responseBody = response.body();
             String jsonData = responseBody.string();
             if (response.isSuccessful()) return getAddressFromGoogleApis(jsonData);
-            mErrorMessage = "Unexpected code getting locality with HTTP/GET "
-                    + "on Google Maps API: " + response.code();
+            mErrorMessage = mContext.getString(R.string.unexpected_code)
+                    + mContext.getString(R.string.on_google) + response.code();
         } catch (IOException | JSONException e) {
-            mErrorMessage = "Error getting locality with HTTP/GET on Google Maps API";
+            mErrorMessage = mContext.getString(R.string.error_locality);
             mError = e;
         } finally {
             if (response != null) response.close();

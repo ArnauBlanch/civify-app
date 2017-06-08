@@ -72,7 +72,7 @@ public class ExchangedAwardsFragment extends BasicFragment {
 
                             @Override
                             public void onFailure() {
-                                Snackbar.make(view, "Couldn't retrieve rewards.",
+                                Snackbar.make(view, getString(R.string.couldnt_retrieve_rewards),
                                         Snackbar.LENGTH_SHORT);
                             }
                         });
