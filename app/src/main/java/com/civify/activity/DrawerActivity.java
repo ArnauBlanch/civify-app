@@ -116,6 +116,14 @@ public class DrawerActivity extends BaseActivity
         mNavigationView.getMenu().getItem(mCurrentFragmentId).setChecked(true);
 
         setUserHeader();
+        AdapterFactory.getInstance().getUserAdapter(this).addOnCurrentUserUpdateListener(
+                new Runnable() {
+                @Override
+                public void run() {
+                    setUserHeader();
+                }
+            }
+        );
 
         checkNewAchievementsEvents();
     }
@@ -230,31 +238,38 @@ public class DrawerActivity extends BaseActivity
         setToolbarTitle();
     }
 
-    private void updateMenu() {
-        if (mCurrentFragmentId == PROFILE_ID) {
-            mShowMenu = true;
-            mShowMenuDetails = false;
-            mShowMenuNavigate = false;
-        } else if (mCurrentFragmentId == DETAILS_ISSUE_ID) {
-            mShowMenu = true;
-            mShowMenuDetails = true;
-            mShowMenuWall = false;
-            mShowMenuNavigate = false;
-        } else if (mCurrentFragmentId == WALL_ID) {
-            mShowMenu = true;
-            mShowMenuWall = true;
-            mShowMenuDetails = false;
-            mShowMenuNavigate = false;
-        } else if (mCurrentFragmentId == NAVIGATE_ID) {
-            mShowMenu = true;
-            mShowMenuWall = false;
-            mShowMenuNavigate = true;
-            mShowMenuDetails = false;
-        } else {
-            mShowMenu = false;
-            mShowMenuDetails = false;
-            mShowMenuWall = false;
-            mShowMenuNavigate = false;
+    public void updateMenu() {
+        switch (mCurrentFragmentId) {
+            case PROFILE_ID:
+                ProfileFragment profile = (ProfileFragment) mCurrentFragment;
+                mShowMenu = !profile.isUserSet() || profile.isCurrentUser();
+                mShowMenuDetails = false;
+                mShowMenuNavigate = false;
+                break;
+            case DETAILS_ISSUE_ID:
+                mShowMenu = true;
+                mShowMenuDetails = true;
+                mShowMenuWall = false;
+                mShowMenuNavigate = false;
+                break;
+            case WALL_ID:
+                mShowMenu = true;
+                mShowMenuWall = true;
+                mShowMenuDetails = false;
+                mShowMenuNavigate = false;
+                break;
+            case NAVIGATE_ID:
+                mShowMenu = true;
+                mShowMenuWall = false;
+                mShowMenuNavigate = true;
+                mShowMenuDetails = false;
+                break;
+            default:
+                mShowMenu = false;
+                mShowMenuDetails = false;
+                mShowMenuWall = false;
+                mShowMenuNavigate = false;
+                break;
         }
         invalidateOptionsMenu();
     }
@@ -295,7 +310,7 @@ public class DrawerActivity extends BaseActivity
     public void setUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
 
-        UserAttacher.getFromCurrentUser(this, null)
+        UserAttacher.get(this, null, UserAdapter.getCurrentUser())
                 .setFullName((TextView) headerView.findViewById(R.id.header_name))
                 .setUsername((TextView) headerView.findViewById(R.id.header_username))
                 .setLevel((TextView) headerView.findViewById(R.id.header_level))
@@ -303,6 +318,8 @@ public class DrawerActivity extends BaseActivity
                 .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
                 .setCoins((TextView) headerView.findViewById(R.id.header_coins))
                 .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
+
+        if (existsCoinsOnToolbar()) showCoinsOnToolbar();
     }
 
     private void setToolbarTitle() {
@@ -360,6 +377,10 @@ public class DrawerActivity extends BaseActivity
         }
     }
 
+    public boolean existsCoinsOnToolbar() {
+        return mToolbar.findViewById(R.id.coins_with_number) != null;
+    }
+
     public void removeCoinsFromToolbar() {
         View coins = mToolbar.findViewById(R.id.coins_with_number);
         if (coins != null) {
@@ -368,17 +389,12 @@ public class DrawerActivity extends BaseActivity
     }
 
     public void showCoinsOnToolbar() {
+        removeCoinsFromToolbar();
         View coins = getLayoutInflater().inflate(R.layout.coins_with_number, null);
         Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.END);
         ((TextView) coins.findViewById(R.id.num_coins)).setText(
                 String.valueOf(UserAdapter.getCurrentUser().getCoins()));
         mToolbar.addView(coins, layoutParams);
-    }
-
-    public void updateCoinsOnToolbar(int coins) {
-        removeCoinsFromToolbar();
-        UserAdapter.getCurrentUser().setCoins(coins);
-        showCoinsOnToolbar();
     }
 
     private void checkNewAchievementsEvents() {
@@ -405,8 +421,7 @@ public class DrawerActivity extends BaseActivity
                     }
 
                     @Override
-                    public void onFailure() {
-                    }
+                    public void onFailure() { }
                 });
     }
 
