@@ -32,6 +32,9 @@ public interface IssueService {
             @Query("resolved") String isResolved, @Query("categories[]") ArrayList<String>
             categories, @Query("risk") String isRisk);
 
+    @GET("/can_create_issue")
+    Call<MessageResponse> canCreateIssue(@Header("Authorization") String authToken);
+
     @GET("/issues/{issue_auth_token}")
     Call<Issue> getIssue(@Header("Authorization") String authToken,
             @Path("issue_auth_token") String issueAuthToken);
