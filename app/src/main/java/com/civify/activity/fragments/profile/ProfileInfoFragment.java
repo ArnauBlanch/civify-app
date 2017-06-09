@@ -51,10 +51,11 @@ public class ProfileInfoFragment extends BasicFragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_profile_info, container, false);
         setUserInfo(view);
-        AdapterFactory.getInstance().getUserAdapter(getContext()).updateUser(mUser,
+        AdapterFactory.getInstance().getUserAdapter(getContext()).getUser(mUser.getUserAuthToken(),
                 new UserSimpleCallback() {
                     @Override
                     public void onSuccess(User user) {
+                        mUser = user;
                         setUserInfo(view);
                     }
 

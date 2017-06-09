@@ -39,12 +39,6 @@ public final class UserAttacher {
         return new UserAttacher(context, userLayout, user);
     }
 
-    @NonNull
-    public static UserAttacher getFromCurrentUser(@NonNull DrawerActivity context,
-            @Nullable RelativeLayout userLayout) {
-        return get(context, userLayout, UserAdapter.getCurrentUser());
-    }
-
     public UserAttacher setUser(@NonNull final User user) {
         mUser = user;
         if (mUserLayout != null) {
@@ -60,7 +54,7 @@ public final class UserAttacher {
     }
 
     public UserAttacher setFullName(@NonNull TextView fullName) {
-        fullName.setText(mUser.getName() + ' ' + mUser.getSurname());
+        fullName.setText(mUser.getFullName());
         fullName.setOnClickListener(mShowProfile);
         return this;
     }
