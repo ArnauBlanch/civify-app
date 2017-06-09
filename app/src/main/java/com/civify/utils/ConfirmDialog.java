@@ -10,15 +10,15 @@ public class ConfirmDialog extends AlertDialog {
     public ConfirmDialog(@NonNull Context context) {
         super(context);
         setCanceledOnTouchOutside(false);
-        setPositiveButton(context.getString(android.R.string.yes), null);
+        setPositiveButton(context.getString(android.R.string.ok), null);
     }
 
     public ConfirmDialog(@NonNull Context context,
-                         @NonNull String title,
-                         @NonNull String message) {
+                         @Nullable String title,
+                         @Nullable String message) {
         this(context);
-        setTitle(title);
-        setMessage(message);
+        if (title != null) setTitle(title);
+        if (message != null) setMessage(message);
     }
 
     public ConfirmDialog(@NonNull Context context,
@@ -50,16 +50,16 @@ public class ConfirmDialog extends AlertDialog {
     }
 
     public static void show(@NonNull Context context,
-                            @NonNull String title,
-                            @NonNull String message,
+                            @Nullable String title,
+                            @Nullable String message,
                             @Nullable OnClickListener yesListener,
                             @Nullable OnClickListener noListener) {
         new ConfirmDialog(context, title, message, yesListener, noListener).show();
     }
 
     public static void show(@NonNull Context context,
-                            @NonNull String title,
-                            @NonNull String message) {
+                            @Nullable String title,
+                            @Nullable String message) {
         new ConfirmDialog(context, title, message).show();
     }
 }

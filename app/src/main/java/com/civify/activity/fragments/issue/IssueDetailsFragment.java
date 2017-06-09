@@ -246,13 +246,13 @@ public class IssueDetailsFragment extends BasicFragment {
     private void addRisk() {
         Log.v(TAG, "Adding risk in layout");
         TextView riskIssue = (TextView) mViewDetails.findViewById(R.id.riskAnswer);
-        riskIssue.setText((mIssue.isRisk()) ? R.string.yes : R.string.no);
+        riskIssue.setText(mIssue.isRisk() ? android.R.string.yes : android.R.string.no);
 
         int green = VERSION.SDK_INT >= VERSION_CODES.M
                 ? getResources().getColor(R.color.colorPrimary, getContext().getTheme())
                 : getResources().getColor(R.color.colorPrimary);
 
-        riskIssue.setTextColor((mIssue.isRisk()) ? Color.RED : green);
+        riskIssue.setTextColor(mIssue.isRisk() ? Color.RED : green);
     }
 
     private void addCategoryValue() {
@@ -354,8 +354,10 @@ public class IssueDetailsFragment extends BasicFragment {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(getResources().getString(R.string.delete_sure))
-                    .setPositiveButton(getResources().getString(R.string.yes), dialogClickListener)
-                    .setNegativeButton(getResources().getString(R.string.no), dialogClickListener)
+                    .setPositiveButton(getResources().getString(android.R.string.yes),
+                            dialogClickListener)
+                    .setNegativeButton(getResources().getString(android.R.string.no),
+                            dialogClickListener)
                     .show();
         }
     }

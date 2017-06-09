@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public abstract class StringUtils {
+public final class StringUtils {
+
+    private StringUtils() { }
 
     public static String capitalize(final String s) {
         if (s == null || s.isEmpty()) return s;

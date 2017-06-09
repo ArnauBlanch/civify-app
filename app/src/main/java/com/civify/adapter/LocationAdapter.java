@@ -458,7 +458,6 @@ public class LocationAdapter implements
 
     private void setLocationUpdateTimeout() {
         if (!isLocationUpdateTimeoutSet()) {
-            mLowConnectionWarning = false;
             mOnUpdateTimeout = Timeout.schedule("LocationUpdateTimeout", new Runnable() {
                 @Override
                 public void run() {
@@ -532,13 +531,9 @@ public class LocationAdapter implements
         return true;
     }
 
-    private boolean isLocationPlausible(@Nullable Location location) {
-        if (location == null) return false;
-
-        // Check mock locations
+    private boolean isMocked(@NonNull Location location) {
         boolean mocked = false;
-        boolean mocksEnabled = isMockLocationsEnabled();
-        if (mocksEnabled) {
+        if (isMockLocationsEnabled()) {
             // If we are not sure, mark as permitted mock
             mocked = true;
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -549,6 +544,13 @@ public class LocationAdapter implements
         } else if (!verifyMockGpsPermissions()) {
             mocked = true;
         }
+        return mocked;
+    }
+
+    private boolean isLocationPlausible(@Nullable Location location) {
+        if (location == null) return false;
+
+        boolean mocked = isMocked(location);
 
         // isFromMockProvider may give wrong response for some applications
         // Warning: With rooted devices we cannot ensure that the location is not mocked
@@ -560,11 +562,12 @@ public class LocationAdapter implements
         // We only clear an incident record after a significant show of good behavior
         if (mNumGoodReadings >= FALSE_MOCK_THRESHOLD) mLastMockLocation = null;
 
-        boolean permittedMock = !mocked || mocksEnabled;
+        boolean permittedMock = !mocked || isMockLocationsEnabled();
 
         if (!permittedMock) setHasPermissions(false);
 
-        boolean permitted = permittedMock && location.getAccuracy() < ACCURACY_THRESHOLD;
+        boolean permitted = permittedMock
+                && (mLastLocation == null || location.getAccuracy() < ACCURACY_THRESHOLD);
 
         // Nothing to compare against
         if (mLastMockLocation == null) return permitted;
@@ -627,6 +630,7 @@ public class LocationAdapter implements
         if (!isRequestingPermissions()) {
             mRootWarning = false;
             mMockWarning = false;
+            mLowConnectionWarning = false;
         }
     }
 
