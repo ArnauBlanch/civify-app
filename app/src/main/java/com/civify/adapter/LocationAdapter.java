@@ -466,10 +466,9 @@ public class LocationAdapter implements
                         checkForPermissions();
                         if (hasPermissions()) {
                             mLowConnectionWarning = true;
-                            ConfirmDialog.show(mContext, "Cannot retrieve location",
-                                    "It appears the map is taking too long to retrieve "
-                                            + "your location.\n\nYour network connection "
-                                            + "or GPS may be slow or unavailable.",
+                            ConfirmDialog.show(mContext,
+                                    mContext.getString(R.string.cannot_retrieve_location_title),
+                                    mContext.getString(R.string.cannot_retrieve_location),
                                     new OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface d, int w) {
@@ -578,10 +577,9 @@ public class LocationAdapter implements
         if (mMockWarning) return;
         setHasPermissions(false);
         setRequestingPermissions(true);
-        String title = "Fake locations prohibited";
+        String title = mContext.getString(R.string.fake_locations_prohibited);
         ConfirmDialog mockLocationsDialog = new ConfirmDialog(getContext(), title,
-                "Civify does not allow using mocked GPS. Please, disable mock locations or"
-                        + " some features may be disabled.");
+                mContext.getString(R.string.mocked_gps_prohibited));
         mockLocationsDialog.setPositiveButton(null, new OnClickListener() {
             @Override
             public void onClick(DialogInterface d, int w) {
@@ -590,14 +588,16 @@ public class LocationAdapter implements
                 setRequestingPermissions(false);
             }
         });
-        mockLocationsDialog.setNegativeButton("SETTINGS", new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface d, int w) {
-                setRequestingPermissions(false);
-                getContext().startActivityForResult(new Intent(
-                        Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS), 0);
+        mockLocationsDialog.setNegativeButton(getContext().getString(R.string.settings),
+                new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface d, int w) {
+                    setRequestingPermissions(false);
+                    getContext().startActivityForResult(new Intent(
+                            Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS), 0);
+                }
             }
-        });
+        );
         mockLocationsDialog.show();
         mMockWarning = true;
     }
