@@ -283,9 +283,8 @@
   <string name="all_rights_reserved">All rigths reserved.</string>
   <string name="please_wait">You can\'t perform this action again. Please wait</string>
   <string name="seconds">seconds</string>
-  <string name="network_present_but_error">Network is present but an error has occurred.
+  <string name="network_present_but_error">Network is present but an error has occurred. Check that you\'re connected to UPC VPN.</string>
   <string name="autocenter">Auto-center</string>
   <string name="issue_once_hour">You can\'t create more issues yet</string>
-    Check that you\'re connected to UPC VPN.</string>
   <string name="error">Error</string>
 </resources>
