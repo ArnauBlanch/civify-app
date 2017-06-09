@@ -2,14 +2,13 @@ package com.civify.model.issue;
 
 import static org.junit.Assert.assertEquals;
 
-import com.civify.model.issue.Picture;
+import com.civify.model.Picture;
 import com.civify.utils.ServiceGenerator;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.security.Provider.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

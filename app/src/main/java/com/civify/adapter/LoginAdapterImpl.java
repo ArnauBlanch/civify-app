@@ -2,11 +2,13 @@ package com.civify.adapter;
 
 import android.content.SharedPreferences;
 
+import com.civify.adapter.LoginError.ErrorType;
 import com.civify.model.CivifyEmailCredentials;
 import com.civify.model.CivifyUsernameCredentials;
 import com.civify.model.User;
 import com.civify.service.CivifyLoginService;
 import com.civify.service.CivifyMeService;
+import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
 
 import java.io.UnsupportedEncodingException;
@@ -41,7 +43,8 @@ public class LoginAdapterImpl implements LoginAdapter {
         mSharedPreferences = sharedPreferences;
     }
 
-    LoginAdapterImpl(CivifyLoginService civifyLoginService, CivifyMeService civifyMeService,
+    protected LoginAdapterImpl(CivifyLoginService civifyLoginService,
+            CivifyMeService civifyMeService,
             SharedPreferences sharedPreferences) {
         mCivifyLoginService = civifyLoginService;
         mCivifyMeService = civifyMeService;
@@ -60,6 +63,7 @@ public class LoginAdapterImpl implements LoginAdapter {
     public void logout() {
         mSharedPreferences.edit().remove(AUTH_TOKEN).apply();
         UserAdapter.setCurrentUser(null);
+        AdapterFactory.getInstance().resetAdapterFactory();
     }
 
     public void isLogged(LoginFinishedCallback loginFinishedCallback) {
@@ -143,7 +147,8 @@ public class LoginAdapterImpl implements LoginAdapter {
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    t.printStackTrace();
+                    mLoginFinishedCallback.onLoginFailed(new LoginError(
+                            ErrorType.HTTP_ERROR, t.getMessage()));
                 }
             });
         } else {

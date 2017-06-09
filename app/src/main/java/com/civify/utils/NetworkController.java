@@ -14,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.civify.R;
+
 public final class NetworkController {
 
     private static final String TAG = NetworkController.class.getSimpleName();
@@ -75,9 +77,9 @@ public final class NetworkController {
                 sDisplayingDialog = true;
 
                 boolean airplaneMode = isAirplaneModeEnabled(context);
-                String additionalInfo = airplaneMode
-                        ? "Disable Airplane Mode and enableLocationUpdates the network."
-                        : "Enable the network.";
+                String additionalInfo =
+                        context.getString(
+                                airplaneMode ? R.string.airplane : R.string.enable_network);
                 setNetworkDialog(context, airplaneMode, additionalInfo);
             } else if (noNetworkPreDialogListener != null) {
                 noNetworkPreDialogListener.run();
@@ -88,24 +90,27 @@ public final class NetworkController {
 
     private static void setNetworkDialog(@NonNull final Activity context,
             final boolean airplaneMode, String additionalInfo) {
-        ConfirmDialog networkDialog = new ConfirmDialog(context, "Network unavailable",
-                "Network is unavailable and therefore Civify could not work! "
+        ConfirmDialog networkDialog = new ConfirmDialog(context,
+                context.getString(R.string.network_unavailable),
+                context.getString(R.string.network_unavailable_message)
                         + additionalInfo);
-        networkDialog.setPositiveButton("DONE", new OnClickListener() {
+        networkDialog.setPositiveButton(context.getString(R.string.done), new OnClickListener() {
             @Override
             public void onClick(DialogInterface d, int w) {
                 sDonePressedListeners.consume();
             }
         });
-        networkDialog.setNegativeButton("SETTINGS", new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface d, int w) {
-                context.startActivityForResult(new Intent(airplaneMode
-                        ? Settings.ACTION_AIRPLANE_MODE_SETTINGS :
-                        Settings.ACTION_SETTINGS), 0);
-                sAfterSettingsListeners.consume();
+        networkDialog.setNegativeButton(context.getString(R.string.settings),
+                new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface d, int w) {
+                    context.startActivityForResult(new Intent(airplaneMode
+                            ? Settings.ACTION_AIRPLANE_MODE_SETTINGS :
+                            Settings.ACTION_SETTINGS), 0);
+                    sAfterSettingsListeners.consume();
+                }
             }
-        });
+        );
         networkDialog.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {

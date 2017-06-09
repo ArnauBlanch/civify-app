@@ -9,6 +9,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -19,7 +20,9 @@ import android.util.Log;
 
 import com.civify.R;
 import com.civify.utils.ConfirmDialog;
+import com.civify.utils.ListenerQueue;
 import com.civify.utils.NetworkController;
+import com.civify.utils.RootUtils;
 import com.civify.utils.Timeout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -32,6 +35,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 
 public class LocationAdapter implements
@@ -43,6 +47,9 @@ public class LocationAdapter implements
 
     public static final int PERMISSION_ACCESS_LOCATION = 700;
 
+    public static final boolean DEFAULT_MOCKS_ENABLED = false;
+    public static final boolean DEFAULT_AUTO_REFRESH = false;
+
     private static final String TAG = LocationAdapter.class.getSimpleName();
 
     private static final int REQUEST_CHECK_SETTINGS = 800;
@@ -52,47 +59,60 @@ public class LocationAdapter implements
     private static final int LOCATION_UPDATE_TIMEOUT_MULTIPLIER = 4;
     private static final int LOCATION_FIRST_UPDATE_TIMEOUT_MULTIPLIER = 5;
 
+    private static final int KM = 1000;
     private static final double EARTH_RADIUS = 6366198;
 
     private final Activity mContext;
     private final GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+    private final ListenerQueue mOnPermissionsChangedListeners;
+    private Runnable mOnConnectedUpdateCallback;
+    private Location mLastLocation, mLastMockLocation, mMockLocation;
     private LocationRequest mLocationRequest;
     private UpdateLocationListener mUpdateLocationListener;
     private Timeout mOnUpdateTimeout;
-    private Runnable mOnConnectedUpdateCallback, mOnPermissionsRequested;
 
-    private boolean mHasPermissions, mAutoRefresh, mRequestingPermissions, mLowConnectionWarning;
+    private boolean mConnecting, mHasPermissions, mAutoRefresh, mRequestingPermissions,
+            mLowConnectionWarning, mMockLocationsEnabled, mMockWarning, mRootWarning;
     private long mIntervalRefresh, mFastIntervalRefresh;
 
     public LocationAdapter(@NonNull Activity context) {
         mContext = context;
+        mOnPermissionsChangedListeners = new ListenerQueue();
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
+                .addApi(Places.PLACE_DETECTION_API)
                 .build();
         mLocationRequest = null;
-        setAutoRefresh(false);
-        setRequestingPermissions(false);
+        mMockLocationsEnabled = DEFAULT_MOCKS_ENABLED;
+        setAutoRefresh(DEFAULT_AUTO_REFRESH);
         checkForPermissions();
     }
 
-    public void setOnPermissionsRequestedListener(@Nullable Runnable onPermissions) {
-        mOnPermissionsRequested = onPermissions;
-        if (!isRequestingPermissions() && hasPermissions()) mOnPermissionsRequested.run();
+    public Activity getContext() {
+        return mContext;
     }
 
     public void connect() {
-        if (!isConnected()) {
-            Log.i(TAG, "Connecting location services...");
-            mGoogleApiClient.connect();
+        if (!isConnecting()) {
+            if (!isConnected()) {
+                Log.i(TAG, "Connecting location services...");
+                mConnecting = true;
+                mGoogleApiClient.connect();
+            }
+            repeatWarningsWhenNeeded();
+            checkForPermissions();
         }
-        checkForPermissions();
+    }
+
+    public boolean isConnecting() {
+        return mConnecting;
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        mConnecting = false;
         updateLocation();
         if (mOnConnectedUpdateCallback != null) mOnConnectedUpdateCallback.run();
         Log.i(TAG, "Location services connected.");
@@ -103,7 +123,7 @@ public class LocationAdapter implements
     }
 
     public void disconnect() {
-        if (mGoogleApiClient.isConnected()) {
+        if (isConnected()) {
             removeUpdates();
             mGoogleApiClient.disconnect();
         }
@@ -111,160 +131,8 @@ public class LocationAdapter implements
         Log.i(TAG, "Location services disconnected.");
     }
 
-    public Activity getContext() {
-        return mContext;
-    }
-
-    private void removeUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        Log.d(TAG, "Removed location udpates.");
-    }
-
-    public boolean isAutoRefresh() {
-        return mAutoRefresh;
-    }
-
-    public void setAutoRefresh(boolean autoRefresh) {
-        mAutoRefresh = autoRefresh;
-        boolean connected = mGoogleApiClient.isConnected();
-        if (isAutoRefresh()) {
-            if (mLocationRequest != null) {
-                mLocationRequest.setInterval(mIntervalRefresh)
-                        .setFastestInterval(mFastIntervalRefresh);
-            }
-            if (isLocationUpdateTimeoutSet()) {
-                rescheduleLocationUpdateTimeout(
-                        getLocationUpdateTimeoutTime(LOCATION_UPDATE_TIMEOUT_MULTIPLIER)
-                                - mOnUpdateTimeout.getLapsedMillisFromSchedule());
-            } else rescheduleLocationUpdateTimeout();
-            if (connected) updateLocation();
-        } else {
-            if (connected) {
-                removeUpdates();
-                mLocationRequest = null;
-            }
-            if (isLocationUpdateTimeoutSet()) {
-                mOnUpdateTimeout.cancel();
-                mOnUpdateTimeout = null;
-            }
-        }
-    }
-
-    private LocationRequest getLocationRequest() {
-        if (mLocationRequest == null) {
-            setUpdateIntervals(Priority.LOW_POWER, Priority.LOW_POWER.getPeriodMillis(),
-                    Priority.LOW_POWER.getFastestPeriodMillis());
-        }
-        return mLocationRequest;
-    }
-
-    public void setUpdateIntervals(@NonNull Priority priority,
-                                   long updateMillis, long fastestUpdateMillis) {
-        mIntervalRefresh = updateMillis;
-        mFastIntervalRefresh = fastestUpdateMillis;
-        setLocationPriority(priority);
-        setAutoRefresh(isAutoRefresh());
-        Log.d(TAG, "Location updates priority set to " + priority
-                + " [" + mFastIntervalRefresh + ',' + mIntervalRefresh + ']');
-    }
-
-    private void setLocationPriority(@NonNull Priority priority) {
-        int locationRequestPriority = priority.getLocationRequestPriority();
-        if (mLocationRequest == null || mLocationRequest.getPriority() != locationRequestPriority) {
-            mLocationRequest = LocationRequest.create().setPriority(locationRequestPriority);
-        }
-    }
-
-    private boolean isDelayedUpdate() {
-        return mOnConnectedUpdateCallback != null;
-    }
-
-    private void updateLocation() {
-        Log.v(TAG, "Trying to update location...");
-        if (isDelayedUpdate()) Log.v(TAG, "Detected delayed updates.");
-        else {
-            if (checkConnection()) {
-                if (hasPermissions()) {
-                    setRequestingPermissions(true);
-                    LocationSettingsRequest.Builder builder =
-                            new LocationSettingsRequest.Builder().addLocationRequest(
-                                    getLocationRequest()).setAlwaysShow(true);
-
-                    LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
-                            builder.build()).setResultCallback(getLocationSettingsResultCallback());
-                    Log.v(TAG, "Settings verification requested.");
-                } else {
-                    checkForPermissions();
-                }
-            }
-        }
-    }
-
-    @NonNull
-    private ResultCallback<Result> getLocationSettingsResultCallback() {
-        return new ResultCallback<Result>() {
-            @Override
-            public void onResult(@NonNull Result result) {
-                Status status = result.getStatus();
-                if (status.getStatusCode() == CommonStatusCodes.SUCCESS) {
-                    Log.i(TAG, "All location settings are satisfied.");
-                    Runnable requestUpdatesTask = new RequestUpdatesTask();
-                    if (mGoogleApiClient.isConnected()) requestUpdatesTask.run();
-                    else {
-                        mOnConnectedUpdateCallback = requestUpdatesTask;
-                        Log.d(TAG, "Google API is not connected. "
-                                + "Updates delayed until Google API is connected again.");
-                    }
-                } else if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
-                    Log.i(TAG, "Location settings are not satisfied. "
-                            + "Showing the user a dialog to upgrade location settings.");
-                    try {
-                        // Show the dialog by calling startResolutionForResult(),
-                        // and check the result in the onActivityResult() of mContext
-                        status.startResolutionForResult(mContext, REQUEST_CHECK_SETTINGS);
-                        setRequestingPermissions(true);
-                    } catch (IntentSender.SendIntentException e) {
-                        Log.wtf(TAG, "PendingIntent unable to execute request", e);
-                    }
-                } else if (status.getStatusCode()
-                        == LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE) {
-                    if (checkNetwork()) {
-                        Log.wtf(TAG, 
-                                "Location settings can't be changed to meet the requirements");
-                    }
-                }
-            }
-        };
-    }
-
-    public void onMapSettingsResults(int requestCode, int resultCode) {
-        switch (requestCode) {
-            case CONNECTION_FAILURE_RESOLUTION:
-                if (resultCode == Activity.RESULT_OK) {
-                    Log.i(TAG, mContext.getString(
-                            R.string.user_location_settings_agreed));
-                    // Reconnect
-                    connect();
-                } else if (resultCode == Activity.RESULT_CANCELED) {
-                    Log.w(TAG, mContext.getString(R.string.location_connection_failed));
-                    rescheduleLocationUpdateTimeout();
-                }
-                break;
-            case REQUEST_CHECK_SETTINGS:
-                if (resultCode == Activity.RESULT_OK) {
-                    Log.i(TAG, mContext.getString(R.string.user_location_settings_agreed));
-                    updateLocation();
-                } else if (resultCode == Activity.RESULT_CANCELED) {
-                    Log.i(TAG, mContext.getString(R.string.user_location_settings_canceled));
-                    updateLocation();
-                }
-                break;
-            default:
-        }
-    }
-
     private boolean checkConnection() {
-        if (!mGoogleApiClient.isConnected()) {
+        if (!isConnected()) {
             Log.w(TAG, "GoogleApiClient is not connected!");
             connect();
             return false;
@@ -272,17 +140,9 @@ public class LocationAdapter implements
         return true;
     }
 
-    private void setRequestingPermissions(boolean requestingPermissions) {
-        mRequestingPermissions = requestingPermissions;
-    }
-
-    public boolean isRequestingPermissions() {
-        return mRequestingPermissions;
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        handleNewLocation(location);
+    private void removeUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        Log.i(TAG, "Removed location udpates.");
     }
 
     @Override
@@ -304,83 +164,33 @@ public class LocationAdapter implements
         }
     }
 
-    private boolean hasPermissions() {
-        return mHasPermissions;
-    }
-
-    public void checkForPermissions() {
-        if (!isRequestingPermissions()) {
-            mHasPermissions = false;
-            setRequestingPermissions(true);
-            if (!checkMockedGps()) {
-                // If we don't have permissions we request them on runtime
-                if (ContextCompat.checkSelfPermission(mContext,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    Log.i(TAG, TAG + " without permissions! Requesting them if available.");
-                    ActivityCompat.requestPermissions(mContext,
-                            new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION},
-                            PERMISSION_ACCESS_LOCATION);
-                } else if (checkNetwork()) {
-                    Log.i(TAG, TAG + " with permissions.");
-                    mHasPermissions = true;
-                    setRequestingPermissions(false);
-                    if (mGoogleApiClient.isConnected()) updateLocation();
-                }
-            }
+    public boolean setMockLocation(@Nullable Location mockLocation) {
+        if (!isMockLocationsEnabled()) return false;
+        mMockLocation = mockLocation;
+        if (mockLocation == null) setAutoRefresh(DEFAULT_AUTO_REFRESH);
+        else {
+            setAutoRefresh(false);
+            handleNewLocation(mockLocation);
         }
+        return true;
     }
 
-    public static boolean isMockSettingsEnabled(Context context) {
-        return !"0".equals(Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ALLOW_MOCK_LOCATION));
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        if (mMockLocation == null) handleNewLocation(location);
     }
 
-    private boolean checkMockedGps() {
-        boolean mockGps = isMockSettingsEnabled(getContext());
-        if (mockGps) showMockSettingsDialog();
-        return mockGps;
-    }
-
-    private void showMockSettingsDialog() {
-        String title = "Fake locations prohibited";
-        ConfirmDialog mockLocationsDialog = new ConfirmDialog(getContext(), title,
-                "Civify does not allow using mocked GPS. Please, disable mock locations.");
-        mockLocationsDialog.setPositiveButton("DONE", new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface d, int w) {
-                if (!checkMockedGps()) {
-                    setRequestingPermissions(false);
-                    checkForPermissions();
-                }
-            }
-        });
-        mockLocationsDialog.setNegativeButton("SETTINGS", new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface d, int w) {
-                setRequestingPermissions(false);
-                getContext().startActivityForResult(new Intent(
-                        Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS), 0);
-            }
-        });
-        mockLocationsDialog.show();
-    }
-
-    private boolean checkNetwork() {
-        return NetworkController.checkNetwork(mContext,
-            new Runnable() {
-                @Override
-                public void run() {
-                    setRequestingPermissions(true);
-                }
-            },
-            new Runnable() {
-                @Override
-                public void run() {
-                    setRequestingPermissions(false);
-                    rescheduleLocationUpdateTimeout();
-                }
-            });
+    private void handleNewLocation(@NonNull Location location) {
+        Log.d(TAG, "Location received: " + location);
+        if (isLocationPlausible(location)) {
+            Location previous = mLastLocation;
+            mLastLocation = location;
+            if (previous == null && hasPermissions()) mOnPermissionsChangedListeners.run();
+            cancelLocationUpdateTimeout();
+            executeUpdateLocationListener();
+            rescheduleLocationUpdateTimeout();
+        } else Log.d(TAG, "Location discarded.");
+        if (!isAutoRefresh()) setAutoRefresh(false);
     }
 
     public void setOnUpdateLocationListener(@NonNull UpdateLocationListener listener) {
@@ -394,63 +204,12 @@ public class LocationAdapter implements
         }
     }
 
-    private void handleNewLocation(@NonNull Location location) {
-        mLastLocation = location;
-        Log.d(TAG, "Location updated: " + mLastLocation);
-        executeUpdateLocationListener();
-        if (location.getAccuracy() < ACCURACY_THRESHOLD) rescheduleLocationUpdateTimeout();
-        if (!isAutoRefresh()) setAutoRefresh(false);
-    }
-
     public Location getLastLocation() {
-        return mLastLocation;
+        return mLastLocation == null ? getLocation(ZERO) : mLastLocation;
     }
 
-    private boolean isLocationUpdateTimeoutSet() {
-        return mOnUpdateTimeout != null;
-    }
-
-    private void setLocationUpdateTimeout() {
-        if (!isLocationUpdateTimeoutSet()) {
-            mLowConnectionWarning = false;
-            mOnUpdateTimeout = Timeout.schedule("LocationUpdateTimeout", new Runnable() {
-                @Override
-                public void run() {
-                    if (!mLowConnectionWarning) {
-                        checkForPermissions();
-                        if (hasPermissions()) {
-                            mLowConnectionWarning = true;
-                            ConfirmDialog.show(mContext, "Cannot retrieve location",
-                                    "It appears the map is taking too long to retrieve "
-                                            + "your location.\n\nYour network connection "
-                                            + "or GPS may be slow or unavailable.",
-                                    new OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface d, int w) {
-                                            checkForPermissions();
-                                            // Uncomment to repeat message
-                                            // mLowConnectionWarning = false;
-                                        }
-                                    }, null);
-                        }
-                    }
-                }
-            }, getLocationUpdateTimeoutTime(LOCATION_FIRST_UPDATE_TIMEOUT_MULTIPLIER));
-        }
-    }
-
-    private void rescheduleLocationUpdateTimeout() {
-        rescheduleLocationUpdateTimeout(
-                getLocationUpdateTimeoutTime(LOCATION_UPDATE_TIMEOUT_MULTIPLIER));
-    }
-
-    private void rescheduleLocationUpdateTimeout(long millis) {
-        if (isLocationUpdateTimeoutSet()) mOnUpdateTimeout.reschedule(millis);
-        else setLocationUpdateTimeout();
-    }
-
-    private long getLocationUpdateTimeoutTime(int multiplier) {
-        return mIntervalRefresh * multiplier;
+    public void getLocalityFromCurrentLocation(@NonNull LocalityCallback callback) {
+        GeocoderAdapter.getLocality(mContext, mLastLocation, callback);
     }
 
     @NonNull
@@ -490,6 +249,430 @@ public class LocationAdapter implements
         return Math.toDegrees(rad);
     }
 
+    public boolean isAutoRefresh() {
+        return mAutoRefresh;
+    }
+
+    public void setAutoRefresh(boolean autoRefresh) {
+        mAutoRefresh = autoRefresh;
+        boolean connected = isConnected();
+        if (isAutoRefresh()) {
+            if (mLocationRequest != null) {
+                mLocationRequest.setInterval(mIntervalRefresh)
+                        .setFastestInterval(mFastIntervalRefresh);
+            }
+            if (isLocationUpdateTimeoutSet()) {
+                rescheduleLocationUpdateTimeout(
+                        getLocationUpdateTimeoutTime(LOCATION_UPDATE_TIMEOUT_MULTIPLIER)
+                                - mOnUpdateTimeout.getLapsedMillisFromSchedule());
+            } else rescheduleLocationUpdateTimeout();
+            if (connected) updateLocation();
+        } else {
+            if (connected) {
+                removeUpdates();
+                mLocationRequest = null;
+            }
+            cancelLocationUpdateTimeout();
+        }
+    }
+
+    public void setUpdateIntervals(@NonNull Priority priority,
+                                   long updateMillis, long fastestUpdateMillis) {
+        mIntervalRefresh = updateMillis;
+        mFastIntervalRefresh = fastestUpdateMillis;
+        setLocationPriority(priority);
+        setAutoRefresh(isAutoRefresh());
+        Log.d(TAG, "Location updates priority set to " + priority
+                + " [" + mFastIntervalRefresh + ',' + mIntervalRefresh + ']');
+    }
+
+    private void setLocationPriority(@NonNull Priority priority) {
+        int locationRequestPriority = priority.getLocationRequestPriority();
+        if (mLocationRequest == null || mLocationRequest.getPriority() != locationRequestPriority) {
+            mLocationRequest = LocationRequest.create().setPriority(locationRequestPriority);
+        }
+    }
+
+    private LocationRequest getLocationRequest() {
+        if (mLocationRequest == null) {
+            setUpdateIntervals(Priority.LOW_POWER, Priority.LOW_POWER.getPeriodMillis(),
+                    Priority.LOW_POWER.getFastestPeriodMillis());
+        }
+        return mLocationRequest;
+    }
+
+    private boolean isDelayedUpdate() {
+        return mOnConnectedUpdateCallback != null;
+    }
+
+    private void updateLocation() {
+        Log.v(TAG, "Trying to update location...");
+        if (isDelayedUpdate()) Log.v(TAG, "Detected delayed updates.");
+        else {
+            if (checkConnection()) {
+                if (hasPermissions()) {
+                    setRequestingPermissions(true);
+                    LocationSettingsRequest.Builder builder =
+                            new LocationSettingsRequest.Builder().addLocationRequest(
+                                    getLocationRequest()).setAlwaysShow(true);
+
+                    LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
+                            builder.build()).setResultCallback(getLocationSettingsResultCallback());
+                    Log.v(TAG, "Settings verification requested.");
+                } else checkForPermissions();
+            }
+        }
+    }
+
+    @NonNull
+    private ResultCallback<Result> getLocationSettingsResultCallback() {
+        return new ResultCallback<Result>() {
+            @Override
+            public void onResult(@NonNull Result result) {
+                Status status = result.getStatus();
+                if (status.getStatusCode() == CommonStatusCodes.SUCCESS) {
+                    Log.i(TAG, "All location settings are satisfied.");
+                    Runnable requestUpdatesTask = new OnPermissionsTask();
+                    if (isConnected()) requestUpdatesTask.run();
+                    else {
+                        mOnConnectedUpdateCallback = requestUpdatesTask;
+                        Log.d(TAG, "Google API is not connected. "
+                                + "Updates delayed until Google API is connected again.");
+                    }
+                } else if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
+                    Log.i(TAG, "Location settings are not satisfied. "
+                            + "Showing the user a dialog to upgrade location settings.");
+                    try {
+                        setRequestingPermissions(true);
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in the onActivityResult() of mContext
+                        status.startResolutionForResult(mContext, REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException e) {
+                        Log.wtf(TAG, "PendingIntent unable to execute request", e);
+                    }
+                } else if (status.getStatusCode()
+                        == LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE) {
+                    if (checkNetwork()) {
+                        Log.w(TAG, "Location settings can't be changed to meet the requirements");
+                        setHasPermissions(false);
+                        mOnPermissionsChangedListeners.run();
+                        setRequestingPermissions(false);
+                    }
+                }
+            }
+        };
+    }
+
+    public void onMapSettingsResults(int requestCode, int resultCode) {
+        setRequestingPermissions(false);
+        switch (requestCode) {
+            case CONNECTION_FAILURE_RESOLUTION:
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.i(TAG, mContext.getString(
+                            R.string.user_location_settings_agreed));
+                    // Reconnect
+                    connect();
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    Log.w(TAG, mContext.getString(R.string.location_connection_failed));
+                    rescheduleLocationUpdateTimeout();
+                }
+                break;
+            case REQUEST_CHECK_SETTINGS:
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.i(TAG, mContext.getString(R.string.user_location_settings_agreed));
+                    updateLocation();
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    Log.i(TAG, mContext.getString(R.string.user_location_settings_canceled));
+                    updateLocation();
+                }
+                break;
+            default:
+        }
+    }
+
+    private void setRequestingPermissions(boolean requestingPermissions) {
+        mRequestingPermissions = requestingPermissions;
+        if (requestingPermissions) {
+            cancelLocationUpdateTimeout();
+        } else if (hasPermissions()) {
+            rescheduleLocationUpdateTimeout();
+        }
+    }
+
+    public boolean isRequestingPermissions() {
+        return mRequestingPermissions;
+    }
+
+    private void setHasPermissions(boolean hasPermissions) {
+        if (mHasPermissions != hasPermissions) {
+            mHasPermissions = hasPermissions;
+            if (!hasPermissions) {
+                cancelLocationUpdateTimeout();
+            } else if (mLastLocation != null) {
+                mOnPermissionsChangedListeners.run();
+            }
+            Log.i(TAG, TAG
+                    + (hasPermissions ? " with permissions." : " without permissions."));
+        }
+    }
+
+    public boolean hasPermissions() {
+        return mHasPermissions;
+    }
+
+    public void addOnPermissionsChangedListener(@NonNull Runnable onPermissionsChanged) {
+        mOnPermissionsChangedListeners.enqueue(onPermissionsChanged);
+        if (hasPermissions() && !isRequestingPermissions()) {
+            onPermissionsChanged.run();
+        }
+    }
+
+    public void removeOnPermissionsChangedListener(@NonNull Runnable onPermissionsChanged) {
+        mOnPermissionsChangedListeners.remove(onPermissionsChanged);
+    }
+
+    public void checkForPermissions() {
+        if (!isRequestingPermissions()) {
+            Log.v(TAG, "Checking permissions...");
+            setRequestingPermissions(true);
+            setHasPermissions(false);
+            if (verifyRootPermitted() && verifyMockGpsPermissions()) {
+                // If we don't have permissions we request them on runtime
+                if (ContextCompat.checkSelfPermission(mContext,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, TAG + " without permissions! Requesting them if available.");
+                    ActivityCompat.requestPermissions(mContext,
+                            new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION},
+                            PERMISSION_ACCESS_LOCATION);
+                } else if (checkNetwork()) {
+                    boolean permission = mMockLocation == null;
+                    setHasPermissions(permission);
+                    if (!permission) mOnPermissionsChangedListeners.run();
+                    setRequestingPermissions(false);
+                    if (isConnected()) updateLocation();
+                }
+            }
+        }
+    }
+
+    private boolean isLocationUpdateTimeoutSet() {
+        return mOnUpdateTimeout != null;
+    }
+
+    private void setLocationUpdateTimeout() {
+        if (!isLocationUpdateTimeoutSet()) {
+            mOnUpdateTimeout = Timeout.schedule("LocationUpdateTimeout", new Runnable() {
+                @Override
+                public void run() {
+                    if (!mLowConnectionWarning) {
+                        checkForPermissions();
+                        if (hasPermissions()) {
+                            mLowConnectionWarning = true;
+                            ConfirmDialog.show(mContext,
+                                    mContext.getString(R.string.cannot_retrieve_location_title),
+                                    mContext.getString(R.string.cannot_retrieve_location),
+                                    new OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface d, int w) {
+                                            checkForPermissions();
+                                        }
+                                    }, null);
+                        }
+                    }
+                }
+            }, getLocationUpdateTimeoutTime(LOCATION_FIRST_UPDATE_TIMEOUT_MULTIPLIER));
+        }
+    }
+
+    private void rescheduleLocationUpdateTimeout() {
+        rescheduleLocationUpdateTimeout(
+                getLocationUpdateTimeoutTime(LOCATION_UPDATE_TIMEOUT_MULTIPLIER));
+    }
+
+    private void rescheduleLocationUpdateTimeout(long millis) {
+        if (isLocationUpdateTimeoutSet()) mOnUpdateTimeout.reschedule(millis);
+        else setLocationUpdateTimeout();
+    }
+
+    private void cancelLocationUpdateTimeout() {
+        if (isLocationUpdateTimeoutSet()) {
+            mOnUpdateTimeout.cancel();
+            mOnUpdateTimeout = null;
+        }
+    }
+
+    private long getLocationUpdateTimeoutTime(int multiplier) {
+        return mIntervalRefresh * multiplier;
+    }
+
+    public boolean isMockLocationsEnabled() {
+        return mMockLocationsEnabled;
+    }
+
+    public void setMockLocationsEnabled(boolean enabled) {
+        mMockLocationsEnabled = enabled;
+        if (!enabled) verifyMockGpsPermissions();
+    }
+
+    private static boolean isMockSettingsEnabled(Context context) {
+        return !"0".equals(Settings.Secure.getString(context.getContentResolver(),
+                        Settings.Secure.ALLOW_MOCK_LOCATION));
+    }
+
+    /**
+     * Trusted only for Android < 18
+     * @return true if has permissions to use mocked locations,
+     * false if mocked locations are denied (a dialog will pop up)
+     * @see #isLocationPlausible(Location)
+     */
+    private boolean verifyMockGpsPermissions() {
+        if (!isMockLocationsEnabled() && isMockSettingsEnabled(getContext())) {
+            showMockSettingsDialog();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isMocked(@NonNull Location location) {
+        boolean mocked = false;
+        if (isMockLocationsEnabled()) {
+            // If we are not sure, mark as permitted mock
+            mocked = true;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            if (location.isFromMockProvider()) {
+                mocked = true;
+                showMockSettingsDialog();
+            }
+        } else if (!verifyMockGpsPermissions()) {
+            mocked = true;
+        }
+        return mocked;
+    }
+
+    private boolean isLocationPlausible(@Nullable Location location) {
+        if (location == null) return false;
+
+        // isFromMockProvider may give wrong response for some applications
+        // Warning: With rooted devices we cannot ensure that the location is not mocked
+        boolean mocked = isMocked(location);
+
+        if (mocked) mLastMockLocation = location;
+
+        boolean permittedMock = !mocked || isMockLocationsEnabled();
+        boolean permitted = permittedMock
+                && (mLastLocation == null || location.getAccuracy() < ACCURACY_THRESHOLD);
+
+        if (mLastMockLocation == null) return permitted;
+
+        if (location.distanceTo(mLastMockLocation) > KM) {
+            mLastMockLocation = null;
+            return permitted;
+        }
+        return false;
+    }
+
+    private void showMockSettingsDialog() {
+        // Uncomment for repeat the dialog
+        if (mMockWarning) return;
+        setHasPermissions(false);
+        mOnPermissionsChangedListeners.run();
+        setRequestingPermissions(true);
+        String title = mContext.getString(R.string.fake_locations_prohibited);
+        ConfirmDialog mockLocationsDialog = new ConfirmDialog(getContext(), title,
+                mContext.getString(R.string.mocked_gps_prohibited));
+        mockLocationsDialog.setPositiveButton(null, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface d, int w) {
+                setRequestingPermissions(false);
+                checkForPermissions();
+                setRequestingPermissions(false);
+            }
+        });
+        mockLocationsDialog.setNegativeButton(getContext().getString(R.string.settings),
+                new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface d, int w) {
+                    setRequestingPermissions(false);
+                    getContext().startActivityForResult(new Intent(
+                            Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS), 0);
+                }
+            }
+        );
+        mockLocationsDialog.show();
+        mMockWarning = true;
+    }
+
+    private boolean verifyRootPermitted() {
+        // Uncomment for repeat the dialog
+        if (mRootWarning) return RootUtils.isRootPermitted();
+        Runnable onProhibit = new Runnable() {
+            @Override
+                public void run() {
+                setRequestingPermissions(true);
+                setHasPermissions(false);
+                mOnPermissionsChangedListeners.run();
+                cancelLocationUpdateTimeout();
+            }
+        };
+        Runnable onConfirm = new Runnable() {
+            @Override
+            public void run() {
+                setRequestingPermissions(false);
+            }
+        };
+        mRootWarning = true;
+        return RootUtils.verifyRootPermitted(getContext(), onProhibit, onConfirm);
+    }
+
+    public void repeatWarningsWhenNeeded() {
+        if (!isRequestingPermissions()) {
+            mRootWarning = false;
+            mMockWarning = false;
+            mLowConnectionWarning = false;
+        }
+    }
+
+    private boolean checkNetwork() {
+        return NetworkController.checkNetwork(mContext,
+            new Runnable() {
+                @Override
+                public void run() {
+                    setRequestingPermissions(true);
+                }
+            },
+            new Runnable() {
+                @Override
+                public void run() {
+                    setRequestingPermissions(false);
+                }
+            });
+    }
+
+    private void onPermissionsSuccess() {
+        try {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                    getLocationRequest(), this);
+            Log.v(TAG, "Updates requested successfully.");
+        } catch (SecurityException e) {
+            setHasPermissions(false);
+            mOnPermissionsChangedListeners.run();
+            Log.e(TAG, "Permissions restricted due to SecurityException", e);
+        }
+    }
+
+    private class OnPermissionsTask implements Runnable {
+        @Override
+        public void run() {
+            if (!hasPermissions()) {
+                throw new RuntimeException("Called OnPermissionTask without permissions!");
+            }
+            onPermissionsSuccess();
+            mOnConnectedUpdateCallback = null;
+            setRequestingPermissions(false);
+        }
+    }
+
     public enum Priority {
         HIGH_ACCURACY(LocationRequest.PRIORITY_HIGH_ACCURACY, 3000, 1000),
         LOW_POWER(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 9000,
@@ -514,29 +697,6 @@ public class LocationAdapter implements
 
         public long getFastestPeriodMillis() {
             return mFastestPeriodMillis;
-        }
-    }
-
-    public void getLocalityFromCurrentPosition(@NonNull LocalityCallback callback) {
-        GeocoderAdapter.getLocality(mContext, mLastLocation, callback);
-    }
-
-    private class RequestUpdatesTask implements Runnable {
-        @Override
-        public void run() {
-            try {
-                LocationServices.FusedLocationApi.requestLocationUpdates(
-                        mGoogleApiClient, getLocationRequest(),
-                        LocationAdapter.this);
-                if (mOnPermissionsRequested != null) mOnPermissionsRequested.run();
-            } catch (SecurityException e) {
-                mHasPermissions = false;
-                Log.e(TAG, "Permissions restricted due to SecurityException", e);
-            }
-            mOnConnectedUpdateCallback = null;
-            Log.v(TAG, "Updates requested successfully.");
-            setRequestingPermissions(false);
-            rescheduleLocationUpdateTimeout();
         }
     }
 }

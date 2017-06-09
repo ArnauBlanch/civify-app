@@ -51,6 +51,10 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme.NoActionBar" />
     <activity
+        android:name=".activity.forgotpassword.ForgotActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
         android:name=".activity.registration.RegistrationActivity"
         android:screenOrientation="portrait" />
     <activity
@@ -59,6 +63,10 @@
         android:theme="@style/AppTheme.NoActionBar" />
     <activity
         android:name=".activity.EditIssueActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+        android:name=".activity.introduction.IntroductionActivity"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme.NoActionBar" />
     <activity

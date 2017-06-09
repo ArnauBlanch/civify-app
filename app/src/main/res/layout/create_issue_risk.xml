@@ -44,11 +44,11 @@
         android:id="@+id/radio_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no"
+        android:buttonTint="@color/green"
         android:checked="false"
         android:paddingLeft="10dp"
+        android:text="@string/no"
         android:textColor="@color/green"
-        android:buttonTint="@color/green"
         android:textSize="22sp"
         />
   </RadioGroup>

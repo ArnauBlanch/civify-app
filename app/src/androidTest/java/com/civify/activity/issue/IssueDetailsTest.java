@@ -21,10 +21,8 @@ import static org.hamcrest.Matchers.allOf;
 import android.content.Context;
 import android.location.Location;
 import android.os.Build;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
@@ -37,7 +35,7 @@ import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.User;
 import com.civify.model.issue.Category;
 import com.civify.model.issue.Issue;
-import com.civify.model.issue.Picture;
+import com.civify.model.Picture;
 import com.civify.model.map.CivifyMap;
 import com.civify.service.issue.IssueService;
 import com.civify.utils.AdapterFactory;
@@ -145,7 +143,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
     public void componentsAreShownCorrectly() throws ParseException, InterruptedException {
         Location mockLocation =
                 LocationAdapter.getLocation(new LatLng(MOCK_LATITUDE, MOCK_LONGITUDE));
-        CivifyMap.getInstance().setMockLocation(mockLocation);
+        //CivifyMap.getInstance().setMockLocation(mockLocation);
         Issue mockIssue = mockIssue(USER_AUTH_TOKEN);
         mockIssue.showIssueDetails();
 
@@ -205,7 +203,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
     public void testConfirmResolveReport() throws ParseException, InterruptedException {
         Location mockLocation =
                 LocationAdapter.getLocation(new LatLng(MOCK_LATITUDE, MOCK_LONGITUDE));
-        CivifyMap.getInstance().setMockLocation(mockLocation);
+        //CivifyMap.getInstance().setMockLocation(mockLocation);
         mockIssue(USER_AUTH_TOKEN).showIssueDetails();
 
         sleep(2250);
@@ -242,7 +240,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
     public void testUnconfirmUnresolveUnreport() throws ParseException, InterruptedException {
         Location mockLocation =
                 LocationAdapter.getLocation(new LatLng(MOCK_LATITUDE, MOCK_LONGITUDE));
-        CivifyMap.getInstance().setMockLocation(mockLocation);
+        //CivifyMap.getInstance().setMockLocation(mockLocation);
         Issue mockIssue = mockIssue(USER_AUTH_TOKEN);
         mockIssue.setConfirmedByAuthUser(true);
         mockIssue.setResolvedByAuthUser(true);
@@ -284,7 +282,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
         String userAuthToken = UserAdapter.getCurrentUser().getUserAuthToken();
         Location mockLocation =
                 LocationAdapter.getLocation(new LatLng(MOCK_LATITUDE, MOCK_LONGITUDE));
-        CivifyMap.getInstance().setMockLocation(mockLocation);
+        //CivifyMap.getInstance().setMockLocation(mockLocation);
         mockIssue(userAuthToken).showIssueDetails();
 
         sleep(2250);
@@ -329,7 +327,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
     public void testTooFarFromIssue() throws ParseException, InterruptedException {
         Location mockLocation =
                 LocationAdapter.getLocation(new LatLng(MOCK_LATITUDE - 1.0, MOCK_LONGITUDE - 1.0));
-        CivifyMap.getInstance().setMockLocation(mockLocation);
+        //CivifyMap.getInstance().setMockLocation(mockLocation);
         mockIssue(USER_AUTH_TOKEN).showIssueDetails();
 
         sleep(2250);
@@ -343,7 +341,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
     public void testErrorMessages() throws ParseException, InterruptedException {
         Location mockLocation =
                 LocationAdapter.getLocation(new LatLng(MOCK_LATITUDE, MOCK_LONGITUDE));
-        CivifyMap.getInstance().setMockLocation(mockLocation);
+        //CivifyMap.getInstance().setMockLocation(mockLocation);
         mockIssue(USER_AUTH_TOKEN).showIssueDetails();
 
         sleep(2250);

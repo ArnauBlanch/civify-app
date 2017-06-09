@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    tools:ignore="MissingPrefix,Overdraw"
+    android:layout_marginBottom="25dp"
+    >
+
+  <TextView
+      android:id="@+id/title1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/choose_avatar"
+      android:textAlignment="center"
+      android:textSize="28sp"
+      android:textColor="#000000"
+      fontPath="fonts/Nunito-ExtraBold.ttf"
+      android:layout_marginBottom="16dp"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:textColor="@color/colorPrimary"
+      android:text="@string/skip_this_step"
+      android:textSize="14sp"
+      fontPath="fonts/Nunito-BoldItalic.ttf"
+      android:onClick="defaultAvatarButtonListener"
+      />
+
+  <GridView
+      android:padding="16dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:numColumns="3"
+      android:verticalSpacing="10dp"
+      android:horizontalSpacing="10dp"
+      android:stretchMode="columnWidth"
+      android:gravity="center"
+      android:id="@+id/avatar_grid_view"
+      android:scrollbars="none"
+      android:isScrollContainer="false"
+      >
+  </GridView>
+
+</LinearLayout>

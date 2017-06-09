@@ -76,7 +76,23 @@ public class AvailableAwardsFragment extends BasicFragment {
 
                     @Override
                     public void onFailure() {
-                        Snackbar.make(view, "Couldn't retrieve rewards.", Snackbar.LENGTH_SHORT);
+                        Snackbar.make(view, R.string.couldnt_retrieve_rewards,
+                                Snackbar.LENGTH_SHORT);
+                    }
+                });
+    }
+
+    public void updateList() {
+        AdapterFactory.getInstance().getAwardAdapter(getContext())
+                .getOfferedAwards(new ListAwardsSimpleCallback() {
+                    @Override
+                    public void onSuccess(List<Award> awards) {
+                        mAwardsViewFragment.setRewardList(awards);
+                    }
+
+                    @Override
+                    public void onFailure() {
+
                     }
                 });
     }

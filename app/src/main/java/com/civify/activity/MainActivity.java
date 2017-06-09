@@ -17,9 +17,6 @@ import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
 public class MainActivity extends BaseActivity {
-    private static final String MSG_CLOSE = "Close";
-    private static final String MSG_ERROR = "Error";
-    private static final String MSG_NOT_IMPLEMENTED = "Feature not implemented yet";
 
     private AlertDialog mDialog;
 
@@ -31,6 +28,10 @@ public class MainActivity extends BaseActivity {
         mDialog = createDialog();
         putButtonDialog();
 
+        initButtons();
+    }
+
+    private void initButtons() {
         Button buttonRegister = (Button) findViewById(R.id.registerButton);
         buttonRegister.setOnClickListener(new OnClickListener() {
             @Override
@@ -47,21 +48,6 @@ public class MainActivity extends BaseActivity {
                 loginListener();
             }
         });
-        Button buttonGoogle = (Button) findViewById(R.id.buttonGoogle);
-        buttonGoogle.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.show();
-            }
-        });
-        Button buttonTwitter = (Button) findViewById(R.id.buttonTwitter);
-        buttonTwitter.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.show();
-            }
-        });
-
     }
 
     private void loginListener() {
@@ -83,7 +69,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void putButtonDialog() {
-        mDialog.setButton(MSG_CLOSE, new DialogInterface.OnClickListener() {
+        mDialog.setButton(getString(R.string.close), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -94,8 +80,8 @@ public class MainActivity extends BaseActivity {
     private AlertDialog createDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage(MSG_NOT_IMPLEMENTED)
-                .setTitle(MSG_ERROR);
+        builder.setMessage(getString(R.string.not_implemented_yet))
+                .setTitle(getString(R.string.error));
 
         return builder.create();
     }

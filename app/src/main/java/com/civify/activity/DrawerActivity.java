@@ -1,5 +1,7 @@
 package com.civify.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -12,25 +14,33 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.civify.R;
-import com.civify.activity.fragments.AchievementsFragment;
+import com.civify.activity.fragments.AboutFragment;
 import com.civify.activity.fragments.BasicFragment;
-import com.civify.activity.fragments.EventsFragment;
 import com.civify.activity.fragments.NavigateFragment;
 import com.civify.activity.fragments.SettingsFragment;
+import com.civify.activity.fragments.achievements.AchievementsFragment;
 import com.civify.activity.fragments.award.AwardsFragment;
-import com.civify.activity.fragments.issue.WallFragment;
+import com.civify.activity.fragments.event.EventsFragment;
 import com.civify.activity.fragments.profile.ProfileFragment;
+import com.civify.activity.fragments.wall.WallFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserAttacher;
+import com.civify.model.AchievementsEventsContainer;
+import com.civify.service.AchievementsEventsCallback;
+import com.civify.utils.AdapterFactory;
 
 import java.util.Stack;
 
@@ -48,10 +58,15 @@ public class DrawerActivity extends BaseActivity
     public static final int DETAILS_AWARD_ID = 8;
     public static final int DETAILS_QR_ID = 9;
     public static final int EXCHANGED_AWARDS = 10;
+    public static final int DETAILS_ACHIEVEMENTS_ID = 11;
+    public static final int DETAILS_EVENTS_ID = 12;
+    public static final int ABOUT_ID = 13;
 
     private static final int DEFAULT_ELEVATION = 6;
     private static final int SHOW_AS_ACTION_IF_ROOM = 1;
     private static final int SHOW_AS_ACTION_NEVER = 0;
+    private static final String SPACE = " ";
+    private static final String DOT = ".";
 
     private Stack<Fragment> mFragmentStack;
 
@@ -59,11 +74,19 @@ public class DrawerActivity extends BaseActivity
     private NavigationView mNavigationView;
     private Toolbar mToolbar;
     private AppBarLayout mAppBarLayout;
-    private int mCurrentFragment;
+    private Fragment mCurrentFragment;
+    private int mCurrentFragmentId;
+
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
+    private boolean mShowMenuWall;
+    private boolean mShowMenuNavigate;
 
-    public int getCurrentFragment() {
+    public int getCurrentFragmentId() {
+        return mCurrentFragmentId;
+    }
+
+    public Fragment getCurrentFragment() {
         return mCurrentFragment;
     }
 
@@ -91,9 +114,20 @@ public class DrawerActivity extends BaseActivity
 
         NavigateFragment navigateFragment = NavigateFragment.newInstance();
         setFragment(navigateFragment, NAVIGATE_ID);
-        mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
+        mNavigationView.getMenu().getItem(mCurrentFragmentId).setChecked(true);
 
         setUserHeader();
+        AdapterFactory.getInstance().getUserAdapter(this).addOnCurrentUserUpdateListener(
+                new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("DrawerActivityListener", "CURRENT USER UPDATE LISTENER");
+                    setUserHeader();
+                }
+            }
+        );
+
+        checkNewAchievementsEvents();
     }
 
     @Override
@@ -103,8 +137,10 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
-                    && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID) {
+            if (mCurrentFragmentId != NAVIGATE_ID && mCurrentFragmentId != DETAILS_ISSUE_ID
+                    && mCurrentFragmentId != DETAILS_QR_ID && mCurrentFragmentId != DETAILS_AWARD_ID
+                    && mCurrentFragmentId != DETAILS_ACHIEVEMENTS_ID
+                    && mCurrentFragmentId != DETAILS_EVENTS_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
                 while (fragment.getFragmentId() != NAVIGATE_ID) {
@@ -113,10 +149,9 @@ public class DrawerActivity extends BaseActivity
                 mFragmentStack.clear();
                 mFragmentStack.add(fragment);
                 fragment.onResume();
-                fragmentTransaction
-                        .show(fragment)
-                        .commit();
-                mCurrentFragment = NAVIGATE_ID;
+                fragmentTransaction.show(fragment).commit();
+                mCurrentFragmentId = NAVIGATE_ID;
+                mCurrentFragment = fragment;
             } else {
                 mFragmentStack.lastElement().onPause();
                 fragmentTransaction.remove(mFragmentStack.pop());
@@ -124,7 +159,8 @@ public class DrawerActivity extends BaseActivity
                 BasicFragment restoredFragment = (BasicFragment) mFragmentStack.lastElement();
                 fragmentTransaction.show(restoredFragment);
                 fragmentTransaction.commit();
-                mCurrentFragment = restoredFragment.getFragmentId();
+                mCurrentFragment = restoredFragment;
+                mCurrentFragmentId = restoredFragment.getFragmentId();
             }
             setToolbarTitle();
             updateMenu();
@@ -175,6 +211,9 @@ public class DrawerActivity extends BaseActivity
         } else if (id == R.id.nav_settings) {
             SettingsFragment settingsFragment = SettingsFragment.newInstance();
             setFragment(settingsFragment, SETTINGS_ID);
+        } else if (id == R.id.nav_about) {
+            AboutFragment aboutFragment = AboutFragment.newInstance();
+            setFragment(aboutFragment, ABOUT_ID);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -190,25 +229,49 @@ public class DrawerActivity extends BaseActivity
         if (!mFragmentStack.empty()) {
             mFragmentStack.lastElement().onPause();
             fragmentTransaction.hide(mFragmentStack.lastElement());
-            if (mCurrentFragment == fragmentId) mFragmentStack.pop();
+            if (mCurrentFragmentId == fragmentId) mFragmentStack.pop();
         }
         mFragmentStack.push(fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
 
-        mCurrentFragment = fragmentId;
+        mCurrentFragmentId = fragmentId;
+        mCurrentFragment = fragment;
         updateMenu();
         setToolbarTitle();
     }
 
-    private void updateMenu() {
-        if (mCurrentFragment == PROFILE_ID) {
-            mShowMenu = true;
-        } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
-            mShowMenu = true;
-            mShowMenuDetails = true;
-        } else {
-            mShowMenu = false;
-            mShowMenuDetails = false;
+    public void updateMenu() {
+        switch (mCurrentFragmentId) {
+            case PROFILE_ID:
+                ProfileFragment profile = (ProfileFragment) mCurrentFragment;
+                mShowMenu = !profile.isUserSet() || profile.isCurrentUser();
+                mShowMenuDetails = false;
+                mShowMenuNavigate = false;
+                break;
+            case DETAILS_ISSUE_ID:
+                mShowMenu = true;
+                mShowMenuDetails = true;
+                mShowMenuWall = false;
+                mShowMenuNavigate = false;
+                break;
+            case WALL_ID:
+                mShowMenu = true;
+                mShowMenuWall = true;
+                mShowMenuDetails = false;
+                mShowMenuNavigate = false;
+                break;
+            case NAVIGATE_ID:
+                mShowMenu = true;
+                mShowMenuWall = false;
+                mShowMenuNavigate = true;
+                mShowMenuDetails = false;
+                break;
+            default:
+                mShowMenu = false;
+                mShowMenuDetails = false;
+                mShowMenuWall = false;
+                mShowMenuNavigate = false;
+                break;
         }
         invalidateOptionsMenu();
     }
@@ -216,10 +279,23 @@ public class DrawerActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(mShowMenuDetails ? R.menu.details : R.menu.drawer, menu);
+        int menuRes;
         int noIcona = SHOW_AS_ACTION_NEVER;
-        if (mShowMenuDetails) {
+        if (mCurrentFragmentId == DETAILS_ISSUE_ID) {
+            menuRes = R.menu.details;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == WALL_ID) {
+            menuRes = R.menu.wall;
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == NAVIGATE_ID) {
+            menuRes = R.menu.navigation;
+            noIcona = SHOW_AS_ACTION_IF_ROOM;
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == PROFILE_ID) {
+            menuRes = R.menu.profile;
+            getMenuInflater().inflate(menuRes, menu);
         }
 
         for (int i = 0; i < menu.size(); ++i) {
@@ -230,23 +306,33 @@ public class DrawerActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("DrawerActivity", "onActivityResult");
+        getCurrentFragment().onActivityResult(requestCode, resultCode, data);
+    }
+
     public void setUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
 
-        UserAttacher.getFromCurrentUser(this)
+        UserAttacher.get(this, null, UserAdapter.getCurrentUser())
                 .setFullName((TextView) headerView.findViewById(R.id.header_name))
                 .setUsername((TextView) headerView.findViewById(R.id.header_username))
                 .setLevel((TextView) headerView.findViewById(R.id.header_level))
                 .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
                 .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
-                .setCoins((TextView) headerView.findViewById(R.id.header_coins));
+                .setCoins((TextView) headerView.findViewById(R.id.header_coins))
+                .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
+
+        if (existsCoinsOnToolbar()) showCoinsOnToolbar();
     }
 
     private void setToolbarTitle() {
         final String title;
         removeCoinsFromToolbar();
         int elevation = DEFAULT_ELEVATION;
-        switch (mCurrentFragment) {
+        switch (mCurrentFragmentId) {
             case NAVIGATE_ID:
                 title = getResources().getString(R.string.navigate_title);
                 break;
@@ -288,13 +374,17 @@ public class DrawerActivity extends BaseActivity
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setChecked(false);
         }
-        menu.getItem(mCurrentFragment).setChecked(true);
+        menu.getItem(mCurrentFragmentId).setChecked(true);
     }
 
     private void setToolbarElevation(int elevation) {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             mAppBarLayout.setElevation(elevation);
         }
+    }
+
+    public boolean existsCoinsOnToolbar() {
+        return mToolbar.findViewById(R.id.coins_with_number) != null;
     }
 
     public void removeCoinsFromToolbar() {
@@ -305,6 +395,7 @@ public class DrawerActivity extends BaseActivity
     }
 
     public void showCoinsOnToolbar() {
+        removeCoinsFromToolbar();
         View coins = getLayoutInflater().inflate(R.layout.coins_with_number, null);
         Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.END);
         ((TextView) coins.findViewById(R.id.num_coins)).setText(
@@ -312,10 +403,50 @@ public class DrawerActivity extends BaseActivity
         mToolbar.addView(coins, layoutParams);
     }
 
-    public void updateCoinsOnToolbar(int coins) {
-        removeCoinsFromToolbar();
-        UserAdapter.getCurrentUser().setCoins(coins);
-        showCoinsOnToolbar();
+    private void checkNewAchievementsEvents() {
+        AdapterFactory.getInstance().getAchievementsEventsAdapter(getApplicationContext())
+                .getNewAchievementsEvents(new AchievementsEventsCallback() {
+                    @Override
+                    public void onSuccess(AchievementsEventsContainer achievementsEventsContainer) {
+                        int a = achievementsEventsContainer.getAchievementList().size();
+                        int e = achievementsEventsContainer.getEventList().size();
+                        if (a > 0 || e > 0) {
+                            Builder builder = new Builder(DrawerActivity.this)
+                                    .setTitle(R.string.congratulations)
+                                    .setMessage(getAchievementsEventsMessage(a, e))
+                                    .setNegativeButton(R.string.close,
+                                            new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure() { }
+                });
     }
 
+    private String getAchievementsEventsMessage(int a, int e) {
+        String achievements = "";
+        if (a > 0) {
+            achievements += a + SPACE + getString(a > 1 ? R.string.dialog_achievements :
+                    R.string.dialog_achievement);
+        }
+
+        String events = "";
+        if (e > 0) {
+            if (a > 0) {
+                events += SPACE + getString(R.string.and) + SPACE;
+            }
+            events += e + SPACE + getString(e > 1 ? R.string.dialog_events : R.string.dialog_event);
+        }
+
+        return getString(R.string.you_have_completed) + SPACE + achievements + events + DOT
+                + "\n\n" + getString(R.string.access_achievements_events);
+    }
 }

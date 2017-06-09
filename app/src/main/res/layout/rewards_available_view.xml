@@ -11,7 +11,10 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:layout_margin="@dimen/single_card_margin"
+      android:layout_marginRight="5dp"
+      android:layout_marginLeft="5dp"
+      android:layout_marginTop="2dp"
+      android:layout_marginBottom="2dp"
       android:elevation="3dp"
       card_view:cardCornerRadius="@dimen/card_album_radius"
       card_view:cardElevation="4dp"
@@ -49,8 +52,9 @@
           >
 
         <LinearLayout
-            android:layout_width="64dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="3"
             android:orientation="horizontal"
             android:gravity="center"
             >
@@ -72,9 +76,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_weight="12"
             >
 
           <TextView
@@ -103,6 +108,8 @@
               android:layout_marginStart="@dimen/album_title_padding"
               android:layout_marginTop="4dp"
               android:layout_marginBottom="@dimen/album_title_padding"
+              android:layout_marginRight="@dimen/album_title_padding"
+              android:layout_marginEnd="@dimen/album_title_padding"
               android:textSize="12sp" />
 
         </LinearLayout>

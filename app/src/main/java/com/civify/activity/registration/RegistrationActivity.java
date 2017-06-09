@@ -1,11 +1,13 @@
 package com.civify.activity.registration;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.civify.adapter.LoginFinishedCallback;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
+import com.civify.model.ProfileIcon;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
@@ -27,6 +30,7 @@ public class RegistrationActivity
     private UserAdapter mUserAdapter;
     private ViewPager mViewPager;
     private LoginAdapter mLoginAdapter;
+    private ProfileIcon mSelectedProfileIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class RegistrationActivity
         if (mViewPager.getCurrentItem() == 0) {
             super.onBackPressed();
         } else {
+            closeKeyBoard();
             previousPage();
         }
     }
@@ -88,6 +93,7 @@ public class RegistrationActivity
         String password2 = ((EditText) findViewById(R.id.password2_input)).getText().toString();
 
         User newUser = new User(username, name, surname, email, password, password2);
+        newUser.setProfileIcon(mSelectedProfileIcon);
         mUserAdapter.registerUser(newUser, new SimpleCallback() {
             @Override
             public void onSuccess() {
@@ -110,9 +116,9 @@ public class RegistrationActivity
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(String errorMessage) {
                 Snackbar.make(findViewById(R.id.registration_linearlayout),
-                        "There was an error when registering", Snackbar.LENGTH_SHORT).show();
+                        R.string.error_register, Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -134,6 +140,7 @@ public class RegistrationActivity
         }
 
         if (valid) {
+            closeKeyBoard();
             nextPage();
         }
     }
@@ -148,6 +155,7 @@ public class RegistrationActivity
                     @Override
                     public void onValidationResponse(int response) {
                         if (response == UserAdapter.VALID_UNUSED) {
+                            closeKeyBoard();
                             nextPage();
                         }
                     }
@@ -164,6 +172,7 @@ public class RegistrationActivity
                     @Override
                     public void onValidationResponse(int response) {
                         if (response == UserAdapter.VALID_UNUSED) {
+                            closeKeyBoard();
                             nextPage();
                         }
                     }
@@ -181,7 +190,24 @@ public class RegistrationActivity
         EditText matchingPassword = (EditText) findViewById(R.id.password2_input);
         if (mUserAdapter.checkValidPassword(password.getText().toString())
                 && password.getText().toString().equals(matchingPassword.getText().toString())) {
+            closeKeyBoard();
             register();
         }
+    }
+
+    private void closeKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                .INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mViewPager.getWindowToken(), 0);
+    }
+
+    public void defaultAvatarButtonListener(View v) {
+        mSelectedProfileIcon = ProfileIcon.USER;
+        nextPage();
+    }
+
+    public void selectProfileIcon(ProfileIcon profileIcon) {
+        mSelectedProfileIcon = profileIcon;
+        nextPage();
     }
 }

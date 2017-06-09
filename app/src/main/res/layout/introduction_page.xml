@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:ignore="MissingPrefix"
+      android:gravity="center"
+      >
+
+    <ImageView
+        android:id="@+id/introduction_image"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/logo_planeta"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/introduction_text"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/introduction_page_1"
+        android:gravity="center"
+        fontPath="fonts/Nunito-Italic.ttf"
+        android:textSize="18sp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        />
+
+    <TextView
+        android:id="@+id/introduction_continue_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/continue_button"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
+        fontPath="fonts/Nunito-ExtraBold.ttf"
+        />
+
+  </LinearLayout>

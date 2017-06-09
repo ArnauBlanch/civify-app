@@ -111,6 +111,7 @@ dependencies {
   compile 'com.mikhaellopez:circularimageview:3.0.2'
   compile 'com.google.android.gms:play-services-location:10.2.0'
   compile 'com.google.android.gms:play-services-maps:10.2.0'
+  compile 'com.google.android.gms:play-services-places:10.2.0'
   compile 'com.google.maps.android:android-maps-utils:0.4.+'
   compile 'com.squareup.okhttp3:mockwebserver:3.6.0'
   compile 'com.android.support:recyclerview-v7:25.3.1'

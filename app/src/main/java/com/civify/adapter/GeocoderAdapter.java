@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.civify.R;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -69,7 +71,7 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
         } catch (IOException e) {
             Throwable cause = e.getCause();
             Log.i(TAG, "Error " + (cause != null ? cause.getClass().getSimpleName()
-                    : '(' + e.getClass().getSimpleName() + ':' + e.getMessage() + ')')
+                    : '(' + e.getClass().getSimpleName() + ": " + e.getMessage() + ')')
                     + " getting locality with Geocoder. "
                     + "Trying with HTTP/GET on Google Maps API.");
             result = geolocateFromGoogleApis(latitude, longitude);
@@ -79,7 +81,8 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
 
     private Address geolocateFromGoogleApis(double latitude, double longitude) {
         String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
-                + latitude + ',' + longitude + "&sensor=true";
+                + latitude + ',' + longitude + "&sensor=true&language="
+                + Locale.getDefault().getLanguage();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = null;
@@ -89,15 +92,11 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
             response = client.newCall(request).execute();
             responseBody = response.body();
             String jsonData = responseBody.string();
-            Log.d(TAG, jsonData);
-            if (response.isSuccessful()) {
-                return getAddressFromGoogleApis(jsonData);
-            }
-            mErrorMessage = "Unexpected code getting locality with HTTP/GET "
-                    + "on Google Maps API: "
-                    + response.code();
+            if (response.isSuccessful()) return getAddressFromGoogleApis(jsonData);
+            mErrorMessage = mContext.getString(R.string.unexpected_code)
+                    + mContext.getString(R.string.on_google) + response.code();
         } catch (IOException | JSONException e) {
-            mErrorMessage = "Error getting locality with HTTP/GET on Google Maps API";
+            mErrorMessage = mContext.getString(R.string.error_locality);
             mError = e;
         } finally {
             if (response != null) response.close();
@@ -150,7 +149,7 @@ public final class GeocoderAdapter extends AsyncTask<String, Void, Address> {
     }
 
     @NonNull
-    private String formatAddress(@NonNull Address address) {
+    private static String formatAddress(@NonNull Address address) {
         String addressText = "";
         String streetAndNumber = address.getAddressLine(0);
         if (!(streetAndNumber == null || streetAndNumber.isEmpty())) {
