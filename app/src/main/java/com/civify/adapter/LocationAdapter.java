@@ -433,6 +433,7 @@ public class LocationAdapter implements
 
     public void checkForPermissions() {
         if (!isRequestingPermissions()) {
+            Log.v(TAG, "Checking permissions...");
             setRequestingPermissions(true);
             setHasPermissions(false);
             if (verifyRootPermitted() && verifyMockGpsPermissions()) {
