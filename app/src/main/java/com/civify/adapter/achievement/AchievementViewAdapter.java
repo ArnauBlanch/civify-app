@@ -63,7 +63,7 @@ public class AchievementViewAdapter extends RecyclerView.Adapter<AchievementView
 
         // CLAIM button
         if (achievement.isClaimed() || !achievement.isCompleted()) {
-            //holder.getClaimButton().setVisibility(View.GONE);
+            holder.getClaimButton().setVisibility(View.GONE);
         } else {
             setClaimListener(holder, achievement);
         }

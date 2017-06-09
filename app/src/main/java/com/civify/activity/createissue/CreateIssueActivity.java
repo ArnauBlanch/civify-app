@@ -175,7 +175,6 @@ public class CreateIssueActivity extends CameraGalleryActivity {
                     == radioButton.getId();
             nextPage();
         } else {
-
             message.setVisibility(View.VISIBLE);
         }
     }

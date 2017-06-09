@@ -112,7 +112,7 @@ public class WallFragment extends BasicFragment {
                 try {
                     mIssuesViewFragment.setIssues(CivifyMap.getInstance().getIssues());
                 } catch (MapNotLoadedException e) {
-                    Snackbar.make(view, "Couldn't retrieve updated issues.", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, R.string.couldnt_update_issues, Snackbar.LENGTH_LONG)
                             .setAction(R.string.action, null)
                             .show();
                 }
@@ -218,31 +218,6 @@ public class WallFragment extends BasicFragment {
             mIssuesViewFragment.setIssues(mIssues);
             mProgressBar.setVisibility(View.GONE);
             if (mTextEmpty != null) mTextEmpty.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
-                @Override
-                public void onSuccess(List<Issue> issues) {
-                    mIssuesViewFragment.setIssues(filterIssues(issues));
-                    try {
-                        CivifyMap.getInstance().setIssues(issues);
-                    } catch (MapNotLoadedException ignore) {
-                        // Don't refresh map
-                    }
-                    mLoaded = true;
-                    mIssues = issues;
-                }
-
-                @Override
-                public void onFailure() {
-                    // TODO: do this
-                }
-            }, mStatusSelected, mFilteredCategories, mRiskSelected);
         }
     }
 

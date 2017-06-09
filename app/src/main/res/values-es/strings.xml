@@ -29,7 +29,7 @@
   <string name="couldnt_delete_issue">No se pudo borrar la incidencia</string>
   <string name="couldnt_edit_issue">No se pudo editar la incidencia</string>
   <string name="couldnt_get_location">No se pudo obtener la localización actual</string>
-  <string name="couldnt_update_issue_info">No se pudo obtener información actualizada de la incidencia</string>
+  <string name="couldnt_update_issue_info">No se ha podido obtener información actualizada del usuario</string>
   <string name="create_new_issue">Crear nueva incidencia</string>
   <string name="creating_new_issue">Creando nueva incidencia...</string>
   <string name="days">días</string>
@@ -43,7 +43,7 @@
   <string name="edit_issue">Editar Incidencia</string>
   <string name="email">Correo electrónico</string>
   <string name="error_field_required">Este campo es obligatorio</string>
-  <string name="error_incorrect_password">Esta contraseña es incorrecta</string>
+  <string name="error_incorrect_password">La contraseña es incorrecta</string>
   <string name="error_invalid_email">Esta dirección de correo electrónico no es inválida</string>
   <string name="error_invalid_password">La contraseña es demasiado corta</string>
   <string name="events">Eventos</string>
@@ -60,7 +60,8 @@
   <string name="havent_picked_image">¡No has elegido una imagen!</string>
   <string name="hello_blank_fragment"></string>
   <string name="invalid_email">El correo electrónico es inválido</string>
-  <string name="invalid_password">"         <![CDATA[LA contraseña es inválida (Debería tener 8-40 caracteres, incluyendo al menos 1 letra mayúscula y una minúscula, 1 dígito. Caracteres especiales permitidos: @&#$%)]]>"</string>
+  <string
+      name="invalid_password">"<![CDATA[La contraseña es inválida (Debería tener 8-40 caracteres, incluyendo al menos 1 letra mayúscula y una minúscula, 1 dígito. Caracteres especiales permitidos: @&#$%)]]>"</string>
   <string name="invalid_username">El nombre de usuario es inválido (Debería tener 8-20 caracteres. Caracteres especiales permitidos: .,)</string>
   <string name="issue_created">Incidencia creada</string>
   <string name="issue_description">Descripción de la incidencia</string>
@@ -92,10 +93,9 @@
   <string name="need_to_allow_camera_permission">Debes conceder permiso a la cámara para sacar una foto</string>
   <string name="need_to_allow_location_permission">Debes dar permiso de localización</string>
   <string name="need_to_allow_read_storage_permission">Debes dar permiso para acceder al almacenamiento externo</string>
-  <string name="not_implemented_yet"></string>
+  <string name="not_implemented_yet">No implementado todavía</string>
   <string name="not_matching_passwords">Las contraseñas no coinciden</string>
-  <string name="about">Sobre</string>
-  <string name="ok_award">Ok!</string>
+  <string name="about">Acerca de</string>
   <string name="password">Contraseña</string>
   <string name="permission_rationale"></string>
   <string name="pose_a_risk">¿Supone un riesgo para la gente?</string>
@@ -185,7 +185,7 @@
   <string name="sort_issues">Ordenar incidencias</string>
   <string name="you_have_completed">Has completado</string>
     <string name="access_achievements_events">Accede a la sección de logros o eventos para reclamar tu recompensa.</string>
-  <string name="claim">Reclamar</string>
+  <string name="claim">RECLAMAR</string>
   <string name="and">y</string>
   <string name="couldnt_claim_achievement">No se pudo reclamar la recompensa.</string>
   <string name="couldnt_claim_event">No se pudo reclamar el evento.</string>
@@ -202,7 +202,7 @@
   <string name="all">Todo</string>
   <string name="choose_avatar">Elige un avatar</string>
   <string name="confirm_votes">Votos de confirmación</string>
-  <string name="deselect_all">Deseleccionar todo</string>
+  <string name="deselect_all">Desmarcar todo</string>
   <string name="error_ocurred">Ha habido un error</string>
   <string name="filter_dialog_title">Filtrar incidencias</string>
   <string name="is_risk">¿Riesgo?</string>
@@ -212,7 +212,7 @@
   <string name="proximity">Proximidad</string>
   <string name="resolved">Resuelta</string>
   <string name="search">Buscar</string>
-  <string name="select_all">Seleccionar todo</string>
+  <string name="select_all">Marcar todo</string>
   <string name="service_error">Error de servicio</string>
   <string name="service_not_available">Servicio no disponible</string>
   <string name="sort_dialog_title">Ordenar incidencias</string>
@@ -225,10 +225,10 @@
   <string name="introduce_valid_password">Introduce una contraseña</string>
   <string name="introduce_valid_ue">Introduce un correo válido o un nombre de usuario</string>
     <string name="couldnt_retrieve_achievements">No se pudieron recuperar los logros</string>
-  <string name="couldnt_retrieve_badges">No se pudieron recuperar las insignias</string>
+  <string name="couldnt_retrieve_badges">No se pudieron recuperar las insígnias</string>
   <string name="couldnt_retrieve_rewards">No se pudieron recuperar las recompensas</string>
-  <string name="date_ascending">Fecha (ascendiente)</string>
-  <string name="date_descending">Fecha (descendiente)</string>
+  <string name="date_ascending">Fecha (ascendente)</string>
+  <string name="date_descending">Fecha (descendente)</string>
   <string name="error_locality">Error al obtener localidad con HTTP/GET en Google Maps API</string>
   <string name="error_register">Hubo un error durante el registro</string>
   <string name="on_google">en Google Maps API:</string>
@@ -249,5 +249,28 @@
   <string name="error">Error</string>
   <string name="please_wait">No puedes volver a realizar esta acción. Por favor, espera</string>
   <string name="seconds">segundos</string>
-  <string name="network_present_but_error">No se ha podido contactar con el servidor. Por favor, comprueba que estés conectado a la VPN de la UPC.</string>
+  <string name="network_present_but_error">No se ha podido contactar con el servidor.
+    Por favor, comprueba que estés conectado a la VPN de la UPC.</string>
+  <string name="issues_cannot_be_retrieved">No se han podido cargar las incidencias
+    correctamente.</string>
+  <string name="cannot_retrieve_location">Parece que el mapa está tardando más de lo normal en
+    cargar la localización.\n\nTu conexión a internet o el GPS pueden estar funcionando
+    lentamente.</string>
+  <string name="cannot_retrieve_location_title">No se ha podido obtener la localización</string>
+  <string name="airplane">Desactiva el modo avión y activa la conexión a internet.</string>
+  <string name="couldnt_retrieve_achievement">No se ha podido cargar el logro</string>
+  <string name="couldnt_retrieve_event">No se ha podido cargar el evento</string>
+  <string name="couldnt_retrieve_events">No se han podido cargar los eventos</string>
+  <string name="couldnt_update_issues">No se han podido actualizar las incidencias</string>
+  <string name="done">HECHO</string>
+  <string name="enable_network">Activa la conexión a internet.</string>
+  <string name="fake_locations_prohibited">Ubicaciones simuladas no permitidas</string>
+  <string name="mocked_gps_prohibited">Civify no permite el uso de ubicaciones simuladas. Por favor, desactiva las ubicaciones simuladas o algunas funcionalidades estarán bloqueadas.</string>
+  <string name="network_unavailable">Conexió a internet no activa</string>
+  <string name="network_unavailable_message">La conexión a internet no está disponible y por lo tanto Civify podría no funcionar correctamente.</string>
+  <string name="rooted_device">Dispositivo superusuario</string>
+  <string name="rooted_device_message">El teu dispositiu es root (superusuari). Algunes funcionalitats podríen estar bloquejades per evitar abusos.</string>
+  <string name="see_this_issue">"Mira esta incidencia: "</string>
+  <string name="user_couldnt_be_retrieved">No se puede cargar el usuario</string>
+  <string name="yes">Sí</string>
 </resources>

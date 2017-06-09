@@ -246,7 +246,7 @@ public class IssueDetailsFragment extends BasicFragment {
     private void addRisk() {
         Log.v(TAG, "Adding risk in layout");
         TextView riskIssue = (TextView) mViewDetails.findViewById(R.id.riskAnswer);
-        riskIssue.setText(mIssue.isRisk() ? android.R.string.yes : android.R.string.no);
+        riskIssue.setText(mIssue.isRisk() ? R.string.yes : R.string.no);
 
         int green = VERSION.SDK_INT >= VERSION_CODES.M
                 ? getResources().getColor(R.color.colorPrimary, getContext().getTheme())
@@ -289,7 +289,7 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private User buildFakeUser() {
         String password = "";
-        return new User("", "User couldn't be retrieved", "",
+        return new User("", getString(R.string.user_couldnt_be_retrieved), "",
                 "example@mail.com", password, password);
     }
 
@@ -316,8 +316,9 @@ public class IssueDetailsFragment extends BasicFragment {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, mIssue.getTitle());
-                intent.putExtra(Intent.EXTRA_TEXT, "See this issue: " + mIssue.getTitle() + '\n'
-                        + ServiceGenerator.BASE_WEB_URL + "/issues/" + mIssue.getIssueAuthToken());
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.see_this_issue)
+                        + mIssue.getTitle() + '\n' + ServiceGenerator.BASE_WEB_URL
+                        + "/issues/" + mIssue.getIssueAuthToken());
                 getContext().startActivity(Intent.createChooser(intent, "Share"));
             }
         };
@@ -354,9 +355,9 @@ public class IssueDetailsFragment extends BasicFragment {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(getResources().getString(R.string.delete_sure))
-                    .setPositiveButton(getResources().getString(android.R.string.yes),
+                    .setPositiveButton(getResources().getString(android.R.string.ok),
                             dialogClickListener)
-                    .setNegativeButton(getResources().getString(android.R.string.no),
+                    .setNegativeButton(getResources().getString(android.R.string.cancel),
                             dialogClickListener)
                     .show();
         }
