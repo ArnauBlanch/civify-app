@@ -355,6 +355,7 @@ public class LocationAdapter implements
                     if (checkNetwork()) {
                         Log.w(TAG, "Location settings can't be changed to meet the requirements");
                         setHasPermissions(false);
+                        mOnPermissionsChangedListeners.run();
                         setRequestingPermissions(false);
                     }
                 }
@@ -407,7 +408,6 @@ public class LocationAdapter implements
             mHasPermissions = hasPermissions;
             if (!hasPermissions) {
                 cancelLocationUpdateTimeout();
-                mOnPermissionsChangedListeners.run();
             } else if (mLastLocation != null) {
                 mOnPermissionsChangedListeners.run();
             }
@@ -446,7 +446,9 @@ public class LocationAdapter implements
                             new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION},
                             PERMISSION_ACCESS_LOCATION);
                 } else if (checkNetwork()) {
-                    setHasPermissions(mMockLocation == null);
+                    boolean permission = mMockLocation == null;
+                    setHasPermissions(permission);
+                    if (!permission) mOnPermissionsChangedListeners.run();
                     setRequestingPermissions(false);
                     if (isConnected()) updateLocation();
                 }
@@ -558,9 +560,6 @@ public class LocationAdapter implements
         if (mocked) mLastMockLocation = location;
 
         boolean permittedMock = !mocked || isMockLocationsEnabled();
-
-        if (!permittedMock) setHasPermissions(false);
-
         boolean permitted = permittedMock
                 && (mLastLocation == null || location.getAccuracy() < ACCURACY_THRESHOLD);
 
@@ -577,6 +576,7 @@ public class LocationAdapter implements
         // Uncomment for repeat the dialog
         if (mMockWarning) return;
         setHasPermissions(false);
+        mOnPermissionsChangedListeners.run();
         setRequestingPermissions(true);
         String title = mContext.getString(R.string.fake_locations_prohibited);
         ConfirmDialog mockLocationsDialog = new ConfirmDialog(getContext(), title,
@@ -611,6 +611,7 @@ public class LocationAdapter implements
                 public void run() {
                 setRequestingPermissions(true);
                 setHasPermissions(false);
+                mOnPermissionsChangedListeners.run();
                 cancelLocationUpdateTimeout();
             }
         };
@@ -655,6 +656,7 @@ public class LocationAdapter implements
             Log.v(TAG, "Updates requested successfully.");
         } catch (SecurityException e) {
             setHasPermissions(false);
+            mOnPermissionsChangedListeners.run();
             Log.e(TAG, "Permissions restricted due to SecurityException", e);
         }
     }
