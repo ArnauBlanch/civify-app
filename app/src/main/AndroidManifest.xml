@@ -66,6 +66,10 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme.NoActionBar" />
     <activity
+        android:name=".activity.introduction.IntroductionActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
         android:name=".activity.SplashActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SplashScreen"
