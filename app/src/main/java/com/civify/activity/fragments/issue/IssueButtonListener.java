@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.civify.R;
 import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.issue.Issue;
@@ -96,15 +97,26 @@ public class IssueButtonListener implements OnClickListener {
         }
 
         @Override
-        public void onFailure() {
-            Snackbar.make(mParentView, mIssueButton.getErrorMessage(), Snackbar.LENGTH_SHORT)
-                    .show();
+        public void onFailure(String errorMessage) {
+            if (errorMessage.isEmpty()) {
+                Snackbar.make(mParentView, mIssueButton.getErrorMessage(), Snackbar.LENGTH_SHORT)
+                        .show();
+            } else {
+                Snackbar.make(mParentView, getErrorTimeLeft(errorMessage), Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+
         }
 
         private void changeButtonStyle(AppCompatButton button, IssueButton issueButton) {
             button.setText(issueButton.getText());
             button.setBackgroundResource(issueButton.getDrawable());
             button.setTextColor(mContext.getResources().getColor(issueButton.getTextColor()));
+        }
+
+        private String getErrorTimeLeft(String errorMessage) {
+            return mContext.getString(R.string.please_wait) + errorMessage.substring(errorMessage
+                    .indexOf(':'));
         }
     }
 }
