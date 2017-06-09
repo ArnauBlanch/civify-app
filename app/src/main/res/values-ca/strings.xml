@@ -231,5 +231,5 @@
   <string name="without_permissions">No tens permisos per dur a terme auqesta acció.</string>
   <string name="skip_this_step">Salta\'t aquest pas</string>
   <string name="all_rights_reserved">Tots els drets reservats.</string>
-    <string name="issue_once_hour">No pots crear una nova incidència encara</string>
+    <string name="issue_once_hour">No pots crear mé incidències encara</string>
 </resources>
