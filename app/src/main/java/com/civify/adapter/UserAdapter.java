@@ -275,10 +275,10 @@ public class UserAdapter {
                 new UserSimpleCallback() {
                     @Override
                     public void onSuccess(User user) {
-                        if (updateCallback != null) updateCallback.onSuccess(user);
                         if (user.getLevel() > oldLevel) {
                             RewardDialogFragment.show(context, user.getLevel());
                         }
+                        if (updateCallback != null) updateCallback.onSuccess(user);
                     }
 
                     @Override

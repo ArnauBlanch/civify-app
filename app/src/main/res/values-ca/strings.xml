@@ -61,8 +61,7 @@
   <string name="havent_picked_image">No has escollit una imatge!</string>
   <string name="illumination">Il·luminació</string>
   <string name="invalid_email">El correu electrònic es invàlid</string>
-  <string name="invalid_password">"
-    <![CDATA[La contrasenya és invàlida (Hauria d'incloure 8-40 caràcters, incloent almenys 1 lletra majúscula i 1 minúscula, 1 digit. Caràcters especials permesos: @&#$%)]]>"</string>
+  <string name="invalid_password">"<![CDATA[La contrasenya és invàlida (Hauria d'incloure 8-40 caràcters, incloent almenys 1 lletra majúscula i 1 minúscula, 1 digit. Caràcters especials permesos: @&#$%)]]>"</string>
   <string name="invalid_username">El nom d\'usuari es invàlid (Hauria de tenir 8-20 caràcters. Caràcters especials permesos: .,)</string>
   <string name="issue_created">Incidència creada</string>
   <string name="issue_description">Descripció de la incidència</string>

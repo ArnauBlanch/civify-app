@@ -43,7 +43,7 @@
   <string name="edit_issue">Editar Incidencia</string>
   <string name="email">Correo electrónico</string>
   <string name="error_field_required">Este campo es obligatorio</string>
-  <string name="error_incorrect_password">Esta contraseña es incorrecta</string>
+  <string name="error_incorrect_password">La contraseña es incorrecta</string>
   <string name="error_invalid_email">Esta dirección de correo electrónico no es inválida</string>
   <string name="error_invalid_password">La contraseña es demasiado corta</string>
   <string name="events">Eventos</string>
@@ -60,7 +60,8 @@
   <string name="havent_picked_image">¡No has elegido una imagen!</string>
   <string name="hello_blank_fragment"></string>
   <string name="invalid_email">El correo electrónico es inválido</string>
-  <string name="invalid_password">"         <![CDATA[LA contraseña es inválida (Debería tener 8-40 caracteres, incluyendo al menos 1 letra mayúscula y una minúscula, 1 dígito. Caracteres especiales permitidos: @&#$%)]]>"</string>
+  <string
+      name="invalid_password">"<![CDATA[La contraseña es inválida (Debería tener 8-40 caracteres, incluyendo al menos 1 letra mayúscula y una minúscula, 1 dígito. Caracteres especiales permitidos: @&#$%)]]>"</string>
   <string name="invalid_username">El nombre de usuario es inválido (Debería tener 8-20 caracteres. Caracteres especiales permitidos: .,)</string>
   <string name="issue_created">Incidencia creada</string>
   <string name="issue_description">Descripción de la incidencia</string>

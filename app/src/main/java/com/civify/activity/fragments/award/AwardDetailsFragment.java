@@ -20,8 +20,10 @@ import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
 import com.civify.adapter.UserAdapter;
+import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.award.AwardAdapter;
 import com.civify.model.Reward;
+import com.civify.model.User;
 import com.civify.model.award.Award;
 import com.civify.service.award.RewardCallback;
 import com.civify.utils.AdapterFactory;
@@ -150,7 +152,15 @@ public class AwardDetailsFragment extends BasicFragment {
 
     private void showRewardDialog(Reward reward) {
         AdapterFactory.getInstance().getUserAdapter(getContext())
-                .showRewardDialog(getActivity(), reward, null);
+                .showRewardDialog(getActivity(), reward, new UserSimpleCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                        ((DrawerActivity) getActivity()).setUserHeader();
+                    }
+
+                    @Override
+                    public void onFailure() { }
+                });
     }
 
     private void changeTypeButton(Button button, int type) {

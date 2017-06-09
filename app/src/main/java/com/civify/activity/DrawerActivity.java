@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -120,6 +121,7 @@ public class DrawerActivity extends BaseActivity
                 new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("DrawerActivityListener", "CURRENT USER UPDATE LISTENER");
                     setUserHeader();
                 }
             }
@@ -304,6 +306,7 @@ public class DrawerActivity extends BaseActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("DrawerActivity", "onActivityResult");
         getCurrentFragment().onActivityResult(requestCode, resultCode, data);
     }
 
