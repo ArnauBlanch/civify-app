@@ -244,4 +244,7 @@
   <string name="introduction_page_4">Para que tus instituciones lo puedan solucionar.</string>
   <string name="introduction_page_5">¡Y además, consigue recompensas por tu participación!</string>
   <string name="autocenter">Auto-centrar</string>
+  <string name="error">Error</string>
+  <string name="please_wait">No puedes volver a realizar esta acción. Por favor, espera</string>
+  <string name="seconds">segundos</string>
 </resources>

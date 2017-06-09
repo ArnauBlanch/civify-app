@@ -27,9 +27,9 @@ import retrofit2.Response;
 public class IssueAdapter {
     public static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
     public static final String CONFIRMED_BY_USER_WITH_AUTH_TOKEN =
-            "confirmed by User with auth token ";
+            "confirmed/unconfirmed by User with auth token ";
     public static final String REPORTED_BY_USER_WITH_AUTH_TOKEN =
-            "reported by User with auth token ";
+            "reported/unreported by User with auth token ";
     public static final String UN = " un";
     public static final String USER = "user";
     public static final String RESOLUTION_ADDED = "Resolution added";
@@ -84,7 +84,7 @@ public class IssueAdapter {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess();
                 } else {
-                    callback.onFailure();
+                    callback.onFailure(response.body().getMessage());
                 }
             }
 
@@ -206,7 +206,7 @@ public class IssueAdapter {
                 if (response.code() == HttpURLConnection.HTTP_NO_CONTENT) {
                     callback.onSuccess();
                 } else {
-                    callback.onFailure();
+                    callback.onFailure(response.body().getTitle());
                 }
             }
 
