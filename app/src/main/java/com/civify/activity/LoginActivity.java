@@ -1,10 +1,7 @@
 package com.civify.activity;
 
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.EditText;
@@ -19,6 +16,7 @@ import com.civify.adapter.LoginFinishedCallback;
 import com.civify.adapter.UserAdapter;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
+import com.civify.utils.ConfirmDialog;
 
 public class LoginActivity extends BaseActivity {
     private static final int FIRST = 0;
@@ -32,7 +30,7 @@ public class LoginActivity extends BaseActivity {
     private TextView mMessageFirstCredential;
     private ImageView mIconPassword;
     private TextView mMessagePassword;
-    private AlertDialog mLoginAlertDialog;
+    private ConfirmDialog mLoginAlertDialog;
     private View.OnClickListener mListen = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
@@ -65,8 +63,8 @@ public class LoginActivity extends BaseActivity {
 
                 @Override
                 public void onLoginFailed(LoginError e) {
-                    mLoginAlertDialog.setMessage(loginErrorMessage(e));
-                    mLoginAlertDialog.show();
+                    ConfirmDialog.show(LoginActivity.this,
+                            getString(R.string.error), loginErrorMessage(e));
                 }
             });
         }
@@ -76,7 +74,6 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initDialogs();
         mBlogin = (AppCompatButton) findViewById(R.id.bsignin);
         mBlogin.setOnClickListener(mListen);
         mUser = (EditText) findViewById(R.id.login_email_input);
@@ -89,17 +86,6 @@ public class LoginActivity extends BaseActivity {
         mPassforgot.setOnClickListener(mListen);
         mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(this);
 
-    }
-
-    private void initDialogs() {
-        mLoginAlertDialog = new AlertDialog.Builder(this).create();
-        mLoginAlertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok),
-                new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mLoginAlertDialog.dismiss();
-                    }
-                });
     }
 
     private String loginErrorMessage(LoginError e) {

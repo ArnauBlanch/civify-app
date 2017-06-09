@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.ToggleButton;
 
 import com.civify.R;
 import com.civify.adapter.issue.IssueAdapter;
+import com.civify.utils.ConfirmDialog;
 
 import java.util.ArrayList;
 
@@ -78,9 +78,11 @@ public class FilterDialogFragment extends DialogFragment {
         initAllCategories();
         mIntent = new Intent();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.filter_dialog_title).setPositiveButton(android.R.string.ok, null);
+
+        ConfirmDialog dialog = new ConfirmDialog(getContext());
+
+        dialog.setTitle(R.string.filter_dialog_title);
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         mView = inflater.inflate(R.layout.dialog_filter_issues, null);
@@ -95,15 +97,16 @@ public class FilterDialogFragment extends DialogFragment {
         }
         setupView(mView);
 
-        return builder.setView(mView)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        setupIntent();
-                        getTargetFragment().onActivityResult(getTargetRequestCode(),
-                                Activity.RESULT_OK, mIntent);
-                    }
-                })
-                .create();
+        dialog.setView(mView);
+        dialog.setPositiveButton(null, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface d, int w) {
+                setupIntent();
+                getTargetFragment().onActivityResult(getTargetRequestCode(),
+                        Activity.RESULT_OK, mIntent);
+            }
+        });
+        return dialog;
     }
 
     private void setupIntent() {

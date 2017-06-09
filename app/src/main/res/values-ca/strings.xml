@@ -90,7 +90,6 @@
   <string name="need_to_allow_camera_permission">Has de concedir permisos per fer una foto</string>
   <string name="need_to_allow_location_permission">Has de donar permisos de localització</string>
   <string name="need_to_allow_read_storage_permission">Has de donar permís per accedir al emmagatzematge extern</string>
-  <string name="no">No</string>
   <string name="not_matching_passwords">Les contrasenyes no coincideixen</string>
   <string name="ok_award">Ok!</string>
   <string name="other">Altres</string>
@@ -101,7 +100,6 @@
   <string name="profile_title">El meu perfil</string>
   <string name="prompt_email">Correu electrònic</string>
   <string name="you_have_won">Has obtingut:</string>
-  <string name="yes">Si</string>
   <string name="whats_your_name">Com et dius?</string>
   <string name="whats_happening">Què passa?</string>
   <string name="what_kind_of_problem">Quin tipus d\'incidència</string>
@@ -174,7 +172,6 @@
   <string name="duration">Durada</string>
   <string name="filter_issues">Filtrar incidències</string>
   <string name="first_letter_hour">h</string>
-  <string name="hello_blank_fragment" translatable="false"></string>
   <string name="its_happening_now">Està succeint ara</string>
   <string name="sort_issues">Ordena incidències</string>
   <string name="you_have_completed">Has completat</string>
@@ -187,12 +184,10 @@
   <string name="email_not_sent">S\'ha produït un error en enviar</string>
   <string name="email_sent">Correu enviat correctament</string>
   <string name="enter_email">Siusplau, introdueix la direcció de correu</string>
-  <string name="ok">Ok</string>
   <string name="explanation_forgotten">T\'enviarem un correu amb un link per a poder establir una nova contrasenya</string>
   <string name="send_button">Enviar</string>
   <string name="sending_forgot_mail">Enviant correu, un moment siusplau</string>
-  <string name="action" translatable="false"></string>
-    <string name="cant_edit_resolved">No pots editar una incidència resolta</string>
+  <string name="cant_edit_resolved">No pots editar una incidència resolta</string>
   <string name="all">Tot</string>
   <string name="choose_avatar">Escull un avatar</string>
   <string name="confirm_votes">Vots de confirmació</string>
@@ -232,4 +227,5 @@
   <string name="skip_this_step">Salta\'t aquest pas</string>
   <string name="all_rights_reserved">Tots els drets reservats.</string>
     <string name="issue_once_hour">No pots crear mé incidències encara</string>
+  <string name="autocenter">Auto-centrar</string>
 </resources>
