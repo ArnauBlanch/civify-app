@@ -1,17 +1,25 @@
 package com.civify.adapter.event;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.civify.R;
+import com.civify.activity.fragments.RewardDialogFragment;
+import com.civify.activity.fragments.event.EventsFragment;
+import com.civify.model.Reward;
 import com.civify.model.event.Event;
+import com.civify.service.award.RewardCallback;
+import com.civify.utils.AdapterFactory;
 
 import java.util.List;
 
@@ -22,10 +30,12 @@ public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
 
     private List<Event> mItems;
     private Context mContext;
+    private EventsFragment mEventsFragment;
 
-    public EventViewAdapter(List<Event> items, Context context) {
+    public EventViewAdapter(List<Event> items, EventsFragment context) {
         mItems = items;
-        mContext = context;
+        mContext = context.getContext();
+        mEventsFragment = context;
     }
 
     @Override
@@ -56,6 +66,38 @@ public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
             holder.getTime().setText(prettyTime.format(event.getStartDate()));
         }
         holder.getDuration().setText(event.getDuration(mContext));
+
+        // CLAIM button
+        if (event.isClaimed() || !event.isCompleted()) {
+            holder.getClaimButton().setVisibility(View.GONE);
+        } else {
+            setClaimListener(holder, event);
+        }
+    }
+
+    private void setClaimListener(EventViewHolder holder, final Event event) {
+        holder.getClaimButton().setClickable(true);
+        holder.getClaimButton().setFocusable(true);
+        holder.getClaimButton().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AdapterFactory.getInstance().getEventAdapter(mContext).claimEvent(
+                        event.getToken(), new RewardCallback() {
+                            @Override
+                            public void onSuccess(Reward reward) {
+                                RewardDialogFragment.show((FragmentActivity) mContext, reward);
+                                mEventsFragment.updateList();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Snackbar.make(mEventsFragment.getView(),
+                                        mContext.getString(R.string.couldnt_claim_event),
+                                        Snackbar.LENGTH_SHORT);
+                            }
+                        });
+            }
+        });
     }
 
     @Override
@@ -72,6 +114,7 @@ public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
         private final TextView mDescription;
         private final TextView mTime;
         private final TextView mDuration;
+        private final LinearLayout mClaimButton;
 
         private Event mEvent;
 
@@ -83,6 +126,7 @@ public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
             mDescription = (TextView) itemView.findViewById(R.id.item_event_description);
             mTime = (TextView) itemView.findViewById(R.id.item_event_time);
             mDuration = (TextView) itemView.findViewById(R.id.item_event_duration);
+            mClaimButton = (LinearLayout) itemView.findViewById(R.id.claim_linear_layout);
 
             itemView.setClickable(true);
             itemView.setOnClickListener(this);
@@ -114,6 +158,10 @@ public class EventViewAdapter extends RecyclerView.Adapter<EventViewAdapter
 
         public Event getEvent() {
             return mEvent;
+        }
+
+        public LinearLayout getClaimButton() {
+            return mClaimButton;
         }
 
         public void setEvent(Event event) {

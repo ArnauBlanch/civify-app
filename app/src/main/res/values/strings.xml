@@ -220,6 +220,7 @@
   <string name="sending_forgot_mail">Sending mail, please wait</string>
   <string name="claim">CLAIM</string>
   <string name="couldnt_claim_achievement">Couldn\'t claim your reward.</string>
+  <string name="couldnt_claim_event">Couldn\'t claim your reward.</string>
 
   <string name="duration">Duration</string>
   <string name="day">day</string>
