@@ -221,31 +221,6 @@ public class WallFragment extends BasicFragment {
         }
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            mIssueAdapter.getIssues(new ListIssuesSimpleCallback() {
-                @Override
-                public void onSuccess(List<Issue> issues) {
-                    mIssuesViewFragment.setIssues(filterIssues(issues));
-                    try {
-                        CivifyMap.getInstance().setIssues(issues);
-                    } catch (MapNotLoadedException ignore) {
-                        // Don't refresh map
-                    }
-                    mLoaded = true;
-                    mIssues = issues;
-                }
-
-                @Override
-                public void onFailure() {
-                    // TODO: do this
-                }
-            }, mStatusSelected, mFilteredCategories, mRiskSelected);
-        }
-    }
-
     public void applySelectedSorting(int selectedSort) {
         switch (selectedSort) {
             case ASCENDING:

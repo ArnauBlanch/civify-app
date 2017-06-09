@@ -105,4 +105,15 @@ public class AdapterFactory {
     public SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
     }
+
+    public void resetAdapterFactory() {
+        this.mUserAdapter = null;
+        this.mAchievementsEventsAdapter = null;
+        this.mIssueAdapter = null;
+        this.mAchievementAdapter = null;
+        this.mAwardAdapter = null;
+        this.mBadgeAdapter = null;
+        this.mEventAdapter = null;
+        this.mLoginAdapter = null;
+    }
 }
