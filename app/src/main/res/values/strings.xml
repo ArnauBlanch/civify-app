@@ -286,4 +286,5 @@
   <string name="introduction_page_5">In addition, you will get rewards for your commitment!</string>
   <string name="year_team" translatable="false">© 2017 Civify Team</string>
   <string name="all_rights_reserved">All rigths reserved.</string>
+    <string name="issue_once_hour">You can\'t create more issues yet</string>
 </resources>
