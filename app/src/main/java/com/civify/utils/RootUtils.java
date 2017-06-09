@@ -11,9 +11,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public abstract class RootUtils {
+public final class RootUtils {
 
     private static boolean sRootPermitted = true;
+
+    private RootUtils() { }
 
     public static boolean isDeviceRooted() {
         return checkRootMethod1() || checkRootMethod2() || checkRootMethod3();

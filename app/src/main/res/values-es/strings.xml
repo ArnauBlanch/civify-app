@@ -92,7 +92,6 @@
   <string name="need_to_allow_camera_permission">Debes conceder permiso a la cámara para sacar una foto</string>
   <string name="need_to_allow_location_permission">Debes dar permiso de localización</string>
   <string name="need_to_allow_read_storage_permission">Debes dar permiso para acceder al almacenamiento externo</string>
-  <string name="no">No</string>
   <string name="not_implemented_yet"></string>
   <string name="not_matching_passwords">Las contraseñas no coinciden</string>
   <string name="about">Sobre</string>
@@ -170,7 +169,6 @@
   <string name="what_kind_of_problem">¿Qué tipo de incidencia?</string>
   <string name="whats_happening">¿Qué pasa?</string>
   <string name="whats_your_name">¿Cómo te llamas?</string>
-  <string name="yes">Sí</string>
   <string name="you_have_won">Has obtenido:</string>
     <string name="map_loading">Cargando mapa, espera por favor...</string>
     <string name="change_language">Cambiar idioma</string>
@@ -195,7 +193,6 @@
   <string name="email_not_sent">Se ha producido un error al enviar</string>
   <string name="email_sent">Correo enviado</string>
   <string name="enter_email">Introduce tu correo primero</string>
-  <string name="ok">Ok</string>
   <string name="explanation_forgotten">Te enviaremos un correo con un link para que puedas establecer una nueva contraseña</string>
   <string name="send_button">Enviar</string>
   <string name="sending_forgot_mail">Enviando correo, un momento</string>
@@ -246,4 +243,5 @@
   <string name="introduction_page_3">Participa activamente dando apoyo a otros ciudadanos.</string>
   <string name="introduction_page_4">Para que tus instituciones lo puedan solucionar.</string>
   <string name="introduction_page_5">¡Y además, consigue recompensas por tu participación!</string>
+  <string name="autocenter">Auto-centrar</string>
 </resources>
