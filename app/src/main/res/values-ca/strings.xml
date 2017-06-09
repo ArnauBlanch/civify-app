@@ -232,4 +232,14 @@
   <string name="skip_this_step">Salta\'t aquest pas</string>
   <string name="all_rights_reserved">Tots els drets reservats.</string>
     <string name="issue_once_hour">No pots crear mé incidències encara</string>
+  <string name="welcome_to">Benvingut/uda a</string>
+  <string name="introduction_page_1">La comunitat d\'usuaris on guanyes en preocupar-te per la
+    teva ciutat.</string>
+  <string name="introduction_page_2">Explora la teva ciutat i alerta les incidències del
+    teu entorn.</string>
+  <string name="introduction_page_3">Participa activament donant suport a altres ciutadans.</string>
+  <string name="introduction_page_4">Per tal que les teves institucions ho puguin
+    sol·lucionar.</string>
+  <string name="introduction_page_5">I a més, aconsegueix recompenses per la teva
+    participació!</string>
 </resources>

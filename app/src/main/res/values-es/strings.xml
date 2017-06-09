@@ -239,4 +239,11 @@
   <string name="skip_this_step">Saltarse este paso</string>
   <string name="all_rights_reserved">Todos los derechos reservados.</string>
     <string name="issue_once_hour">No puedes crear más incidencias todavía</string>
+  <string name="welcome_to">Bienvenido/a a</string>
+  <string name="introduction_page_1">La comunidad de usuarios en la que ganas preocupándote por
+    tu ciudad.</string>
+  <string name="introduction_page_2">Explora tu ciudad i alerta las incidencias de tu entorno.</string>
+  <string name="introduction_page_3">Participa activamente dando apoyo a otros ciudadanos.</string>
+  <string name="introduction_page_4">Para que tus instituciones lo puedan solucionar.</string>
+  <string name="introduction_page_5">¡Y además, consigue recompensas por tu participación!</string>
 </resources>
