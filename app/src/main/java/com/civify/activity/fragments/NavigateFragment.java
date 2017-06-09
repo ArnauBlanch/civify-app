@@ -1,6 +1,7 @@
 package com.civify.activity.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,6 +46,7 @@ public class NavigateFragment extends BasicFragment {
 
     private static final String TAG = NavigateFragment.class.getSimpleName();
 
+    private static final String AUTO_CENTER_TAG = "autocenter";
     private static final int REQUEST_DIALOG = 9;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final int RESULT_OK = -1;
@@ -326,7 +328,10 @@ public class NavigateFragment extends BasicFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.navigation_settings, menu);
-        menu.findItem(R.id.autocenter).setChecked(CivifyMap.DEFAULT_AUTO_CENTER);
+        SharedPreferences preferences = AdapterFactory.getInstance()
+                .getSharedPreferences(getContext());
+        menu.findItem(R.id.autocenter).setChecked(
+                preferences.getBoolean(AUTO_CENTER_TAG, CivifyMap.DEFAULT_AUTO_CENTER));
     }
 
     @Override
@@ -349,6 +354,9 @@ public class NavigateFragment extends BasicFragment {
                 boolean autoCenter = !CivifyMap.getInstance().isAutoCenter();
                 CivifyMap.getInstance().setAutoCenter(autoCenter);
                 item.setChecked(autoCenter);
+                SharedPreferences preferences = AdapterFactory.getInstance()
+                        .getSharedPreferences(getContext());
+                preferences.edit().putBoolean(AUTO_CENTER_TAG, autoCenter).apply();
                 break;
             default:
                 break;
