@@ -290,6 +290,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void tryToCenter(boolean animate) {
+        if (!mLocationAdapter.isConnected()) return;
         try {
             center(animate);
         } catch (MapNotReadyException ignore) {

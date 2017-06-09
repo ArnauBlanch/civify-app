@@ -192,6 +192,7 @@ public class NavigateFragment extends BasicFragment {
             try {
                 CivifyMap.getInstance().disableLocation();
                 mLastZoom = CivifyMap.getInstance().getCurrentCameraPosition().zoom;
+
                 CivifyMap.getInstance().center(loc, CivifyMap.DEFAULT_ZOOM, true);
                 mSarchCenterSnackbar = Snackbar.make(getView(),
                         getString(R.string.search_disable_center), Snackbar.LENGTH_INDEFINITE);
