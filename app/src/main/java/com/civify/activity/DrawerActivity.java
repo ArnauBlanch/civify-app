@@ -279,19 +279,22 @@ public class DrawerActivity extends BaseActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         int menuRes;
         int noIcona = SHOW_AS_ACTION_NEVER;
-        if (mShowMenuDetails) {
+        if (mCurrentFragmentId == DETAILS_ISSUE_ID) {
             menuRes = R.menu.details;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
-        } else if (mShowMenuWall) {
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == WALL_ID) {
             menuRes = R.menu.wall;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
-        } else if (mShowMenuNavigate) {
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == NAVIGATE_ID) {
             menuRes = R.menu.navigation;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
-        } else {
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == PROFILE_ID) {
             menuRes = R.menu.profile;
+            getMenuInflater().inflate(menuRes, menu);
         }
-        getMenuInflater().inflate(menuRes, menu);
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
