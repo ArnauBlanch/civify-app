@@ -344,6 +344,8 @@
                     android:textColor="@android:color/background_dark"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     />
                 <TextView
                     android:id="@+id/userUsername"
@@ -353,6 +355,8 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     />
               </LinearLayout>
               <LinearLayout
@@ -374,9 +378,6 @@
                     android:id="@+id/userLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/userProgress"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp"
