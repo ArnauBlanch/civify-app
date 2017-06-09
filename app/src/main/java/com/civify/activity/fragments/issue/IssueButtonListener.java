@@ -115,8 +115,10 @@ public class IssueButtonListener implements OnClickListener {
         }
 
         private String getErrorTimeLeft(String errorMessage) {
-            return mContext.getString(R.string.please_wait) + errorMessage.substring(errorMessage
-                    .indexOf(':'));
+
+            return mContext.getString(R.string.please_wait) + ' '
+                    + errorMessage.substring(errorMessage.indexOf(':'))
+                    + ' ' + mContext.getString(R.string.seconds);
         }
     }
 }
