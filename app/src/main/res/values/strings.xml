@@ -287,4 +287,5 @@
   <string name="autocenter">Auto-center</string>
   <string name="issue_once_hour">You can\'t create more issues yet</string>
   <string name="error">Error</string>
+  <string name="hello_blank_fragment"></string>
 </resources>

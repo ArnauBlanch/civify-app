@@ -241,4 +241,5 @@
   <string name="error">Error</string>
   <string name="please_wait">No pots tornar a realitzar aquesta acció. Siusplau, espera</string>
   <string name="seconds">segons</string>
+  <string name="network_present_but_error">Hi ha connexió a internet, pero no es pot connectar amb el servidor. Assegura\'t que estas connectar a la VPN de la UPC.</string>
 </resources>
