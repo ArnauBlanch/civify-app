@@ -1,5 +1,6 @@
 package com.civify.activity.introduction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -7,6 +8,7 @@ import android.widget.LinearLayout;
 
 import com.civify.R;
 import com.civify.activity.BaseActivity;
+import com.civify.activity.MainActivity;
 
 import java.util.ArrayList;
 
@@ -40,5 +42,11 @@ public class IntroductionActivity extends BaseActivity {
         for (int i = 0; i < PAGES_NUM; i++) {
             fragments.add(IntroductionFragment.newInstance(i));
         }
+    }
+
+    public void finishIntroduction() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

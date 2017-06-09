@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,27 +45,34 @@ public class IntroductionFragment extends Fragment {
         TextView continueTextView = (TextView) view.findViewById(R.id.introduction_continue_button);
         switch (mPageNumber) {
             case 1:
-                imageView.setImageResource(R.drawable.logo_planeta);
-                textView.setText(getString(R.string.introduction_page_1));
+                imageView.setImageResource(R.drawable.intro1);
+                textView.setText(getString(R.string.introduction_page_2));
                 continueTextView.setVisibility(View.GONE);
                 break;
             case 2:
-                imageView.setImageResource(R.drawable.logo_planeta);
-                textView.setText(getString(R.string.introduction_page_1));
+                imageView.setImageResource(R.drawable.intro2);
+                textView.setText(getString(R.string.introduction_page_3));
                 continueTextView.setVisibility(View.GONE);
                 break;
             case THREE:
-                imageView.setImageResource(R.drawable.logo_planeta);
-                textView.setText(getString(R.string.introduction_page_1));
+                imageView.setImageResource(R.drawable.intro3);
+                textView.setText(getString(R.string.introduction_page_4));
                 continueTextView.setVisibility(View.GONE);
                 break;
             case 4:
-                imageView.setImageResource(R.drawable.logo_planeta);
-                textView.setText(getString(R.string.introduction_page_1));
+                imageView.setImageResource(R.drawable.intro4);
+                textView.setText(getString(R.string.introduction_page_5));
                 break;
             default:
                 break;
         }
+
+        continueTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((IntroductionActivity) getActivity()).finishIntroduction();
+            }
+        });
 
         return view;
     }
