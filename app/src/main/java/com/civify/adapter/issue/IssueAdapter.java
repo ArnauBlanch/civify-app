@@ -1,6 +1,7 @@
 package com.civify.adapter.issue;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.civify.adapter.LoginAdapterImpl;
 import com.civify.adapter.SimpleCallback;
@@ -20,11 +21,14 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IssueAdapter {
+    public static final String TAG = IssueAdapter.class.getSimpleName();
     public static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
     public static final String CONFIRMED_BY_USER_WITH_AUTH_TOKEN =
             "confirmed/unconfirmed by User with auth token ";
@@ -43,6 +47,7 @@ public class IssueAdapter {
     static final String RECORD_DOES_NOT_EXIST = "Record doesn't exist";
     private static final String TRUE = "true";
     private static final String FALSE = "false";
+    private static final String KEY_MESSAGE_RESPONSE = "message";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -84,7 +89,16 @@ public class IssueAdapter {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     callback.onSuccess();
                 } else {
-                    callback.onFailure(response.body().getMessage());
+                    if (response.errorBody() != null) {
+                        try {
+                            JSONObject jsonError = new JSONObject(response.errorBody().string());
+                            callback.onFailure(jsonError.getString(KEY_MESSAGE_RESPONSE));
+                        } catch (java.io.IOException e) {
+                            Log.e(TAG, e.getMessage());
+                        } catch (JSONException e) {
+                            Log.e(TAG, e.getMessage());
+                        }
+                    }
                 }
             }
 
@@ -206,7 +220,16 @@ public class IssueAdapter {
                 if (response.code() == HttpURLConnection.HTTP_NO_CONTENT) {
                     callback.onSuccess();
                 } else {
-                    callback.onFailure(response.body().getTitle());
+                    if (response.errorBody() != null) {
+                        try {
+                            JSONObject jsonError = new JSONObject(response.errorBody().string());
+                            callback.onFailure(jsonError.getString(KEY_MESSAGE_RESPONSE));
+                        } catch (java.io.IOException e) {
+                            Log.e(TAG, e.getMessage());
+                        } catch (JSONException e) {
+                            Log.e(TAG, e.getMessage());
+                        }
+                    }
                 }
             }
 
