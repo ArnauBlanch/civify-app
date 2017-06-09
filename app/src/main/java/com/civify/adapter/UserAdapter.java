@@ -91,7 +91,7 @@ public class UserAdapter {
                     callback.onSuccess();
                 } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST
                         && getMessageFromError(response.errorBody()).equals(USER_NOT_CREATED)) {
-                    callback.onFailure();
+                    callback.onFailure(response.body().getMessage());
                 }
             }
 

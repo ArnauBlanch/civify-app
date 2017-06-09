@@ -253,7 +253,7 @@ public class NavigateFragment extends BasicFragment {
                         }
 
                         @Override
-                        public void onFailure() {
+                        public void onFailure(String errorMessage) {
                             Snackbar.make(view,
                                     R.string.issue_once_hour, Snackbar.LENGTH_LONG).show();
                         }

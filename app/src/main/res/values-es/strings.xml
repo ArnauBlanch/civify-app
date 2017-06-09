@@ -188,12 +188,14 @@
   <string name="claim">Reclamar</string>
   <string name="and">y</string>
   <string name="couldnt_claim_achievement">No se pudo reclamar la recompensa.</string>
+  <string name="couldnt_claim_event">No se pudo reclamar el evento.</string>
   <string name="email_exists_correct">Dirección de correo correcta, puedes enviar</string>
   <string name="email_not_exists">El correo introducido no existe</string>
   <string name="email_not_sent">Se ha producido un error al enviar</string>
   <string name="email_sent">Correo enviado</string>
   <string name="enter_email">Introduce tu correo primero</string>
-  <string name="explanation_forgotten">Te enviaremos un correo con un link para que puedas establecer una nueva contraseña</string>
+  <string name="explanation_forgotten">Te enviaremos un correo con un enlace para que puedas
+    establecer una nueva contraseña</string>
   <string name="send_button">Enviar</string>
   <string name="sending_forgot_mail">Enviando correo, un momento</string>
     <string name="cant_edit_resolved">No puedes editar una incidencia resuelta</string>
@@ -236,5 +238,16 @@
   <string name="skip_this_step">Saltarse este paso</string>
   <string name="all_rights_reserved">Todos los derechos reservados.</string>
     <string name="issue_once_hour">No puedes crear más incidencias todavía</string>
+  <string name="welcome_to">Bienvenido/a a</string>
+  <string name="introduction_page_1">La comunidad de usuarios en la que ganas preocupándote por
+    tu ciudad</string>
+  <string name="introduction_page_2">Explora tu ciudad i alerta las incidencias de tu entorno</string>
+  <string name="introduction_page_3">Participa activamente dando apoyo a otros ciudadanos</string>
+  <string name="introduction_page_4">Para que tus instituciones lo puedan solucionar</string>
+  <string name="introduction_page_5">¡Y además, consigue recompensas por tu participación!</string>
   <string name="autocenter">Auto-centrar</string>
+  <string name="error">Error</string>
+  <string name="please_wait">No puedes volver a realizar esta acción. Por favor, espera</string>
+  <string name="seconds">segundos</string>
+  <string name="network_present_but_error">No se ha podido contactar con el servidor. Por favor, comprueba que estés conectado a la VPN de la UPC.</string>
 </resources>
