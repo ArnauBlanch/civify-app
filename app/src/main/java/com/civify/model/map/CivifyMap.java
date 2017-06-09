@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
@@ -170,8 +171,8 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
             @Override
             public void onFailure() {
-                ConfirmDialog.show(getContext(), "Error",
-                        "Issues cannot be retrieved, please try again later.");
+                ConfirmDialog.show(getContext(), getContext().getString(R.string.error),
+                        getContext().getString(R.string.issues_cannot_be_retrieved));
             }
         });
     }

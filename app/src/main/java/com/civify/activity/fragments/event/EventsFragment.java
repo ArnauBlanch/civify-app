@@ -69,7 +69,7 @@ public class EventsFragment extends BasicFragment {
 
                     @Override
                     public void onFailure() {
-                        Snackbar.make(view, "Couldn't retrieve events.",
+                        Snackbar.make(view, R.string.couldnt_retrieve_events,
                                 Snackbar.LENGTH_SHORT);
                     }
                 });
