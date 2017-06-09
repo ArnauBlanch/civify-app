@@ -76,6 +76,25 @@ public class IssueAdapter {
         });
     }
 
+    public void canCreateIssue(final SimpleCallback callback) {
+        Call<MessageResponse> call = mIssueService.canCreateIssue(mAuthToken);
+        call.enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
     public void editIssue(String issueAuthToken, JsonObject issue,
             final IssueSimpleCallback callback) {
         Call<Issue> call = mIssueService.editIssue(mAuthToken, issue, issueAuthToken);
