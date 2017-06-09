@@ -20,6 +20,7 @@ import com.civify.activity.createissue.CreateIssueActivity;
 import com.civify.activity.fragments.issue.IssueDetailsFragment;
 import com.civify.activity.fragments.wall.FilterDialogFragment;
 import com.civify.adapter.LocationAdapter;
+import com.civify.adapter.SimpleCallback;
 import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.IssueReward;
@@ -250,12 +251,23 @@ public class NavigateFragment extends BasicFragment {
         mCreateIssueListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (CivifyMap.getInstance().isMapReady()) {
-                    CivifyMap.getInstance().setCanBeDisabled(false);
-                    Intent intent = new Intent(getActivity().getApplicationContext(),
-                            CreateIssueActivity.class);
-                    startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
-                } else showMapLoadingWarning(view);
+                final View v = view;
+                mIssueAdapter.canCreateIssue(new SimpleCallback() {
+                    @Override
+                    public void onSuccess() {
+                        if (CivifyMap.getInstance().isMapReady()) {
+                            CivifyMap.getInstance().setCanBeDisabled(false);
+                            Intent intent = new Intent(getActivity().getApplicationContext(),
+                                    CreateIssueActivity.class);
+                            startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
+                        } else showMapLoadingWarning(v);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Snackbar.make(v, R.string.issue_once_hour, Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
         };
         mFabCreateIssue.setOnClickListener(mCreateIssueListener);
