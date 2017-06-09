@@ -3,7 +3,9 @@ package com.civify.activity.fragments.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,7 @@ public class ProfileFragment extends BasicFragment {
 
     public ProfileFragment() { }
 
+    @NonNull
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
@@ -49,14 +52,20 @@ public class ProfileFragment extends BasicFragment {
         setUser();
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         mLoginAdapter = adapterFactory.getLoginAdapter(getContext());
-        setHasOptionsMenu(mUser.getUserAuthToken()
-                .equals(UserAdapter.getCurrentUser().getUserAuthToken()));
+        setHasOptionsMenu(isCurrentUser());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        if (!isCurrentUser()) {
+            DrawerActivity activity = (DrawerActivity) getActivity();
+            Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+            if (toolbar != null) toolbar.setTitle(mUser.getFullName());
+            activity.updateMenu();
+        }
 
         FragmentTabHost tabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         tabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
@@ -89,6 +98,14 @@ public class ProfileFragment extends BasicFragment {
         }
 
         return false;
+    }
+
+    public boolean isUserSet() {
+        return mUser != null;
+    }
+
+    public boolean isCurrentUser() {
+        return mUser.getUserAuthToken().equals(UserAdapter.getCurrentUser().getUserAuthToken());
     }
 
     private void signOut() {

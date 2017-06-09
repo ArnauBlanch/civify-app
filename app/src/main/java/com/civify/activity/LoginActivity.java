@@ -30,7 +30,6 @@ public class LoginActivity extends BaseActivity {
     private TextView mMessageFirstCredential;
     private ImageView mIconPassword;
     private TextView mMessagePassword;
-    private ConfirmDialog mLoginAlertDialog;
     private View.OnClickListener mListen = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {

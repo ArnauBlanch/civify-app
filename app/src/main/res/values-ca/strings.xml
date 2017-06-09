@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">Civify</string>
-  <string name="about">Sobre</string>
+  <string name="about">Sobre nosaltres</string>
   <string name="achievements">Assoliments</string>
   <string name="achievements_title">Assoliments</string>
   <string name="action_settings">Configuració</string>
@@ -28,7 +28,7 @@
   <string name="couldnt_delete_issue">No s\'ha pogut esborrar la incidència</string>
   <string name="couldnt_edit_issue">No s\'ha pogut editar la incidència</string>
   <string name="couldnt_get_location">No s\'ha pogut obtenir la localització actual</string>
-  <string name="couldnt_update_issue_info">No s\'ha pogut obtenir informació actualitzada de la incidència</string>
+  <string name="couldnt_update_issue_info">No s\'ha pogut obtenir informació actualitzada de l\'usuari</string>
   <string name="create_new_issue">Crea nova incidència</string>
   <string name="creating_new_issue">Creant nova incidència...</string>
   <string name="days">dies</string>
@@ -61,8 +61,7 @@
   <string name="havent_picked_image">No has escollit una imatge!</string>
   <string name="illumination">Il·luminació</string>
   <string name="invalid_email">El correu electrònic es invàlid</string>
-  <string name="invalid_password">"
-    <![CDATA[La contrasenya és invàlida (Hauria d'incloure 8-40 caràcters, incloent almenys 1 lletra majúscula i 1 minúscula, 1 digit. Caràcters especials permesos: @&#$%)]]>"</string>
+  <string name="invalid_password">"<![CDATA[La contrasenya és invàlida (Hauria d'incloure 8-40 caràcters, incloent almenys 1 lletra majúscula i 1 minúscula, 1 digit. Caràcters especials permesos: @&#$%)]]>"</string>
   <string name="invalid_username">El nom d\'usuari es invàlid (Hauria de tenir 8-20 caràcters. Caràcters especials permesos: .,)</string>
   <string name="issue_created">Incidència creada</string>
   <string name="issue_description">Descripció de la incidència</string>
@@ -93,9 +92,7 @@
   <string name="need_to_allow_location_permission">Has de donar permisos de localització</string>
   <string name="need_to_allow_read_storage_permission">Has de donar permís per accedir a
     l\'emmagatzematge extern</string>
-  <string name="no">No</string>
   <string name="not_matching_passwords">Les contrasenyes no coincideixen</string>
-  <string name="ok_award">Ok!</string>
   <string name="other">Altres</string>
   <string name="password">Contrasenya</string>
   <string name="pose_a_risk">Suposa un perill per la gent?</string>
@@ -180,7 +177,7 @@
   <string name="sort_issues">Ordena incidències</string>
   <string name="you_have_completed">Has completat</string>
     <string name="access_achievements_events">Accedeix a la secció d\'assoliments o esdeveniments per reclamar la teva recompensa.</string>
-  <string name="claim">Reclama</string>
+  <string name="claim">RECLAMA</string>
   <string name="and">i</string>
   <string name="couldnt_claim_achievement">No s\'ha pogut reclamar la recompensa</string>
   <string name="couldnt_claim_event">No s\'ha pogut reclamar l\'esdeveniment</string>
@@ -189,7 +186,6 @@
   <string name="email_not_sent">S\'ha produït un error en enviar les instruccions</string>
   <string name="email_sent">Correu enviat correctament</string>
   <string name="enter_email">Sisplau, introdueix el teu correu electrònic</string>
-  <string name="ok">Ok</string>
   <string name="explanation_forgotten">T\'enviarem un correu amb un enllaç per a poder establir
     la teva contrasenya</string>
   <string name="send_button">Envia</string>
@@ -198,7 +194,7 @@
   <string name="all">Tot</string>
   <string name="choose_avatar">Escull un avatar</string>
   <string name="confirm_votes">Vots de confirmació</string>
-  <string name="deselect_all">Deselecciona-ho tot</string>
+  <string name="deselect_all">Desmarca-ho tot</string>
   <string name="error_ocurred">Hi ha hagut un error</string>
   <string name="filter_dialog_title">Filtra incidències</string>
   <string name="is_risk">Risc?</string>
@@ -208,7 +204,7 @@
   <string name="proximity">Proximitat</string>
   <string name="resolved">Resolta</string>
   <string name="search">Cercar</string>
-  <string name="select_all">Seleccionar tot</string>
+  <string name="select_all">Marca-ho tot</string>
   <string name="service_error">Error de servei</string>
   <string name="service_not_available">Servei no disponible</string>
   <string name="sort_dialog_title">Ordena incidències</string>
@@ -250,4 +246,28 @@
   <string name="issue_once_hour">No pots crear més incidències</string>
   <string name="network_present_but_error">No s\'ha pogut contactar el servidor. Sisplau, comprova que estiguis connectat a la VPN de la UPC.</string>
   <string name="its_happening_now">Està passant</string>
+  <string name="issues_cannot_be_retrieved">No s\'han pogut carregar les incidències
+    correctament.</string>
+  <string name="cannot_retrieve_location">Sembla que el mapa està trigant més de lo normal en
+    carregar la localització.
+    La teva conexió a Internet o el GPS poden estar funcionant lentament.</string>
+  <string name="cannot_retrieve_location_title">No s\'ha pogut obtenir la localització</string>
+  <string name="airplane">Desactiva el mode avió i activa la conexió a internet.</string>
+  <string name="couldnt_retrieve_achievement">No s\'ha pogut carregar l\'assoliment</string>
+  <string name="couldnt_retrieve_event">No s\'ha pogut recuperar l\'esdeveniment</string>
+  <string name="couldnt_retrieve_events">No s\'han pogut recuperar els esdeveniments</string>
+  <string name="couldnt_update_issues">No s\'han pogut actualitzar les incidències</string>
+  <string name="done">FET</string>
+  <string name="enable_network">Activa la conexió a internet.</string>
+  <string name="fake_locations_prohibited">Ubicacions simulades no permesses</string>
+  <string name="mocked_gps_prohibited">Civify no permet l\'ús d\'ubicacions simulades. Si us plau, desactiva les ubicacions simulades o algunes funcionalitats estaran bloquejadas.</string>
+  <string name="network_unavailable">Conexió a internet no activa</string>
+  <string name="network_unavailable_message">La conexió a internet no està disponible i per tant Civify podria no funcionar correctament.</string>
+  <string name="not_implemented_yet">No implementat encara</string>
+  <string name="permission_rationale"></string>
+  <string name="rooted_device">Dispositiu superusuari</string>
+  <string name="rooted_device_message">Tu dispositivo es root (superusuario). Algunas funcionalidades podrían estar bloqueadas para evitar abusos.</string>
+  <string name="see_this_issue">\"Mira aquesta incidència: \"</string>
+  <string name="user_couldnt_be_retrieved">No es pot carregar l\'usuari</string>
+  <string name="yes">Si</string>
 </resources>

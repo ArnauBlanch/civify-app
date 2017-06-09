@@ -55,7 +55,7 @@ public class BadgeViewAdapter extends RecyclerView.Adapter<BadgeViewAdapter.Badg
         calendar.setTime(badge.getObtainedDate());
         holder.getDate().setText(mContext.getResources().getString(R.string.obtained_at) + SPACE
                 + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + SLASH
-                + String.valueOf(calendar.get(Calendar.MONTH)) + SLASH
+                + String.valueOf(calendar.get(Calendar.MONTH) + 1) + SLASH
                 + String.valueOf(calendar.get(Calendar.YEAR)));
     }
 
@@ -119,7 +119,7 @@ public class BadgeViewAdapter extends RecyclerView.Adapter<BadgeViewAdapter.Badg
 
                                     @Override
                                     public void onFailure() {
-                                        Snackbar.make(v, "Couldn't retrieve achievement",
+                                        Snackbar.make(v, R.string.couldnt_retrieve_achievement,
                                                 Snackbar.LENGTH_SHORT);
                                     }
                                 });
@@ -133,7 +133,7 @@ public class BadgeViewAdapter extends RecyclerView.Adapter<BadgeViewAdapter.Badg
 
                             @Override
                             public void onFailure() {
-                                Snackbar.make(v, "Couldn't retrieve event",
+                                Snackbar.make(v, R.string.couldnt_retrieve_event,
                                         Snackbar.LENGTH_SHORT);
                             }
                         });

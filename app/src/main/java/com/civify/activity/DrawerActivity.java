@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -116,6 +117,15 @@ public class DrawerActivity extends BaseActivity
         mNavigationView.getMenu().getItem(mCurrentFragmentId).setChecked(true);
 
         setUserHeader();
+        AdapterFactory.getInstance().getUserAdapter(this).addOnCurrentUserUpdateListener(
+                new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("DrawerActivityListener", "CURRENT USER UPDATE LISTENER");
+                    setUserHeader();
+                }
+            }
+        );
 
         checkNewAchievementsEvents();
     }
@@ -230,31 +240,38 @@ public class DrawerActivity extends BaseActivity
         setToolbarTitle();
     }
 
-    private void updateMenu() {
-        if (mCurrentFragmentId == PROFILE_ID) {
-            mShowMenu = true;
-            mShowMenuDetails = false;
-            mShowMenuNavigate = false;
-        } else if (mCurrentFragmentId == DETAILS_ISSUE_ID) {
-            mShowMenu = true;
-            mShowMenuDetails = true;
-            mShowMenuWall = false;
-            mShowMenuNavigate = false;
-        } else if (mCurrentFragmentId == WALL_ID) {
-            mShowMenu = true;
-            mShowMenuWall = true;
-            mShowMenuDetails = false;
-            mShowMenuNavigate = false;
-        } else if (mCurrentFragmentId == NAVIGATE_ID) {
-            mShowMenu = true;
-            mShowMenuWall = false;
-            mShowMenuNavigate = true;
-            mShowMenuDetails = false;
-        } else {
-            mShowMenu = false;
-            mShowMenuDetails = false;
-            mShowMenuWall = false;
-            mShowMenuNavigate = false;
+    public void updateMenu() {
+        switch (mCurrentFragmentId) {
+            case PROFILE_ID:
+                ProfileFragment profile = (ProfileFragment) mCurrentFragment;
+                mShowMenu = !profile.isUserSet() || profile.isCurrentUser();
+                mShowMenuDetails = false;
+                mShowMenuNavigate = false;
+                break;
+            case DETAILS_ISSUE_ID:
+                mShowMenu = true;
+                mShowMenuDetails = true;
+                mShowMenuWall = false;
+                mShowMenuNavigate = false;
+                break;
+            case WALL_ID:
+                mShowMenu = true;
+                mShowMenuWall = true;
+                mShowMenuDetails = false;
+                mShowMenuNavigate = false;
+                break;
+            case NAVIGATE_ID:
+                mShowMenu = true;
+                mShowMenuWall = false;
+                mShowMenuNavigate = true;
+                mShowMenuDetails = false;
+                break;
+            default:
+                mShowMenu = false;
+                mShowMenuDetails = false;
+                mShowMenuWall = false;
+                mShowMenuNavigate = false;
+                break;
         }
         invalidateOptionsMenu();
     }
@@ -264,19 +281,22 @@ public class DrawerActivity extends BaseActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         int menuRes;
         int noIcona = SHOW_AS_ACTION_NEVER;
-        if (mShowMenuDetails) {
+        if (mCurrentFragmentId == DETAILS_ISSUE_ID) {
             menuRes = R.menu.details;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
-        } else if (mShowMenuWall) {
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == WALL_ID) {
             menuRes = R.menu.wall;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
-        } else if (mShowMenuNavigate) {
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == NAVIGATE_ID) {
             menuRes = R.menu.navigation;
             noIcona = SHOW_AS_ACTION_IF_ROOM;
-        } else {
+            getMenuInflater().inflate(menuRes, menu);
+        } else if (mCurrentFragmentId == PROFILE_ID) {
             menuRes = R.menu.profile;
+            getMenuInflater().inflate(menuRes, menu);
         }
-        getMenuInflater().inflate(menuRes, menu);
 
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setVisible(mShowMenu);
@@ -289,13 +309,14 @@ public class DrawerActivity extends BaseActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("DrawerActivity", "onActivityResult");
         getCurrentFragment().onActivityResult(requestCode, resultCode, data);
     }
 
     public void setUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
 
-        UserAttacher.getFromCurrentUser(this, null)
+        UserAttacher.get(this, null, UserAdapter.getCurrentUser())
                 .setFullName((TextView) headerView.findViewById(R.id.header_name))
                 .setUsername((TextView) headerView.findViewById(R.id.header_username))
                 .setLevel((TextView) headerView.findViewById(R.id.header_level))
@@ -303,6 +324,8 @@ public class DrawerActivity extends BaseActivity
                 .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
                 .setCoins((TextView) headerView.findViewById(R.id.header_coins))
                 .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
+
+        if (existsCoinsOnToolbar()) showCoinsOnToolbar();
     }
 
     private void setToolbarTitle() {
@@ -360,6 +383,10 @@ public class DrawerActivity extends BaseActivity
         }
     }
 
+    public boolean existsCoinsOnToolbar() {
+        return mToolbar.findViewById(R.id.coins_with_number) != null;
+    }
+
     public void removeCoinsFromToolbar() {
         View coins = mToolbar.findViewById(R.id.coins_with_number);
         if (coins != null) {
@@ -368,17 +395,12 @@ public class DrawerActivity extends BaseActivity
     }
 
     public void showCoinsOnToolbar() {
+        removeCoinsFromToolbar();
         View coins = getLayoutInflater().inflate(R.layout.coins_with_number, null);
         Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.END);
         ((TextView) coins.findViewById(R.id.num_coins)).setText(
                 String.valueOf(UserAdapter.getCurrentUser().getCoins()));
         mToolbar.addView(coins, layoutParams);
-    }
-
-    public void updateCoinsOnToolbar(int coins) {
-        removeCoinsFromToolbar();
-        UserAdapter.getCurrentUser().setCoins(coins);
-        showCoinsOnToolbar();
     }
 
     private void checkNewAchievementsEvents() {
@@ -405,8 +427,7 @@ public class DrawerActivity extends BaseActivity
                     }
 
                     @Override
-                    public void onFailure() {
-                    }
+                    public void onFailure() { }
                 });
     }
 

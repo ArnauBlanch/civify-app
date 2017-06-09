@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.UpdateLocationListener;
@@ -170,8 +171,8 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
             @Override
             public void onFailure() {
-                ConfirmDialog.show(getContext(), "Error",
-                        "Issues cannot be retrieved, please try again later.");
+                ConfirmDialog.show(getContext(), getContext().getString(R.string.error),
+                        getContext().getString(R.string.issues_cannot_be_retrieved));
             }
         });
     }
@@ -289,6 +290,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public void tryToCenter(boolean animate) {
+        if (!mLocationAdapter.isConnected()) return;
         try {
             center(animate);
         } catch (MapNotReadyException ignore) {
@@ -328,7 +330,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     public void onUpdateLocation(@NonNull Location location) {
         if (!mPlayerSet) {
             mPlayerSet = true;
-            tryToCenter(true);
+            forceCenter(location, null, true);
             if (mOnMapReadyListener != null) mOnMapReadyListener.run();
         } else if (isAutoCenter()) {
             tryToCenter(true);

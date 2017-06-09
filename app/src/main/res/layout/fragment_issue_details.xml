@@ -37,41 +37,47 @@
           android:orientation="vertical"
           >
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/nameLikesShareLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:orientation="horizontal"
             >
-          <TextView
-              android:id="@+id/nameText"
-              android:layout_width="wrap_content"
+
+          <LinearLayout
+              android:layout_width="0dp"
               android:layout_height="wrap_content"
-              android:maxLines="2"
-              android:scrollbars="horizontal"
-              android:text="Issue title"
-              android:textColor="#000"
-              android:textSize="22sp"
-              android:textStyle="bold"
-              fontPath="fonts/Nunito-Bold.ttf"
-              />
-          <RelativeLayout
+              android:layout_weight="1"
+              >
+
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:scrollbars="horizontal"
+                android:text="Issue title"
+                android:textColor="#000"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                fontPath="fonts/Nunito-Bold.ttf"
+                />
+
+          </LinearLayout>
+
+          <LinearLayout
               android:id="@+id/likesShareLayout"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_alignParentEnd="true"
-              android:layout_alignParentRight="true"
               android:orientation="vertical"
+              android:gravity="end"
               >
             <TextView
                 android:id="@+id/likesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:gravity="end"
-                android:text="+23"
                 android:textColor="#27AE60"
                 android:textSize="20sp"
                 fontPath="fonts/Nunito-Bold.ttf"
@@ -80,9 +86,6 @@
                 android:id="@+id/shareLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/likesText"
                 android:orientation="horizontal"
                 >
               <ImageView
@@ -102,8 +105,8 @@
                   android:text="@string/share"
                   />
             </LinearLayout>
-          </RelativeLayout>
-        </RelativeLayout>
+          </LinearLayout>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/categoryLayout"
             android:layout_width="match_parent"
@@ -341,6 +344,8 @@
                     android:textColor="@android:color/background_dark"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     />
                 <TextView
                     android:id="@+id/userUsername"
@@ -350,6 +355,8 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     />
               </LinearLayout>
               <LinearLayout
@@ -371,9 +378,6 @@
                     android:id="@+id/userLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/userProgress"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp"
