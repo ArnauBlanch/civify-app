@@ -98,7 +98,7 @@
     User chose not to make required location settings changes.
   </string>
   <string name="location_connection_failed">Location services connection failed.</string>
-  <string name="not_implemented_yet" translatable="false">Not implemented yet</string>
+  <string name="not_implemented_yet">Not implemented yet</string>
   <string name="action" translatable="false">Action</string>
 
   <string name="level">Level</string>
@@ -192,7 +192,7 @@
   <string name="reward_image_is_not_available_yet">Reward image is not available yet</string>
   <string name="get_it"> Get it!</string>
   <string name="dialog_award_bought">Congratulations! You have a new award available now</string>
-  <string name="ok_award">OK!</string>
+  <string name="ok_award" translatable="false">OK!</string>
   <string name="problem_award">Oops! Impossible exchange it. Try it again</string>
   <string name="exchanged_award_used">USED</string>
   <string name="exchanged_award_valid">VALID</string>
@@ -251,6 +251,7 @@
   <string name="unresolved">Unresolved</string>
   <string name="resolved">Resolved</string>
   <string name="all">All</string>
+  <string name="yes">Yes</string>
   <string name="status">Status</string>
   <string name="filter_dialog_title">Filter issues</string>
   <string name="is_risk">Risk?</string>
@@ -268,7 +269,7 @@
   <string name="cant_edit_resolved">You can\'t edit a resolved issue</string>
   <string name="skip_this_step">Skip this step</string>
   <string name="couldnt_retrieve_achievements">Couldn\'t retrieve achievements.</string>
-  <string name="couldnt_retrieve_rewards">Couldn\'t retrieve rewards.</string>
+  <string name="couldnt_retrieve_rewards">Couldn\'t retrieve rewards</string>
   <string name="couldnt_retrieve_badges">Couldn\'t retrieve badges</string>
   <string name="error_register">There was an error when registering</string>
   <string name="error_locality">Error getting locality with HTTP/GET on Google Maps API</string>
@@ -288,4 +289,26 @@
   <string name="autocenter">Auto-center</string>
   <string name="issue_once_hour">You can\'t create more issues yet</string>
   <string name="error">Error</string>
+  <string name="issues_cannot_be_retrieved">Issues cannot be retrieved.</string>
+  <string name="cannot_retrieve_location">It appears the map is taking
+    too long to retrieve your location.\n\nYour network connection
+    or GPS may be slow or unavailable.</string>
+  <string name="cannot_retrieve_location_title">Cannot retrieve location</string>
+  <string name="couldnt_retrieve_events">Couldn\'t retrieve events</string>
+  <string name="user_couldnt_be_retrieved">User couldn\'t be retrieved</string>
+  <string name="see_this_issue">"See this issue: "</string>
+  <string name="couldnt_update_issues">Couldn\'t update issues</string>
+  <string name="fake_locations_prohibited">Fake locations prohibited</string>
+  <string name="mocked_gps_prohibited">Civify does not allow using mocked GPS. Please, disablemock locations or some features may be disabled.</string>
+  <string name="couldnt_retrieve_achievement">Couldn\'t retrieve achievement</string>
+  <string name="couldnt_retrieve_event">Couldn\'t retrieve event</string>
+  <string name="done">DONE</string>
+  <string name="network_unavailable">Network unavailable</string>
+  <string name="network_unavailable_message">Network is unavailable and therefore Civify could not work!</string>
+  <string name="airplane">Disable Airplane Mode and enable the network.</string>
+  <string name="enable_network">Enable the network.</string>
+  <string name="rooted_device">Rooted device</string>
+  <string name="rooted_device_message">Your device is root. Some features may be disabled to prevent misuses.</string>
+  <string name="ok" translatable="false">OK</string>
+  <string name="no" translatable="false">No</string>
 </resources>

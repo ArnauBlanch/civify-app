@@ -42,7 +42,8 @@ public class LoginAdapterImpl implements LoginAdapter {
         mSharedPreferences = sharedPreferences;
     }
 
-    LoginAdapterImpl(CivifyLoginService civifyLoginService, CivifyMeService civifyMeService,
+    protected LoginAdapterImpl(CivifyLoginService civifyLoginService,
+            CivifyMeService civifyMeService,
             SharedPreferences sharedPreferences) {
         mCivifyLoginService = civifyLoginService;
         mCivifyMeService = civifyMeService;
