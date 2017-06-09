@@ -1,7 +1,6 @@
 package com.civify.adapter;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.civify.adapter.LoginError.ErrorType;
 import com.civify.model.CivifyEmailCredentials;
