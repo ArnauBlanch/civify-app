@@ -202,7 +202,7 @@
   <string name="all">Todo</string>
   <string name="choose_avatar">Elige un avatar</string>
   <string name="confirm_votes">Votos de confirmación</string>
-  <string name="deselect_all">Deseleccionar todo</string>
+  <string name="deselect_all">Desmarcar todo</string>
   <string name="error_ocurred">Ha habido un error</string>
   <string name="filter_dialog_title">Filtrar incidencias</string>
   <string name="is_risk">¿Riesgo?</string>
@@ -212,7 +212,7 @@
   <string name="proximity">Proximidad</string>
   <string name="resolved">Resuelta</string>
   <string name="search">Buscar</string>
-  <string name="select_all">Seleccionar todo</string>
+  <string name="select_all">Marcar todo</string>
   <string name="service_error">Error de servicio</string>
   <string name="service_not_available">Servicio no disponible</string>
   <string name="sort_dialog_title">Ordenar incidencias</string>
