@@ -24,7 +24,6 @@ import com.civify.adapter.LoginFinishedCallback;
 import com.civify.model.User;
 import com.civify.utils.AdapterFactory;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -82,42 +81,42 @@ public class DrawerActivityTest {
     @Test
     public void navigateMenuTest() {
         openDrawerAndClickItem("Navigate");
-        assertEquals(0, mActivityTestRule.getActivity().getCurrentFragment());
+        assertEquals(0, mActivityTestRule.getActivity().getCurrentFragmentId());
     }
 
     @Test
     public void wallMenuTest() {
         openDrawerAndClickItem("Wall");
-        assertEquals(1, mActivityTestRule.getActivity().getCurrentFragment());
+        assertEquals(1, mActivityTestRule.getActivity().getCurrentFragmentId());
     }
 
     @Test
     public void profileMenuTest() {
         openDrawerAndClickItem("Profile");
-        assertEquals(2, mActivityTestRule.getActivity().getCurrentFragment());
+        assertEquals(2, mActivityTestRule.getActivity().getCurrentFragmentId());
     }
 
     @Test
     public void rewardsMenuTest() {
         openDrawerAndClickItem("Rewards");
-        assertEquals(3, mActivityTestRule.getActivity().getCurrentFragment());
+        assertEquals(3, mActivityTestRule.getActivity().getCurrentFragmentId());
     }
 
     @Test
     public void achievementsMenuTest() {
         openDrawerAndClickItem("Achievements");
-        assertEquals(4, mActivityTestRule.getActivity().getCurrentFragment());
+        assertEquals(4, mActivityTestRule.getActivity().getCurrentFragmentId());
     }
 
     @Test
     public void eventsMenuTest() {
         openDrawerAndClickItem("Events");
-        assertEquals(5, mActivityTestRule.getActivity().getCurrentFragment());
+        assertEquals(5, mActivityTestRule.getActivity().getCurrentFragmentId());
     }
 
     @Test
     public void settingsMenuTest() {
         openDrawerAndClickItem("Settings");
-        assertEquals(6, mActivityTestRule.getActivity().getCurrentFragment());
+        assertEquals(6, mActivityTestRule.getActivity().getCurrentFragmentId());
     }
 }
