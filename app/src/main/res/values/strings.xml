@@ -278,7 +278,12 @@
   <string name="error_locality">Error getting locality with HTTP/GET on Google Maps API</string>
   <string name="unexpected_code">Unexpected code getting locality with HTTP/GET</string>
   <string name="on_google">on Google Maps API:</string>
-
+  <string name="welcome_to">Welcome to</string>
+  <string name="introduction_page_1">The user community where you win by caring about your city.</string>
+  <string name="introduction_page_2">Explore your city and warn about the issues in your surroundings.</string>
+  <string name="introduction_page_3">Be actively engaged by supporting other citizens.</string>
+  <string name="introduction_page_4">So that your local institutions can resolve them.</string>
+  <string name="introduction_page_5">In addition, you will get rewards for your commitment!</string>
   <string name="year_team" translatable="false">© 2017 Civify Team</string>
   <string name="all_rights_reserved">All rigths reserved.</string>
     <string name="issue_once_hour">You can\'t create more issues yet</string>

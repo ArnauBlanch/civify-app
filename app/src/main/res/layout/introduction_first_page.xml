@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
+    android:gravity="center"
+    android:paddingBottom="15dp"
+    >
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/welcome_to"
+      />
+
+  <ImageView
+      android:layout_width="match_parent"
+      android:layout_height="125dp"
+      android:src="@drawable/civify"
+      android:adjustViewBounds="true"
+      android:scaleType="fitCenter"
+      />
+  
+  <ImageView
+      android:layout_marginTop="10dp"
+      android:layout_width="match_parent"
+      android:layout_height="225dp"
+      android:src="@drawable/logo_planeta"
+      android:adjustViewBounds="true"
+      android:scaleType="fitCenter"
+      />
+
+  <TextView
+      android:layout_marginTop="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/introduction_page_1"
+      android:gravity="center"
+      fontPath="fonts/Nunito-Italic.ttf"
+      android:textSize="16sp"
+      android:paddingLeft="50dp"
+      android:paddingRight="50dp"
+      />
+
+</LinearLayout>
