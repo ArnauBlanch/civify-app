@@ -51,12 +51,12 @@
           android:id="@+id/radio_risk_yes"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:text="@android:string/yes"  />
+          android:text="@string/yes"  />
       <RadioButton
           android:id="@+id/radio_risk_no"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:text="@android:string/no" />
+          android:text="@string/no" />
       <RadioButton
           android:id="@+id/radio_risk_all"
           android:layout_width="match_parent"

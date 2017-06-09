@@ -6,6 +6,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.civify.R;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -44,8 +46,9 @@ public final class RootUtils {
 
     private static void showRootSettingsDialog(@NonNull Context context,
             @Nullable final Runnable onConfirm) {
-        ConfirmDialog rootDialog = new ConfirmDialog(context, "Rooted device",
-                "Your device is root. Some features may be disabled to prevent misuses.");
+        ConfirmDialog rootDialog = new ConfirmDialog(context,
+                context.getString(R.string.rooted_device),
+                context.getString(R.string.rooted_device_message));
         rootDialog.setPositiveButton(null, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -112,7 +112,7 @@ public class WallFragment extends BasicFragment {
                 try {
                     mIssuesViewFragment.setIssues(CivifyMap.getInstance().getIssues());
                 } catch (MapNotLoadedException e) {
-                    Snackbar.make(view, "Couldn't retrieve updated issues.", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, R.string.couldnt_update_issues, Snackbar.LENGTH_LONG)
                             .setAction(R.string.action, null)
                             .show();
                 }
