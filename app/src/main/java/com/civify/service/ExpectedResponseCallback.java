@@ -24,7 +24,7 @@ public class ExpectedResponseCallback implements Callback<MessageResponse> {
                 && response.body().getMessage().equals(mExpectedResponse)) {
             mCallback.onSuccess();
         } else {
-            mCallback.onFailure();
+            mCallback.onFailure(response.body().getMessage());
         }
     }
 

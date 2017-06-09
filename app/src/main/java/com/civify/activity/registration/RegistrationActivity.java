@@ -116,7 +116,7 @@ public class RegistrationActivity
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(String errorMessage) {
                 Snackbar.make(findViewById(R.id.registration_linearlayout),
                         R.string.error_register, Snackbar.LENGTH_SHORT).show();
             }
