@@ -289,9 +289,6 @@
   <string name="autocenter">Auto-center</string>
   <string name="issue_once_hour">You can\'t create more issues yet</string>
   <string name="error">Error</string>
-<<<<<<< HEAD
-  <string name="hello_blank_fragment"></string>
-=======
   <string name="issues_cannot_be_retrieved">Issues cannot be retrieved.</string>
   <string name="cannot_retrieve_location">It appears the map is taking
     too long to retrieve your location.\n\nYour network connection
@@ -314,5 +311,4 @@
   <string name="rooted_device_message">Your device is root. Some features may be disabled to prevent misuses.</string>
   <string name="ok" translatable="false">OK</string>
   <string name="no" translatable="false">No</string>
->>>>>>> e3309598ba80edac9a015a6b0223b782df4dc711
 </resources>
