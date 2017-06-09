@@ -102,7 +102,7 @@ public class AdapterFactory {
         return mBadgeAdapter;
     }
 
-    private SharedPreferences getSharedPreferences(Context context) {
+    public SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences("USERPREFS", Context.MODE_PRIVATE);
     }
 }
