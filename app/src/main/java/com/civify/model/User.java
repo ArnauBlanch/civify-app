@@ -190,4 +190,9 @@ public class User implements Serializable {
     public void setBadges(int badges) {
         mBadges = badges;
     }
+
+    @Override
+    public String toString() {
+        return getName() + ' ' + getSurname() + " (" + getUserAuthToken() + ')';
+    }
 }

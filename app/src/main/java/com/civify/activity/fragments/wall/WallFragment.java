@@ -48,12 +48,10 @@ public class WallFragment extends BasicFragment {
     private List<Issue> mIssues;
     private ArrayList<String> mFilteredCategories;
     private int mStatusSelected;
-    private View mView;
     private int mRiskSelected;
     private TextView mTextEmpty;
 
-    public WallFragment() {
-    }
+    public WallFragment() { }
 
     @Override
     public int getFragmentId() {
@@ -124,7 +122,6 @@ public class WallFragment extends BasicFragment {
     }
 
     private void initializeView(View view) {
-        mView = view;
         AdapterFactory adapterFactory = AdapterFactory.getInstance();
         mIssueAdapter = adapterFactory.getIssueAdapter(getContext());
         mIssuesViewFragment = new IssuesViewFragment();

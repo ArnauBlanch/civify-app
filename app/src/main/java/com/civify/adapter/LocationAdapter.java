@@ -56,7 +56,7 @@ public class LocationAdapter implements
     private static final int CONNECTION_FAILURE_RESOLUTION = 900;
 
     private static final int ACCURACY_THRESHOLD = 600;
-    private static final int FALSE_MOCK_THRESHOLD = 20;
+    private static final int FALSE_MOCK_THRESHOLD = 10;
     private static final int LOCATION_UPDATE_TIMEOUT_MULTIPLIER = 4;
     private static final int LOCATION_FIRST_UPDATE_TIMEOUT_MULTIPLIER = 5;
 
@@ -182,9 +182,11 @@ public class LocationAdapter implements
     }
 
     private void handleNewLocation(@NonNull Location location) {
-        mLastLocation = location;
-        Log.d(TAG, "Location updated: " + mLastLocation);
+        Log.d(TAG, "Location received: " + location);
         if (isLocationPlausible(location)) {
+            Location previous = mLastLocation;
+            mLastLocation = location;
+            if (previous == null && hasPermissions()) mOnPermissionsChangedListeners.run();
             cancelLocationUpdateTimeout();
             executeUpdateLocationListener();
             rescheduleLocationUpdateTimeout();
@@ -400,13 +402,16 @@ public class LocationAdapter implements
     }
 
     private void setHasPermissions(boolean hasPermissions) {
-        boolean previousHasPermissions = mHasPermissions;
-        mHasPermissions = hasPermissions;
-        if (!hasPermissions) cancelLocationUpdateTimeout();
-        if (hasPermissions != previousHasPermissions) {
-            mOnPermissionsChangedListeners.run();
-            if (hasPermissions()) Log.i(TAG, TAG + " with permissions.");
-            else Log.i(TAG, TAG + " without permissions.");
+        if (mHasPermissions != hasPermissions) {
+            mHasPermissions = hasPermissions;
+            if (!hasPermissions) {
+                cancelLocationUpdateTimeout();
+                mOnPermissionsChangedListeners.run();
+            } else if (mLastLocation != null) {
+                mOnPermissionsChangedListeners.run();
+            }
+            Log.i(TAG, TAG
+                    + (hasPermissions ? " with permissions." : " without permissions."));
         }
     }
 
@@ -439,7 +444,7 @@ public class LocationAdapter implements
                             new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION},
                             PERMISSION_ACCESS_LOCATION);
                 } else if (checkNetwork()) {
-                    setHasPermissions(true);
+                    setHasPermissions(mMockLocation == null);
                     setRequestingPermissions(false);
                     if (isConnected()) updateLocation();
                 }
@@ -510,7 +515,7 @@ public class LocationAdapter implements
 
     private static boolean isMockSettingsEnabled(Context context) {
         return !"0".equals(Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ALLOW_MOCK_LOCATION));
+                        Settings.Secure.ALLOW_MOCK_LOCATION));
     }
 
     /**
@@ -546,8 +551,7 @@ public class LocationAdapter implements
         }
 
         // isFromMockProvider may give wrong response for some applications
-        // Warning: If root devices are permitted there are ways to mock locations
-        // without being detected by normal applications
+        // Warning: With rooted devices we cannot ensure that the location is not mocked
         if (mocked) {
             mLastMockLocation = location;
             mNumGoodReadings = 0;
@@ -556,8 +560,11 @@ public class LocationAdapter implements
         // We only clear an incident record after a significant show of good behavior
         if (mNumGoodReadings >= FALSE_MOCK_THRESHOLD) mLastMockLocation = null;
 
-        boolean permitted = location.getAccuracy() < ACCURACY_THRESHOLD
-                && (!mocked || mocksEnabled);
+        boolean permittedMock = !mocked || mocksEnabled;
+
+        if (!permittedMock) setHasPermissions(false);
+
+        boolean permitted = permittedMock && location.getAccuracy() < ACCURACY_THRESHOLD;
 
         // Nothing to compare against
         if (mLastMockLocation == null) return permitted;
@@ -620,7 +627,6 @@ public class LocationAdapter implements
         if (!isRequestingPermissions()) {
             mRootWarning = false;
             mMockWarning = false;
-            mLowConnectionWarning = false;
         }
     }
 
