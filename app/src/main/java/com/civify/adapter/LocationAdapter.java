@@ -56,7 +56,6 @@ public class LocationAdapter implements
     private static final int CONNECTION_FAILURE_RESOLUTION = 900;
 
     private static final int ACCURACY_THRESHOLD = 600;
-    private static final int FALSE_MOCK_THRESHOLD = 10;
     private static final int LOCATION_UPDATE_TIMEOUT_MULTIPLIER = 4;
     private static final int LOCATION_FIRST_UPDATE_TIMEOUT_MULTIPLIER = 5;
 
@@ -74,7 +73,7 @@ public class LocationAdapter implements
 
     private boolean mConnecting, mHasPermissions, mAutoRefresh, mRequestingPermissions,
             mLowConnectionWarning, mMockLocationsEnabled, mMockWarning, mRootWarning;
-    private long mIntervalRefresh, mFastIntervalRefresh, mNumGoodReadings;
+    private long mIntervalRefresh, mFastIntervalRefresh;
 
     public LocationAdapter(@NonNull Activity context) {
         mContext = context;
@@ -552,17 +551,11 @@ public class LocationAdapter implements
     private boolean isLocationPlausible(@Nullable Location location) {
         if (location == null) return false;
 
-        boolean mocked = isMocked(location);
-
         // isFromMockProvider may give wrong response for some applications
         // Warning: With rooted devices we cannot ensure that the location is not mocked
-        if (mocked) {
-            mLastMockLocation = location;
-            mNumGoodReadings = 0;
-        } else mNumGoodReadings++;
+        boolean mocked = isMocked(location);
 
-        // We only clear an incident record after a significant show of good behavior
-        if (mNumGoodReadings >= FALSE_MOCK_THRESHOLD) mLastMockLocation = null;
+        if (mocked) mLastMockLocation = location;
 
         boolean permittedMock = !mocked || isMockLocationsEnabled();
 
@@ -571,11 +564,13 @@ public class LocationAdapter implements
         boolean permitted = permittedMock
                 && (mLastLocation == null || location.getAccuracy() < ACCURACY_THRESHOLD);
 
-        // Nothing to compare against
         if (mLastMockLocation == null) return permitted;
 
-        // Check if it's more than 1km away from the last known mock
-        return permitted && location.distanceTo(mLastMockLocation) > KM;
+        if (location.distanceTo(mLastMockLocation) > KM) {
+            mLastMockLocation = null;
+            return permitted;
+        }
+        return false;
     }
 
     private void showMockSettingsDialog() {
