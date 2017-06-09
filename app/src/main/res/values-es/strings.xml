@@ -237,4 +237,7 @@
   <string name="all_rights_reserved">Todos los derechos reservados.</string>
     <string name="issue_once_hour">No puedes crear más incidencias todavía</string>
   <string name="autocenter">Auto-centrar</string>
+  <string name="error">Error</string>
+  <string name="please_wait">No puedes volver a realizar esta acción. Por favor, espera</string>
+  <string name="seconds">segundos</string>
 </resources>
