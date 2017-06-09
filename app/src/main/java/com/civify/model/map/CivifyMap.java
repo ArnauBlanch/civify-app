@@ -30,6 +30,7 @@ import java.util.Set;
 public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     public static final float DEFAULT_ZOOM = 18f;
+    public static final boolean DEFAULT_AUTO_CENTER = false;
     public static final int CAMERA_ANIMATION_MILLIS = 1000;
 
     private static final String TAG = CivifyMap.class.getSimpleName();
@@ -57,7 +58,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
                 LocationAdapter.Priority.HIGH_ACCURACY.getPeriodMillis(), 0L);
         setRefreshLocations(true);
         setCanBeDisabled(true);
-        setAutoCenter(true);
+        setAutoCenter(DEFAULT_AUTO_CENTER);
     }
 
     public static void setContext(@NonNull DrawerActivity context) {
@@ -287,6 +288,14 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         forceCenter(location, zoom, animate);
     }
 
+    public void tryToCenter(boolean animate) {
+        try {
+            center(animate);
+        } catch (MapNotReadyException ignore) {
+            // Does not matters
+        }
+    }
+
     private void forceCenter(@NonNull Location location, @Nullable Float zoom, boolean animate) {
         CameraUpdate update = zoom == null ? getCameraUpdate(location)
                 : getCameraUpdate(location, zoom);
@@ -319,14 +328,10 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     public void onUpdateLocation(@NonNull Location location) {
         if (!mPlayerSet) {
             mPlayerSet = true;
+            tryToCenter(true);
             if (mOnMapReadyListener != null) mOnMapReadyListener.run();
-        }
-        if (isAutoCenter()) {
-            try {
-                center(true);
-            } catch (MapNotReadyException e) {
-                Log.wtf(TAG, e);
-            }
+        } else if (isAutoCenter()) {
+            tryToCenter(true);
         }
     }
 
@@ -336,6 +341,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
 
     public void setAutoCenter(boolean autoCenter) {
         mAutoCenter = autoCenter;
+        if (autoCenter) tryToCenter(true);
     }
 
     public final void setRefreshLocations(boolean refreshLocations) {

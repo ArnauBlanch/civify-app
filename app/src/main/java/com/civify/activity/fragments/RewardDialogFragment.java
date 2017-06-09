@@ -6,13 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.civify.R;
 import com.civify.model.Reward;
+import com.civify.utils.ConfirmDialog;
 
 public class RewardDialogFragment extends DialogFragment {
 
@@ -49,14 +49,11 @@ public class RewardDialogFragment extends DialogFragment {
         int experience = getArguments().getInt(EXPERIENCE);
         int level = getArguments().getInt(LEVEL);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = setValues(coins, experience, level);
+        ConfirmDialog dialog = new ConfirmDialog(getContext());
+        dialog.setTitle(R.string.congratulations);
+        dialog.setView(setValues(coins, experience, level));
 
-        builder.setView(view)
-                .setTitle(getString(R.string.congratulations))
-                .setPositiveButton(android.R.string.ok, null);
-
-        return builder.create();
+        return dialog;
     }
 
     private View setValues(int coins, int experience, int level) {

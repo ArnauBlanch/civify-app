@@ -1,6 +1,5 @@
 package com.civify.activity.forgotpassword;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -20,6 +19,7 @@ import com.civify.activity.BaseActivity;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.ValidationCallback;
 import com.civify.utils.AdapterFactory;
+import com.civify.utils.ConfirmDialog;
 
 public class ForgotActivity extends BaseActivity {
 
@@ -73,13 +73,9 @@ public class ForgotActivity extends BaseActivity {
                                     switch (response) {
                                         case UserAdapter.EMAIL_SENT_CODE:
                                             dialog.dismiss();
-                                            AlertDialog dialogConf =
-                                                    new AlertDialog.Builder(ForgotActivity.this)
-                                                    .create();
-                                            dialogConf.setMessage(getString(R.string.email_sent));
-                                            dialogConf.setButton(DialogInterface.BUTTON_POSITIVE,
-                                                    getString(R.string.ok), mDialogOnClick);
-                                            dialogConf.show();
+                                            ConfirmDialog.show(ForgotActivity.this,
+                                                    null, getString(R.string.email_sent),
+                                                    mDialogOnClick, null);
                                             break;
                                         default:
                                             dialog.setMessage(getString(R.string.email_not_sent));

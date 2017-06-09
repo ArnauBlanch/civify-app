@@ -56,7 +56,6 @@ public class LocationAdapter implements
     private static final int CONNECTION_FAILURE_RESOLUTION = 900;
 
     private static final int ACCURACY_THRESHOLD = 600;
-    private static final int FALSE_MOCK_THRESHOLD = 10;
     private static final int LOCATION_UPDATE_TIMEOUT_MULTIPLIER = 4;
     private static final int LOCATION_FIRST_UPDATE_TIMEOUT_MULTIPLIER = 5;
 
@@ -74,7 +73,7 @@ public class LocationAdapter implements
 
     private boolean mConnecting, mHasPermissions, mAutoRefresh, mRequestingPermissions,
             mLowConnectionWarning, mMockLocationsEnabled, mMockWarning, mRootWarning;
-    private long mIntervalRefresh, mFastIntervalRefresh, mNumGoodReadings;
+    private long mIntervalRefresh, mFastIntervalRefresh;
 
     public LocationAdapter(@NonNull Activity context) {
         mContext = context;
@@ -143,7 +142,7 @@ public class LocationAdapter implements
 
     private void removeUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        Log.d(TAG, "Removed location udpates.");
+        Log.i(TAG, "Removed location udpates.");
     }
 
     @Override
@@ -344,18 +343,19 @@ public class LocationAdapter implements
                     Log.i(TAG, "Location settings are not satisfied. "
                             + "Showing the user a dialog to upgrade location settings.");
                     try {
+                        setRequestingPermissions(true);
                         // Show the dialog by calling startResolutionForResult(),
                         // and check the result in the onActivityResult() of mContext
                         status.startResolutionForResult(mContext, REQUEST_CHECK_SETTINGS);
-                        setRequestingPermissions(true);
                     } catch (IntentSender.SendIntentException e) {
                         Log.wtf(TAG, "PendingIntent unable to execute request", e);
                     }
                 } else if (status.getStatusCode()
                         == LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE) {
                     if (checkNetwork()) {
-                        Log.wtf(TAG, 
-                                "Location settings can't be changed to meet the requirements");
+                        Log.w(TAG, "Location settings can't be changed to meet the requirements");
+                        setHasPermissions(false);
+                        setRequestingPermissions(false);
                     }
                 }
             }
@@ -363,6 +363,7 @@ public class LocationAdapter implements
     }
 
     public void onMapSettingsResults(int requestCode, int resultCode) {
+        setRequestingPermissions(false);
         switch (requestCode) {
             case CONNECTION_FAILURE_RESOLUTION:
                 if (resultCode == Activity.RESULT_OK) {
@@ -458,7 +459,6 @@ public class LocationAdapter implements
 
     private void setLocationUpdateTimeout() {
         if (!isLocationUpdateTimeoutSet()) {
-            mLowConnectionWarning = false;
             mOnUpdateTimeout = Timeout.schedule("LocationUpdateTimeout", new Runnable() {
                 @Override
                 public void run() {
@@ -532,13 +532,9 @@ public class LocationAdapter implements
         return true;
     }
 
-    private boolean isLocationPlausible(@Nullable Location location) {
-        if (location == null) return false;
-
-        // Check mock locations
+    private boolean isMocked(@NonNull Location location) {
         boolean mocked = false;
-        boolean mocksEnabled = isMockLocationsEnabled();
-        if (mocksEnabled) {
+        if (isMockLocationsEnabled()) {
             // If we are not sure, mark as permitted mock
             mocked = true;
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -549,28 +545,32 @@ public class LocationAdapter implements
         } else if (!verifyMockGpsPermissions()) {
             mocked = true;
         }
+        return mocked;
+    }
+
+    private boolean isLocationPlausible(@Nullable Location location) {
+        if (location == null) return false;
 
         // isFromMockProvider may give wrong response for some applications
         // Warning: With rooted devices we cannot ensure that the location is not mocked
-        if (mocked) {
-            mLastMockLocation = location;
-            mNumGoodReadings = 0;
-        } else mNumGoodReadings++;
+        boolean mocked = isMocked(location);
 
-        // We only clear an incident record after a significant show of good behavior
-        if (mNumGoodReadings >= FALSE_MOCK_THRESHOLD) mLastMockLocation = null;
+        if (mocked) mLastMockLocation = location;
 
-        boolean permittedMock = !mocked || mocksEnabled;
+        boolean permittedMock = !mocked || isMockLocationsEnabled();
 
         if (!permittedMock) setHasPermissions(false);
 
-        boolean permitted = permittedMock && location.getAccuracy() < ACCURACY_THRESHOLD;
+        boolean permitted = permittedMock
+                && (mLastLocation == null || location.getAccuracy() < ACCURACY_THRESHOLD);
 
-        // Nothing to compare against
         if (mLastMockLocation == null) return permitted;
 
-        // Check if it's more than 1km away from the last known mock
-        return permitted && location.distanceTo(mLastMockLocation) > KM;
+        if (location.distanceTo(mLastMockLocation) > KM) {
+            mLastMockLocation = null;
+            return permitted;
+        }
+        return false;
     }
 
     private void showMockSettingsDialog() {
@@ -627,6 +627,7 @@ public class LocationAdapter implements
         if (!isRequestingPermissions()) {
             mRootWarning = false;
             mMockWarning = false;
+            mLowConnectionWarning = false;
         }
     }
 
