@@ -238,4 +238,5 @@
   <string name="without_permissions">No tienes permisos para llevar a cabo esta acción.</string>
   <string name="skip_this_step">Saltarse este paso</string>
   <string name="all_rights_reserved">Todos los derechos reservados.</string>
+    <string name="issue_once_hour">No puedes crear más incidencias todavía</string>
 </resources>
