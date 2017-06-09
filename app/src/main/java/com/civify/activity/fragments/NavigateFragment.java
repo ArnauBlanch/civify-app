@@ -132,9 +132,7 @@ public class NavigateFragment extends BasicFragment {
             handleSearch(resultCode, data);
         } else if (requestCode == REQUEST_DIALOG) {
             applyFilters(data);
-        } else {
-            CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
-        }
+        } else CivifyMap.getInstance().onMapSettingsResults(requestCode, resultCode);
     }
 
     private void applyFilters(Intent data) {
@@ -249,25 +247,27 @@ public class NavigateFragment extends BasicFragment {
 
     private void setCreateIssueButton(View v) {
         mFabCreateIssue = (FloatingActionButton) v.findViewById(R.id.fab_add);
+
         mCreateIssueListener = new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                mIssueAdapter.canCreateIssue(new SimpleCallback() {
-                    @Override
-                    public void onSuccess() {
-                        if (CivifyMap.getInstance().isMapReady()) {
+                if (CivifyMap.getInstance().isMapReady()) {
+                    mIssueAdapter.canCreateIssue(new SimpleCallback() {
+                        @Override
+                        public void onSuccess() {
                             CivifyMap.getInstance().setCanBeDisabled(false);
                             Intent intent = new Intent(getActivity().getApplicationContext(),
                                     CreateIssueActivity.class);
                             startActivityForResult(intent, CreateIssueActivity.ISSUE_CREATION);
-                        } else showMapLoadingWarning(view);
-                    }
+                        }
 
-                    @Override
-                    public void onFailure() {
-                        Snackbar.make(view, R.string.issue_once_hour, Snackbar.LENGTH_LONG).show();
-                    }
-                });
+                        @Override
+                        public void onFailure() {
+                            Snackbar.make(view,
+                                    R.string.issue_once_hour, Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+                } else showMapLoadingWarning(view);
             }
         };
         mFabCreateIssue.setOnClickListener(mCreateIssueListener);

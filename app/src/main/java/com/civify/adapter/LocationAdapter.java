@@ -143,7 +143,7 @@ public class LocationAdapter implements
 
     private void removeUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        Log.d(TAG, "Removed location udpates.");
+        Log.i(TAG, "Removed location udpates.");
     }
 
     @Override
@@ -344,18 +344,19 @@ public class LocationAdapter implements
                     Log.i(TAG, "Location settings are not satisfied. "
                             + "Showing the user a dialog to upgrade location settings.");
                     try {
+                        setRequestingPermissions(true);
                         // Show the dialog by calling startResolutionForResult(),
                         // and check the result in the onActivityResult() of mContext
                         status.startResolutionForResult(mContext, REQUEST_CHECK_SETTINGS);
-                        setRequestingPermissions(true);
                     } catch (IntentSender.SendIntentException e) {
                         Log.wtf(TAG, "PendingIntent unable to execute request", e);
                     }
                 } else if (status.getStatusCode()
                         == LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE) {
                     if (checkNetwork()) {
-                        Log.wtf(TAG, 
-                                "Location settings can't be changed to meet the requirements");
+                        Log.w(TAG, "Location settings can't be changed to meet the requirements");
+                        setHasPermissions(false);
+                        setRequestingPermissions(false);
                     }
                 }
             }
@@ -363,6 +364,7 @@ public class LocationAdapter implements
     }
 
     public void onMapSettingsResults(int requestCode, int resultCode) {
+        setRequestingPermissions(false);
         switch (requestCode) {
             case CONNECTION_FAILURE_RESOLUTION:
                 if (resultCode == Activity.RESULT_OK) {

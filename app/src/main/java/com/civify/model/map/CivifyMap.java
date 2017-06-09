@@ -328,14 +328,10 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     public void onUpdateLocation(@NonNull Location location) {
         if (!mPlayerSet) {
             mPlayerSet = true;
+            tryToCenter(true);
             if (mOnMapReadyListener != null) mOnMapReadyListener.run();
-        }
-        if (isAutoCenter()) {
-            try {
-                center(true);
-            } catch (MapNotReadyException e) {
-                Log.wtf(TAG, e);
-            }
+        } else if (isAutoCenter()) {
+            tryToCenter(true);
         }
     }
 

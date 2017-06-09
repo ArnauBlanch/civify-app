@@ -1,6 +1,7 @@
 package com.civify.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -72,14 +73,19 @@ public class DrawerActivity extends BaseActivity
     private NavigationView mNavigationView;
     private Toolbar mToolbar;
     private AppBarLayout mAppBarLayout;
-    private int mCurrentFragment;
+    private Fragment mCurrentFragment;
+    private int mCurrentFragmentId;
 
     private boolean mShowMenu;
     private boolean mShowMenuDetails;
     private boolean mShowMenuWall;
     private boolean mShowMenuNavigate;
 
-    public int getCurrentFragment() {
+    public int getCurrentFragmentId() {
+        return mCurrentFragmentId;
+    }
+
+    public Fragment getCurrentFragment() {
         return mCurrentFragment;
     }
 
@@ -107,7 +113,7 @@ public class DrawerActivity extends BaseActivity
 
         NavigateFragment navigateFragment = NavigateFragment.newInstance();
         setFragment(navigateFragment, NAVIGATE_ID);
-        mNavigationView.getMenu().getItem(mCurrentFragment).setChecked(true);
+        mNavigationView.getMenu().getItem(mCurrentFragmentId).setChecked(true);
 
         setUserHeader();
 
@@ -121,10 +127,10 @@ public class DrawerActivity extends BaseActivity
         } else if (mFragmentStack.size() > 1) {
             FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
-            if (mCurrentFragment != NAVIGATE_ID && mCurrentFragment != DETAILS_ISSUE_ID
-                    && mCurrentFragment != DETAILS_QR_ID && mCurrentFragment != DETAILS_AWARD_ID
-                    && mCurrentFragment != DETAILS_ACHIEVEMENTS_ID
-                    && mCurrentFragment != DETAILS_EVENTS_ID) {
+            if (mCurrentFragmentId != NAVIGATE_ID && mCurrentFragmentId != DETAILS_ISSUE_ID
+                    && mCurrentFragmentId != DETAILS_QR_ID && mCurrentFragmentId != DETAILS_AWARD_ID
+                    && mCurrentFragmentId != DETAILS_ACHIEVEMENTS_ID
+                    && mCurrentFragmentId != DETAILS_EVENTS_ID) {
                 BasicFragment fragment = (BasicFragment) mFragmentStack.pop();
                 fragmentTransaction.remove(fragment);
                 while (fragment.getFragmentId() != NAVIGATE_ID) {
@@ -134,7 +140,8 @@ public class DrawerActivity extends BaseActivity
                 mFragmentStack.add(fragment);
                 fragment.onResume();
                 fragmentTransaction.show(fragment).commit();
-                mCurrentFragment = NAVIGATE_ID;
+                mCurrentFragmentId = NAVIGATE_ID;
+                mCurrentFragment = fragment;
             } else {
                 mFragmentStack.lastElement().onPause();
                 fragmentTransaction.remove(mFragmentStack.pop());
@@ -142,7 +149,8 @@ public class DrawerActivity extends BaseActivity
                 BasicFragment restoredFragment = (BasicFragment) mFragmentStack.lastElement();
                 fragmentTransaction.show(restoredFragment);
                 fragmentTransaction.commit();
-                mCurrentFragment = restoredFragment.getFragmentId();
+                mCurrentFragment = restoredFragment;
+                mCurrentFragmentId = restoredFragment.getFragmentId();
             }
             setToolbarTitle();
             updateMenu();
@@ -211,32 +219,33 @@ public class DrawerActivity extends BaseActivity
         if (!mFragmentStack.empty()) {
             mFragmentStack.lastElement().onPause();
             fragmentTransaction.hide(mFragmentStack.lastElement());
-            if (mCurrentFragment == fragmentId) mFragmentStack.pop();
+            if (mCurrentFragmentId == fragmentId) mFragmentStack.pop();
         }
         mFragmentStack.push(fragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
 
-        mCurrentFragment = fragmentId;
+        mCurrentFragmentId = fragmentId;
+        mCurrentFragment = fragment;
         updateMenu();
         setToolbarTitle();
     }
 
     private void updateMenu() {
-        if (mCurrentFragment == PROFILE_ID) {
+        if (mCurrentFragmentId == PROFILE_ID) {
             mShowMenu = true;
             mShowMenuDetails = false;
             mShowMenuNavigate = false;
-        } else if (mCurrentFragment == DETAILS_ISSUE_ID) {
+        } else if (mCurrentFragmentId == DETAILS_ISSUE_ID) {
             mShowMenu = true;
             mShowMenuDetails = true;
             mShowMenuWall = false;
             mShowMenuNavigate = false;
-        } else if (mCurrentFragment == WALL_ID) {
+        } else if (mCurrentFragmentId == WALL_ID) {
             mShowMenu = true;
             mShowMenuWall = true;
             mShowMenuDetails = false;
             mShowMenuNavigate = false;
-        } else if (mCurrentFragment == NAVIGATE_ID) {
+        } else if (mCurrentFragmentId == NAVIGATE_ID) {
             mShowMenu = true;
             mShowMenuWall = false;
             mShowMenuNavigate = true;
@@ -277,6 +286,12 @@ public class DrawerActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getCurrentFragment().onActivityResult(requestCode, resultCode, data);
+    }
+
     public void setUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
 
@@ -294,7 +309,7 @@ public class DrawerActivity extends BaseActivity
         final String title;
         removeCoinsFromToolbar();
         int elevation = DEFAULT_ELEVATION;
-        switch (mCurrentFragment) {
+        switch (mCurrentFragmentId) {
             case NAVIGATE_ID:
                 title = getResources().getString(R.string.navigate_title);
                 break;
@@ -336,7 +351,7 @@ public class DrawerActivity extends BaseActivity
         for (int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).setChecked(false);
         }
-        menu.getItem(mCurrentFragment).setChecked(true);
+        menu.getItem(mCurrentFragmentId).setChecked(true);
     }
 
     private void setToolbarElevation(int elevation) {
