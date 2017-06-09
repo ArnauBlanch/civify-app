@@ -1,7 +1,6 @@
 package com.civify.activity.fragments.profile;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.civify.activity.fragments.wall.WallFragment;
 import com.civify.adapter.UserAdapter;
