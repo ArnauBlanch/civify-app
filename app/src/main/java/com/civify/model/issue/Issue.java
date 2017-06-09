@@ -10,6 +10,7 @@ import android.util.Base64;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.issue.IssueDetailsFragment;
 import com.civify.adapter.LocationAdapter;
+import com.civify.model.Picture;
 import com.civify.model.map.CivifyMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
@@ -92,6 +93,10 @@ public class Issue implements Serializable {
     @SerializedName("picture")
     private Picture mPicture;
 
+    @Expose(serialize = false)
+    @SerializedName("resolved")
+    private boolean mResolved;
+
     public Issue() { }
 
     public Issue(String title, String description, Category category, boolean risk,
@@ -171,6 +176,10 @@ public class Issue implements Serializable {
 
     public boolean isRisk() {
         return mRisk;
+    }
+
+    public boolean isResolved() {
+        return mResolved;
     }
 
     public void setRisk(boolean risk) {

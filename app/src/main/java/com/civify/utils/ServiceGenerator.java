@@ -10,8 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public final class ServiceGenerator {
+
     public static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    // Alternative: http://34.210.6.67:3000
     public static final String BASE_URL = "http://api.civify.cf";
     public static final String BASE_WEB_URL = "http://civify.cf";
 
@@ -25,7 +25,7 @@ public final class ServiceGenerator {
 
     private ServiceGenerator() {
         mGson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
+                 .excludeFieldsWithoutExposeAnnotation()
                 .setDateFormat(RAILS_DATE_FORMAT)
                 .create();
         mBuilder = new Retrofit.Builder()

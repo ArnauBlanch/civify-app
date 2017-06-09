@@ -1,6 +1,7 @@
 package com.civify.adapter.issue;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.civify.adapter.LoginAdapterImpl;
 import com.civify.adapter.SimpleCallback;
@@ -17,23 +18,36 @@ import com.civify.utils.ServiceGenerator;
 import com.google.gson.JsonObject;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IssueAdapter {
+    public static final String TAG = IssueAdapter.class.getSimpleName();
     public static final String ISSUE_WITH_AUTH_TOKEN = "Issue with auth token ";
     public static final String CONFIRMED_BY_USER_WITH_AUTH_TOKEN =
-            "confirmed by User with auth token ";
+            "confirmed/unconfirmed by User with auth token ";
     public static final String REPORTED_BY_USER_WITH_AUTH_TOKEN =
-            "reported by User with auth token ";
+            "reported/unreported by User with auth token ";
     public static final String UN = " un";
     public static final String USER = "user";
     public static final String RESOLUTION_ADDED = "Resolution added";
     public static final String RESOLUTION_DELETED = "Resolution deleted";
-    static final String RECORD_DOES_NOT_EXIST = "Doesn’t exists record";
+    public static final int UNRESOLVED = 0;
+    public static final int RESOLVED = 1;
+    public static final int ALL = 2;
+    public static final int RISK_YES = 3;
+    public static final int RISK_NO = 4;
+    public static final int RISK_ALL = 5;
+    static final String RECORD_DOES_NOT_EXIST = "Record doesn't exist";
+    private static final String TRUE = "true";
+    private static final String FALSE = "false";
+    private static final String KEY_MESSAGE_RESPONSE = "message";
     private IssueService mIssueService;
     private String mAuthToken;
 
@@ -67,6 +81,34 @@ public class IssueAdapter {
         });
     }
 
+    public void canCreateIssue(final SimpleCallback callback) {
+        Call<MessageResponse> call = mIssueService.canCreateIssue(mAuthToken);
+        call.enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess();
+                } else {
+                    if (response.errorBody() != null) {
+                        try {
+                            JSONObject jsonError = new JSONObject(response.errorBody().string());
+                            callback.onFailure(jsonError.getString(KEY_MESSAGE_RESPONSE));
+                        } catch (java.io.IOException e) {
+                            Log.e(TAG, e.getMessage());
+                        } catch (JSONException e) {
+                            Log.e(TAG, e.getMessage());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
     public void editIssue(String issueAuthToken, JsonObject issue,
             final IssueSimpleCallback callback) {
         Call<Issue> call = mIssueService.editIssue(mAuthToken, issue, issueAuthToken);
@@ -90,7 +132,47 @@ public class IssueAdapter {
     }
 
     public void getIssues(final ListIssuesSimpleCallback callback) {
-        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken);
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, FALSE, null, null);
+        call.enqueue(new Callback<List<Issue>>() {
+
+            @Override
+            public void onResponse(Call<List<Issue>> call, Response<List<Issue>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Issue>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getIssues(final ListIssuesSimpleCallback callback, int resolved,
+            ArrayList<String> categories, int isRisk) {
+        String resolvedParam;
+        if (resolved == RESOLVED) {
+            resolvedParam = TRUE;
+        } else if (resolved == UNRESOLVED) {
+            resolvedParam = FALSE;
+        } else {
+            resolvedParam = null;
+        }
+
+        String riskParam;
+        if (isRisk == RISK_YES) {
+            riskParam = TRUE;
+        } else if (isRisk == RISK_NO) {
+            riskParam = FALSE;
+        } else {
+            riskParam = null;
+        }
+
+        Call<List<Issue>> call = mIssueService.getIssues(mAuthToken, resolvedParam, categories,
+                riskParam);
         call.enqueue(new Callback<List<Issue>>() {
 
             @Override
@@ -138,7 +220,16 @@ public class IssueAdapter {
                 if (response.code() == HttpURLConnection.HTTP_NO_CONTENT) {
                     callback.onSuccess();
                 } else {
-                    callback.onFailure();
+                    if (response.errorBody() != null) {
+                        try {
+                            JSONObject jsonError = new JSONObject(response.errorBody().string());
+                            callback.onFailure(jsonError.getString(KEY_MESSAGE_RESPONSE));
+                        } catch (java.io.IOException e) {
+                            Log.e(TAG, e.getMessage());
+                        } catch (JSONException e) {
+                            Log.e(TAG, e.getMessage());
+                        }
+                    }
                 }
             }
 

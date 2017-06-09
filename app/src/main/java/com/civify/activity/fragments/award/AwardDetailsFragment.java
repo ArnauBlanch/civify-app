@@ -40,9 +40,9 @@ public class AwardDetailsFragment extends BasicFragment {
     private Award mAward;
     private AwardAdapter mAwardAdapter;
 
-    public AwardDetailsFragment() {
-    }
+    public AwardDetailsFragment() { }
 
+    @NonNull
     public static AwardDetailsFragment newInstance(@NonNull Award award) {
         Bundle data = new Bundle();
         data.putSerializable(TAG_AWARD, award);
@@ -72,7 +72,16 @@ public class AwardDetailsFragment extends BasicFragment {
         mAward = (Award) bundle.getSerializable(TAG_AWARD);
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        ((DrawerActivity) getActivity()).showCoinsOnToolbar();
+        final DrawerActivity activity = (DrawerActivity) getActivity();
+        activity.showCoinsOnToolbar();
+        AdapterFactory.getInstance().getUserAdapter().addOnCurrentUserUpdateListener(
+                new Runnable() {
+                @Override
+                public void run() {
+                    activity.showCoinsOnToolbar();
+                }
+            }
+        );
         toolbar.setTitle(mAward.getTitle());
 
         addImage();
@@ -142,20 +151,16 @@ public class AwardDetailsFragment extends BasicFragment {
     }
 
     private void showRewardDialog(Reward reward) {
-        final DrawerActivity activity = (DrawerActivity) getActivity();
         AdapterFactory.getInstance().getUserAdapter(getContext())
-                .showRewardDialog(activity, reward,
-                        new UserSimpleCallback() {
-                            @Override
-                            public void onSuccess(User user) {
-                                activity.setUserHeader();
-                                activity.removeCoinsFromToolbar();
-                                activity.showCoinsOnToolbar();
-                            }
+                .showRewardDialog(getActivity(), reward, new UserSimpleCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                        ((DrawerActivity) getActivity()).setUserHeader();
+                    }
 
-                            @Override
-                            public void onFailure() { }
-                        });
+                    @Override
+                    public void onFailure() { }
+                });
     }
 
     private void changeTypeButton(Button button, int type) {

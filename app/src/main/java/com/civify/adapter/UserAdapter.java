@@ -6,12 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.RewardDialogFragment;
 import com.civify.model.MessageResponse;
 import com.civify.model.Reward;
 import com.civify.model.User;
 import com.civify.service.UserService;
+import com.civify.utils.ListenerQueue;
 import com.civify.utils.ServiceGenerator;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -34,12 +34,14 @@ public class UserAdapter {
     public static final int INVALID = 0;
     public static final int USED = 1;
     public static final int VALID_UNUSED = 2;
+    public static final int EMAIL_SENT_CODE = 3;
+    public static final int EMAIL_NOT_SENT_CODE = 4;
     public static final String TAG = UserAdapter.class.getSimpleName();
     public static final String USER_CREATED = "User created";
     public static final String USER_NOT_CREATED = "User not created";
     public static final String USER_EXISTS = "User exists";
     public static final String USER_DOESNT_EXIST = "User not exists";
-    public static final String USER_NOT_FOUND = "User not found";
+    public static final String EMAIL_SENT = "Email sent";
     public static final Pattern VALID_PASSWORD = Pattern.compile(
             "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9@&#$%]{8,40}$");
     public static final Pattern VALID_EMAIL = Pattern.compile(
@@ -47,7 +49,9 @@ public class UserAdapter {
                     + "@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
     public static final Pattern VALID_USERNAME = Pattern.compile(
             "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
+    private static final String EMAIL_STRING = "email";
 
+    private static final ListenerQueue ON_CURRENT_USER_UPDATE = new ListenerQueue();
     private static User sCurrentUser;
     private String mAuthToken;
 
@@ -57,7 +61,7 @@ public class UserAdapter {
         this(ServiceGenerator.getInstance().createService(UserService.class));
     }
 
-    UserAdapter(UserService userService) {
+    protected UserAdapter(UserService userService) {
         mUserService = userService;
     }
 
@@ -66,7 +70,7 @@ public class UserAdapter {
     }
 
     public UserAdapter(UserService service, SharedPreferences sharedPreferences) {
-        this.mUserService = service;
+        this(service);
         this.mAuthToken = sharedPreferences.getString(LoginAdapterImpl.AUTH_TOKEN, "");
     }
 
@@ -87,7 +91,7 @@ public class UserAdapter {
                     callback.onSuccess();
                 } else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST
                         && getMessageFromError(response.errorBody()).equals(USER_NOT_CREATED)) {
-                    callback.onFailure();
+                    callback.onFailure(response.body().getMessage());
                 }
             }
 
@@ -120,6 +124,34 @@ public class UserAdapter {
         return VALID_PASSWORD.matcher(password).matches();
     }
 
+    public void sentResetPasswrdEmail(@NonNull String email, final ValidationCallback callback) {
+        JsonObject passwordResetEmail = new JsonObject();
+        JsonObject emailJson = new JsonObject();
+        emailJson.addProperty(EMAIL_STRING, email);
+        passwordResetEmail.add("password_reset", emailJson);
+
+        Log.d(TAG, "Sending JSON for password reset: " + passwordResetEmail);
+        Call<MessageResponse> call = mUserService.sendResetPasswrdMail(passwordResetEmail);
+        call.enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK
+                        && response.body().getMessage().equals(EMAIL_SENT)) {
+                    callback.onValidationResponse(EMAIL_SENT_CODE);
+                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
+                        && getMessageFromError(response.errorBody()).equals(USER_DOESNT_EXIST)) {
+                    callback.onValidationResponse(EMAIL_NOT_SENT_CODE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
     private void checkUnusedUsername(String username, final ValidationCallback callback) {
         JsonObject usernameJson = new JsonObject();
         usernameJson.addProperty("username", username);
@@ -146,7 +178,7 @@ public class UserAdapter {
 
     private void checkUnusedEmail(String email, final ValidationCallback callback) {
         JsonObject emailJson = new JsonObject();
-        emailJson.addProperty("email", email);
+        emailJson.addProperty(EMAIL_STRING, email);
 
         Call<MessageResponse> call = mUserService.checkUnusedEmail(emailJson);
         call.enqueue(new Callback<MessageResponse>() {
@@ -197,24 +229,9 @@ public class UserAdapter {
         }
     }
 
-    public void updateCurrentUser(final UserSimpleCallback callback) {
-        getUser(getCurrentUser().getUserAuthToken(), new UserSimpleCallback() {
-            @Override
-            public void onSuccess(User user) {
-                setCurrentUser(user);
-                callback.onSuccess(user);
-            }
-
-            @Override
-            public void onFailure() {
-                Log.w(TAG, "Cannot update current user");
-                callback.onFailure();
-            }
-        });
-    }
-
     public static void setCurrentUser(User user) {
         sCurrentUser = user;
+        if (user != null) ON_CURRENT_USER_UPDATE.run();
     }
 
     public static User getCurrentUser() {
@@ -228,7 +245,11 @@ public class UserAdapter {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    callback.onSuccess(response.body());
+                    User user = response.body();
+                    if (user.getUserAuthToken().equals(getCurrentUser().getUserAuthToken())) {
+                        setCurrentUser(user);
+                    }
+                    callback.onSuccess(user);
                 } else {
                     callback.onFailure();
                 }
@@ -236,23 +257,28 @@ public class UserAdapter {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                t.printStackTrace();
+                callback.onFailure();
             }
         });
+    }
+
+    public void addOnCurrentUserUpdateListener(@NonNull final Runnable onUpdate) {
+        ON_CURRENT_USER_UPDATE.enqueue(onUpdate);
     }
 
     public void showRewardDialog(@NonNull final FragmentActivity context,
             @NonNull Reward reward, @Nullable final UserSimpleCallback updateCallback) {
         RewardDialogFragment.show(context, reward);
-        final int oldLevel = UserAdapter.getCurrentUser().getLevel();
-        updateCurrentUser(
+        User user = getCurrentUser();
+        final int oldLevel = user.getLevel();
+        getUser(user.getUserAuthToken(),
                 new UserSimpleCallback() {
                     @Override
                     public void onSuccess(User user) {
-                        if (updateCallback != null) updateCallback.onSuccess(user);
                         if (user.getLevel() > oldLevel) {
                             RewardDialogFragment.show(context, user.getLevel());
                         }
+                        if (updateCallback != null) updateCallback.onSuccess(user);
                     }
 
                     @Override
@@ -261,17 +287,4 @@ public class UserAdapter {
                     }
                 });
     }
-
-    public void updateRewards(@NonNull final DrawerActivity activity) {
-        updateCurrentUser(
-                new UserSimpleCallback() {
-                    @Override
-                    public void onSuccess(User user) {
-                    }
-
-                    @Override
-                    public void onFailure() { }
-                });
-    }
-
 }

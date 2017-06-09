@@ -15,9 +15,7 @@ import retrofit2.http.Path;
 
 public interface AwardService {
 
-    @Headers({
-            "Content-Type: application/json"
-    })
+    @Headers("Content-Type: application/json")
 
     @GET("/awards")
     Call<List<Award>> getAwards(@Header("Authorization") String authToken);

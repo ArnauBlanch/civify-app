@@ -4,6 +4,9 @@ import static android.app.Activity.RESULT_OK;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -22,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -41,20 +45,23 @@ import com.civify.model.User;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.CivifyMarkers;
+import com.civify.model.map.IssueMarker;
 import com.civify.service.issue.IssueSimpleCallback;
 import com.civify.utils.AdapterFactory;
 import com.civify.utils.ServiceGenerator;
+import com.civify.utils.StringUtils;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 public class IssueDetailsFragment extends BasicFragment {
 
-    private static final String DEBUG = "debug-IssueDetails";
+    public static final float DISABLED_ALPHA = 0.15f;
+
+    private static final String TAG = "debug-IssueDetails";
 
     private static final String TAG_ISSUE = "issue";
     private static final int MIN_METERS_FROM_ISSUE = 70;
-    private static final float DISABLED_ALPHA = 0.15f;
     private static final int SHOW_AS_ACTION_NEVER = 0;
     private static final int REQUEST_CODE = 0;
 
@@ -66,8 +73,7 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private View mViewDetails;
 
-    public IssueDetailsFragment() {
-    }
+    public IssueDetailsFragment() { }
 
     public static IssueDetailsFragment newInstance(@NonNull Issue issue) {
         Bundle data = new Bundle();
@@ -108,9 +114,9 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     private void init() {
-        Log.v(DEBUG, "init");
+        Log.v(TAG, "init");
 
-        Log.v(DEBUG, "Getting arguments from bundle");
+        Log.v(TAG, "Getting arguments from bundle");
         Bundle bundle = getArguments();
         mIssue = (Issue) bundle.getSerializable(TAG_ISSUE);
         if (mIssue != null) {
@@ -125,7 +131,7 @@ public class IssueDetailsFragment extends BasicFragment {
         updateIssue(mIssue.getIssueAuthToken());
         addUser();
 
-        Log.v(DEBUG, "init finished");
+        Log.v(TAG, "init finished");
     }
 
     private void setPosition() {
@@ -151,6 +157,7 @@ public class IssueDetailsFragment extends BasicFragment {
         addTime();
 
         setupButtons();
+        disableButtonsIfNoPermissions();
     }
 
     private void updateIssue(String token) {
@@ -173,7 +180,7 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     private void addUser() {
-        Log.v(DEBUG, "Adding user in layout");
+        Log.v(TAG, "Adding user in layout");
         mUserAdapter.getUser(mIssue.getUserAuthToken(), new UserSimpleCallback() {
             @Override
             public void onSuccess(User user) {
@@ -188,13 +195,13 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     private void addTime() {
-        Log.v(DEBUG, "Adding time in layout");
+        Log.v(TAG, "Adding time in layout");
         TextView timeIssue = (TextView) mViewDetails.findViewById(R.id.sinceText);
         timeIssue.setText(new PrettyTime().format(mIssue.getCreatedAt()));
     }
 
     private void addDistance() {
-        Log.v(DEBUG, "Adding distance in layout");
+        Log.v(TAG, "Adding distance in layout");
         TextView distanceIssue = (TextView) mViewDetails.findViewById(R.id.distanceText);
         String distanceString = mIssue.getDistanceFromCurrentLocationAsString();
         if (distanceString != null) {
@@ -224,27 +231,32 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     private void addStreet(String address) {
-        Log.v(DEBUG, "Adding street in layout");
+        Log.v(TAG, "Adding street in layout");
         TextView streetIssue = (TextView) mViewDetails.findViewById(R.id.streetText);
-        streetIssue.setText(address);
+        streetIssue.setText(StringUtils.capitalize(address));
     }
 
     private void addDescription() {
-        Log.v(DEBUG, "Adding description in layout");
+        Log.v(TAG, "Adding description in layout");
         TextView descriptionIssue = (TextView) mViewDetails.findViewById(R.id.descriptionText);
         descriptionIssue.setText(mIssue.getDescription());
         descriptionIssue.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private void addRisk() {
-        Log.v(DEBUG, "Adding risk in layout");
+        Log.v(TAG, "Adding risk in layout");
         TextView riskIssue = (TextView) mViewDetails.findViewById(R.id.riskAnswer);
-        riskIssue.setText(getText(R.string.no));
-        if (mIssue.isRisk()) riskIssue.setText(getText(R.string.yes));
+        riskIssue.setText(mIssue.isRisk() ? R.string.yes : R.string.no);
+
+        int green = VERSION.SDK_INT >= VERSION_CODES.M
+                ? getResources().getColor(R.color.colorPrimary, getContext().getTheme())
+                : getResources().getColor(R.color.colorPrimary);
+
+        riskIssue.setTextColor(mIssue.isRisk() ? Color.RED : green);
     }
 
     private void addCategoryValue() {
-        Log.v(DEBUG, "Adding icon and name category in layout");
+        Log.v(TAG, "Adding icon and name category in layout");
         ImageView categoryIcon = (ImageView) mViewDetails.findViewById(R.id.categoryView);
         categoryIcon.setImageResource(mIssue.getCategory().getIcon());
         TextView categoryIssue = (TextView) mViewDetails.findViewById(R.id.nameCategoryText);
@@ -253,20 +265,20 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     void addConfirmValue() {
-        Log.v(DEBUG, "Adding confirm value in layout");
+        Log.v(TAG, "Adding confirm value in layout");
         TextView likesIssue = (TextView) mViewDetails.findViewById(R.id.likesText);
         likesIssue.setText("+" + mIssue.getConfirmVotes());
     }
 
     private void addIssueTitle() {
-        Log.v(DEBUG, "Adding issue title in layout");
+        Log.v(TAG, "Adding issue title in layout");
         TextView nameIssue = (TextView) mViewDetails.findViewById(R.id.nameText);
         nameIssue.setText(mIssue.getTitle());
         nameIssue.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private void addImageIssue() {
-        Log.v(DEBUG, "Adding image issue in layout");
+        Log.v(TAG, "Adding image issue in layout");
         ImageView imageIssue = (ImageView) mViewDetails.findViewById(R.id.eventView);
         String url = mIssue.getPicture().getMedUrl();
         Glide.with(this)
@@ -277,20 +289,22 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private User buildFakeUser() {
         String password = "";
-        return new User("", "User couldn't be retrieved", "",
+        return new User("", getString(R.string.user_couldnt_be_retrieved), "",
                 "example@mail.com", password, password);
     }
 
-    private void setUser(User user) {
-        Log.v(DEBUG, "setUser: init");
+    private void setUser(final User user) {
+        Log.v(TAG, "setUser: init");
 
-        UserAttacher.get(getContext(), user)
+        UserAttacher.get((DrawerActivity) getActivity(),
+                (RelativeLayout) mViewDetails.findViewById(R.id.userLayout), user)
                 .setFullName((TextView) mViewDetails.findViewById(R.id.userName))
                 .setUsername((TextView) mViewDetails.findViewById(R.id.userUsername))
                 .setLevel((TextView) mViewDetails.findViewById(R.id.userLevel))
-                .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress));
+                .setProgress((ProgressBar) mViewDetails.findViewById(R.id.userProgress))
+                .setAvatar((ImageView) mViewDetails.findViewById(R.id.userImage));
 
-        Log.v(DEBUG, "setUser finished");
+        Log.v(TAG, "setUser finished");
     }
 
     private void setShareOptions() {
@@ -302,8 +316,9 @@ public class IssueDetailsFragment extends BasicFragment {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, mIssue.getTitle());
-                intent.putExtra(Intent.EXTRA_TEXT, "See this issue: " + mIssue.getTitle() + '\n'
-                        + ServiceGenerator.BASE_WEB_URL + "/issues/" + mIssue.getIssueAuthToken());
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.see_this_issue)
+                        + mIssue.getTitle() + '\n' + ServiceGenerator.BASE_WEB_URL
+                        + "/issues/" + mIssue.getIssueAuthToken());
                 getContext().startActivity(Intent.createChooser(intent, "Share"));
             }
         };
@@ -340,8 +355,10 @@ public class IssueDetailsFragment extends BasicFragment {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(getResources().getString(R.string.delete_sure))
-                    .setPositiveButton(getResources().getString(R.string.yes), dialogClickListener)
-                    .setNegativeButton(getResources().getString(R.string.no), dialogClickListener)
+                    .setPositiveButton(getResources().getString(android.R.string.ok),
+                            dialogClickListener)
+                    .setNegativeButton(getResources().getString(android.R.string.cancel),
+                            dialogClickListener)
                     .show();
         }
     }
@@ -351,13 +368,13 @@ public class IssueDetailsFragment extends BasicFragment {
             @Override
             public void onSuccess() {
                 CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
-                if (markers != null) markers.remove(mIssue.getIssueAuthToken());
+                if (markers != null) markers.removeItem(mIssue.getIssueAuthToken());
                 getActivity().onBackPressed();
-                Log.d(DEBUG, "issue borrada");
+                Log.d(TAG, "issue borrada");
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(String errorMessage) {
                 Snackbar.make(mViewDetails, R.string.couldnt_delete_issue, Snackbar.LENGTH_SHORT)
                         .show();
             }
@@ -367,9 +384,21 @@ public class IssueDetailsFragment extends BasicFragment {
     private void setupButtons() {
         LinearLayout buttons = (LinearLayout) mViewDetails.findViewById(R.id.buttonsLayout);
 
-        if (isTooFarFromIssue()) {
+        if (!CivifyMap.getInstance().hasLocationPermissions()) {
             buttons.setVisibility(View.GONE);
-            mViewDetails.findViewById(R.id.too_far_message).setVisibility(View.VISIBLE);
+            TextView noPerms = (TextView) mViewDetails.findViewById(R.id.too_far_message);
+            noPerms.setText(R.string.without_permissions);
+            noPerms.setVisibility(View.VISIBLE);
+        } else if (isTooFarFromIssue() && !mIssue.isResolved()) {
+            buttons.setVisibility(View.GONE);
+            TextView resolvedOrFar = (TextView) mViewDetails.findViewById(R.id.too_far_message);
+            resolvedOrFar.setText(R.string.too_far_from_issue);
+            resolvedOrFar.setVisibility(View.VISIBLE);
+        } else if (mIssue.isResolved()) {
+            buttons.setVisibility(View.GONE);
+            TextView resolvedOrFar = (TextView) mViewDetails.findViewById(R.id.too_far_message);
+            resolvedOrFar.setText(R.string.issue_resolved);
+            resolvedOrFar.setVisibility(View.VISIBLE);
         } else {
             setupConfirmButton();
             setupReportButton();
@@ -379,6 +408,17 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private boolean isTooFarFromIssue() {
         return mDistance == null || mDistance > MIN_METERS_FROM_ISSUE;
+    }
+
+    private void disableButtonsIfNoPermissions() {
+        CivifyMap.getInstance().addOnPermissionsChangedListener(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        setupButtons();
+                    }
+                }
+        );
     }
 
     private void setupConfirmButton() {
@@ -434,9 +474,6 @@ public class IssueDetailsFragment extends BasicFragment {
 
     private void setupResolveButton() {
         AppCompatButton button = (AppCompatButton) mViewDetails.findViewById(R.id.resolveButton);
-        String issueUserToken = mIssue.getUserAuthToken();
-        String userToken = UserAdapter.getCurrentUser().getUserAuthToken();
-
         if (mIssue.getResolvedByAuthUser()) {
             changeButtonStyle(button, IssueButton.UNRESOLVE);
         }
@@ -453,12 +490,17 @@ public class IssueDetailsFragment extends BasicFragment {
     }
 
     public void launchEditActivity() {
-        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-        Intent intent = new Intent(getActivity().getApplicationContext(), EditIssueActivity.class);
-        Bundle data = new Bundle();
-        data.putSerializable(TAG_ISSUE, mIssue);
-        intent.putExtra(TAG_ISSUE, data);
-        startActivityForResult(intent, REQUEST_CODE);
+        if (mIssue.isResolved()) {
+            Snackbar.make(getView(), R.string.cant_edit_resolved, Snackbar.LENGTH_SHORT)
+                    .show();
+        } else {
+            Intent intent = new Intent(getActivity().getApplicationContext(),
+                    EditIssueActivity.class);
+            Bundle data = new Bundle();
+            data.putSerializable(TAG_ISSUE, mIssue);
+            intent.putExtra(TAG_ISSUE, data);
+            startActivityForResult(intent, REQUEST_CODE);
+        }
     }
 
     @Override
@@ -470,7 +512,8 @@ public class IssueDetailsFragment extends BasicFragment {
                     Issue issue = (Issue) editedBundle.getSerializable(TAG_ISSUE);
                     setIssue(issue);
                     CivifyMarkers markers = CivifyMap.getInstance().getMarkers();
-                    markers.get(mIssue.getIssueAuthToken()).setIssue(mIssue);
+                    IssueMarker marker = markers.get(mIssue.getIssueAuthToken());
+                    if (marker != null) marker.setIssue(mIssue);
                 }
                 break;
 

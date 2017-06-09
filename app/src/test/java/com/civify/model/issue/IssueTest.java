@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 
 import android.graphics.Bitmap;
 
+import com.civify.model.Picture;
 import com.civify.utils.ServiceGenerator;
 
 import org.junit.After;

@@ -29,7 +29,8 @@ public class LoginError {
     public enum ErrorType {
         USER_NOT_EXISTS,
         INVALID_CREDENTIALS,
-        NOT_LOGGED_IN
+        NOT_LOGGED_IN,
+        HTTP_ERROR
     }
 
 }

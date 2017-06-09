@@ -1,0 +1,187 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix"
+    android:clickable="true"
+    android:focusable="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+  <android.support.v7.widget.CardView
+      android:id="@+id/card_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/card_margin"
+      android:elevation="3dp"
+      card_view:cardCornerRadius="@dimen/card_album_radius"
+      card_view:cardElevation="4dp"
+      card_view:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackgroundBorderless">
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/album_cover_height"
+          android:layout_gravity="top"
+          >
+        <ImageView
+            android:id="@+id/item_event_picture"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/album_cover_height"
+            android:scaleType="fitXY" />
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/item_event_badge"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="@dimen/album_title_padding"
+            android:layout_marginLeft="@dimen/album_title_padding"
+            android:layout_marginTop="@dimen/album_title_padding"
+            app:civ_border_width="1dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="3"
+            />
+      </RelativeLayout>
+
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            >
+          <TextView
+              android:id="@+id/item_event_title"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginEnd="@dimen/album_title_padding"
+              android:layout_marginLeft="@dimen/album_title_padding"
+              android:layout_marginRight="@dimen/album_title_padding"
+              android:layout_marginStart="@dimen/album_title_padding"
+              android:layout_marginTop="@dimen/album_title_padding"
+              android:ellipsize="end"
+              android:maxLines="1"
+              android:textColor="#000000"
+              android:textSize="16sp"
+              android:textStyle="bold"
+              fontPath="fonts/Nunito-Bold.ttf"
+              />
+          </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/claim_linear_layout"
+            android:layout_margin="7dp"
+            >
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/green_bg_button"
+              android:textSize="15sp"
+              android:id="@+id/claim_button"
+              android:padding="3dp"
+              android:textColor="@color/white"
+              android:gravity="center"
+              fontPath="fonts/Nunito-Bold.ttf"
+              android:text="@string/claim"
+              android:maxLines="1"
+              android:ellipsize="end"
+              />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:layout_marginRight="@dimen/album_title_padding"
+          >
+        <TextView
+            android:id="@+id/item_event_description"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_weight="2"
+            android:layout_marginLeft="@dimen/album_title_padding"
+            android:layout_marginStart="@dimen/album_title_padding"
+            android:layout_marginTop="@dimen/album_title_padding"
+            android:layout_marginBottom="@dimen/album_title_padding"
+            fontPath="fonts/Nunito-Italic.ttf"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:layout_marginLeft="@dimen/album_title_padding"
+          android:layout_marginStart="@dimen/album_title_padding"
+          android:layout_marginTop="@dimen/album_title_padding"
+          android:layout_marginBottom="@dimen/album_title_padding"
+          android:layout_marginRight="@dimen/album_title_padding"
+          >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+          <TextView
+              android:id="@+id/item_event_time"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:textSize="13sp"
+              android:textColor="@color/green"
+              fontPath="fonts/Nunito-Bold.ttf"
+              android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginRight="@dimen/album_title_padding"
+            >
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:text="@string/duration"
+              android:textSize="12sp"
+              android:paddingRight="5dp"
+              fontPath="fonts/Nunito-Italic.ttf"/>
+          <TextView
+              android:id="@+id/item_event_duration"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:textSize="13sp"
+              android:textColor="@color/green"
+              fontPath="fonts/Nunito-Bold.ttf"
+              android:textStyle="bold"/>
+        </LinearLayout>
+      </LinearLayout>
+
+
+    </LinearLayout>
+
+
+  </android.support.v7.widget.CardView>
+
+
+
+</LinearLayout>
