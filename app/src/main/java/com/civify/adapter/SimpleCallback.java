@@ -3,5 +3,5 @@ package com.civify.adapter;
 public interface SimpleCallback {
     void onSuccess();
 
-    void onFailure();
+    void onFailure(String errorMessage);
 }
