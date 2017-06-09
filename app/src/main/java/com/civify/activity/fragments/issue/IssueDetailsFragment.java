@@ -373,7 +373,7 @@ public class IssueDetailsFragment extends BasicFragment {
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(String errorMessage) {
                 Snackbar.make(mViewDetails, R.string.couldnt_delete_issue, Snackbar.LENGTH_SHORT)
                         .show();
             }

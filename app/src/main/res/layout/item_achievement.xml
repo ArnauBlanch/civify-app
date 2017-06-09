@@ -46,7 +46,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
+            android:layout_weight="20"
             >
           <TextView
               android:id="@+id/achievement_item_title"
@@ -62,7 +62,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="8"
             android:gravity="center"
             android:layout_gravity="center"
             android:id="@+id/claim_linear_layout"
@@ -79,6 +79,8 @@
               android:gravity="center"
               fontPath="fonts/Nunito-Bold.ttf"
               android:text="@string/claim"
+              android:maxLines="1"
+              android:ellipsize="end"
               />
 
         </LinearLayout>

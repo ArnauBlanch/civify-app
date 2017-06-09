@@ -80,6 +80,8 @@
         android:textColor="@color/white"
         android:gravity="center"
         fontPath="fonts/Nunito-Bold.ttf"
+        android:maxLines="1"
+        android:ellipsize="end"
         />
 
   </LinearLayout>
