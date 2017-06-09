@@ -26,6 +26,7 @@ public class SplashActivity extends BaseActivity {
     private static final String CA = "ca";
     private static final String ES = "es";
     private static final String EN = "en";
+    private static final String INTRO = "intro";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,8 @@ public class SplashActivity extends BaseActivity {
 
                     @Override
                     public void onLoginFailed(LoginError t) {
-                        Intent intent = new Intent(SplashActivity.this, IntroductionActivity.class);
+                        Intent intent = new Intent(SplashActivity.this,
+                                intro() ? MainActivity.class : IntroductionActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -78,5 +80,19 @@ public class SplashActivity extends BaseActivity {
         Configuration config = new Configuration(getResources().getConfiguration());
         config.locale = locale;
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    }
+
+    private boolean intro() {
+        boolean introDone = false;
+        SharedPreferences sharedPreferences = AdapterFactory.getInstance().getSharedPreferences(
+                getApplicationContext());
+        if (sharedPreferences.contains(INTRO)) {
+            introDone = true;
+        } else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(INTRO, true);
+            editor.apply();
+        }
+        return introDone;
     }
 }
