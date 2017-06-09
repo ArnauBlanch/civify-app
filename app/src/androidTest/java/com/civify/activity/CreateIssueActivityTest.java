@@ -138,7 +138,7 @@ public class CreateIssueActivityTest {
             public void run() {
                 CivifyMap.setContext(intentsRule.getActivity());
                 Location mockLocation = LocationAdapter.getLocation(new LatLng(0.0, 0.0));
-                CivifyMap.getInstance().setMockLocation(mockLocation);
+                //CivifyMap.getInstance().setMockLocation(mockLocation);
             }
         });
         Intent intent = new Intent(intentsRule.getActivity().getApplicationContext(),

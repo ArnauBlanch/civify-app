@@ -70,31 +70,6 @@ public class MainActivityTest {
                 isDisplayed()));
         button2.check(matches(isDisplayed()));
 
-        ViewInteraction textView =
-                onView(allOf(withId(R.id.textSignInWith), withText("Sign in with:"),
-                        childAtPosition(allOf(withId(R.id.networksLayout),
-                                childAtPosition(withId(R.id.mainLayout), 3)), 0), isDisplayed()));
-        textView.check(matches(withText("Sign in with:")));
-
-        ViewInteraction button3 = onView(allOf(withId(R.id.buttonGoogle), isDisplayed()));
-        button3.check(matches(isDisplayed()));
-
-        ViewInteraction button4 = onView(allOf(withId(R.id.buttonTwitter), childAtPosition(
-                allOf(withId(R.id.networkButtonsLayout),
-                        childAtPosition(withId(R.id.networksLayout), 1)), 1), isDisplayed()));
-        button4.check(matches(isDisplayed()));
-
-        ViewInteraction linearLayout = onView(allOf(withId(R.id.networkButtonsLayout),
-                childAtPosition(allOf(withId(R.id.networksLayout),
-                        childAtPosition(withId(R.id.mainLayout), 3)), 1), isDisplayed()));
-        linearLayout.check(matches(isDisplayed()));
-
-        ViewInteraction linearLayout2 = onView(allOf(withId(R.id.networksLayout), childAtPosition(
-                allOf(withId(R.id.mainLayout),
-                        childAtPosition(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class),
-                                0)), 3), isDisplayed()));
-        linearLayout2.check(matches(isDisplayed()));
-
         ViewInteraction linearLayout3 = onView(allOf(withId(R.id.buttonsLayout), childAtPosition(
                 allOf(withId(R.id.mainLayout),
                         childAtPosition(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class),
@@ -125,20 +100,6 @@ public class MainActivityTest {
         appCompatButton2.perform(click());
 
         pressBack();
-
-        ViewInteraction appCompatButton4 = onView(allOf(withId(R.id.buttonGoogle), withParent(
-                allOf(withId(R.id.networkButtonsLayout), withParent(withId(R.id.networksLayout)))),
-                isDisplayed()));
-        appCompatButton4.perform(click());
-
-        ViewInteraction appCompatButton5 =
-                onView(allOf(withId(android.R.id.button1), withText("Close")));
-        appCompatButton5.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton6 = onView(allOf(withId(R.id.buttonTwitter), withParent(
-                allOf(withId(R.id.networkButtonsLayout), withParent(withId(R.id.networksLayout)))),
-                isDisplayed()));
-        appCompatButton6.perform(click());
 
         ViewInteraction appCompatButton7 =
                 onView(allOf(withId(android.R.id.button1), withText("Close")));
