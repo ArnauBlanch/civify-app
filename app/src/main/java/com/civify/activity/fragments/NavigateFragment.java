@@ -24,10 +24,8 @@ import com.civify.activity.fragments.issue.IssueDetailsFragment;
 import com.civify.activity.fragments.wall.FilterDialogFragment;
 import com.civify.adapter.LocationAdapter;
 import com.civify.adapter.SimpleCallback;
-import com.civify.adapter.UserSimpleCallback;
 import com.civify.adapter.issue.IssueAdapter;
 import com.civify.model.IssueReward;
-import com.civify.model.User;
 import com.civify.model.issue.Issue;
 import com.civify.model.map.CivifyMap;
 import com.civify.model.map.MapNotLoadedException;
@@ -109,19 +107,10 @@ public class NavigateFragment extends BasicFragment {
                         (IssueReward) data.getExtras().getSerializable("issueReward");
                 try {
                     CivifyMap.getInstance().addIssueMarker(issueReward.getIssue());
-                    final DrawerActivity activity = (DrawerActivity) getActivity();
+                    DrawerActivity activity = (DrawerActivity) getActivity();
                     AdapterFactory.getInstance()
                             .getUserAdapter(getContext())
-                            .showRewardDialog(activity, issueReward.getReward(),
-                                    new UserSimpleCallback() {
-                                        @Override
-                                        public void onSuccess(User user) {
-                                            activity.setUserHeader();
-                                        }
-
-                                        @Override
-                                        public void onFailure() { }
-                                    });
+                            .showRewardDialog(activity, issueReward.getReward(), null);
                     Snackbar.make(getView(), getString(R.string.issue_created),
                             Snackbar.LENGTH_SHORT).show();
                 } catch (MapNotLoadedException ignore) {
