@@ -54,6 +54,7 @@ public class EventsFragment extends BasicFragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mEventViewFragment = new EventViewFragment();
+        mEventViewFragment.setEventsFragment(this);
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.events_container, mEventViewFragment)
@@ -74,12 +75,37 @@ public class EventsFragment extends BasicFragment {
                 });
     }
 
+    public void updateList() {
+        AdapterFactory.getInstance().getEventAdapter(getContext())
+                .getEvents(new ListEventsSimpleCallback() {
+                    @Override
+                    public void onSuccess(List<Event> events) {
+                        mEventViewFragment.setEventsList(validEvents(events));
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
+    }
+
     private static List<Event> validEvents(List<Event> oldEvents) {
         List<Event> events = new ArrayList<>();
         for (int i = 0; i < oldEvents.size(); ++i) {
             Event event = oldEvents.get(i);
-            if (!event.isPast() && event.isEnabled()) events.add(event);
+            if (event.isEnabled() && isShowableEvent(event)) {
+                events.add(event);
+            }
         }
         return events;
+    }
+
+    private static boolean isShowableEvent(Event event) {
+        return !event.isPast() || isPastCompletedEvent(event);
+    }
+
+    private static boolean isPastCompletedEvent(Event event) {
+        return event.isPast() && event.isCompleted() && !event.isClaimed();
     }
 }
