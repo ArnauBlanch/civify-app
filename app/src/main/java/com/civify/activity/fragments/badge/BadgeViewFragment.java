@@ -15,8 +15,10 @@ import android.widget.ProgressBar;
 import com.civify.R;
 import com.civify.activity.DrawerActivity;
 import com.civify.activity.fragments.BasicFragment;
-import com.civify.adapter.LoginAdapterImpl;
+import com.civify.activity.fragments.profile.ProfileInfoFragment;
+import com.civify.adapter.UserAdapter;
 import com.civify.adapter.badge.BadgeViewAdapter;
+import com.civify.model.User;
 import com.civify.model.badge.Badge;
 import com.civify.service.badge.ListBadgesSimpleCallback;
 import com.civify.utils.AdapterFactory;
@@ -29,8 +31,8 @@ public class BadgeViewFragment extends BasicFragment {
 
     private List<Badge> mBadgeList;
     private BadgeViewAdapter mBadgeViewAdapter;
-    private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
+    private User mUser;
 
     public BadgeViewFragment() {
         mBadgeList = new ArrayList<>();
@@ -40,9 +42,18 @@ public class BadgeViewFragment extends BasicFragment {
         return new BadgeViewFragment();
     }
 
+    public static BadgeViewFragment newInstance(User user) {
+        BadgeViewFragment fragment = new BadgeViewFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ProfileInfoFragment.TAG_USER, user);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setUser();
     }
 
     @Override
@@ -53,16 +64,17 @@ public class BadgeViewFragment extends BasicFragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_badge_view, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.badge_recyclerView);
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.badge_recyclerView);
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_badges);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-        mRecyclerView.setAdapter(mBadgeViewAdapter);
+                new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(mBadgeViewAdapter);
 
         return view;
     }
@@ -70,10 +82,8 @@ public class BadgeViewFragment extends BasicFragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String userToken = AdapterFactory.getInstance().getSharedPreferences(getContext())
-                .getString(LoginAdapterImpl.AUTH_TOKEN, "");
         AdapterFactory.getInstance().getBadgeAdapter(getContext())
-                .getUserBadges(userToken, new ListBadgesSimpleCallback() {
+                .getUserBadges(mUser.getUserAuthToken(), new ListBadgesSimpleCallback() {
                     @Override
                     public void onSuccess(List<Badge> badges) {
                         mProgressBar.setVisibility(View.GONE);
@@ -82,6 +92,7 @@ public class BadgeViewFragment extends BasicFragment {
 
                     @Override
                     public void onFailure() {
+                        mProgressBar.setVisibility(View.GONE);
                         Snackbar.make(view, R.string.couldnt_retrieve_badges,
                                 Snackbar.LENGTH_SHORT);
                     }
@@ -99,5 +110,10 @@ public class BadgeViewFragment extends BasicFragment {
         Collections.reverse(intermediateList);
         mBadgeList.addAll(intermediateList);
         mBadgeViewAdapter.notifyDataSetChanged();
+    }
+
+    private void setUser() {
+        mUser = getArguments() == null ? UserAdapter.getCurrentUser()
+                : (User) getArguments().getSerializable(ProfileInfoFragment.TAG_USER);
     }
 }

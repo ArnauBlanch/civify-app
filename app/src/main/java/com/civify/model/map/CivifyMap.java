@@ -323,7 +323,7 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         }
         if (isAutoCenter()) {
             try {
-                center(false);
+                center(true);
             } catch (MapNotReadyException e) {
                 Log.wtf(TAG, e);
             }
