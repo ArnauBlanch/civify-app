@@ -284,4 +284,6 @@
   <string name="issue_once_hour">You can\'t create more issues yet</string>
   <string name="autocenter">Auto-center</string>
   <string name="error">Error</string>
+  <string name="network_present_but_error">Network is present but an error has occurred.
+    Check that you\'re connected to UPC VPN.</string>
 </resources>

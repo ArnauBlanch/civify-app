@@ -2,6 +2,7 @@ package com.civify.adapter;
 
 import android.content.SharedPreferences;
 
+import com.civify.adapter.LoginError.ErrorType;
 import com.civify.model.CivifyEmailCredentials;
 import com.civify.model.CivifyUsernameCredentials;
 import com.civify.model.User;
@@ -143,7 +144,8 @@ public class LoginAdapterImpl implements LoginAdapter {
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    t.printStackTrace();
+                    mLoginFinishedCallback.onLoginFailed(new LoginError(
+                            ErrorType.HTTP_ERROR, t.getMessage()));
                 }
             });
         } else {
