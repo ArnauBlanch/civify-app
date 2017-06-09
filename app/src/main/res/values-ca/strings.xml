@@ -183,6 +183,7 @@
   <string name="claim">Reclama</string>
   <string name="and">i</string>
   <string name="couldnt_claim_achievement">No s\'ha pogut reclamar la recompensa</string>
+  <string name="couldnt_claim_event">No s\'ha pogut reclamar l\'esdeveniment</string>
   <string name="email_exists_correct">Direcció de correu correcta, sisplau prem "Envia"</string>
   <string name="email_not_exists">El correu introduït no existeix</string>
   <string name="email_not_sent">S\'ha produït un error en enviar les instruccions</string>

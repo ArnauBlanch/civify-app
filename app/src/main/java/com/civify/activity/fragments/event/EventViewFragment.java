@@ -22,6 +22,7 @@ public class EventViewFragment extends BasicFragment {
 
     private List<Event> mEventList;
     private EventViewAdapter mEventViewAdapter;
+    private EventsFragment mEventsFragment;
 
     public EventViewFragment() {
         mEventList = new ArrayList<>();
@@ -48,7 +49,7 @@ public class EventViewFragment extends BasicFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        mEventViewAdapter = new EventViewAdapter(mEventList, getContext());
+        mEventViewAdapter = new EventViewAdapter(mEventList, mEventsFragment);
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_view, container, false);
@@ -69,5 +70,9 @@ public class EventViewFragment extends BasicFragment {
         mEventList.addAll(intermediateList);
 
         mEventViewAdapter.notifyDataSetChanged();
+    }
+
+    public void setEventsFragment(EventsFragment eventsFragment) {
+        mEventsFragment = eventsFragment;
     }
 }
