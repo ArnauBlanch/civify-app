@@ -60,6 +60,8 @@ public class ProfileFragment extends BasicFragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        if (!isUserSet()) return view;
+
         if (!isCurrentUser()) {
             DrawerActivity activity = (DrawerActivity) getActivity();
             Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
@@ -105,7 +107,9 @@ public class ProfileFragment extends BasicFragment {
     }
 
     public boolean isCurrentUser() {
-        return mUser.getUserAuthToken().equals(UserAdapter.getCurrentUser().getUserAuthToken());
+        User currentUser = UserAdapter.getCurrentUser();
+        return currentUser != null && mUser.getUserAuthToken()
+                .equals(currentUser.getUserAuthToken());
     }
 
     private void signOut() {

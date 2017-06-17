@@ -38,13 +38,6 @@ public class AdapterFactory {
         return sInstance;
     }
 
-    public UserAdapter getUserAdapter() {
-        if (mUserAdapter == null) {
-            mUserAdapter = new UserAdapter();
-        }
-        return mUserAdapter;
-    }
-
     public UserAdapter getUserAdapter(@NonNull Context context) {
         if (mUserAdapter == null) {
             mUserAdapter = new UserAdapter(getSharedPreferences(context));
