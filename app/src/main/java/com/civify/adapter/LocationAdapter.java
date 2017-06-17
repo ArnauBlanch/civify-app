@@ -390,7 +390,7 @@ public class LocationAdapter implements
         }
     }
 
-    private void setRequestingPermissions(boolean requestingPermissions) {
+    public void setRequestingPermissions(boolean requestingPermissions) {
         mRequestingPermissions = requestingPermissions;
         if (requestingPermissions) {
             cancelLocationUpdateTimeout();

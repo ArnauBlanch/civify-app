@@ -297,6 +297,14 @@ public class DrawerActivity extends BaseActivity
         getCurrentFragment().onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+            @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(DrawerActivity.class.getSimpleName(), "onRequestPermissionsResult");
+        getCurrentFragment().onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     public void setUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
 
