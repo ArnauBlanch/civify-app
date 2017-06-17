@@ -293,7 +293,7 @@ public class DrawerActivity extends BaseActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("DrawerActivity", "onActivityResult");
+        Log.d(DrawerActivity.class.getSimpleName(), "onActivityResult");
         getCurrentFragment().onActivityResult(requestCode, resultCode, data);
     }
 
@@ -312,7 +312,11 @@ public class DrawerActivity extends BaseActivity
                     .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
 
             if (existsCoinsOnToolbar()) showCoinsOnToolbar();
-        } else startActivity(new Intent(this, SplashActivity.class));
+        } else {
+            Log.d(DrawerActivity.class.getSimpleName(), "Starting Splash");
+            startActivity(new Intent(this, SplashActivity.class));
+            finish();
+        }
     }
 
     private void setToolbarTitle() {
