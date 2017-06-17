@@ -74,7 +74,7 @@ public class AwardDetailsFragment extends BasicFragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         final DrawerActivity activity = (DrawerActivity) getActivity();
         activity.showCoinsOnToolbar();
-        AdapterFactory.getInstance().getUserAdapter().addOnCurrentUserUpdateListener(
+        AdapterFactory.getInstance().getUserAdapter(getContext()).addOnCurrentUserUpdateListener(
                 new Runnable() {
                 @Override
                 public void run() {

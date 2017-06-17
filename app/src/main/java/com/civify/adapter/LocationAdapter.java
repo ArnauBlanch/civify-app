@@ -465,7 +465,7 @@ public class LocationAdapter implements
             mOnUpdateTimeout = Timeout.schedule("LocationUpdateTimeout", new Runnable() {
                 @Override
                 public void run() {
-                    if (!mLowConnectionWarning) {
+                    if (!mLowConnectionWarning && isConnected()) {
                         checkForPermissions();
                         if (hasPermissions()) {
                             mLowConnectionWarning = true;

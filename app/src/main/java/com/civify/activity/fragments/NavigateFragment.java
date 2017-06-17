@@ -126,7 +126,7 @@ public class NavigateFragment extends BasicFragment {
                             Snackbar.LENGTH_SHORT).show();
                 } catch (MapNotLoadedException ignore) {
                     Log.wtf(NavigateFragment.class.getSimpleName(),
-                            "Creating issues must be " + "only enabled if the map is loaded");
+                            "Creating issues must be only enabled if the map is loaded");
                 }
             }
             CivifyMap.getInstance().setCanBeDisabled(true);
@@ -191,6 +191,7 @@ public class NavigateFragment extends BasicFragment {
             Location loc = LocationAdapter.getLocation(place.getLatLng());
             try {
                 CivifyMap.getInstance().disableLocation();
+                CivifyMap.getInstance().setAutoCenter(false);
                 mLastZoom = CivifyMap.getInstance().getCurrentCameraPosition().zoom;
 
                 CivifyMap.getInstance().center(loc, CivifyMap.DEFAULT_ZOOM, true);
@@ -232,8 +233,10 @@ public class NavigateFragment extends BasicFragment {
             public void onClick(View view) {
                 try {
                     Float zoom = null;
+                    // Disable search
                     if (mSarchCenterSnackbar != null) {
                         CivifyMap.getInstance().enable();
+                        CivifyMap.getInstance().setAutoCenter(getSharedPreferencesAutoCenter());
                         mSarchCenterSnackbar.dismiss();
                         mSarchCenterSnackbar = null;
                         zoom = mLastZoom;
@@ -250,7 +253,6 @@ public class NavigateFragment extends BasicFragment {
 
     private void setCreateIssueButton(View v) {
         mFabCreateIssue = (FloatingActionButton) v.findViewById(R.id.fab_add);
-
         mCreateIssueListener = new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -325,14 +327,19 @@ public class NavigateFragment extends BasicFragment {
         mFabCreateIssue.setAlpha(enable ? 1f : IssueDetailsFragment.DISABLED_ALPHA);
     }
 
+    private boolean getSharedPreferencesAutoCenter() {
+        SharedPreferences preferences = AdapterFactory.getInstance()
+                .getSharedPreferences(getContext());
+        return preferences.getBoolean(AUTO_CENTER_TAG, CivifyMap.DEFAULT_AUTO_CENTER);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.navigation_settings, menu);
-        SharedPreferences preferences = AdapterFactory.getInstance()
-                .getSharedPreferences(getContext());
-        menu.findItem(R.id.autocenter).setChecked(
-                preferences.getBoolean(AUTO_CENTER_TAG, CivifyMap.DEFAULT_AUTO_CENTER));
+        boolean autoCenter = getSharedPreferencesAutoCenter();
+        menu.findItem(R.id.autocenter).setChecked(autoCenter);
+        CivifyMap.getInstance().setAutoCenter(autoCenter);
     }
 
     @Override
@@ -352,7 +359,7 @@ public class NavigateFragment extends BasicFragment {
                 }
                 break;
             case R.id.autocenter:
-                boolean autoCenter = !CivifyMap.getInstance().isAutoCenter();
+                boolean autoCenter = !getSharedPreferencesAutoCenter();
                 CivifyMap.getInstance().setAutoCenter(autoCenter);
                 item.setChecked(autoCenter);
                 SharedPreferences preferences = AdapterFactory.getInstance()
