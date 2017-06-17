@@ -8,7 +8,7 @@
   <string name="action_sign_in">Identifícate o regístrate</string>
   <string name="action_sign_in_short">Identifícate</string>
   <string name="available_rewards_tab">DISPONIBLE</string>
-  <string name="camera_error">Ha habido un problema con la cámara</string>
+  <string name="camera_error">Ha habido un problema con la cámara. Por favor, inténtelo de nuevo.</string>
   <string name="camera_permission_denied">Permiso de cámara denegado</string>
   <string name="cant_confirm_own_issue">No puedes confirmar tu propia incidencia</string>
   <string name="cant_report_own_issue">No puedes denunciar tu propia incidencia</string>

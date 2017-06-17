@@ -12,8 +12,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public final class ServiceGenerator {
 
     public static final String RAILS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    public static final String BASE_URL = "http://api.civify.cf";
-    public static final String BASE_WEB_URL = "http://civify.cf";
+    public static final String BASE_URL = "http://34.210.110.148:3000";
+    public static final String BASE_WEB_URL = "http://34.210.110.148:5000";
 
     private static ServiceGenerator sInstance;
 

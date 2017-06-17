@@ -36,7 +36,7 @@ public class ForgotActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forgotten_password_layout);
         mSubmitClickable = false;
-        mUserAdapter = AdapterFactory.getInstance().getUserAdapter();
+        mUserAdapter = AdapterFactory.getInstance().getUserAdapter(getApplicationContext());
         mEmailEditText = (EditText) findViewById(R.id.email_input);
         mMessageView = (TextView) findViewById(R.id.email_exists_text);
         mIcon = (ImageView) findViewById(R.id.email_exists_icon);

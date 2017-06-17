@@ -19,7 +19,7 @@ class EmailTextWatcher implements TextWatcher {
     private final UserAdapter mUserAdapter;
 
     EmailTextWatcher(View view, int iconResource, int messageResource) {
-        this(AdapterFactory.getInstance().getUserAdapter(),
+        this(AdapterFactory.getInstance().getUserAdapter(view.getContext()),
                 view, iconResource, messageResource);
     }
 

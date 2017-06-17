@@ -132,15 +132,18 @@ public abstract class CameraGalleryActivity extends BaseActivity {
     }
 
     private void onCaptureImageResult(Intent data) {
-        Uri imageUri = Uri.parse(mCameraPhotoPath);
-        File file = new File(imageUri.getPath());
+        if (mCameraPhotoPath == null) {
+            showError(R.string.camera_error);
+            return;
+        }
         try {
+            Uri imageUri = Uri.parse(mCameraPhotoPath);
+            File file = new File(imageUri.getPath());
             InputStream ims = new FileInputStream(file);
             Bitmap bitmap = resizeBitmap(BitmapFactory.decodeStream(ims));
             handlePhotoResult(resizeBitmap(bitmap));
-        } catch (FileNotFoundException e) {
+        } catch (IOException ignore) {
             showError(R.string.camera_error);
-            return;
         }
     }
 
