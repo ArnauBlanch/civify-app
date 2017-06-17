@@ -39,6 +39,7 @@ import com.civify.activity.fragments.wall.WallFragment;
 import com.civify.adapter.UserAdapter;
 import com.civify.adapter.UserAttacher;
 import com.civify.model.AchievementsEventsContainer;
+import com.civify.model.User;
 import com.civify.service.AchievementsEventsCallback;
 import com.civify.utils.AdapterFactory;
 
@@ -78,9 +79,6 @@ public class DrawerActivity extends BaseActivity
     private int mCurrentFragmentId;
 
     private boolean mShowMenu;
-    private boolean mShowMenuDetails;
-    private boolean mShowMenuWall;
-    private boolean mShowMenuNavigate;
 
     public int getCurrentFragmentId() {
         return mCurrentFragmentId;
@@ -245,32 +243,18 @@ public class DrawerActivity extends BaseActivity
             case PROFILE_ID:
                 ProfileFragment profile = (ProfileFragment) mCurrentFragment;
                 mShowMenu = !profile.isUserSet() || profile.isCurrentUser();
-                mShowMenuDetails = false;
-                mShowMenuNavigate = false;
                 break;
             case DETAILS_ISSUE_ID:
                 mShowMenu = true;
-                mShowMenuDetails = true;
-                mShowMenuWall = false;
-                mShowMenuNavigate = false;
                 break;
             case WALL_ID:
                 mShowMenu = true;
-                mShowMenuWall = true;
-                mShowMenuDetails = false;
-                mShowMenuNavigate = false;
                 break;
             case NAVIGATE_ID:
                 mShowMenu = true;
-                mShowMenuWall = false;
-                mShowMenuNavigate = true;
-                mShowMenuDetails = false;
                 break;
             default:
                 mShowMenu = false;
-                mShowMenuDetails = false;
-                mShowMenuWall = false;
-                mShowMenuNavigate = false;
                 break;
         }
         invalidateOptionsMenu();
@@ -316,16 +300,19 @@ public class DrawerActivity extends BaseActivity
     public void setUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
 
-        UserAttacher.get(this, null, UserAdapter.getCurrentUser())
-                .setFullName((TextView) headerView.findViewById(R.id.header_name))
-                .setUsername((TextView) headerView.findViewById(R.id.header_username))
-                .setLevel((TextView) headerView.findViewById(R.id.header_level))
-                .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
-                .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
-                .setCoins((TextView) headerView.findViewById(R.id.header_coins))
-                .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
+        User currentUser = UserAdapter.getCurrentUser();
+        if (currentUser != null) {
+            UserAttacher.get(this, null, currentUser)
+                    .setFullName((TextView) headerView.findViewById(R.id.header_name))
+                    .setUsername((TextView) headerView.findViewById(R.id.header_username))
+                    .setLevel((TextView) headerView.findViewById(R.id.header_level))
+                    .setExperienceWithMax((TextView) headerView.findViewById(R.id.header_xp))
+                    .setProgress((ProgressBar) headerView.findViewById(R.id.header_progress))
+                    .setCoins((TextView) headerView.findViewById(R.id.header_coins))
+                    .setAvatar((ImageView) headerView.findViewById(R.id.header_image));
 
-        if (existsCoinsOnToolbar()) showCoinsOnToolbar();
+            if (existsCoinsOnToolbar()) showCoinsOnToolbar();
+        } else startActivity(new Intent(this, SplashActivity.class));
     }
 
     private void setToolbarTitle() {

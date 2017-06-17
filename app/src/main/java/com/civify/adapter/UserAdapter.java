@@ -57,10 +57,6 @@ public class UserAdapter {
 
     private UserService mUserService;
 
-    public UserAdapter() {
-        this(ServiceGenerator.getInstance().createService(UserService.class));
-    }
-
     protected UserAdapter(UserService userService) {
         mUserService = userService;
     }
@@ -214,7 +210,7 @@ public class UserAdapter {
             md.update(String.valueOf(password).getBytes("UTF-8"));
             return String.format("%064x", new BigInteger(1, md.digest()));
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            Log.wtf(TAG, e);
         }
         return password;
     }
@@ -224,7 +220,7 @@ public class UserAdapter {
             return new JsonParser().parse(errorBody.string()).getAsJsonObject().get("message")
                     .getAsString();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Parsing error", e);
             return "";
         }
     }
@@ -235,7 +231,12 @@ public class UserAdapter {
     }
 
     public static User getCurrentUser() {
+        if (sCurrentUser == null) Log.w(TAG, "Current user is not set");
         return sCurrentUser;
+    }
+
+    public String getUserAuthToken() {
+        return mAuthToken;
     }
 
     public void getUser(String userAuthToken, final UserSimpleCallback callback) {

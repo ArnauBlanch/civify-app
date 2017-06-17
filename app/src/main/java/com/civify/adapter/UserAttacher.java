@@ -35,7 +35,8 @@ public final class UserAttacher {
 
     @NonNull
     public static UserAttacher get(@NonNull DrawerActivity context,
-            @Nullable RelativeLayout userLayout, @NonNull User user) {
+            @Nullable RelativeLayout userLayout, User user) {
+        if (user == null) throw new IllegalArgumentException("User can't be null");
         return new UserAttacher(context, userLayout, user);
     }
 

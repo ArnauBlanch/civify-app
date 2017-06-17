@@ -35,7 +35,7 @@ public class RegistrationActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserAdapter = AdapterFactory.getInstance().getUserAdapter();
+        mUserAdapter = AdapterFactory.getInstance().getUserAdapter(getApplicationContext());
         mLoginAdapter = AdapterFactory.getInstance().getLoginAdapter(this);
         setContentView(R.layout.registration_layout);
 
