@@ -185,7 +185,6 @@ public class CreateIssueActivity extends CameraGalleryActivity {
         TextInputLayout descLayout = (TextInputLayout) findViewById(R.id.description_layout);
         mDescription = ((TextView) findViewById(R.id.description_input)).getText().toString();
 
-
         if (mDescription.isEmpty()) {
             descLayout.setError(getString(R.string.must_insert_description));
         } else {

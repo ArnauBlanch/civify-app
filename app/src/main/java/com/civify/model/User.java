@@ -180,6 +180,7 @@ public class User implements Serializable {
     }
 
     public ProfileIcon getProfileIcon() {
+        if (mProfileIcon == null) setProfileIcon(ProfileIcon.USER);
         return mProfileIcon;
     }
 

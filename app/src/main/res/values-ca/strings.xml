@@ -8,7 +8,7 @@
   <string name="action_sign_in">Identifica\'t o registra\'t</string>
   <string name="action_sign_in_short">Identifica\'t</string>
   <string name="available_rewards_tab">DISPONIBLE</string>
-  <string name="camera_error">Hi ha hagut un error amb la càmera</string>
+  <string name="camera_error">Hi ha hagut un error amb la càmera. Si us plau, intenti-ho altre vegada.</string>
   <string name="camera_permission_denied">Permís de càmera</string>
   <string name="cant_confirm_own_issue">No pots confirmar la teva pròpia incidència</string>
   <string name="cant_report_own_issue">No pots denunciar la teva pròpia incidència</string>

@@ -18,7 +18,7 @@ class PasswordTextWatcher implements TextWatcher {
     private final UserAdapter mUserAdapter;
 
     PasswordTextWatcher(View view, int iconResource, int messageResource) {
-        this(AdapterFactory.getInstance().getUserAdapter(),
+        this(AdapterFactory.getInstance().getUserAdapter(view.getContext()),
                 view, iconResource, messageResource);
     }
 

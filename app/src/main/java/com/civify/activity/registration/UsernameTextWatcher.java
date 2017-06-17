@@ -19,7 +19,8 @@ class UsernameTextWatcher implements TextWatcher {
     private final UserAdapter mUserAdapter;
 
     UsernameTextWatcher(View view, int iconResource, int messageResource) {
-        this(AdapterFactory.getInstance().getUserAdapter(), view, iconResource, messageResource);
+        this(AdapterFactory.getInstance().getUserAdapter(view.getContext()), view, iconResource,
+                messageResource);
     }
 
     UsernameTextWatcher(UserAdapter userAdapter, View view, int iconResource, int messageResource) {
