@@ -1,6 +1,5 @@
 package com.civify.model.map;
 
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -379,11 +378,9 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
         mMapFragment = null;
     }
 
-    public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
-        if (requestCode == LocationAdapter.PERMISSION_ACCESS_LOCATION
-                // If request is cancelled, the result arrays are empty
-                && grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    public void onRequestPermissionsResult(int requestCode) {
+        if (requestCode == LocationAdapter.PERMISSION_ACCESS_LOCATION) {
+            mLocationAdapter.setRequestingPermissions(false);
             mLocationAdapter.checkForPermissions();
         }
     }

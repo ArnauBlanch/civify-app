@@ -96,9 +96,9 @@ public class NavigateFragment extends BasicFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
-        CivifyMap.getInstance().onRequestPermissionsResult(requestCode, grantResults);
+    public void onRequestPermissionsResult(int requestCode,
+            @NonNull String[] permissions, @NonNull int[] grantResults) {
+        CivifyMap.getInstance().onRequestPermissionsResult(requestCode);
     }
 
     @Override
