@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -226,6 +227,7 @@ public class CreateIssueActivity extends CameraGalleryActivity {
 
     @Override
     protected void handlePhotoResult(Bitmap imageBitmap) {
+        Log.d(CreateIssueActivity.class.getSimpleName(), "Photo received");
         ImageView imageView = (ImageView) findViewById(R.id.photo_view);
         imageView.setImageBitmap(imageBitmap);
         TextView message = (TextView) findViewById(R.id.photo_validation);

@@ -401,7 +401,9 @@ public class CivifyMap implements UpdateLocationListener, OnMapReadyCallback {
     }
 
     public static CivifyMap getInstance() {
-        if (sInstance == null) throw new RuntimeException("setContext(Activity) was not called!");
+        if (sInstance == null) {
+            throw new MapNotLoadedException("setContext(Activity) was not called!");
+        }
         return sInstance;
     }
 }
