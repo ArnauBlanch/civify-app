@@ -15,6 +15,16 @@
 
 This Android app  was developed using Java, Android SDK, Retrofit & Google Maps API. It interacted with the [Civify API](https://github.com/ArnauBlanch/civify-backend) and had links to [Civify web](https://github.com/ArnauBlanch/civify-web). It was tested using JUnit, Mockito, PowerMock, Robolectric and Espresso.
 
+**Screenshots**
+
+<p align="center">
+  <img src="pics/screenshot1.jpg" width="140" /> <img src="pics/screenshot13.jpg" width="140" />
+  <img src="pics/screenshot2.jpg" width="140" /> <img src="pics/screenshot7.jpg" width="140" />
+  <img src="pics/screenshot4.jpg" width="140" /> <img src="pics/screenshot6.jpg" width="140" />
+  <img src="pics/screenshot3.jpg" width="140" /> <img src="pics/screenshot8.jpg" width="140" />
+  <img src="pics/screenshot9.jpg" width="140" /> <img src="pics/screenshot10.jpg" width="140" />
+  <img src="pics/screenshot11.jpg" width="140" /> <img src="pics/screenshot12.jpg" width="140" />
+</p>
 
 ---
 
