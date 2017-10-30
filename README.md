@@ -1,4 +1,4 @@
-<img src="pics/logo.png" height=80 /> <h1>Civify</h1>
+<img src="pics/logo.png" height=80 />
 
 > The user community where you win by caring about your city. Explore your city and warn about the issues in your surroundings. Be actively engaged by supporting other citizens so that your local institutions can resolve them. In addition, you will get rewards for your commitment!
 
